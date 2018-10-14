@@ -1,7 +1,3 @@
-import SceneBase from "./SceneBase";
-import { GAME } from "../GameController";
-import { UI } from "../manager/UIManager";
-
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -14,24 +10,21 @@ import { UI } from "../manager/UIManager";
 
 const {ccclass, property} = cc._decorator;
 
+/***********
+ *  场景的基类，定义场景移动，点击，场景切换动画，显示逻辑，场景加载资源等
+ * 
+ */
 @ccclass
-export default class LoadingScene extends SceneBase {
+export default class SceneBase extends cc.Component {
+
 
     // LIFE-CYCLE CALLBACKS:
 
-    @property(cc.Node) uicanvas: cc.Node = null;
-    onLoad () {
-        //常驻ui
-        UI.registerLayer(this.uicanvas);
-    }
+    // onLoad () {}
 
-    start () {
+    // start () {
 
-        GAME.start();
-        
-    }
+    // }
 
-
-    update () {
-    }
+    // update (dt) {}
 }

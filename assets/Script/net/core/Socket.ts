@@ -1,4 +1,3 @@
-import Log from "../utils/log/Log";
 
 export default class Socket
 {
@@ -8,6 +7,8 @@ export default class Socket
     private m_onClose:Function;
     private m_onError:Function;
     private m_this:any;
+    private m_onTimeOut:Function;
+    private m_id:Number;
     /**
      * 
      * @param onConnect 连接回调
@@ -16,7 +17,7 @@ export default class Socket
      * @param onError   出错回调
      * @param thisObj   回调上下文
      */
-    public constructor(onConnect,onMessage,onClose,onError,thisObj:any)
+    public constructor(onConnect,onMessage,onClose,onError,thisObj:any,id:Number)
     {
         this.m_onClose = onClose;
         this.m_onMessage = onMessage;
@@ -24,12 +25,14 @@ export default class Socket
         this.m_onError = onError;
         this.m_this = thisObj;
         this.m_ws = null;
+        this.m_onTimeOut = null;
+        this.m_id = id;
     }
     /**
      * 
      * @param ip  ip地址格式:wss://ip:port或ws://ip:port
      */
-    public connect(ip:string)
+    public connect(ip:string,connectTimeOut:Number,onTimeOut:Function)
     {
         if(this.m_ws == null)
         {
@@ -38,9 +41,16 @@ export default class Socket
             {
                 ip ="wss://"+ip
             }
-            Log.debug("连接服务器:",ip);
+            console.log("连接服务器:",ip);
+            //[bi] will connect gs:ip
+
+            //超时
+            this.m_onTimeOut =onTimeOut;
+            setTimeout(this.onTimeOut.bind(this),connectTimeOut);    
+            
             ws = new WebSocket(ip);
-           
+            this.m_ws = ws;                   
+            
             //连接成功
             ws.onopen = this.onOpen.bind(this);
             //连接关闭
@@ -49,7 +59,7 @@ export default class Socket
             ws.onmessage = this.onMessage.bind(this);
             //出错
             ws.onerror = this.onError.bind(this);
-            this.m_ws = ws;
+          
         }
     }
     /**
@@ -59,22 +69,30 @@ export default class Socket
     {
         if(this.m_ws && this.m_ws.readyState == WebSocket.OPEN)
         {
-            Log.debug("socket:发送消息__"+data)
+            if(data.indexOf('"id":"10101"')<0){
+                console.log("socket:发送消息__"+data)
+            }
             this.m_ws.send(data);
         }
     }
+    public isClosing(){
+        return this.m_ws && (this.m_ws.readyState == WebSocket.CLOSING);            
+    }
+    public isClosed(){
+        return this.m_ws && (this.m_ws.readyState == WebSocket.CLOSED);            
+    }
     private onOpen(e:Event = null)
     {
-        Log.debug("连接网络:成功:");
+        console.log("连接网络:成功:");
        if(this.m_onConnect)
        {
-           this.m_onConnect.call(this.m_this)
+           this.m_onConnect.call(this.m_this,this);
        }
     }
 
     private onClose(e:CloseEvent)
     {
-        Log.debug("socket:close")
+        console.log("socket:close")
         if(this.m_onClose)
        {
            this.m_onClose.call(this.m_this)
@@ -90,26 +108,40 @@ export default class Socket
     }
     private onError(e:Event)
     {
-        Log.debug("socket:连接出错")
+        console.log("socket:连接出错")
         if(this.m_onError)
         {
             this.m_onError.call(this.m_this)
         }
     }
+    private onTimeOut()
+    {            
+        if(!this.m_ws || this.m_ws.readyState != WebSocket.CONNECTING){
+            return;
+        }
+        console.log("[net] connect timeout..")    
+        if(this.m_onTimeOut ){
+            this.m_onTimeOut();
+        }
+        
+    }
     public close()
     {
         if(this.m_ws)
         {
-            Log.debug("socket:主动断开连接")
+            console.log("socket:主动断开连接")
             this.m_ws.close();
-            this.onError(null);
+            // this.onError(null);
         }
     }
-    public disponse()
+    public disponse(immediate=false)
     {
         if(this.m_ws)
         {
-            if(this.m_ws.readyState == WebSocket.OPEN)
+            if(this.m_ws.readyState == WebSocket.CLOSING || this.m_ws.readyState == WebSocket.CLOSED){
+                return;
+            }
+            if(immediate || this.m_ws.readyState == WebSocket.OPEN)
             {
                 this.m_ws.close();
             }
