@@ -1,6 +1,9 @@
 import LoadingStep from "../loadingStep";
 import { RES } from "../../../manager/ResourceManager";
 import { CFG } from "../../../manager/ConfigManager";
+import { LoadingStepEnum } from "../LoadingStepManager";
+import { EVENT } from "../../../message/EventCenter";
+import GameEvent from "../../../message/GameEvent";
 
 export const ConfigConst = {
     Constant:"resources/config/constant.json",
@@ -17,6 +20,7 @@ export default class LoadingStepConfig extends LoadingStep{
 
     private _cfgArr:string[];
     public startStep(){
+
         this._cfgArr = [];
         for(var key in ConfigConst){
             this._cfgArr.push(ConfigConst[key]);
@@ -30,16 +34,13 @@ export default class LoadingStepConfig extends LoadingStep{
             CFG.parseCfg(res,RES.get(res));
         });
         console.log("Config loaded!");
-        this.endStep();
+        
+        this.setNext(LoadingStepEnum.Scene);
     }
     private loadConfigProgress(pro:number){
-
+        this.updateProgress(pro);
     }
     private loadConfigFailed(msg:string){
         console.log("config load failed!",msg);
-    }
-
-    public endStep(){
-        
     }
 }

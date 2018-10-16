@@ -1,3 +1,11 @@
+import SceneBase from "../scene/SceneBase";
+import { EVENT } from "../message/EventCenter";
+import GameEvent from "../message/GameEvent";
+
+export const SceneConst = { 
+    LoadingScene:"LoadingScene",
+    CityScene:"CityScene"
+}
 
 export default class SceneManager{
 
@@ -8,6 +16,34 @@ export default class SceneManager{
             
         }
         return SceneManager._instance;
+    }
+
+    private _curScene:SceneBase = null;
+    //当前场景
+    public get CurScene():SceneBase{
+        return this._curScene;
+    }
+
+    private _curSceneName:string ="";
+    //当前场景名
+    public get CurSceneName(){
+        return this._curSceneName;
+    }
+
+    //切换场景
+    public changeScene(name:string,complete?:Function){
+        cc.director.loadScene(name, () => {
+            console.log("加载场景结束："+name);
+            let node = cc.director.getScene().getChildByName('Canvas');
+            var scene:SceneBase = node.getComponent(SceneBase)
+            if(scene){
+                this._curScene = scene;
+                this._curSceneName = name;
+            }
+            
+            complete&&complete();
+            EVENT.emit(GameEvent.Scene_Change_Complete,{name:name})
+        });
     }
 }
 

@@ -5,6 +5,9 @@ import LoadingStepRes from "./steps/LoadingStepRes";
 import LoadingStepScene from "./steps/LoadingStepScene";
 import LoadingStepServerConn from "./steps/LoadingStepServerConn";
 import LoadingStepServerData from "./steps/LoadingStepServerData";
+import { SCENE, SceneConst } from "../../manager/SceneManager";
+import { EVENT } from "../../message/EventCenter";
+import GameEvent from "../../message/GameEvent";
 
 export enum LoadingStepEnum  {
     Config = 1,         //加载配置
@@ -21,20 +24,41 @@ export default class LoadingStepManager{
 
     constructor(){
         this.steps ={};
-        this.steps[LoadingStepEnum.Config] = new LoadingStepConfig(LoadingStepEnum.Config);
-        this.steps[LoadingStepEnum.Login] = new LoadingStepLogin(LoadingStepEnum.Login);
-        this.steps[LoadingStepEnum.Res] = new LoadingStepRes(LoadingStepEnum.Res);
-        this.steps[LoadingStepEnum.Scene] = new LoadingStepScene(LoadingStepEnum.Scene);
-        this.steps[LoadingStepEnum.ServerConnect] = new LoadingStepServerConn(LoadingStepEnum.ServerConnect);
-        this.steps[LoadingStepEnum.ServerData] = new LoadingStepServerData(LoadingStepEnum.ServerData);
+        this.steps[LoadingStepEnum.Config] = new LoadingStepConfig(LoadingStepEnum.Config,50,this);
+        // this.steps[LoadingStepEnum.Res] = new LoadingStepRes(LoadingStepEnum.Res,40,this);
+        this.steps[LoadingStepEnum.Scene] = new LoadingStepScene(LoadingStepEnum.Scene,50,this);
+        // this.steps[LoadingStepEnum.Login] = new LoadingStepLogin(LoadingStepEnum.Login,20,this);
+        // this.steps[LoadingStepEnum.ServerConnect] = new LoadingStepServerConn(LoadingStepEnum.ServerConnect,10,this);
+        // this.steps[LoadingStepEnum.ServerData] = new LoadingStepServerData(LoadingStepEnum.ServerData,10,this);
         
+    }
+
+    public getStep(stepName){
+        return this.steps[stepName];
+    }
+
+    public updateTotalProgress(){
+        var total:number = 0;
+        for(var key in this.steps){
+            var step:LoadingStep = this.getStep(key);
+            total += step.curProgress;
+
+        }
+        if(total>100){
+            total = 100;
+        }
+        EVENT.emit(GameEvent.LOADING_PROGRESS,total);
     }
 
     //开始加载
     public startLoading(){
-        var firstStep:LoadingStep = this.steps[1];
-        if(firstStep){
-            firstStep.startStep();
+        var configStep:LoadingStep = this.getStep(LoadingStepEnum.Config);
+        if(configStep){
+            configStep.startStep();
         }
+    }
+
+    public endLoading(){
+        EVENT.emit(GameEvent.LOADING_COMPLETE);
     }
 }
