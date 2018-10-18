@@ -34,8 +34,8 @@ export default class LoadingStepConfig extends LoadingStep{
             CFG.parseCfg(res,RES.get(res));
         });
         console.log("Config loaded!");
-        
-        this.setNext(LoadingStepEnum.Scene);
+
+        this.setNext(LoadingStepEnum.Res);
     }
     private loadConfigProgress(pro:number){
         this.updateProgress(pro);

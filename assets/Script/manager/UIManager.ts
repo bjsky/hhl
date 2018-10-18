@@ -1,4 +1,5 @@
 import NetMessage from "../net/NetMessage";
+import UIBase from "../component/UIBase";
 
 /**
  * 管理各种界面单例,层级
@@ -42,6 +43,42 @@ export default class UIManager{
         this.UILayer = root.getChildByName("GuideLayer");
     }
 
+    private _uiPool:UIPool = new UIPool();
+
+    public loadUI(res:string,data:any,parent:cc.Node){
+        var node:cc.Node = this._uiPool.getUIFromPool(res);
+        if(node!=null){
+            let ui = node.getComponent(UIBase);
+            if (ui != undefined) {
+                data!=null && ui.setData(data);
+            }
+            parent.addChild(node);
+        }else{
+            cc.loader.loadRes(res, function(err, prefab) {
+                if (err) {
+                    console.log(err.message || err);
+                    return;
+                }
+                let node: cc.Node = cc.instantiate(prefab);
+                let ui = node.getComponent(UIBase);
+                if (ui != undefined) {
+                    data!=null && ui.setData(data);
+                }
+                parent.addChild(node);
+            });
+        }
+    }
+
+    public removeUI(node:cc.Node){
+        let ui = node.getComponent(UIBase);
+        if (ui != undefined) {
+            this._uiPool.putUIToPool(ui);
+        }else{
+            node.destroy();
+        }
+    }
+
+
     // 转圈提示
     public addLoadingLayer(worldPoint:cc.Vec2 = null)
     {
@@ -59,5 +96,30 @@ export default class UIManager{
    public showNetAlert(title:string,message:string,okCallback?:Function,cancelCallback?:Function,btnType?:number, act:boolean=false){
    }
 }
+
+export class UIPool{
+
+    private _uiPools:any ={};
+
+    public getUIFromPool(res: string):cc.Node {
+        let pool = this._uiPools[res];
+        if (pool == null) {
+            return null;
+        }
+        let node = pool.get();
+        return node;
+    }
+
+    public putUIToPool(ui:UIBase) {
+        let pool: cc.NodePool = this._uiPools[name];
+        if (pool == null) {
+            pool = new cc.NodePool();
+            this._uiPools[name] = pool;
+        }
+        return pool.put(ui.node);
+    }
+
+}
+
 
 export var UI = UIManager.getInstance();

@@ -13,6 +13,8 @@ export default class CommonData{
     private constructor() {
         
     }
+
+    public ZERO:cc.Vec2 = cc.v2(0,0);
 }
 
 

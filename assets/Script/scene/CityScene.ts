@@ -1,5 +1,7 @@
 import SceneBase from "./SceneBase";
 import { UI } from "../manager/UIManager";
+import { GUIDE } from "../module/guide/GuideManager";
+import { ResConst } from "../module/loading/steps/LoadingStepRes";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -24,6 +26,16 @@ export default class CityScene extends SceneBase {
 
     // LIFE-CYCLE CALLBACKS:
     onLoad () {
+        if(GUIDE.isInGuide){
+
+        }else{
+            this.showMainUI();
+        }
+    }
+
+    private showMainUI(){
+        //加载UI
+        UI.loadUI(ResConst.MainUI,{showAction:true},this.node);
     }
 
 
