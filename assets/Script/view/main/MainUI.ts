@@ -30,17 +30,25 @@ export default class MainUI extends UIBase {
     start () {
         if(this._showAction){
             this.topNode.setPosition(cc.v2(0,200));
-            this.topNode.runAction(cc.moveTo(0.2,COMMON.ZERO));
+            this.topNode.runAction(cc.moveTo(0.15,COMMON.ZERO));
             this.bottomNode.setPosition(cc.v2(0,-200));
-            this.bottomNode.runAction(cc.moveTo(0.2,COMMON.ZERO));
+            this.bottomNode.runAction(cc.moveTo(0.15,COMMON.ZERO));
             this.sideNode.setPosition(cc.v2(-500,0));
-            this.sideNode.runAction(cc.moveTo(0.2,COMMON.ZERO));
+            this.sideNode.runAction(cc.moveTo(0.15,COMMON.ZERO));
         }
     }
 
     private _showAction:boolean = false;
     public setData(data:any){
         this._showAction = data.showAction;
+    }
+
+    onEnable(){
+
+    }
+
+    onDisable(){
+
     }
 
     // update (dt) {}

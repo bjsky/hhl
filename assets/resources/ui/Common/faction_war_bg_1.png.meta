@@ -1,14 +1,14 @@
 {
   "ver": "2.0.0",
-  "uuid": "e3f04cd5-44b6-4c82-a119-d4dcfedfd35c",
+  "uuid": "18a724a9-a8fd-4706-ad88-c0fd52846406",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
-    "BG_hall__04_1": {
+    "faction_war_bg_1": {
       "ver": "1.0.3",
-      "uuid": "1b8c5348-aaa8-409b-83f8-c59dd05e49e6",
-      "rawTextureUuid": "e3f04cd5-44b6-4c82-a119-d4dcfedfd35c",
+      "uuid": "81d75468-1232-4d13-9381-f8a23cc1072e",
+      "rawTextureUuid": "18a724a9-a8fd-4706-ad88-c0fd52846406",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -16,10 +16,10 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 529,
-      "height": 515,
-      "rawWidth": 529,
-      "rawHeight": 515,
+      "width": 242,
+      "height": 51,
+      "rawWidth": 242,
+      "rawHeight": 51,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,

@@ -1,14 +1,14 @@
 {
   "ver": "2.0.0",
-  "uuid": "5d25091c-d090-4b75-8579-bdfc17bd34eb",
+  "uuid": "fe3cb9ba-3a76-47e9-9c10-75efe9487d0e",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
-    "BG_hall__04_2": {
+    "btn_5_2": {
       "ver": "1.0.3",
-      "uuid": "feeca15b-6c2d-48c4-a548-6eb29126a342",
-      "rawTextureUuid": "5d25091c-d090-4b75-8579-bdfc17bd34eb",
+      "uuid": "4d4a0f65-3c65-470b-be37-6d857a48a33c",
+      "rawTextureUuid": "fe3cb9ba-3a76-47e9-9c10-75efe9487d0e",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -16,10 +16,10 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 529,
-      "height": 515,
-      "rawWidth": 529,
-      "rawHeight": 515,
+      "width": 126,
+      "height": 50,
+      "rawWidth": 126,
+      "rawHeight": 50,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,

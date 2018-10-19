@@ -2,6 +2,7 @@ import SceneBase from "./SceneBase";
 import { UI } from "../manager/UIManager";
 import { GUIDE } from "../module/guide/GuideManager";
 import { ResConst } from "../module/loading/steps/LoadingStepRes";
+import AlertPanel from "../view/AlertPanel";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -18,11 +19,14 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class CityScene extends SceneBase {
 
-    @property(cc.Label)
-    label: cc.Label = null;
-
-    @property
-    text: string = 'hello';
+    @property(cc.Node)
+    buildCastle: cc.Node = null;
+    @property(cc.Node)
+    buildTemple: cc.Node = null;
+    @property(cc.Node)
+    buildHero: cc.Node = null;
+    @property(cc.Node)
+    buildBattle: cc.Node = null;
 
     // LIFE-CYCLE CALLBACKS:
     onLoad () {
@@ -38,6 +42,34 @@ export default class CityScene extends SceneBase {
         UI.loadUI(ResConst.MainUI,{showAction:true},this.node);
     }
 
+    onEnable(){
+        this.buildCastle.on(cc.Node.EventType.TOUCH_START,this.onCastleTouch,this);
+        this.buildTemple.on(cc.Node.EventType.TOUCH_START,this.onTempleTouch,this);
+        this.buildHero.on(cc.Node.EventType.TOUCH_START,this.onHeroTouch,this);
+        this.buildBattle.on(cc.Node.EventType.TOUCH_START,this.onBattleTouch,this);
+    }
+    onDisable(){
+        this.buildCastle.off(cc.Node.EventType.TOUCH_START,this.onCastleTouch,this);
+        this.buildTemple.off(cc.Node.EventType.TOUCH_START,this.onTempleTouch,this);
+        this.buildHero.off(cc.Node.EventType.TOUCH_START,this.onHeroTouch,this);
+        this.buildBattle.off(cc.Node.EventType.TOUCH_START,this.onBattleTouch,this);
+    }
+
+    private onCastleTouch(e){
+        UI.showTip("你妈逼哦");
+    }
+    private _test:number = 0;
+    private onTempleTouch(e){
+        UI.showAlert("草你妹哦"+this._test++,(panel:AlertPanel)=>{
+            UI.closePopUp(panel.node);
+        });
+    }
+    private onHeroTouch(e){
+        
+    }
+    private onBattleTouch(e){
+        
+    }
 
     start () {
 

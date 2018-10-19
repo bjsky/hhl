@@ -4,6 +4,8 @@ import { LoadingStepEnum } from "../LoadingStepManager";
 
 export const ResConst = {
     MainUI:"prefabs/mainUI",
+    AlertPanel:"prefabs/alertPanel",
+    TipPanel:"prefabs/tipPanel",
 }
 /**
  * 加载配置
