@@ -1,14 +1,14 @@
 {
   "ver": "2.0.0",
-  "uuid": "1485b725-b7f1-4c51-84ba-1247b29e53be",
+  "uuid": "434bf563-1ce1-4f60-bbda-63101ae76d9d",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
-    "world_ziyuantiao_2": {
+    "laodingProgressbar": {
       "ver": "1.0.3",
-      "uuid": "44970077-58b4-4b93-ae29-4b4261ed1b09",
-      "rawTextureUuid": "1485b725-b7f1-4c51-84ba-1247b29e53be",
+      "uuid": "5d132715-f54b-4e39-a037-613a56598c1d",
+      "rawTextureUuid": "434bf563-1ce1-4f60-bbda-63101ae76d9d",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -16,14 +16,14 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 320,
-      "height": 50,
-      "rawWidth": 320,
-      "rawHeight": 50,
+      "width": 217,
+      "height": 91,
+      "rawWidth": 217,
+      "rawHeight": 91,
       "borderTop": 0,
       "borderBottom": 0,
-      "borderLeft": 0,
-      "borderRight": 0,
+      "borderLeft": 90,
+      "borderRight": 90,
       "subMetas": {}
     }
   }

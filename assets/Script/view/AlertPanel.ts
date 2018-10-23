@@ -1,4 +1,5 @@
 import UIBase from "../component/UIBase";
+import { UI } from "../manager/UIManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -56,6 +57,7 @@ export default class AlertPanel extends UIBase {
     onEnable(){
         this.btnOk.node.on(cc.Node.EventType.TOUCH_START,this.onOKTouch,this);
         this.btnCancel.node.on(cc.Node.EventType.TOUCH_START,this.onCancelTouch,this);
+        this.showPanel();
     }
 
     onDisable(){
@@ -64,14 +66,25 @@ export default class AlertPanel extends UIBase {
     }
 
     private onOKTouch(e){
-        this._okCb && this._okCb(this);
+        this.closePanel(true);
     }
     private onCancelTouch(e){
-        this._cancelCb && this._cancelCb(this);
+        this.closePanel(false);
     }
 
+    private showPanel(){
+        this.node.opacity = 0;
+        this.node.runAction(cc.fadeIn(0.15))
+    }
+    private closePanel(clickOk:boolean){
+        this.node.runAction(cc.sequence(cc.fadeOut(0.1),cc.callFunc(()=>{
+            UI.closePopUp(this.node);
+            if(clickOk) this._okCb && this._okCb(this);
+            else this._cancelCb && this._cancelCb(this);
+        })))
+    }
     start () {
-
+        
     }
 
     // update (dt) {}

@@ -111,7 +111,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 551,
-      "height": 158
+      "height": 200
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -140,8 +140,8 @@
     "_spriteFrame": {
       "__uuid__": "7780f1cd-e12a-426e-b9b4-12e588f30fcb"
     },
-    "_type": 0,
-    "_sizeMode": 1,
+    "_type": 1,
+    "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -201,7 +201,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 242,
+      "width": 286,
       "height": 40
     },
     "_rotationX": 0,
@@ -211,7 +211,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 8
+      "y": 27
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -229,8 +229,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 22,
-    "_fontSize": 22,
+    "_actualFontSize": 26,
+    "_fontSize": 26,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": null,
@@ -308,7 +308,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 80,
-      "y": -42
+      "y": -55
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -352,7 +352,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 44,
+      "width": 52,
       "height": 40
     },
     "_rotationX": 0,
@@ -380,8 +380,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 22,
-    "_fontSize": 22,
+    "_actualFontSize": 26,
+    "_fontSize": 26,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": null,
@@ -416,7 +416,7 @@
       "__uuid__": "f15bfd5a-8646-499a-bbd4-0449dab77fd1"
     },
     "_type": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -564,7 +564,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -80,
-      "y": -42
+      "y": -55
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -608,7 +608,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 44,
+      "width": 52,
       "height": 40
     },
     "_rotationX": 0,
@@ -636,8 +636,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 22,
-    "_fontSize": 22,
+    "_actualFontSize": 26,
+    "_fontSize": 26,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": null,
@@ -672,7 +672,7 @@
       "__uuid__": "dc3ce4ae-c175-4117-aa87-0b8b931fdb11"
     },
     "_type": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",

@@ -61,7 +61,7 @@ export default class CityScene extends SceneBase {
     private _test:number = 0;
     private onTempleTouch(e){
         UI.showAlert("草你妹哦"+this._test++,(panel:AlertPanel)=>{
-            UI.closePopUp(panel.node);
+            
         });
     }
     private onHeroTouch(e){

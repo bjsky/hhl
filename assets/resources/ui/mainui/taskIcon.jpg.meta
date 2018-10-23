@@ -1,14 +1,14 @@
 {
   "ver": "2.0.0",
-  "uuid": "8d0ad9dc-5132-4971-aa5b-89f17035e44c",
+  "uuid": "a033cfc6-95c7-4bc5-b22c-466c69a999d1",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
-    "panel_ok": {
+    "taskIcon": {
       "ver": "1.0.3",
-      "uuid": "7780f1cd-e12a-426e-b9b4-12e588f30fcb",
-      "rawTextureUuid": "8d0ad9dc-5132-4971-aa5b-89f17035e44c",
+      "uuid": "8ee42e65-fdab-4c14-bf30-bb2df4600f31",
+      "rawTextureUuid": "a033cfc6-95c7-4bc5-b22c-466c69a999d1",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -16,12 +16,12 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 551,
-      "height": 158,
-      "rawWidth": 551,
-      "rawHeight": 158,
-      "borderTop": 87,
-      "borderBottom": 46,
+      "width": 177,
+      "height": 141,
+      "rawWidth": 177,
+      "rawHeight": 141,
+      "borderTop": 0,
+      "borderBottom": 0,
       "borderLeft": 0,
       "borderRight": 0,
       "subMetas": {}
