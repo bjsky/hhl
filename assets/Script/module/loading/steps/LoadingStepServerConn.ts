@@ -7,8 +7,4 @@ export default class LoadingStepServerConn extends LoadingStep{
     public startStep(){
 
     }
-
-    public endStep(){
-        
-    }
 }

@@ -32,7 +32,7 @@ export default class Socket
      * 
      * @param ip  ip地址格式:wss://ip:port或ws://ip:port
      */
-    public connect(ip:string,connectTimeOut:Number,onTimeOut:Function)
+    public connect(ip:string,connectTimeOut:number,onTimeOut:Function)
     {
         if(this.m_ws == null)
         {

@@ -2,6 +2,7 @@ import Socket from "./Socket";
 import { EVENT } from "../../message/EventCenter";
 import NetConst from "../NetConst";
 import NetMessage from "../NetMessage";
+import MessageBase from "../msg/MessageBase";
 
 export class NetController
 {
@@ -70,15 +71,19 @@ export class NetController
      * @param thisObj 回调上下文
      * @param fail 网络处理失败回调，1. 后端报错 2. 前端处理异常
      */
-    public send(id: string, data: any, cb: Function, thisObj: any, fail: Function = null)
+    public send(message:MessageBase, cb: Function, thisObj: any, fail: Function = null)
     {
+        if(message.isLocal){    //本地数据
+            cb.call(thisObj,message.respFromLocal());
+            return;
+        }
         if(this._socket)
         {
-            let obj = {seq: this._seqId, "id":id,"data":data||{}}
+            let obj = {seq: this._seqId, "id":message.id,"data":message.param||{}}
             let msg = JSON.stringify(obj);
             //Log.debug("[net] send msg: "+msg);
             if(cb != null) {
-                this._msgDict[this._seqId] = {"id": id, "cb":cb, "this":thisObj, fail: fail, "msg":msg};
+                this._msgDict[this._seqId] = {"id": message.id, "cb":cb, "this":thisObj, fail: fail, "msg":msg};
             }
             this._socket.send(msg);
             this._seqId += 1;
@@ -251,10 +256,11 @@ export class NetController
 
     /** 处理成功消息 */
     private doSuccMessage(json: any) {
+        var message:MessageBase = MessageBase.createMessage(json.id);
         let obj = this._msgDict[json.seq];
         if(obj != null) {
             delete this._msgDict[json.seq];
-            obj.cb.call(obj.this, json.data);
+            obj.cb.call(obj.this, message?message.respFromServer(json.data):json.data);
         }
     }
     private onClose(e:CloseEvent)

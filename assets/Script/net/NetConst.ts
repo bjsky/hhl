@@ -10,5 +10,8 @@ export default class NetConst{
     public static ExceptionCmd :string = "-1";  
     public static NET_Connected:string = "0";
     public static NET_Connecting:string = "1";
+
+    //登录
+    public static Login:number = 10001;
 }
 

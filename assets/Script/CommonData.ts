@@ -15,6 +15,9 @@ export default class CommonData{
     }
 
     public ZERO:cc.Vec2 = cc.v2(0,0);
+
+    // 本地数据服务
+    public isLocalData:boolean = true; 
 }
 
 
