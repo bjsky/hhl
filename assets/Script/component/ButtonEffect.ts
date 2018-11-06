@@ -1,3 +1,4 @@
+
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -27,11 +28,15 @@ export default class ButtonEffect extends cc.Component {
         this.node.stopAllActions();
         var seq = cc.sequence(
             cc.scaleTo(0.05, 1.2 * this.originalScale),
-            cc.scaleTo(0.06, 1 * this.originalScale)
+            cc.scaleTo(0.06, 1 * this.originalScale),
+            cc.callFunc(()=>{
+                this.node.emit(ButtonEffect.CLICK_END);
+            },this)
         );
         this.node.runAction(seq);
     }
 
+    public static CLICK_END:string= "CLICK_END";
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {

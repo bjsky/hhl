@@ -3,6 +3,7 @@ import { UI } from "../manager/UIManager";
 import { GUIDE } from "../module/guide/GuideManager";
 import { ResConst } from "../module/loading/steps/LoadingStepRes";
 import AlertPanel from "../view/AlertPanel";
+import { BuildType } from "../view/BuildPanel";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -60,10 +61,10 @@ export default class CityScene extends SceneBase {
     }
     private _test:number = 0;
     private onTempleTouch(e){
-        UI.loadUI(ResConst.BuildPanel,{},UI.UILayer);
+        UI.createPopUp(ResConst.BuildPanel,{buildType:BuildType.Temple});
     }
     private onHeroTouch(e){
-        
+        UI.showAlert("这是个弹窗");
     }
     private onBattleTouch(e){
         

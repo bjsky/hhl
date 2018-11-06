@@ -6,7 +6,10 @@ export const ResConst = {
     MainUI:"prefabs/mainUI",
     AlertPanel:"prefabs/alertPanel",
     TipPanel:"prefabs/tipPanel",
-    BuildPanel:"prefabs/buildPanel"
+    BuildPanel:"prefabs/buildPanel",
+    CardGet:"prefabs/cardGet",
+    CardDetail:"prefabs/cardDedtail",
+    TempleBuild:"prefabs/templeBuild"
 }
 /**
  * 加载配置

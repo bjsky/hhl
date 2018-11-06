@@ -1,6 +1,8 @@
 import MessageBase from "./MessageBase";
 import NetConst from "../NetConst";
 import MessageDataBase from "./MessageDataBase";
+
+import UserInfo from "../../model/UserInfo";
 /**
  * 登录客户端数据
  */
@@ -16,6 +18,8 @@ export class CSLoginData extends MessageDataBase{
 export class SCLoginData extends MessageDataBase{
     //首次登录
     public firstLogin:boolean  = false;
+    //用户信息
+    public userInfo:UserInfo = null;
 }
 
 export default class MsgLogin extends MessageBase {
@@ -29,11 +33,11 @@ export default class MsgLogin extends MessageBase {
     public static createLoaclQuery(){
         var msg = new MsgLogin();
         msg.isLocal = true;
-        msg.query("123","","");
+        msg.create("123","","");
         return msg;
     }
 
-    public query(accountId,shareId,adId){
+    public create(accountId,shareId,adId){
         this.param = new CSLoginData();
         this.param.accountId = accountId;
         this.param.shareId = shareId;

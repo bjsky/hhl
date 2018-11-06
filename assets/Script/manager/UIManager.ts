@@ -49,9 +49,14 @@ export default class UIManager{
 
     private _uiPool:UIPool = new UIPool();
 
+    private _isLoading:boolean = false;
     public loadUI(res:string,data:any,parent:cc.Node,complete?:Function){
+        if(this._isLoading)
+            return;
+        this._isLoading = true;
         var node:cc.Node = this._uiPool.getUIFromPool(res);
         if(node!=null){
+            this._isLoading = false;
             let ui = node.getComponent(UIBase);
             if (ui != undefined) {
                 data!=null && ui.setData(data);
@@ -59,11 +64,12 @@ export default class UIManager{
             parent.addChild(node);
             complete && complete(ui);
         }else{
-            cc.loader.loadRes(res, function(err, prefab) {
+            cc.loader.loadRes(res,(err, prefab)=> {
                 if (err) {
                     console.log(err.message || err);
                     return;
                 }
+                this._isLoading = false;
                 let node: cc.Node = cc.instantiate(prefab);
                 let ui = node.getComponent(UIBase);
                 if (ui != undefined) {
@@ -101,12 +107,17 @@ export default class UIManager{
         let sp = this._mask.addComponent(cc.Sprite);
         sp.spriteFrame = new cc.SpriteFrame('res/raw-internal/image/default_sprite_splash.png');
         sp.sizeMode = cc.Sprite.SizeMode.CUSTOM;
-        this._mask.opacity = 51;
+        this._mask.opacity = 151;
         this._mask.color = cc.color(0, 0, 0);
         this._mask.zIndex = 0;
         this._mask.setContentSize(cc.winSize.width, cc.winSize.height);
         this._mask.parent = this.PopupLayer;
         this._mask.active = false;
+        this._mask.on(cc.Node.EventType.TOUCH_START,this.onMaskClick,this);
+    }
+
+    private onMaskClick(e){
+
     }
 
     public createPopUp(res:string,data:any){
@@ -115,6 +126,7 @@ export default class UIManager{
         this.loadUI(res,data,this.PopupLayer,(ui:UIBase)=>{
             if(ui){
                 this._popups.push(ui);
+                ui.node.zIndex = this._popups.length * 2;
                 // this.checkMaskLayer();
             }
         });
@@ -132,6 +144,7 @@ export default class UIManager{
                 this._mask.zIndex = this._popups[this._popups.length -1].node.zIndex-1;
             }else{
                 this._mask.active = false;
+                this._mask.zIndex = 0;
             }
         }
         this.removeUI(node);

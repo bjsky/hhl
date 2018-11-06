@@ -1,6 +1,6 @@
 import UIBase from "../../component/UIBase";
 import { UI } from "../../manager/UIManager";
-import { ResConst } from "../../module/loading/steps/LoadingStepRes";
+import ButtonEffect from "../../component/ButtonEffect";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -15,36 +15,31 @@ import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class TemplePanel extends UIBase {
+export default class CardDetail extends UIBase {
 
     @property(cc.Button)
-    lifeStoneBtn: cc.Button = null;
-    @property(cc.Button)
-    videoBtn: cc.Button = null;
+    closeBtn: cc.Button = null;
+
+    @property
+    text: string = 'hello';
 
     // LIFE-CYCLE CALLBACKS:
+
+    // onLoad () {}
+
     onEnable(){
-        this.lifeStoneBtn.node.on(cc.Node.EventType.TOUCH_START,this.onLifeStoneClick,this);
-        this.videoBtn.node.on(cc.Node.EventType.TOUCH_START,this.onVideoClick,this);
+        this.closeBtn.node.on(ButtonEffect.CLICK_END,this.onClose,this);
     }
 
     onDisable(){
-        this.lifeStoneBtn.node.off(cc.Node.EventType.TOUCH_START,this.onLifeStoneClick,this);
-        this.videoBtn.node.off(cc.Node.EventType.TOUCH_START,this.onVideoClick,this);
+        this.closeBtn.node.off(ButtonEffect.CLICK_END,this.onClose,this);
     }
-
-
-    private onLifeStoneClick(e){
-        UI.createPopUp(ResConst.CardDetail,{});
-    }
-
-    private onVideoClick(e){
-        UI.createPopUp(ResConst.CardGet,{});
-    }
-    // onLoad () {}
-
     start () {
 
+    }
+
+    private onClose(e){
+        UI.closePopUp(this.node);
     }
 
     // update (dt) {}
