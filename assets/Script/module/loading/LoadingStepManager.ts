@@ -21,6 +21,8 @@ export enum LoadingStepEnum  {
 export default class LoadingStepManager{
 
     public steps:any = {};
+    //加载队列
+    public stepQueue:Array<any> = [];
 
     constructor(){
         this.steps ={};

@@ -73,7 +73,7 @@ export default class LoadingView extends cc.Component {
     private setProgressValue(pro){
         this._curPro = pro;
         this.progress.progress = this._curPro/100;
-        console.log(this._curPro);
+        // console.log(this._curPro);
     }
     
     update (dt) {

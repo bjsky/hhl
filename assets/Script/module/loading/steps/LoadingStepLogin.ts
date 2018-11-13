@@ -4,11 +4,4 @@ import LoadingStep from "../loadingStep";
  */
 export default class LoadingStepLogin extends LoadingStep{
 
-    public startStep(){
-
-    }
-
-    public endStep(){
-        
-    }
 }

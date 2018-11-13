@@ -1,15 +1,8 @@
-
 import InfoBase from "./InfoBase";
+import { SResInfo } from "../net/msg/MsgLogin";
 
 export default class ResInfo extends InfoBase{
 
-    public parse(obj:any){
-        this.gold = obj.gold;
-        this.diamond = obj.diamond;
-        this.lifeStone = obj.lifeStone;
-        this.soulStone = obj.soulStone;
-        return this;
-    }
     //金币
     public gold:number = 0;
     //钻石
@@ -18,4 +11,11 @@ export default class ResInfo extends InfoBase{
     public lifeStone:number = 0;
     //魂石 
     public soulStone:number = 0;
+
+    public initFromServer(data:SResInfo){
+        this.gold = data.gold;
+        this.diamond = data.diamond;
+        this.lifeStone = data.lifeStone;
+        this.soulStone = data.soulStone;
+    }
 }

@@ -7,7 +7,7 @@ export default class LoadingStepScene extends LoadingStep{
 
 
     private preloadSceneNameArr:string[];
-    public startStep(){
+    public doStep(){
 
         this.preloadSceneNameArr = [SceneConst.CityScene];
         this.preloadScene();

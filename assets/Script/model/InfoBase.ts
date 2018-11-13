@@ -1,6 +1,6 @@
-export default class InfoBase{
 
-    public parse(obj:any):InfoBase{
-        return null;
+export default class InfoBase{
+    public initFromServer(obj:any){
+
     }
 }

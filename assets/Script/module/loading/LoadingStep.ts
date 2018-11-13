@@ -13,6 +13,7 @@ export default class LoadingStep{
         this.mgr = mgr;
     }
     //枚举类型
+    public queueIndex:number = -1;
     public type:number = 0;
     public progress:number = 0;
 
@@ -24,6 +25,12 @@ export default class LoadingStep{
     public mgr:LoadingStepManager;
     //开始步骤
     public startStep(){
+        this.mgr.stepQueue.push(this);
+        this.queueIndex = this.mgr.stepQueue.indexOf(this);
+        this.doStep();
+    }
+
+    public doStep(){
 
     }
 
@@ -38,12 +45,20 @@ export default class LoadingStep{
 
     public setNext(type){
         this.updateProgress(100);
-        this.getStep(type).startStep();
+        var nextStep:LoadingStep = this.getStep(type);
+        if(nextStep){
+            nextStep.queueIndex = this.queueIndex;
+            this.mgr.stepQueue[this.queueIndex] = nextStep;
+            nextStep.doStep();
+        }
     }
 
     public endStep(){
         this.updateProgress(100);
-        this.mgr.endLoading();
+        this.mgr.stepQueue.splice(this.queueIndex,1);
+        if(this.mgr.stepQueue.length == 0){
+            this.mgr.endLoading();
+        }
     }
 
 }

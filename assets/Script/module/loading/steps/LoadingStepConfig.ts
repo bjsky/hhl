@@ -19,7 +19,7 @@ export const ConfigConst = {
 export default class LoadingStepConfig extends LoadingStep{
 
     private _cfgArr:string[];
-    public startStep(){
+    public doStep(){
 
         this._cfgArr = [];
         for(var key in ConfigConst){
