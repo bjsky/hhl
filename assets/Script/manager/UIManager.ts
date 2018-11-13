@@ -107,7 +107,7 @@ export default class UIManager{
         let sp = this._mask.addComponent(cc.Sprite);
         sp.spriteFrame = new cc.SpriteFrame('res/raw-internal/image/default_sprite_splash.png');
         sp.sizeMode = cc.Sprite.SizeMode.CUSTOM;
-        this._mask.opacity = 151;
+        this._mask.opacity = 51;
         this._mask.color = cc.color(0, 0, 0);
         this._mask.zIndex = 0;
         this._mask.setContentSize(cc.winSize.width, cc.winSize.height);

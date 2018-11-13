@@ -2,6 +2,8 @@ import UIBase from "../component/UIBase";
 import { UI } from "../manager/UIManager";
 import ButtonEffect from "../component/ButtonEffect";
 import { ResConst } from "../module/loading/steps/LoadingStepRes";
+import CityScene from "../scene/CityScene";
+import { SCENE } from "../manager/SceneManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -35,6 +37,10 @@ export default class BuildPanel extends UIBase{
     panelNode: cc.Node = null;
     @property(cc.Node)
     leftNode: cc.Node = null;
+    @property(cc.Node)
+    buildIcon: cc.Node = null;
+    @property(cc.Label)
+    buildName: cc.Label = null;
 
     // LIFE-CYCLE CALLBACKS:
     private _buildType:number = 0;
@@ -66,7 +72,7 @@ export default class BuildPanel extends UIBase{
     private loadComplete(ui:UIBase){
         this._buildUI = ui;
         this.doShow(()=>{
-            console.log("!!")
+            this.buildName.node.runAction(cc.fadeIn(0.1));
         });
     }
 
@@ -94,10 +100,14 @@ export default class BuildPanel extends UIBase{
 
     private doShow(cb?:Function){
         
-        this.topNode.runAction(cc.moveTo(0.3,cc.v2(0,10)).easing(cc.easeInOut(2)));
+        this.topNode.runAction(cc.moveTo(0.3,cc.v2(0,0)).easing(cc.easeInOut(2)));
         this.panelNode.runAction(cc.moveTo(0.3,cc.v2(0,0)).easing(cc.easeInOut(2)))
-        if(cb!=undefined)
-            this.scheduleOnce(cb,0.3);
+        
+        var scene:CityScene = SCENE.CurScene as CityScene;
+        if(scene){
+            var wPos:cc.Vec2 = this.buildIcon.parent.convertToWorldSpaceAR(this.buildIcon.position);
+            scene.moveCamToPos(wPos,this._buildType,0.3,cb);
+        }
     }
 
     private doHide(noAction:boolean =false,cb?:Function){
@@ -105,10 +115,13 @@ export default class BuildPanel extends UIBase{
             this.topNode.x = 750;
             this.panelNode.y = -1100;
         }else{
-            this.topNode.runAction(cc.moveTo(0.3,cc.v2(750,10)).easing(cc.easeInOut(2)));
-            this.panelNode.runAction(cc.moveTo(0.3,cc.v2(0,-1100)).easing(cc.easeInOut(2)))
-            if(cb!=undefined)
-                this.scheduleOnce(cb,0.3);
+            this.topNode.runAction(cc.moveTo(0.3,cc.v2(750,0)).easing(cc.easeInOut(2)));
+            this.panelNode.runAction(cc.moveTo(0.3,cc.v2(0,-1000)).easing(cc.easeInOut(2)))
+            this.buildName.node.runAction(cc.fadeOut(0.1));
+            var scene:CityScene = SCENE.CurScene as CityScene;
+            if(scene){
+                scene.moveCamBack(cb);
+            }
         }
     }
 

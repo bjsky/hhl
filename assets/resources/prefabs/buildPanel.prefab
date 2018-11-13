@@ -118,7 +118,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 750,
-      "height": 1100
+      "height": 950
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -127,7 +127,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -117
+      "y": -192
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -233,7 +233,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 750,
-      "height": 1100
+      "height": 950
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -446,7 +446,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 10
+      "y": -50
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -556,7 +556,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 540,
+      "width": 510,
       "height": 135
     },
     "_rotationX": 0,
@@ -659,8 +659,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -150,
-      "y": 438
+      "x": -124,
+      "y": 440
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -766,8 +766,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -150,
-      "y": 397
+      "x": -124,
+      "y": 399
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1280,7 +1280,7 @@
     "_left": 0,
     "_right": 375,
     "_top": 0,
-    "_bottom": 677,
+    "_bottom": 617,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -1427,7 +1427,7 @@
     },
     "_children": [],
     "_tag": -1,
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 46
@@ -1453,8 +1453,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 346,
-      "height": 264
+      "width": 300,
+      "height": 300
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -1462,8 +1462,8 @@
     "_scaleY": 0.6,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -271,
-      "y": 456
+      "x": -250,
+      "y": 374
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1556,8 +1556,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -266,
-      "y": 352
+      "x": -250,
+      "y": 280
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1684,6 +1684,12 @@
     },
     "leftNode": {
       "__id__": 44
+    },
+    "buildIcon": {
+      "__id__": 45
+    },
+    "buildName": {
+      "__id__": 49
     }
   },
   {
