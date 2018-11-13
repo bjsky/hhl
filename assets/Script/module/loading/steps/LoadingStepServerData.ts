@@ -8,7 +8,7 @@ import NetConst from "../../../net/NetConst";
 export default class LoadingStepServerData extends LoadingStep{
 
     public startStep(){
-        NET.send(MsgLogin.createLoaclQuery(),(msg:MsgLogin)=>{
+        NET.send(MsgLogin.createLocal(),(msg:MsgLogin)=>{
             if(msg && msg.resp){
                 console.log(msg.resp);
             }

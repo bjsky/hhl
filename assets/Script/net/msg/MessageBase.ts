@@ -15,11 +15,11 @@ export default class MessageBase {
     }
 
     //本地数据回调
-    public respFromLocal(){
+    public respFromLocal():MessageBase{
         return null;
     }
     //服务器数据回调
-    public respFromServer(json:any){
+    public respFromServer(json:any):MessageBase{
         return null;
     }
 
