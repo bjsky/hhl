@@ -12,6 +12,7 @@ export const ConfigConst = {
     CardUp:"resources/config/cardUp.json",
     PlayerLevel:"resources/config/playerLevel.json",
     Stand:"resources/config/stand.json",
+    Guide:"resources/config/guide.json"
 }
 /**
  * 加载配置

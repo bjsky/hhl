@@ -2,6 +2,7 @@ import UserInfo from "./model/UserInfo";
 import GuideInfo from "./model/GuideInfo";
 import ResInfo from "./model/ResInfo";
 import { SCLoginData } from "./net/msg/MsgLogin";
+import { GUIDE } from "./module/guide/GuideManager";
 
 /**
  *  全局的游戏数据，
@@ -24,10 +25,6 @@ export default class CommonData{
 
     //用户数据
     public userInfo:UserInfo = new UserInfo();
-
-    //引导数据
-    public guideInfo:GuideInfo = new GuideInfo();
-
     //资源数据
     public resInfo:ResInfo = new ResInfo();
 
@@ -36,8 +33,9 @@ export default class CommonData{
 
         this.isFristLogin = data.firstLogin;
         this.userInfo.initFromServer(data.userInfo);
-        this.guideInfo.initFromServer(data.guideInfo);
         this.resInfo.initFromServer(data.resInfo);
+
+        GUIDE.initGuide(data.guideInfo);
     }
 
 }

@@ -41,6 +41,7 @@ export default class LoadingView extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
     onLoad () {
         this.progress.progress = 0;
+        this.progressLabel.string ="0 %";
     }
 
     public onLoadingProgress(e:any){
@@ -73,6 +74,7 @@ export default class LoadingView extends cc.Component {
     private setProgressValue(pro){
         this._curPro = pro;
         this.progress.progress = this._curPro/100;
+        this.progressLabel.string = this._curPro.toFixed(0) + " %";
         // console.log(this._curPro);
     }
     

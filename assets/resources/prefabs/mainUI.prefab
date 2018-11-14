@@ -1334,8 +1334,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 5.4,
-      "y": 38
+      "x": 16,
+      "y": 36
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1498,7 +1498,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "nodeGold",
+    "_name": "nodeDiamond",
     "_objFlags": 0,
     "_parent": {
       "__id__": 8
@@ -1555,7 +1555,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "labelGold",
+    "_name": "labelDiamond",
     "_objFlags": 0,
     "_parent": {
       "__id__": 46
@@ -1600,8 +1600,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 5.4,
-      "y": 38
+      "x": 17,
+      "y": 36
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1764,7 +1764,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "nodeGold",
+    "_name": "nodeLifeStone",
     "_objFlags": 0,
     "_parent": {
       "__id__": 8
@@ -1821,7 +1821,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "labelGold",
+    "_name": "labelLifeStone",
     "_objFlags": 0,
     "_parent": {
       "__id__": 55
@@ -1866,8 +1866,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 5.4,
-      "y": 38
+      "x": 16,
+      "y": 36
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -2030,7 +2030,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "nodeGold",
+    "_name": "nodeSoulStone",
     "_objFlags": 0,
     "_parent": {
       "__id__": 8
@@ -2087,7 +2087,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "labelGold",
+    "_name": "labelSoulStone",
     "_objFlags": 0,
     "_parent": {
       "__id__": 64
@@ -2132,8 +2132,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 5.4,
-      "y": 38
+      "x": 17,
+      "y": 36
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -3451,6 +3451,27 @@
     },
     "sideNode": {
       "__id__": 94
+    },
+    "lblName": {
+      "__id__": 10
+    },
+    "lblExp": {
+      "__id__": 24
+    },
+    "lblGold": {
+      "__id__": 39
+    },
+    "lblDiamond": {
+      "__id__": 48
+    },
+    "lblLifeStone": {
+      "__id__": 57
+    },
+    "lblSoulStone": {
+      "__id__": 66
+    },
+    "progressExp": {
+      "__id__": 21
     }
   },
   {

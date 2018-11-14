@@ -33,9 +33,10 @@ export default class ConfigManager{
      * @param id 数据id
      * @returns 数据项
      */
-    public getCfgDataById(cfgName:string,id:string):any{
+    public getCfgDataById(cfgName:string,id:any):any{
+        var sid:string = String(id);
         var data:any = this.getCfgGroup(cfgName);
-        return data[id];
+        return data[sid];
     }
     /**
      * 根据属性对应的值取数据
