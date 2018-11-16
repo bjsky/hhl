@@ -36,7 +36,7 @@ export default class CityScene extends SceneBase {
     // LIFE-CYCLE CALLBACKS:
     onLoad () {
         if(GUIDE.isInGuide){
-
+            GUIDE.startGuide();
         }else{
             this.showMainUI();
         }

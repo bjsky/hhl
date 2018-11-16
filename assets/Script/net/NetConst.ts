@@ -13,5 +13,7 @@ export default class NetConst{
 
     //登录
     public static Login:number = 10001;
+    //引导更新
+    public static GuideUpdate:number = 10002;
 }
 

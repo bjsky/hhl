@@ -1,4 +1,14 @@
 import GuideInfo from "../../model/GuideInfo";
+import { UI } from "../../manager/UIManager";
+import GuideStory from "./GuideStory";
+
+export enum GuideTypeEnum {
+    GuideStory = 1,
+    GuideTalk = 2,
+    GuideArrow = 3
+
+}
+
 
 export default class GuideManager{
     private static _instance: GuideManager = null;
@@ -12,21 +22,36 @@ export default class GuideManager{
 
     //引导数据
     public guideInfo:GuideInfo = new GuideInfo();
+    
+    public guideStory:GuideStory = null;
 
     private _isINGuide:boolean = false;
     public get isInGuide(){
         return this._isINGuide;
     }
+    public set isInGuide(bool:boolean){
+        this._isINGuide = bool;
+    }
 
     public initGuide(data:any){
         this.guideInfo.initFromServer(data);
+    }
 
-        if(this.guideInfo.guideId != -1){
-            this._isINGuide = true;
-        }else{
-            this._isINGuide = false;
+    public startGuide(){
+        if(this.guideInfo.type == GuideTypeEnum.GuideStory){
+            if(this.guideStory == null){
+                this.guideStory = new GuideStory();
+            }
+            this.guideStory.show(this.guideInfo);
         }
     }
+
+    public nextGuide(){
+        this.startGuide();
+    }
+
+
+    
 }
 
 export var GUIDE = GuideManager.getInstance();

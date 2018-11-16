@@ -58,10 +58,6 @@ export default class LoadingStepManager{
         if(configStep){
             configStep.startStep();
         }
-        var serverStep:LoadingStepServerData = this.getStep(LoadingStepEnum.ServerData);
-        if(serverStep){
-            serverStep.startStep();
-        }
     }
 
     public endLoading(){

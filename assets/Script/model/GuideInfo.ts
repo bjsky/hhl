@@ -3,6 +3,7 @@ import { SGuideInfo } from "../net/msg/MsgLogin";
 import { GUIDE } from "../module/guide/GuideManager";
 import { CFG } from "../manager/ConfigManager";
 import { ConfigConst } from "../module/loading/steps/LoadingStepConfig";
+import { SCGuideUpdate } from "../net/msg/MsgGuideUpdate";
 
 export default class GuideInfo extends InfoBase{
     //引导步骤
@@ -31,15 +32,45 @@ export default class GuideInfo extends InfoBase{
     public initFromServer(data:SGuideInfo){
         this.guideId = data.guideId;
 
-        var info = CFG.getCfgDataById(ConfigConst.Guide,this.guideId);
-        this.guideName = info.name;
-        this.nextId = info.nextId;
-        this.npc = info.npc;
-        this.npcIcon = info.npcIcon;
-        this.npcDic = info.npcDir;
-        this.content = info.content;
-        this.arrowDir = info.arrowDir;
-        this.nodeName = info.node_name;
+        this.setGuideInfo();
+    }
+
+    public setGuideInfo(){
+        if(this.guideId>-1){
+            var info = CFG.getCfgDataById(ConfigConst.Guide,this.guideId);
+            this.guideName = info.name;
+            this.nextId = info.nextId;
+            this.type = info.type;
+            this.npc = info.npc;
+            this.npcIcon = info.npcIcon;
+            this.npcDic = info.npcDir;
+            this.content = info.content;
+            this.arrowDir = info.arrowDir;
+            this.nodeName = info.node_name;
+        }else{
+            this.guideName = "";
+            this.nextId = -1;
+            this.type  =0;
+            this.npc = "";
+            this.npcIcon ="";
+            this.npcDic = 0;
+            this.content ="";
+            this.arrowDir = 0;
+            this.nodeName = "";
+        }
+
+
+        if(this.guideId != -1){
+            GUIDE.isInGuide = true;
+        }else{
+            GUIDE.isInGuide = false;
+        }
+    }
+
+    public updateGuide(data:SCGuideUpdate){
+        this.guideId = data.nextGuideId;
+
+        this.setGuideInfo();
     }
     
 }

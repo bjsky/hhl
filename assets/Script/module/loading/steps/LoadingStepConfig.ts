@@ -4,6 +4,7 @@ import { CFG } from "../../../manager/ConfigManager";
 import { LoadingStepEnum } from "../LoadingStepManager";
 import { EVENT } from "../../../message/EventCenter";
 import GameEvent from "../../../message/GameEvent";
+import LoadingStepServerData from "./LoadingStepServerData";
 
 export const ConfigConst = {
     Constant:"resources/config/constant.json",
@@ -36,6 +37,11 @@ export default class LoadingStepConfig extends LoadingStep{
         });
         console.log("Config loaded!");
 
+        //必须加载完配置后
+        var serverStep:LoadingStepServerData = this.getStep(LoadingStepEnum.ServerData);
+        if(serverStep){
+            serverStep.startStep();
+        }
         this.setNext(LoadingStepEnum.Res);
     }
     private loadConfigProgress(pro:number){
