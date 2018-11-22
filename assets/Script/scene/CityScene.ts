@@ -1,6 +1,6 @@
 import SceneBase from "./SceneBase";
 import { UI } from "../manager/UIManager";
-import { GUIDE } from "../module/guide/GuideManager";
+import { GUIDE, GuideTypeEnum } from "../module/guide/GuideManager";
 import { ResConst } from "../module/loading/steps/LoadingStepRes";
 import AlertPanel from "../view/AlertPanel";
 import { BuildType } from "../view/BuildPanel";
@@ -35,16 +35,22 @@ export default class CityScene extends SceneBase {
 
     // LIFE-CYCLE CALLBACKS:
     onLoad () {
-        if(GUIDE.isInGuide){
+        if(GUIDE.isInGuide && GUIDE.guideInfo.type == GuideTypeEnum.GuideStory){
             GUIDE.startGuide();
         }else{
             this.showMainUI();
         }
     }
 
-    private showMainUI(){
+    public showMainUI(){
         //加载UI
-        UI.loadUI(ResConst.MainUI,{showAction:true},this.node);
+        UI.loadUI(ResConst.MainUI,{showAction:true},this.node,this.showMainUIComplete.bind(this));
+    }
+
+    private showMainUIComplete(){
+        if(GUIDE.isInGuide){
+            GUIDE.startGuide();
+        }
     }
 
     onEnable(){

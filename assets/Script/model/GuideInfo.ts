@@ -27,6 +27,8 @@ export default class GuideInfo extends InfoBase{
     public arrowDir:number = 0;
     //节点名
     public nodeName:string ="";
+    // 参数
+    public params:any = {};
 
 
     public initFromServer(data:SGuideInfo){
@@ -47,6 +49,7 @@ export default class GuideInfo extends InfoBase{
             this.content = info.content;
             this.arrowDir = info.arrowDir;
             this.nodeName = info.node_name;
+            this.params = this.parseParams(info.param);
         }else{
             this.guideName = "";
             this.nextId = -1;
@@ -57,6 +60,7 @@ export default class GuideInfo extends InfoBase{
             this.content ="";
             this.arrowDir = 0;
             this.nodeName = "";
+            this.params = null;
         }
 
 
@@ -64,6 +68,23 @@ export default class GuideInfo extends InfoBase{
             GUIDE.isInGuide = true;
         }else{
             GUIDE.isInGuide = false;
+        }
+    }
+
+    private parseParams(paramstr:string){
+        if(paramstr == undefined || paramstr == ""){
+            return null;
+        }else{
+            var param:any = {};
+            var params:string[] = paramstr.split(",");
+            for(var i = 0;i<params.length ;i++){
+                var cp:string[] = params[i].split("=");
+                if(cp.length == 2){
+                    param[cp[0]] = cp[1];
+                }
+            }
+
+            return param;
         }
     }
 

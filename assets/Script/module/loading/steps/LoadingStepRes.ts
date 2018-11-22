@@ -9,7 +9,8 @@ export const ResConst = {
     BuildPanel:"prefabs/buildPanel",
     CardGet:"prefabs/cardGet",
     CardDetail:"prefabs/cardDedtail",
-    TempleBuild:"prefabs/templeBuild"
+    TempleBuild:"prefabs/templeBuild",
+    GuideTalk:"prefabs/guideTalk"
 }
 /**
  * 加载配置
