@@ -1,6 +1,7 @@
 import UIBase from "../../component/UIBase";
 import { COMMON } from "../../CommonData";
 import StringUtil from "../../utils/StringUtil";
+import TouchHandler from "../../component/TouchHandler";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -23,6 +24,22 @@ export default class MainUI extends UIBase {
     bottomNode: cc.Node = null;
     @property(cc.Node)
     sideNode: cc.Node = null;
+    @property(cc.Node)
+    sideRNode: cc.Node = null;
+
+    @property(cc.Node)
+    nodeActivity: cc.Node = null;
+    @property(cc.Node)
+    nodeActivityDetail: cc.Node = null;
+    @property(cc.Node)
+    nodeTaskDetail: cc.Node = null;
+    @property(cc.Button)
+    btnAcitveArrow: cc.Button = null;
+    @property(cc.Button)
+    btnTaskArrow: cc.Button = null;
+    @property(cc.Node)
+    btnTaskArrowF: cc.Node = null;
+    
 
     @property(cc.Label)
     lblName: cc.Label = null;
@@ -46,7 +63,8 @@ export default class MainUI extends UIBase {
     onLoad () {
 
         this.initTopView();
-
+        this.nodeActivityDetail.active = true;
+        this.nodeActivityDetail.setPosition(643,396);
     }
 
     start () {
@@ -57,6 +75,8 @@ export default class MainUI extends UIBase {
             this.bottomNode.runAction(cc.moveTo(0.15,COMMON.ZERO));
             this.sideNode.setPosition(cc.v2(-500,0));
             this.sideNode.runAction(cc.moveTo(0.15,COMMON.ZERO));
+            this.sideRNode.setPosition(cc.v2(200,0));
+            this.sideRNode.runAction(cc.moveTo(0.15,COMMON.ZERO));
         }
     }
 
@@ -77,12 +97,20 @@ export default class MainUI extends UIBase {
 
     onEnable(){
         this.lblExp.node.on(cc.Node.EventType.TOUCH_START,this.onLabelExpTouch,this);
+
+        this.nodeActivity.on(TouchHandler.TOUCH_CLICK,this.onOpenActivity,this);
+        this.btnAcitveArrow.node.on(TouchHandler.TOUCH_CLICK,this.onCloseActivity,this);
+        this.btnTaskArrow.node.on(TouchHandler.TOUCH_CLICK,this.onTaskOpenClose,this)
     }
 
 
 
     onDisable(){
         this.lblExp.node.off(cc.Node.EventType.TOUCH_START,this.onLabelExpTouch,this);
+
+        this.nodeActivity.off(TouchHandler.TOUCH_CLICK,this.onOpenActivity,this);
+        this.btnAcitveArrow.node.off(TouchHandler.TOUCH_CLICK,this.onCloseActivity,this)
+        this.btnTaskArrow.node.off(TouchHandler.TOUCH_CLICK,this.onTaskOpenClose,this)
     }
 
 
@@ -92,4 +120,29 @@ export default class MainUI extends UIBase {
         this.lblExp.node.runAction(this._showLabelExp?cc.fadeIn(0.15):cc.fadeOut(0.15));
     }
     // update (dt) {}
+
+    private onOpenActivity(e){
+        this.nodeActivity.runAction(cc.sequence(cc.fadeOut(0.1),cc.callFunc(()=>{ this.nodeActivity.active = false})));
+        this.nodeActivityDetail.runAction(cc.moveBy(0.2,cc.v2(-400,0)));
+    }
+    private onCloseActivity(e){
+        this.nodeActivity.active = true;
+        this.nodeActivity.runAction(cc.fadeIn(0.1));
+        this.nodeActivityDetail.runAction(cc.moveBy(0.2,cc.v2(400,0)));
+    }
+
+    private _taskOpen:boolean = true;
+    private onTaskOpenClose(e){
+        if(this._taskOpen){
+            this.nodeTaskDetail.runAction(cc.sequence(cc.moveTo(0.2,cc.v2(-643,-274)),cc.callFunc(()=>{
+                this._taskOpen = false;
+                this.btnTaskArrowF.scaleX = -1;
+            })));
+        }else{
+            this.nodeTaskDetail.runAction(cc.sequence(cc.moveTo(0.2,cc.v2(-350,-274)),cc.callFunc(()=>{
+                this._taskOpen = true;
+                this.btnTaskArrowF.scaleX = 1;
+            })));
+        }
+    }
 }

@@ -10,6 +10,7 @@ import { NET } from "../../net/core/NetController";
 import MsgGuideUpdate from "../../net/msg/MsgGuideUpdate";
 import CityScene from "../../scene/CityScene";
 import { SCENE } from "../../manager/SceneManager";
+import GuideArrow from "./GuideArrow";
 
 export enum GuideTypeEnum {
     GuideStory = 1,
@@ -21,6 +22,12 @@ export enum GuideTypeEnum {
 export enum GuideNpcDir{
     NpcDirLeft = 1,
     NpcDirRight = 2
+}
+
+export enum GuideArrowDir{
+    ArrowDirDown = 1,
+    ArrowDirRight = 2,
+    ArrowDirLeft = 3
 }
 
 
@@ -41,6 +48,9 @@ export default class GuideManager{
     private guideStoryNode:cc.Node = null;
 
     private guideTalk:GuideTalkPanel = null;
+
+    private guideArrowNode:cc.Node = null;
+    private guideArrow:GuideArrow = null;
 
     private _isINGuide:boolean = false;
     public get isInGuide(){
@@ -76,7 +86,18 @@ export default class GuideManager{
             }else{
                 this.guideTalk.show(this.guideInfo);
             }
+        }else if(this.guideInfo.type == GuideTypeEnum.GuideArrow){
+            if(this.guideArrowNode == null){
+                this.guideArrowNode = new cc.Node();
+                this.guideArrowNode.parent = UI.PlotLayer;
+                this.guideArrow = this.guideArrowNode.addComponent(GuideArrow);
+            }
+            this.guideArrow.show(this.guideInfo);
         }
+    }
+
+    private showNodeMask(nodeName:string){
+
     }
 
 
