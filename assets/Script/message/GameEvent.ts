@@ -10,6 +10,6 @@ export default class GameEvent{
 
     //场景
     public static Scene_Change_Complete:string = "Scene_Change_Complete";
-    //点击引导遮罩
-    public static Guide_Mask_Touch:string ="Guide_Mask_Touch";
+    
+    public static Guide_Touch_Complete:string ="Guide_Touch_Complete";   //完成引导点击
 }

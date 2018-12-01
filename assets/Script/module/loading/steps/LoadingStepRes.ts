@@ -10,7 +10,7 @@ export const ResConst = {
     CardGet:"prefabs/cardGet",
     CardDetail:"prefabs/cardDedtail",
     TempleBuild:"prefabs/templeBuild",
-    GuideTalk:"prefabs/guideTalk"
+    GuideTap:"prefabs/guideTap"
 }
 /**
  * 加载配置

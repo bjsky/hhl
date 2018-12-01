@@ -105,8 +105,11 @@ export default class BuildPanel extends UIBase{
         
         var scene:CityScene = SCENE.CurScene as CityScene;
         if(scene){
-            var wPos:cc.Vec2 = this.buildIcon.parent.convertToWorldSpaceAR(this.buildIcon.position);
-            scene.moveCamToPos(wPos,this._buildType,0.3,cb);
+            var builidng:cc.Node = scene.getBuilding(this._buildType);
+            var fPos:cc.Vec2 = builidng.parent.convertToWorldSpaceAR(builidng.position);
+            var tPos:cc.Vec2 = this.buildIcon.parent.convertToWorldSpaceAR(this.buildIcon.position);
+            
+            scene.moveCamToPos(fPos,tPos,0.3,1.2,cb);
         }
     }
 

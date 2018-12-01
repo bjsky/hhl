@@ -76,7 +76,7 @@ export default class MsgLogin extends MessageBase {
         var json:any = {firstLogin:true,
             userInfo:{nickName:"上古战神",headPic:"",exp:6500,level:13},
             resInfo:{gold:4600000,diamond:20,lifeStone:5000,soulStone:370},
-            guideInfo:{guideId:-1}
+            guideInfo:{guideId:6}
         };
         this.resp = this.parse(json);
         return this;

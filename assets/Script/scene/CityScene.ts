@@ -1,11 +1,13 @@
 import SceneBase from "./SceneBase";
 import { UI } from "../manager/UIManager";
-import { GUIDE, GuideTypeEnum } from "../module/guide/GuideManager";
 import { ResConst } from "../module/loading/steps/LoadingStepRes";
 import AlertPanel from "../view/AlertPanel";
 import { BuildType } from "../view/BuildPanel";
 import TouchHandler from "../component/TouchHandler";
 import { COMMON } from "../CommonData";
+import { GUIDE, GuideTypeEnum } from "../manager/GuideManager";
+import { EVENT } from "../message/EventCenter";
+import GameEvent from "../message/GameEvent";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -32,10 +34,13 @@ export default class CityScene extends SceneBase {
     buildBattle: cc.Node = null;
     @property(cc.Camera)
     cam: cc.Camera = null;
+    @property(cc.Node)
+    content:cc.Node = null;
 
     // LIFE-CYCLE CALLBACKS:
     onLoad () {
         if(GUIDE.isInGuide && GUIDE.guideInfo.type == GuideTypeEnum.GuideStory){
+            this.node.active = false;
             GUIDE.startGuide();
         }else{
             this.showMainUI();
@@ -43,6 +48,7 @@ export default class CityScene extends SceneBase {
     }
 
     public showMainUI(){
+        this.node.active = true;
         //加载UI
         UI.loadUI(ResConst.MainUI,{showAction:true},this.node,this.showMainUIComplete.bind(this));
     }
@@ -58,14 +64,27 @@ export default class CityScene extends SceneBase {
         this.buildTemple.on(TouchHandler.TOUCH_CLICK,this.onTempleTouch,this);
         this.buildHero.on(TouchHandler.TOUCH_CLICK,this.onHeroTouch,this);
         this.buildBattle.on(TouchHandler.TOUCH_CLICK,this.onBattleTouch,this);
+        
+        EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
     }
     onDisable(){
         this.buildCastle.off(TouchHandler.TOUCH_CLICK,this.onCastleTouch,this);
         this.buildTemple.off(TouchHandler.TOUCH_CLICK,this.onTempleTouch,this);
         this.buildHero.off(TouchHandler.TOUCH_CLICK,this.onHeroTouch,this);
         this.buildBattle.off(TouchHandler.TOUCH_CLICK,this.onBattleTouch,this);
+
+        EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
     }
 
+    private onGuideTouch(e){
+        var guideId = e.detail.id;
+        var nodeName = e.detail.name;
+        if(nodeName == "building_temple"){
+            this.onTempleTouch(null);
+        }
+
+        GUIDE.nextGuide(guideId);
+    }
 
     public getBuilding(type:number){
         var buildingNode:cc.Node;
@@ -105,16 +124,13 @@ export default class CityScene extends SceneBase {
     }
 
     private _zoomDuring:number =0.3;
-    private _zommMinRatio:number = 1;
-    private _zoomMaxRatio:number = 1.2;
-    private _updateZoomToMax:boolean = false;
-    private _updateZoomToMin:boolean = false;
-    public moveCamToPos(pos:cc.Vec2,buildType:number,during:number,cb?:Function){
+    private _curZoom:number = 1;
+    private _toZoom:number = 1;
+    private _updateZoom:boolean = false;
+    public moveCamToPos(fPos:cc.Vec2,tPos:cc.Vec2,during:number,toZoom:number= 1,cb?:Function){
         this._zoomDuring = during;
         var camPos:cc.Vec2 ;//= this.cam.getTargets()[0].convertToNodeSpaceAR(pos);
-        var builidng:cc.Node = this.getBuilding(buildType);
-        var bPos:cc.Vec2 = builidng.parent.convertToWorldSpaceAR(builidng.position);
-        camPos = bPos.sub(pos);
+        camPos = fPos.sub(tPos);
         var move;
         if(cb!=undefined){
             move = cc.sequence(cc.moveTo(0.3,camPos),cc.callFunc(cb));
@@ -122,7 +138,10 @@ export default class CityScene extends SceneBase {
             move = cc.moveTo(0.3,camPos);
         }
         this.cam.node.runAction(move);
-        this._updateZoomToMax = true;
+        if(toZoom!= this._curZoom){
+            this._updateZoom = true;
+            this._toZoom = toZoom;
+        }
     }
 
     public moveCamBack(cb?:Function){
@@ -133,28 +152,39 @@ export default class CityScene extends SceneBase {
             move = cc.moveTo(0.3,COMMON.ZERO);
         }
         this.cam.node.runAction(move);
-        this._updateZoomToMin = true;
+        if(this._curZoom!=1){
+            this._updateZoom = true;
+            this._toZoom = 1;
+        }
+    }
+
+    public moveSceneByPos(toPos:cc.Vec2,cb?:Function){
+        var move;
+        if(cb!=undefined){
+            move = cc.sequence(cc.moveBy(0.3,toPos),cc.callFunc(cb));
+        }else{
+            move = cc.moveBy(0.3,toPos);
+        }
+        this.content.runAction(move);
     }
 
     update(dt){
-        if(this._updateZoomToMax || this._updateZoomToMin){
-            var add:number = (this._zoomMaxRatio - this._zommMinRatio) * dt/this._zoomDuring;
-            var toZoom:number;
-            if(this._updateZoomToMax){
-                toZoom = this.cam.zoomRatio + add;
-                if(toZoom < this._zoomMaxRatio){
-                    this.cam.zoomRatio  = toZoom;
+        if(this._updateZoom){
+            var add:number = (this._toZoom - this._curZoom) * dt/this._zoomDuring;
+            var toZoom:number = this.cam.zoomRatio + add;
+            if(add>0){
+                if(toZoom> this._toZoom){
+                    this._curZoom = this.cam.zoomRatio = this._toZoom;
+                    this._updateZoom = false;
                 }else{
-                    this.cam.zoomRatio = this._zoomMaxRatio;
-                    this._updateZoomToMax = false;
-                }
-            }else if(this._updateZoomToMin){
-                toZoom = this.cam.zoomRatio - add;
-                if(toZoom > this._zommMinRatio){
                     this.cam.zoomRatio = toZoom;
+                }
+            }else{
+                if(toZoom < this._toZoom){
+                    this._curZoom = this.cam.zoomRatio = this._toZoom;
+                    this._updateZoom = false;
                 }else{
-                    this.cam.zoomRatio = this._zommMinRatio;
-                    this._updateZoomToMin = false;
+                    this.cam.zoomRatio = toZoom;
                 }
             }
             console.log(this.cam.zoomRatio);
@@ -165,5 +195,21 @@ export default class CityScene extends SceneBase {
 
     }
 
+    //////////////////////////////
+    //      引导
+    /////////////////////////////
+    public getGuideNode(nodeName):cc.Node{
+        var build:cc.Node = null;
+        if(nodeName == "building_temple"){
+            build = this.buildTemple;
+        }else if(nodeName == "building_templetop"){
+            build = this.buildTemple;
+        }else if(nodeName == "building_hero"){
+            build = this.buildHero;
+        }else if(nodeName == "building_battle"){
+            build = this.buildBattle;
+        }
+        return build;
+    }
     // update (dt) {}
 }
