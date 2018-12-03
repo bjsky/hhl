@@ -721,7 +721,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "curLevelDesc",
+    "_name": "nextLevelDesc",
     "_objFlags": 0,
     "_parent": {
       "__id__": 14
@@ -1690,6 +1690,15 @@
     },
     "buildName": {
       "__id__": 49
+    },
+    "curLevelDesc": {
+      "__id__": 19
+    },
+    "nextLevelDesc": {
+      "__id__": 23
+    },
+    "upgradeBtn": {
+      "__id__": 38
     }
   },
   {

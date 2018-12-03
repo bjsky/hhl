@@ -23,6 +23,12 @@ export class SCLoginData {
     public resInfo:SResInfo = null;
     //引导数据
     public guideInfo:SGuideInfo = null;
+    // 建筑数据
+    public buildInfos:Array<SBuildInfo> = [];
+    //祭坛灵石召唤次数
+    public stoneSummonNum:number = 0;
+    //祭坛视频召唤次数
+    public videoSummonNum:number = 0;
 }
 
 export class SUserInfo {
@@ -52,6 +58,25 @@ export class SGuideInfo{
     public guideId:number = -1;  //-1:引导完成
 
 }
+export class SBuildInfo{
+    // 建筑type
+    public type:number = 0;
+    // 建筑等级
+    public level:number = 1;
+    // 是否锁定——锁定的不产生五彩石
+    public locked:boolean = false;
+    //五彩石
+    public colorStones:Array<SColorStoneInfo> = [];
+}
+
+export class SColorStoneInfo{
+    //开始产生时间
+    public time:number = 0;
+    //资源类型
+    public resType:number = 0;
+    //资源数量
+    public resNum:number = 0;
+}
 
 export default class MsgLogin extends MessageBase {
     public param:CSLoginData;
@@ -74,9 +99,14 @@ export default class MsgLogin extends MessageBase {
 
     public respFromLocal(){
         var json:any = {firstLogin:true,
-            userInfo:{nickName:"上古战神",headPic:"",exp:6500,level:13},
+            userInfo:{nickName:"上古战神",headPic:"",exp:100,level:1},
             resInfo:{gold:4600000,diamond:20,lifeStone:5000,soulStone:370},
-            guideInfo:{guideId:6}
+            guideInfo:{guideId:6},
+            buildInfos:[{type:0,level:1,locked:true},
+                {type:1,level:2,locked:true},
+                {type:2,level:1,locked:true},
+                {type:3,level:1,locked:true},],
+            stoneSummonNum:0,videoSummonNum:0
         };
         this.resp = this.parse(json);
         return this;
@@ -100,6 +130,30 @@ export default class MsgLogin extends MessageBase {
 
         data.guideInfo = new SGuideInfo();
         data.guideInfo.guideId = obj.guideInfo.guideId;
+
+        //解析building
+        data.buildInfos = [];
+        if(obj.buildInfos!=undefined){
+            obj.buildInfos.forEach(info => {
+                var buildInfo:SBuildInfo = new SBuildInfo();
+                buildInfo.type = info.type;
+                buildInfo.level = info.level;
+                buildInfo.locked = info.locked;
+                if(info.colorStones!=undefined){
+                    buildInfo.colorStones = [];
+                    info.colorStones.forEach(stone => {
+                        var stoneInfo:SColorStoneInfo = new SColorStoneInfo();
+                        stoneInfo.time = stone.time;
+                        stoneInfo.resType = stone.resType;
+                        stoneInfo.resNum = stone.resNum;
+                        buildInfo.colorStones.push(stoneInfo);
+                    });
+                }
+                data.buildInfos.push(buildInfo);
+            });
+        }
+        data.stoneSummonNum = obj.stoneSummonNum;
+        data.videoSummonNum = obj.videoSummonNum;
         return data;
     }
 }

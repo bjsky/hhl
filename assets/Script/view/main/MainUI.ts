@@ -44,6 +44,8 @@ export default class MainUI extends UIBase {
     @property(cc.Label)
     lblName: cc.Label = null;
     @property(cc.Label)
+    labelLv: cc.Label = null;
+    @property(cc.Label)
     lblExp: cc.Label = null;
     @property(cc.Label)
     lblGold: cc.Label = null;
@@ -93,6 +95,7 @@ export default class MainUI extends UIBase {
         this.lblLifeStone.string = StringUtil.formatReadableNumber(COMMON.resInfo.lifeStone);
         this.lblSoulStone.string = StringUtil.formatReadableNumber(COMMON.resInfo.soulStone);
         this.progressExp.progress = COMMON.userInfo.exp / COMMON.userInfo.totalExp;
+        this.labelLv.string = COMMON.userInfo.level.toString();
     }
 
     onEnable(){
