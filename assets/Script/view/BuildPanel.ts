@@ -166,6 +166,7 @@ export default class BuildPanel extends UIBase{
     }
 
     private onUpdate(){
+        console.log("click_end!!")
         var needGold:number = this._buildInfo.buildLevelCfg.upNeedGold;
         var needLevel:number = this._buildInfo.buildLevelCfg.upNeedPlayerLv;
         if(COMMON.resInfo.gold<needGold){
@@ -173,7 +174,8 @@ export default class BuildPanel extends UIBase{
             return;
         }
         if(COMMON.userInfo.level<needLevel ){
-            UI.showTip("等级不足!");
+            // UI.showTip("资源不足!");
+            UI.showCostTip("-200",this.upgradeBtn.node.parent.convertToWorldSpaceAR(this.upgradeBtn.node.position));
             return;
         }
     }

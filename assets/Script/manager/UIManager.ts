@@ -2,6 +2,8 @@ import NetMessage from "../net/NetMessage";
 import UIBase from "../component/UIBase";
 import { AlertBtnType } from "../view/AlertPanel";
 import { ResConst } from "../module/loading/steps/LoadingStepRes";
+import { DirectionEnum } from "../CommonData";
+import { TipTypeEnum } from "../view/TipPanel";
 
 /**
  * 管理各种界面单例,层级
@@ -171,8 +173,22 @@ export default class UIManager{
     public showNetAlert(title:string,message:string,okCallback?:Function,cancelCallback?:Function,btnType?:number, act:boolean=false){
     }
 
-
+    /**
+     * 一个漂浮提示
+     * @param content 内容
+     * @param pos 位置
+     */
     public showTip(content:string){
+        this.loadUI(ResConst.TipPanel,{content:content,type:TipTypeEnum.Normal},this.TipLayer);
+    }
+
+    /**
+     * 资源消耗漂浮提示
+     * @param content 、
+     * @param pos 
+     */
+    public showCostTip(content,pos:cc.Vec2){
+        this.loadUI(ResConst.TipPanel,{content:content,type:TipTypeEnum.ResCost,position:pos},this.TipLayer);
     }
 
     public showAlert(content:string,okCallback?:Function,cancelCallback?:Function,btnType:number = AlertBtnType.OKButton){

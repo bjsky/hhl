@@ -17,6 +17,5 @@ export default class UIBase extends cc.Component {
 
     //设置数据
     public setData(data){
-
     }
 }

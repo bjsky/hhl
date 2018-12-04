@@ -280,7 +280,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "WechatIMG99",
+    "_name": "map",
     "_objFlags": 0,
     "_parent": {
       "__id__": 5
@@ -294,7 +294,7 @@
       }
     ],
     "_prefab": null,
-    "_id": "camzOqaT5Ow5NAAVfgsV5g",
+    "_id": "a2MoUARRdNbYePhiFA/VHK",
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
@@ -339,10 +339,10 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "50122d4c-3cc3-4e02-b3e5-61497923df97"
+      "__uuid__": "1674d740-f169-4481-86b5-ae4c0cb4b200"
     },
     "_type": 0,
-    "_sizeMode": 0,
+    "_sizeMode": 1,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -460,8 +460,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 346,
-      "height": 264
+      "width": 250,
+      "height": 250
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -469,8 +469,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -451,
-      "y": 275
+      "x": -427,
+      "y": 144
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -481,7 +481,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "WechatIMG103",
+    "_name": "home",
     "_objFlags": 0,
     "_parent": {
       "__id__": 9
@@ -495,7 +495,7 @@
       }
     ],
     "_prefab": null,
-    "_id": "b4MClUVWJBRp1DPdcfucHI",
+    "_id": "7al8DKQFdE5rn/y8ugbKKN",
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
@@ -512,8 +512,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 200,
-      "height": 200
+      "width": 231,
+      "height": 177
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -521,8 +521,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -14,
-      "y": -14
+      "x": 0,
+      "y": 0
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -540,10 +540,10 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "bfb7acfb-89c4-4074-9c7f-01774c948c50"
+      "__uuid__": "b9d54402-200a-4500-a698-5279afc7e7e0"
     },
     "_type": 0,
-    "_sizeMode": 0,
+    "_sizeMode": 1,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -779,8 +779,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 323,
-      "height": 323
+      "width": 250,
+      "height": 250
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -788,8 +788,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -429,
-      "y": -223
+      "x": -190,
+      "y": 436
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -800,7 +800,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "WechatIMG106",
+    "_name": "temple",
     "_objFlags": 0,
     "_parent": {
       "__id__": 18
@@ -814,7 +814,7 @@
       }
     ],
     "_prefab": null,
-    "_id": "04GAuKDqJP6ZKM+YbTPNIy",
+    "_id": "51QUw0oDpNs5LJaPOO9de0",
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
@@ -831,8 +831,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 200,
-      "height": 200
+      "width": 213,
+      "height": 173
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -840,8 +840,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -32,
-      "y": 7
+      "x": 0,
+      "y": 0
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -859,10 +859,10 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "fa6d56a3-667f-4e2f-9467-b1b1de465075"
+      "__uuid__": "25329b4f-dcdc-4260-834c-8ae253d26867"
     },
     "_type": 0,
-    "_sizeMode": 0,
+    "_sizeMode": 1,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -1098,8 +1098,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 304,
-      "height": 286
+      "width": 250,
+      "height": 250
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -1107,8 +1107,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 2,
-      "y": -342
+      "x": -11,
+      "y": -291
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1119,7 +1119,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "WechatIMG107",
+    "_name": "hero",
     "_objFlags": 0,
     "_parent": {
       "__id__": 27
@@ -1133,7 +1133,7 @@
       }
     ],
     "_prefab": null,
-    "_id": "39gnoad2tLOZXTMXDJXKQn",
+    "_id": "9aV5SfnRdKUZdfJmCUlMbZ",
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
@@ -1150,8 +1150,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 200,
-      "height": 200
+      "width": 230,
+      "height": 215
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -1159,8 +1159,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -12,
-      "y": -2
+      "x": 0,
+      "y": 0
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1178,10 +1178,10 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "46a17fff-21d0-4e48-b36a-0273d215ad0b"
+      "__uuid__": "b98c8cf6-f150-4627-af1b-e14a59023a81"
     },
     "_type": 0,
-    "_sizeMode": 0,
+    "_sizeMode": 1,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -1417,8 +1417,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 281,
-      "height": 300
+      "width": 250,
+      "height": 250
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -1426,8 +1426,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -41,
-      "y": 181
+      "x": -457,
+      "y": -423
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1438,7 +1438,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "WechatIMG105",
+    "_name": "battle",
     "_objFlags": 0,
     "_parent": {
       "__id__": 36
@@ -1452,7 +1452,7 @@
       }
     ],
     "_prefab": null,
-    "_id": "a9pPrlpdZPiLfeynCasdxV",
+    "_id": "98FgTTY79G2q/uLLaYLI6V",
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
@@ -1469,8 +1469,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 200,
-      "height": 200
+      "width": 240,
+      "height": 204
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -1478,8 +1478,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -19,
-      "y": 18
+      "x": 0,
+      "y": 0
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1497,10 +1497,10 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "ff3e7190-5cda-482c-a09b-c3b1b88612d4"
+      "__uuid__": "5f49520a-a015-429c-b319-e3666d89247c"
     },
     "_type": 0,
-    "_sizeMode": 0,
+    "_sizeMode": 1,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",

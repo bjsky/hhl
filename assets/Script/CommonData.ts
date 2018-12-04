@@ -4,6 +4,16 @@ import { SCLoginData } from "./net/msg/MsgLogin";
 import { GUIDE } from "./manager/GuideManager";
 import BuildInfo from "./model/BuildInfo";
 
+export enum DirectionEnum{
+    Left = 0,       //左
+    LeftTop,        //左上
+    Top,            //上
+    RightTop,       //右上
+    Right,          //右
+    RightBottom,    //右下
+    Bottom,         //下
+    LeftBottom      //左下
+}
 /**
  *  全局的游戏数据，
  * 
