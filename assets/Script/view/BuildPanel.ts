@@ -9,6 +9,10 @@ import BuildInfo from "../model/BuildInfo";
 import { COMMON } from "../CommonData";
 import { CFG } from "../manager/ConfigManager";
 import { ConfigConst } from "../module/loading/steps/LoadingStepConfig";
+import { BUILD } from "../module/build/BuildAssist";
+import { EVENT } from "../message/EventCenter";
+import GameEvent from "../message/GameEvent";
+import StringUtil from "../utils/StringUtil";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -53,6 +57,8 @@ export default class BuildPanel extends UIBase{
     nextLevelDesc: cc.Label = null;
     @property(cc.Button)
     upgradeBtn: cc.Button = null;
+    @property(cc.Label)
+    costGold: cc.Label = null;
 
     // LIFE-CYCLE CALLBACKS:
     private _buildType:number = 0;
@@ -62,7 +68,7 @@ export default class BuildPanel extends UIBase{
     
     public setData(param:any){
         this._buildType = param.buildType;
-        this._buildInfo = COMMON.buildInfoMap[this._buildType];
+        this._buildInfo = BUILD.getBuildInfo(this._buildType);
         if((this._buildInfo.level+1)>30){
             this._nextLevelCfg = null;
         }else{
@@ -101,11 +107,16 @@ export default class BuildPanel extends UIBase{
     onEnable(){
         this.closeBtn.node.on(ButtonEffect.CLICK_END,this.onClose,this);
         this.upgradeBtn.node.on(ButtonEffect.CLICK_END,this.onUpdate,this);
+        
+        EVENT.on(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
+
         this.loadBuild();
     }
     onDisable(){
         this.closeBtn.node.off(ButtonEffect.CLICK_END,this.onClose,this);
         this.upgradeBtn.node.off(ButtonEffect.CLICK_END,this.onUpdate,this)
+
+        EVENT.off(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
     }
 
     private onClose(){
@@ -159,9 +170,11 @@ export default class BuildPanel extends UIBase{
         if(this._nextLevelCfg!=null){
             this.nextLevelDesc.string = "下一等级：" + str.replace("#",(this._nextLevelCfg.addValue*100).toFixed(0));
             this.upgradeBtn.node.active = true;
+            this.costGold.string = StringUtil.formatReadableNumber(this._buildInfo.buildLevelCfg.upNeedGold);
         }else{
             this.nextLevelDesc.string ="下一等级：(已满级)";
             this.upgradeBtn.node.active = false;
+            this.costGold.string = ""
         }
     }
 
@@ -174,10 +187,15 @@ export default class BuildPanel extends UIBase{
             return;
         }
         if(COMMON.userInfo.level<needLevel ){
-            // UI.showTip("资源不足!");
-            UI.showCostTip("-200",this.upgradeBtn.node.parent.convertToWorldSpaceAR(this.upgradeBtn.node.position));
+            UI.showTip("角色等级不足!");
             return;
         }
+        BUILD.updateBuild(this._buildType,needGold);
+    }
+
+    private onBuildUpdate(e){
+        this.setData({buildType:this._buildType});
+        this.initBuildView();
     }
 
     // update (dt) {}

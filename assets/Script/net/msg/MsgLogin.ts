@@ -29,6 +29,26 @@ export class SCLoginData {
     public stoneSummonNum:number = 0;
     //祭坛视频召唤次数
     public videoSummonNum:number = 0;
+
+    public static parse(obj:any):SCLoginData{
+        var data:SCLoginData = new SCLoginData();
+        data.firstLogin = obj.firstLogin;
+        data.userInfo = SUserInfo.parse(obj.userInfo);
+        data.resInfo = SResInfo.parse(obj.resInfo);
+        data.guideInfo = SGuideInfo.parse(obj.guideInfo);
+        //解析building
+        data.buildInfos = [];
+        if(obj.buildInfos!=undefined){
+            obj.buildInfos.forEach(info => {
+                var buildInfo:SBuildInfo = SBuildInfo.parse(info);
+                data.buildInfos.push(buildInfo);
+            });
+        }
+        data.stoneSummonNum = obj.stoneSummonNum;
+        data.videoSummonNum = obj.videoSummonNum;
+
+        return data;
+    }
 }
 
 export class SUserInfo {
@@ -40,6 +60,16 @@ export class SUserInfo {
     public exp:number = 0;
     //当前等级
     public level:number = 1;
+
+    public static parse(obj:any):SUserInfo{
+        var info:SUserInfo = new SUserInfo();
+        info.nickName = obj.nickName;
+        info.headPic = obj.headPic;
+        info.exp = obj.exp;
+        info.level = obj.level;
+
+        return info;
+    }
 }
 
 export class SResInfo{
@@ -51,11 +81,26 @@ export class SResInfo{
     public lifeStone:number = 0;
     //魂石 
     public soulStone:number = 0;
+
+    public static parse(obj:any):SResInfo{
+        var info:SResInfo = new SResInfo();
+        info.gold = obj.gold;
+        info.diamond = obj.diamond;
+        info.lifeStone = obj.lifeStone;
+        info.soulStone = obj.soulStone;
+        return info;
+    }
 }
 
 export class SGuideInfo{
     //引导步骤
     public guideId:number = -1;  //-1:引导完成
+
+    public static parse(obj:any):SGuideInfo{
+        var info:SGuideInfo = new SGuideInfo();
+        info.guideId = obj.guideId;
+        return info;
+    }
 
 }
 export class SBuildInfo{
@@ -67,6 +112,21 @@ export class SBuildInfo{
     public locked:boolean = false;
     //五彩石
     public colorStones:Array<SColorStoneInfo> = [];
+
+    public static parse(info:any):SBuildInfo{
+        var buildInfo:SBuildInfo = new SBuildInfo();
+        buildInfo.type = info.type;
+        buildInfo.level = info.level;
+        buildInfo.locked = info.locked;
+        if(info.colorStones!=undefined){
+            buildInfo.colorStones = [];
+            info.colorStones.forEach(stone => {
+                var stoneInfo:SColorStoneInfo = SColorStoneInfo.parse(stone);
+                buildInfo.colorStones.push(stoneInfo);
+            });
+        }
+        return buildInfo;
+    }
 }
 
 export class SColorStoneInfo{
@@ -76,6 +136,14 @@ export class SColorStoneInfo{
     public resType:number = 0;
     //资源数量
     public resNum:number = 0;
+
+    public static parse(obj:any):SColorStoneInfo{
+        var info:SColorStoneInfo = new SColorStoneInfo();
+        info.time = obj.time;
+        info.resType = obj.resType;
+        info.resNum = obj.resNum;
+        return info;
+    }
 }
 
 export default class MsgLogin extends MessageBase {
@@ -99,8 +167,8 @@ export default class MsgLogin extends MessageBase {
 
     public respFromLocal(){
         var json:any = {firstLogin:true,
-            userInfo:{nickName:"上古战神",headPic:"",exp:100,level:1},
-            resInfo:{gold:4600000,diamond:20,lifeStone:5000,soulStone:370},
+            userInfo:{nickName:"上古战神",headPic:"",exp:100,level:5},
+            resInfo:{gold:9000,diamond:20,lifeStone:5000,soulStone:370},
             guideInfo:{guideId:-1},
             buildInfos:[{type:0,level:1,locked:true},
                 {type:1,level:2,locked:true},
@@ -113,47 +181,7 @@ export default class MsgLogin extends MessageBase {
     }
 
     protected parse(obj:any){
-        var data:SCLoginData = new SCLoginData();
-        data.firstLogin = obj.firstLogin;
-
-        data.userInfo = new SUserInfo();
-        data.userInfo.nickName = obj.userInfo.nickName;
-        data.userInfo.headPic = obj.userInfo.headPic;
-        data.userInfo.exp = obj.userInfo.exp;
-        data.userInfo.level = obj.userInfo.level;
-
-        data.resInfo = new SResInfo();
-        data.resInfo.gold = obj.resInfo.gold;
-        data.resInfo.diamond = obj.resInfo.diamond;
-        data.resInfo.lifeStone = obj.resInfo.lifeStone;
-        data.resInfo.soulStone = obj.resInfo.soulStone;
-
-        data.guideInfo = new SGuideInfo();
-        data.guideInfo.guideId = obj.guideInfo.guideId;
-
-        //解析building
-        data.buildInfos = [];
-        if(obj.buildInfos!=undefined){
-            obj.buildInfos.forEach(info => {
-                var buildInfo:SBuildInfo = new SBuildInfo();
-                buildInfo.type = info.type;
-                buildInfo.level = info.level;
-                buildInfo.locked = info.locked;
-                if(info.colorStones!=undefined){
-                    buildInfo.colorStones = [];
-                    info.colorStones.forEach(stone => {
-                        var stoneInfo:SColorStoneInfo = new SColorStoneInfo();
-                        stoneInfo.time = stone.time;
-                        stoneInfo.resType = stone.resType;
-                        stoneInfo.resNum = stone.resNum;
-                        buildInfo.colorStones.push(stoneInfo);
-                    });
-                }
-                data.buildInfos.push(buildInfo);
-            });
-        }
-        data.stoneSummonNum = obj.stoneSummonNum;
-        data.videoSummonNum = obj.videoSummonNum;
+        var data:SCLoginData = SCLoginData.parse(obj);
         return data;
     }
 }

@@ -12,6 +12,12 @@ export class CSGuideUpdate{
 
 export class SCGuideUpdate{
     public nextGuideId:number = 0;
+
+    public static parse(obj:any):SCGuideUpdate{
+        var data:SCGuideUpdate = new SCGuideUpdate();
+        data.nextGuideId = obj.nextGuideId;
+        return data;
+    }
 }
 
 export default class MsgGuideUpdate extends MessageBase{
@@ -47,8 +53,7 @@ export default class MsgGuideUpdate extends MessageBase{
     }
 
     protected parse(obj:any){
-        var data:SCGuideUpdate = new SCGuideUpdate();
-        data.nextGuideId = obj.nextGuideId;
+        var data:SCGuideUpdate = SCGuideUpdate.parse(obj);
         return data;
     }
 }

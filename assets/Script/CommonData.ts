@@ -1,8 +1,9 @@
 import UserInfo from "./model/UserInfo";
 import ResInfo from "./model/ResInfo";
-import { SCLoginData } from "./net/msg/MsgLogin";
+import { SCLoginData, SResInfo } from "./net/msg/MsgLogin";
 import { GUIDE } from "./manager/GuideManager";
 import BuildInfo from "./model/BuildInfo";
+import { BUILD } from "./module/build/BuildAssist";
 
 export enum DirectionEnum{
     Left = 0,       //左
@@ -37,8 +38,6 @@ export default class CommonData{
     public userInfo:UserInfo = new UserInfo();
     //资源数据
     public resInfo:ResInfo = new ResInfo();
-    // 建筑数据
-    public buildInfoMap:any = {};
     //祭坛灵石召唤次数
     public stoneSummonNum:number = 0;
     //祭坛视频召唤次数
@@ -50,18 +49,19 @@ export default class CommonData{
         this.isFristLogin = data.firstLogin;
         this.userInfo.initFromServer(data.userInfo);
         this.resInfo.initFromServer(data.resInfo);
-        data.buildInfos.forEach(info => {
-            var buildInfo:BuildInfo = new BuildInfo();
-            buildInfo.initFormServer(info);
-            this.buildInfoMap[buildInfo.type] = buildInfo;
-        });
+
 
         this.stoneSummonNum = data.stoneSummonNum;
         this.videoSummonNum = data.videoSummonNum;
 
+        BUILD.initBuilding(data.buildInfos);
+
         GUIDE.initGuide(data.guideInfo);
     }
 
+    public updateResInfo(data:SResInfo){
+        this.resInfo.updateInfo(data);
+    }
 }
 
 

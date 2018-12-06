@@ -2,6 +2,10 @@ import UIBase from "../../component/UIBase";
 import { COMMON } from "../../CommonData";
 import StringUtil from "../../utils/StringUtil";
 import TouchHandler from "../../component/TouchHandler";
+import { EVENT } from "../../message/EventCenter";
+import GameEvent from "../../message/GameEvent";
+import { ResType } from "../../model/ResInfo";
+import { UI } from "../../manager/UIManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -98,12 +102,27 @@ export default class MainUI extends UIBase {
         this.labelLv.string = COMMON.userInfo.level.toString();
     }
 
+    private resUpdateCost(e){
+        var types:any[] = e.detail.types;
+        types.forEach((obj)=>{
+            switch(obj.type){
+                case ResType.gold:
+                this.lblGold.string = StringUtil.formatReadableNumber(COMMON.resInfo.gold);
+                UI.showCostTip("-"+StringUtil.formatReadableNumber(obj.value),this.lblGold.node.parent.convertToWorldSpaceAR(this.lblGold.node.position));
+                break;
+            }
+        })
+
+    }
+
     onEnable(){
         this.lblExp.node.on(cc.Node.EventType.TOUCH_START,this.onLabelExpTouch,this);
 
         this.nodeActivity.on(TouchHandler.TOUCH_CLICK,this.onOpenActivity,this);
         this.btnAcitveArrow.node.on(TouchHandler.TOUCH_CLICK,this.onCloseActivity,this);
         this.btnTaskArrow.node.on(TouchHandler.TOUCH_CLICK,this.onTaskOpenClose,this)
+
+        EVENT.on(GameEvent.Res_update_Cost_Complete,this.resUpdateCost,this);
     }
 
 
@@ -114,6 +133,8 @@ export default class MainUI extends UIBase {
         this.nodeActivity.off(TouchHandler.TOUCH_CLICK,this.onOpenActivity,this);
         this.btnAcitveArrow.node.off(TouchHandler.TOUCH_CLICK,this.onCloseActivity,this)
         this.btnTaskArrow.node.off(TouchHandler.TOUCH_CLICK,this.onTaskOpenClose,this)
+
+        EVENT.off(GameEvent.Res_update_Cost_Complete,this.resUpdateCost,this);
     }
 
 

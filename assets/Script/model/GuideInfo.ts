@@ -1,9 +1,9 @@
 import InfoBase from "./InfoBase";
 import { SGuideInfo } from "../net/msg/MsgLogin";
-import { GUIDE } from "../module/guide/GuideManager";
 import { CFG } from "../manager/ConfigManager";
 import { ConfigConst } from "../module/loading/steps/LoadingStepConfig";
 import { SCGuideUpdate } from "../net/msg/MsgGuideUpdate";
+import { GUIDE } from "../manager/GuideManager";
 
 export default class GuideInfo extends InfoBase{
     //引导步骤

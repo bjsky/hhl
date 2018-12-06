@@ -15,5 +15,8 @@ export default class NetConst{
     public static Login:number = 10001;
     //引导更新
     public static GuideUpdate:number = 10002;
+
+    //升级建筑
+    public static BuildUpdate:number = 20001;
 }
 

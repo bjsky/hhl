@@ -21,13 +21,27 @@ export default class BuildInfo{
         this.locked = data.locked;
         data.colorStones.forEach((stone:SColorStoneInfo) =>{
             var stoneInfo:ColorStoneInfo = new ColorStoneInfo();
-            stoneInfo.time = stone.time;
-            stoneInfo.resType = stone.resType;
-            stoneInfo.resNum = stone.resNum;
+            stoneInfo.initFromServer(stone);
             this.colorStones.push(stoneInfo)
         });
 
         this.buildLevelCfg = CFG.getCfgByKey(ConfigConst.Building,"level",this.level)[0];
     }
 
+    public updateInfo(data:SBuildInfo){
+        this.initFormServer(data);
+    }
+
+    public cloneServerInfo():SBuildInfo{
+        var info:SBuildInfo = new SBuildInfo();
+        info.type = this.type;
+        info.level = this.level;
+        info.locked = this.locked;
+        info.colorStones = [];
+        this.colorStones.forEach((stone:ColorStoneInfo) =>{
+            var stoneInfo:SColorStoneInfo = stone.cloneServerInfo();
+            info.colorStones.push(stoneInfo);
+        })
+        return info;
+    }
 }
