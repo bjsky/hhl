@@ -6,6 +6,7 @@ import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
 import { ResType } from "../../model/ResInfo";
 import { UI } from "../../manager/UIManager";
+import { AlertBtnType } from "../AlertPanel";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -62,7 +63,10 @@ export default class MainUI extends UIBase {
     @property(cc.ProgressBar)
     progressExp: cc.ProgressBar = null;
 
-
+    @property(cc.Button)
+    taskBtn: cc.Button = null;
+    @property(cc.Button)
+    chatBtn: cc.Button = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -121,6 +125,7 @@ export default class MainUI extends UIBase {
         this.nodeActivity.on(TouchHandler.TOUCH_CLICK,this.onOpenActivity,this);
         this.btnAcitveArrow.node.on(TouchHandler.TOUCH_CLICK,this.onCloseActivity,this);
         this.btnTaskArrow.node.on(TouchHandler.TOUCH_CLICK,this.onTaskOpenClose,this)
+        this.taskBtn.node.on(cc.Node.EventType.TOUCH_START,this.onTaskBtnTouch,this);
 
         EVENT.on(GameEvent.Res_update_Cost_Complete,this.resUpdateCost,this);
     }
@@ -133,6 +138,7 @@ export default class MainUI extends UIBase {
         this.nodeActivity.off(TouchHandler.TOUCH_CLICK,this.onOpenActivity,this);
         this.btnAcitveArrow.node.off(TouchHandler.TOUCH_CLICK,this.onCloseActivity,this)
         this.btnTaskArrow.node.off(TouchHandler.TOUCH_CLICK,this.onTaskOpenClose,this)
+        this.taskBtn.node.off(cc.Node.EventType.TOUCH_START,this.onTaskBtnTouch,this)
 
         EVENT.off(GameEvent.Res_update_Cost_Complete,this.resUpdateCost,this);
     }
@@ -168,5 +174,9 @@ export default class MainUI extends UIBase {
                 this.btnTaskArrowF.scaleX = 1;
             })));
         }
+    }
+
+    private onTaskBtnTouch(e){
+        UI.showAlert("功能暂未开放，敬请期待！",null,null,AlertBtnType.OKAndCancel);
     }
 }

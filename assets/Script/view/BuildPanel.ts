@@ -45,6 +45,8 @@ export default class BuildPanel extends UIBase{
     @property(cc.Node)
     panelNode: cc.Node = null;
     @property(cc.Node)
+    panelNodeload: cc.Node = null;
+    @property(cc.Node)
     leftNode: cc.Node = null;
     @property(cc.Node)
     buildIcon: cc.Node = null;
@@ -92,7 +94,7 @@ export default class BuildPanel extends UIBase{
             res = ResConst.TempleBuild;
             break;
         }
-        UI.loadUI(res,{},this.panelNode,this.loadComplete.bind(this));
+        UI.loadUI(res,{type:this._buildType},this.panelNodeload,this.loadComplete.bind(this));
 
         this.initBuildView();
     }
@@ -100,7 +102,7 @@ export default class BuildPanel extends UIBase{
     private loadComplete(ui:UIBase){
         this._buildUI = ui;
         this.doShow(()=>{
-            this.buildName.node.runAction(cc.fadeIn(0.1));
+            // this.buildName.node.runAction(cc.fadeIn(0.1));
         });
     }
 
@@ -144,7 +146,7 @@ export default class BuildPanel extends UIBase{
             var fPos:cc.Vec2 = builidng.parent.convertToWorldSpaceAR(builidng.position);
             var tPos:cc.Vec2 = this.buildIcon.parent.convertToWorldSpaceAR(this.buildIcon.position);
             
-            scene.moveCamToPos(fPos,tPos,0.3,1.2,cb);
+            scene.moveCamToPos(fPos,tPos,0.3,1,cb);
         }
     }
 
@@ -155,7 +157,7 @@ export default class BuildPanel extends UIBase{
         }else{
             this.topNode.runAction(cc.moveTo(0.3,cc.v2(750,0)).easing(cc.easeInOut(2)));
             this.panelNode.runAction(cc.moveTo(0.3,cc.v2(0,-1000)).easing(cc.easeInOut(2)))
-            this.buildName.node.runAction(cc.fadeOut(0.1));
+            // this.buildName.node.runAction(cc.fadeOut(0.1));
             var scene:CityScene = SCENE.CurScene as CityScene;
             if(scene){
                 scene.moveCamBack(cb);
@@ -164,7 +166,7 @@ export default class BuildPanel extends UIBase{
     }
 
     private initBuildView(){
-        this.buildName.string = "Lv." + this._buildInfo.level + "  " + CONSTANT.getBuidlingName(this._buildType);
+        this.buildName.string = this._buildInfo.level+" 级";// + "  " + CONSTANT.getBuidlingName(this._buildType);
         var str = CONSTANT.getBuildingBuffDesc(this._buildType);
         this.curLevelDesc.string = "当前等级：" + str.replace("#",(this._buildInfo.buildLevelCfg.addValue*100).toFixed(0));
         if(this._nextLevelCfg!=null){

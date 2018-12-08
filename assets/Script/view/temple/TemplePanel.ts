@@ -1,6 +1,11 @@
 import UIBase from "../../component/UIBase";
 import { UI } from "../../manager/UIManager";
 import { ResConst } from "../../module/loading/steps/LoadingStepRes";
+import BuildInfo from "../../model/BuildInfo";
+import { BUILD } from "../../module/build/BuildAssist";
+import { CONSTANT } from "../../Constant";
+import { COMMON } from "../../CommonData";
+import StringUtil from "../../utils/StringUtil";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -22,6 +27,13 @@ export default class TemplePanel extends UIBase {
     @property(cc.Button)
     videoBtn: cc.Button = null;
 
+    @property(cc.Label)
+    summonNeedLifeStone: cc.Label = null;
+    @property(cc.Label)
+    videoLeftTime: cc.Label = null;
+
+    private _buildType:number = 0;
+    private _buildInfo:BuildInfo = null;
     // LIFE-CYCLE CALLBACKS:
     onEnable(){
         this.lifeStoneBtn.node.on(cc.Node.EventType.TOUCH_START,this.onLifeStoneClick,this);
@@ -33,15 +45,26 @@ export default class TemplePanel extends UIBase {
         this.videoBtn.node.off(cc.Node.EventType.TOUCH_START,this.onVideoClick,this);
     }
 
+    public setData(param:any){
+        this._buildType = param.buildType;
+        this._buildInfo = BUILD.getBuildInfo(this._buildType);
+    }
 
     private onLifeStoneClick(e){
-        UI.createPopUp(ResConst.CardDetail,{});
+        // UI.createPopUp(ResConst.CardDetail,{});
     }
 
     private onVideoClick(e){
-        UI.createPopUp(ResConst.CardGet,{});
+        // UI.createPopUp(ResConst.CardGet,{});
     }
-    // onLoad () {}
+    onLoad () {
+        this.initView();
+    }
+
+    private initView(){
+        this.summonNeedLifeStone.string = StringUtil.formatReadableNumber(CONSTANT.getSummonStoneCost(COMMON.stoneSummonNum));
+        this.videoLeftTime.string = "剩余："+ (CONSTANT.getVideoFreeSummonNum() - COMMON.videoSummonNum);
+    }
 
     start () {
 

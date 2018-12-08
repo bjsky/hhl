@@ -46,10 +46,10 @@ export default class AlertPanel extends UIBase {
         this._cancelCb = data.cancelCb;
         if(this._btnType == AlertBtnType.OKButton){
             this.btnCancel.node.active = false;
-            this.btnOk.node.setPosition(cc.v2(0,-42))
+            this.btnOk.node.setPosition(cc.v2(0,-55))
         }else if(this._btnType == AlertBtnType.OKAndCancel){
             this.btnCancel.node.active = true;
-            this.btnOk.node.setPosition(cc.v2(-80,-42))
+            this.btnOk.node.setPosition(cc.v2(-80,-55))
         }
         this.content.string = this._content;
     }

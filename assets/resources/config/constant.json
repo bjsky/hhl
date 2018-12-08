@@ -1,7 +1,7 @@
 [
     {"id":"1","key":"start_res","name":"初始资源","param1":"50000;500;0;100"},
     {"id":"2","key":"buidling_names","name":"建筑名字","param1":"内城;洪荒祭坛;英雄殿堂;试炼之地"},
-    {"id":"3","key":"build_buffDesc","name":"建筑加成描述","param1":";祭坛召唤英雄的灵石消耗减少#%;升级英雄的魂石消耗减少#%;关卡挂机的产量增加#%;"},
+    {"id":"3","key":"build_buffDesc","name":"建筑加成描述","param1":";祭坛召唤的灵石消耗减少#%;升级英雄的魂石消耗减少#%;关卡挂机的产量增加#%;"},
     {"id":"4","key":"race_name","name":"种族名称","param1":"巫族;妖族;仙界;人界"},
     {"id":"5","key":"store_summon_use","name":"灵石抽奖消耗公式","param1":"0;0;0;200;300;500;1000;"},
     {"id":"6","key":"store_summon_rate","name":"灵石抽奖概率","param1":"50,28,13,6,3"},
