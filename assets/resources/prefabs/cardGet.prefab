@@ -134,7 +134,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "card_front",
+    "_name": "WechatIMG6",
     "_objFlags": 0,
     "_parent": {
       "__id__": 2
@@ -167,8 +167,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 500,
-      "height": 800
+      "width": 490,
+      "height": 679
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -195,9 +195,9 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "7f683e4c-8970-44e1-8063-5072b7514055"
+      "__uuid__": "6ac7a547-0377-4b4a-ac74-04d614ea49ab"
     },
-    "_type": 1,
+    "_type": 0,
     "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
@@ -220,12 +220,12 @@
     "asset": {
       "__uuid__": "6a9541b7-38b3-4df9-8271-4a0d326cb182"
     },
-    "fileId": "6d/nP4coxKZqmIeOX9uDJY",
+    "fileId": "2bKMhrOfhEeKaMvqd/XRHj",
     "sync": false
   },
   {
     "__type__": "cc.Node",
-    "_name": "WechatIMG6",
+    "_name": "card_front",
     "_objFlags": 0,
     "_parent": {
       "__id__": 2
@@ -258,8 +258,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 478,
-      "height": 778
+      "width": 500,
+      "height": 689
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -286,9 +286,9 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "0c5f9f4d-eaf9-424a-aeab-56deaf312b7a"
+      "__uuid__": "7f683e4c-8970-44e1-8063-5072b7514055"
     },
-    "_type": 0,
+    "_type": 1,
     "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
@@ -311,7 +311,7 @@
     "asset": {
       "__uuid__": "6a9541b7-38b3-4df9-8271-4a0d326cb182"
     },
-    "fileId": "b7Ofn+LaxEP7w3md4otjrN",
+    "fileId": "6d/nP4coxKZqmIeOX9uDJY",
     "sync": false
   },
   {
@@ -373,7 +373,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -282
+      "y": -227
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -489,7 +489,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -340
+      "y": -285
     },
     "_skewX": 0,
     "_skewY": 0,

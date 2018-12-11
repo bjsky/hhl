@@ -51,11 +51,11 @@ export default class TemplePanel extends UIBase {
     }
 
     private onLifeStoneClick(e){
-        // UI.createPopUp(ResConst.CardDetail,{});
+        UI.createPopUp(ResConst.CardDetail,{});
     }
 
     private onVideoClick(e){
-        // UI.createPopUp(ResConst.CardGet,{});
+        UI.createPopUp(ResConst.CardGet,{});
     }
     onLoad () {
         this.initView();
