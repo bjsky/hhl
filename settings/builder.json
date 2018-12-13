@@ -7,12 +7,12 @@
   "includeAnySDK": false,
   "includeSDKBox": false,
   "inlineSpriteFrames": true,
-  "inlineSpriteFrames_native": false,
+  "inlineSpriteFrames_native": true,
   "jailbreakPlatform": false,
-  "md5Cache": true,
+  "md5Cache": false,
   "mergeStartScene": false,
   "oauthLoginServer": "",
-  "optimizeHotUpdate": true,
+  "optimizeHotUpdate": false,
   "orientation": {
     "landscapeLeft": true,
     "landscapeRight": true,
@@ -26,7 +26,7 @@
     "orientation": "portrait"
   },
   "renderMode": "0",
-  "startScene": "cba04730-700d-4d83-a34c-7ec377e56144",
+  "startScene": "d0a99948-3739-4f49-9ddb-6aaa4a29849b",
   "title": "hhlgame",
   "webOrientation": "auto",
   "wechatgame": {

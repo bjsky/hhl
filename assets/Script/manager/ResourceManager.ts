@@ -56,7 +56,7 @@ export default class ResourceManager{
             this._loadItems = this._loadParams[this._loadName];
 
             this._loadItems.urls = this._loadItems.path.slice();
-            this.checkloadUrls(this._loadItems.urls);
+            // this.checkloadUrls(this._loadItems.urls);
 
             this._curloadNum = 0;
             this._totalloadNum = this._loadItems.urls.length;
@@ -71,7 +71,7 @@ export default class ResourceManager{
     private _loadMaxCount:number = 3;
     private doLoad(resList:string[]){
         var self = this;
-        cc.loader.load(resList, (completedCount: number, totalCount: number, item: any) => {
+        cc.loader.loadResArray(resList, (completedCount: number, totalCount: number, item: any) => {
             if(item.error) {
                 //console.log("加载失败：" + "item.error.status: " + item.error.status + ", "  +item.error.errorMessage + " url: " + item.url);
             } else {
@@ -91,7 +91,7 @@ export default class ResourceManager{
                     self.completeLoad();
                 }else if(self._loadCount < self._loadMaxCount){
                     self._loadCount += 1; // 计数加1
-                    self.doLoad(errors);
+                    // self.doLoad(errors);
                 }
 		    } else {
                 if(self._loadItems["completeCb"]!= undefined){
@@ -128,7 +128,11 @@ export default class ResourceManager{
 
                 if(value.indexOf("http")<0 && value.indexOf("res/raw-assets/")<0) // 第一次尝试
                 {
-                    var url:string = this._downloadUrl + cc.url.raw(value) + (this._downloadUrl === "" ? "" : "?v=" + new Date().getTime());
+                    var path = cc.url.raw(value);
+                    // if (cc.loader.md5Pipe) {
+                    //     path = cc.loader.md5Pipe.transformURL(path);
+                    // }
+                    var url:string = this._downloadUrl + path + (this._downloadUrl === "" ? "" : "?v=" + new Date().getTime());
                     arr[idx] = url;
                     this._resMap[value] = url;
                 }

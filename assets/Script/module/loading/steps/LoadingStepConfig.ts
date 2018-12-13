@@ -7,13 +7,13 @@ import GameEvent from "../../../message/GameEvent";
 import LoadingStepServerData from "./LoadingStepServerData";
 
 export const ConfigConst = {
-    Constant:"resources/config/constant.json",
-    Building:"resources/config/building.json",
-    CardInfo:"resources/config/cardInfo.json",
-    CardUp:"resources/config/cardUp.json",
-    PlayerLevel:"resources/config/playerLevel.json",
-    Stand:"resources/config/stand.json",
-    Guide:"resources/config/guide.json"
+    Constant:"config/constant",
+    Building:"config/building",
+    CardInfo:"config/cardInfo",
+    CardUp:"config/cardUp",
+    PlayerLevel:"config/playerLevel",
+    Stand:"config/stand",
+    Guide:"config/guide"
 }
 /**
  * 加载配置
@@ -28,7 +28,7 @@ export default class LoadingStepConfig extends LoadingStep{
             this._cfgArr.push(ConfigConst[key]);
         }
 
-        RES.load(this._cfgArr,this.loadConfigComplete.bind(this),this.loadConfigProgress.bind(this),this.loadConfigFailed.bind(this));
+        RES.load(this._cfgArr,this.loadConfigComplete.bind(this),this.loadConfigProgress.bind(this),this.loadConfigFailed.bind(this));   
     }
 
     private loadConfigComplete(resArr:any){

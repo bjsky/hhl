@@ -38,7 +38,7 @@ export default class GuideInfo extends InfoBase{
     }
 
     public setGuideInfo(){
-        if(this.guideId>-1){
+        if(this.guideId>0){
             var info = CFG.getCfgDataById(ConfigConst.Guide,this.guideId);
             this.guideName = info.name;
             this.nextId = info.nextId;

@@ -6,6 +6,11 @@ import { BUILD } from "../../module/build/BuildAssist";
 import { CONSTANT } from "../../Constant";
 import { COMMON } from "../../CommonData";
 import StringUtil from "../../utils/StringUtil";
+import { EVENT } from "../../message/EventCenter";
+import GameEvent from "../../message/GameEvent";
+import CardEffect from "../../component/CardEffect";
+import { NET } from "../../net/core/NetController";
+import MsgCardSummon, { CardSummonType } from "../../net/msg/MsgCardSummon";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -31,18 +36,29 @@ export default class TemplePanel extends UIBase {
     summonNeedLifeStone: cc.Label = null;
     @property(cc.Label)
     videoLeftTime: cc.Label = null;
+    @property(cc.Label)
+    stoneSummonFree: cc.Label = null;
+    @property(cc.Node)
+    stoneCost: cc.Node = null;
+    @property([CardEffect])
+    cardEffects: Array<CardEffect> = [];
 
     private _buildType:number = 0;
     private _buildInfo:BuildInfo = null;
+
+    private _stoneSummonCost:number = 0;
     // LIFE-CYCLE CALLBACKS:
     onEnable(){
         this.lifeStoneBtn.node.on(cc.Node.EventType.TOUCH_START,this.onLifeStoneClick,this);
         this.videoBtn.node.on(cc.Node.EventType.TOUCH_START,this.onVideoClick,this);
+        EVENT.on(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
     }
 
     onDisable(){
         this.lifeStoneBtn.node.off(cc.Node.EventType.TOUCH_START,this.onLifeStoneClick,this);
         this.videoBtn.node.off(cc.Node.EventType.TOUCH_START,this.onVideoClick,this);
+
+        EVENT.off(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
     }
 
     public setData(param:any){
@@ -51,18 +67,40 @@ export default class TemplePanel extends UIBase {
     }
 
     private onLifeStoneClick(e){
-        UI.createPopUp(ResConst.CardDetail,{});
+        if(COMMON.resInfo.lifeStone <=this._stoneSummonCost){
+            UI.showTip("灵石不足!");
+            return;
+        }
+        this.playStoneSummonEffect(()=>{
+            //召唤卡牌
+            NET.send(MsgCardSummon.createLocal(CardSummonType.LifeStone,this._stoneSummonCost),(msg:MsgCardSummon)=>{
+                
+            },this)
+        });
+        // UI.createPopUp(ResConst.CardDetail,{});
     }
 
+    
+
     private onVideoClick(e){
-        UI.createPopUp(ResConst.CardGet,{});
+        // UI.createPopUp(ResConst.CardGet,{});
     }
     onLoad () {
         this.initView();
     }
 
     private initView(){
-        this.summonNeedLifeStone.string = StringUtil.formatReadableNumber(CONSTANT.getSummonStoneCost(COMMON.stoneSummonNum));
+        var freeNum:number = CONSTANT.getStoneFreeSummonNum();
+        if(COMMON.stoneSummonNum < freeNum){
+            this.stoneSummonFree.string = "第"+(COMMON.stoneSummonNum +1)+"次免费";
+            this.stoneCost.active = false;
+            this._stoneSummonCost = 0;
+        }else{
+            this.stoneCost.active = true;
+            this._stoneSummonCost = BUILD.getSummonStoneCostBuffed(COMMON.stoneSummonNum-freeNum);
+            this.summonNeedLifeStone.string = StringUtil.formatReadableNumber(this._stoneSummonCost);
+        
+        }
         this.videoLeftTime.string = "剩余："+ (CONSTANT.getVideoFreeSummonNum() - COMMON.videoSummonNum);
     }
 
@@ -70,5 +108,84 @@ export default class TemplePanel extends UIBase {
 
     }
 
-    // update (dt) {}
+    private onBuildUpdate(e){
+        //重置界面
+        this.initView();
+    }
+
+
+    private _summonEffectPlaying:boolean = false;
+    private _summonMoveEndCB:Function = null;
+    private _during:number =0;
+    private _speedDir:number = 0; //0加速1匀速2减速3结束 
+    private _speedNum:number = 0;
+
+    private Sspeed:number = 0.5;
+    private Aspeed:number = 0.1;
+    private MaxSpeed:number =0.2;
+    private MaxSpeedNum:number = 10;
+    private Dspeed:number = 0.05;
+    private MinSpeed:number = 0.5;
+    private playStoneSummonEffect(cb:Function){
+        if(this._summonEffectPlaying)
+            return;
+        this._summonMoveEndCB = cb;
+        this._summonEffectPlaying = true;
+        this._during = this.Sspeed;
+        this._speedDir = 0;
+        this._speedNum = 0;
+        this.doSummonEffect();
+        
+    }
+
+    private doSummonEffect(){
+        if(this._speedDir == 0){ // 加速
+            this._during -= this.Aspeed;
+            if(this._during<this.MaxSpeed){
+                this._speedDir = 1;
+                this._during = this.MaxSpeed;
+            }
+        }else if(this._speedDir == 1){
+            this._speedNum++;
+            if(this._speedNum>=this.MaxSpeedNum){
+                this._speedDir = 2;
+            }
+        }else if(this._speedDir == 2){
+            this._during += this.Dspeed;
+            if(this._during>this.MinSpeed){
+                this._speedDir = 3;
+                this._during = this.MinSpeed;
+            }
+        }else if(this._speedDir == 3){
+            this.node.stopAllActions();
+            this._summonEffectPlaying = false;
+            this._summonMoveEndCB && this._summonMoveEndCB();
+            return;
+        }
+        var summon = cc.sequence(
+            cc.callFunc(()=>{
+                this.cardEffects.forEach((effect:CardEffect)=>{
+                    effect.play(this._during);
+                })
+            }),
+            cc.delayTime(this._during),
+            cc.callFunc(()=>{
+                this.doSummonEffect();
+            })
+        )
+        console.log(this._during)
+        this.node.runAction(summon);
+    }
+
+    public showCardGetEffect(){
+        for(var i=0;i< this.cardEffects.length;i++){
+            var card = this.cardEffects[i];
+            if(card.curIndex == 2){
+                card.playShowEffect(()=>{
+                    
+                });
+            }
+        }
+    }
+    
 }

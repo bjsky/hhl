@@ -19,9 +19,7 @@ export default class NetConst{
     //升级建筑
     public static BuildUpdate:number = 20001;
 
-    //灵石召唤
-    public static SummonWithLifeStone:number = 30001;
-    //视频召唤
-    public static SummonWithSeeVideo:number = 30002;
+    //召唤卡牌
+    public static CardSummon:number = 30001;
 }
 

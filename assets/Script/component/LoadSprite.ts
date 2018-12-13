@@ -17,7 +17,6 @@ export default class LoadSprite extends cc.Sprite{
     public url:string ="";
     @property
     public resType:"jpg"|"png" ="png";
-
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
