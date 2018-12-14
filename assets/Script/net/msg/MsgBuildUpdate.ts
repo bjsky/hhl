@@ -1,5 +1,5 @@
 import MessageBase from "./MessageBase";
-import { SResInfo, SBuildInfo } from "./MsgLogin";
+import { SResInfo, SBuildInfo, SUserInfo } from "./MsgLogin";
 import NetConst from "../NetConst";
 import BuildInfo from "../../model/BuildInfo";
 import { BUILD } from "../../module/build/BuildAssist";
@@ -20,12 +20,15 @@ export class SCBuildUpdate{
     public buildInfo:SBuildInfo = null;
     //最新的res
     public retRes:SResInfo = null;
+    //最新的用户数据
+    public userInfo:SUserInfo = null;
 
     public static parse(obj:any):SCBuildUpdate{
         var data:SCBuildUpdate = new SCBuildUpdate();
         data.buildType = obj.buildType;
         data.buildInfo = SBuildInfo.parse(obj.buildInfo);
         data.retRes = SResInfo.parse(obj.retRes);
+        data.userInfo = SUserInfo.parse(obj.userInfo);
         return data;
     }
 }
@@ -55,10 +58,12 @@ export default class MsgBuildUpdate extends MessageBase{
         var retRes:SResInfo = COMMON.resInfo.cloneServerInfo();
         retRes.gold -= needGold;
 
+        var userInfo = COMMON.userInfo.cloneAddExpServerInfo(info.buildLevelCfg.upGetExp);
         var json:any ={
             buildType:this.param.buildType,
             buildInfo:sInfo,
-            retRes:retRes
+            retRes:retRes,
+            userInfo:userInfo
         };
         
         this.resp = this.parse(json);

@@ -1,0 +1,4 @@
+[
+{"id":"1","name":"巨人之力","cardId":"7","activeNeedGrade":"3","activeNeedLevel":"15","skillDesc":"永久提高自身30%的生命","param1":"0.3"},
+{"id":"2","name":"重生","cardId":"7","activeNeedGrade":"5","activeNeedLevel":"25","skillDesc":"死亡后有30%几率重生，并获得50%生命","param1":"0.3;0.5"}
+]

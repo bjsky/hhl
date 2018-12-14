@@ -28,4 +28,34 @@ export default class UserInfo  extends InfoBase{
         var levelCfg = CFG.getCfgDataById(ConfigConst.PlayerLevel,this.level);
         this.totalExp = levelCfg.exp;
     }
+    public updateInfo(data:SUserInfo){
+        this.initFromServer(data);
+    }
+
+    public cloneServerInfo():SUserInfo{
+        var clone:SUserInfo = new SUserInfo();
+        clone.nickName = this.nickName;
+        clone.headPic = this.headPic;
+        clone.exp = this.exp;
+        clone.level = this.level;
+        return clone;
+    }
+    /**
+     * 获得增加经验后的经验和等级
+     * @param exp 增加的经验
+     */
+    public cloneAddExpServerInfo(exp:number):SUserInfo{
+        var curExp:number = this.exp + Number(exp);
+        var curLevel:number = this.level;
+        var total:number = Number(CFG.getCfgDataById(ConfigConst.PlayerLevel,curLevel).exp);
+        while(total!=-1 && curExp>total){
+            curLevel += 1;
+            curExp -= total;
+            total = Number(CFG.getCfgDataById(ConfigConst.PlayerLevel,curLevel).exp);
+        }
+        var clone:SUserInfo = this.cloneServerInfo();
+        clone.exp = curExp;
+        clone.level = curLevel;
+        return clone;
+    }
 }

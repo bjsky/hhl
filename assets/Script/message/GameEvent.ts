@@ -17,4 +17,8 @@ export default class GameEvent{
     public static Build_Update_Complete:string ="Build_Update_Complete";
     //资源消耗
     public static Res_update_Cost_Complete:string ="Res_update_Cost_Complete";
+    //用户数据更新
+    public static UserInfo_update_Complete:string = "UserInfo_update_Complete";
+    //抽卡完成
+    public static Card_summon_Complete:string="Card_summon_Complete";
 }

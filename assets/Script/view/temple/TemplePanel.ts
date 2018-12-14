@@ -11,6 +11,7 @@ import GameEvent from "../../message/GameEvent";
 import CardEffect from "../../component/CardEffect";
 import { NET } from "../../net/core/NetController";
 import MsgCardSummon, { CardSummonType } from "../../net/msg/MsgCardSummon";
+import { Card } from "../../module/card/CardAssist";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -52,6 +53,7 @@ export default class TemplePanel extends UIBase {
         this.lifeStoneBtn.node.on(cc.Node.EventType.TOUCH_START,this.onLifeStoneClick,this);
         this.videoBtn.node.on(cc.Node.EventType.TOUCH_START,this.onVideoClick,this);
         EVENT.on(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
+        EVENT.on(GameEvent.Card_summon_Complete,this.onCardSummon,this);
     }
 
     onDisable(){
@@ -59,6 +61,7 @@ export default class TemplePanel extends UIBase {
         this.videoBtn.node.off(cc.Node.EventType.TOUCH_START,this.onVideoClick,this);
 
         EVENT.off(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
+        EVENT.off(GameEvent.Card_summon_Complete,this.onCardSummon,this);
     }
 
     public setData(param:any){
@@ -72,17 +75,15 @@ export default class TemplePanel extends UIBase {
             return;
         }
         this.playStoneSummonEffect(()=>{
-            //召唤卡牌
-            NET.send(MsgCardSummon.createLocal(CardSummonType.LifeStone,this._stoneSummonCost),(msg:MsgCardSummon)=>{
-                
-            },this)
+            Card.summonCard(CardSummonType.LifeStone,this._stoneSummonCost);
         });
-        // UI.createPopUp(ResConst.CardDetail,{});
+        
     }
 
     
 
     private onVideoClick(e){
+        UI.createPopUp(ResConst.CardDetail,{});
         // UI.createPopUp(ResConst.CardGet,{});
     }
     onLoad () {
@@ -92,11 +93,13 @@ export default class TemplePanel extends UIBase {
     private initView(){
         var freeNum:number = CONSTANT.getStoneFreeSummonNum();
         if(COMMON.stoneSummonNum < freeNum){
+            this.stoneSummonFree.node.active = true;
             this.stoneSummonFree.string = "第"+(COMMON.stoneSummonNum +1)+"次免费";
             this.stoneCost.active = false;
             this._stoneSummonCost = 0;
         }else{
             this.stoneCost.active = true;
+            this.stoneSummonFree.node.active = false;
             this._stoneSummonCost = BUILD.getSummonStoneCostBuffed(COMMON.stoneSummonNum-freeNum);
             this.summonNeedLifeStone.string = StringUtil.formatReadableNumber(this._stoneSummonCost);
         
@@ -113,6 +116,10 @@ export default class TemplePanel extends UIBase {
         this.initView();
     }
 
+    private onCardSummon(){
+        this.initView();
+    }
+
 
     private _summonEffectPlaying:boolean = false;
     private _summonMoveEndCB:Function = null;
@@ -120,12 +127,12 @@ export default class TemplePanel extends UIBase {
     private _speedDir:number = 0; //0加速1匀速2减速3结束 
     private _speedNum:number = 0;
 
-    private Sspeed:number = 0.5;
+    private Sspeed:number = 0.4;
     private Aspeed:number = 0.1;
     private MaxSpeed:number =0.2;
-    private MaxSpeedNum:number = 10;
+    private MaxSpeedNum:number = 7;
     private Dspeed:number = 0.05;
-    private MinSpeed:number = 0.5;
+    private MinSpeed:number = 0.4;
     private playStoneSummonEffect(cb:Function){
         if(this._summonEffectPlaying)
             return;
@@ -173,7 +180,7 @@ export default class TemplePanel extends UIBase {
                 this.doSummonEffect();
             })
         )
-        console.log(this._during)
+        // console.log(this._during)
         this.node.runAction(summon);
     }
 

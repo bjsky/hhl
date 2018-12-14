@@ -1,6 +1,6 @@
 import UserInfo from "./model/UserInfo";
 import ResInfo from "./model/ResInfo";
-import { SCLoginData, SResInfo } from "./net/msg/MsgLogin";
+import { SCLoginData, SResInfo, SUserInfo } from "./net/msg/MsgLogin";
 import { GUIDE } from "./manager/GuideManager";
 import BuildInfo from "./model/BuildInfo";
 import { BUILD } from "./module/build/BuildAssist";
@@ -61,6 +61,10 @@ export default class CommonData{
 
     public updateResInfo(data:SResInfo){
         this.resInfo.updateInfo(data);
+    }
+
+    public updateUserInfo(data:SUserInfo){
+        this.userInfo.updateInfo(data);
     }
 }
 
