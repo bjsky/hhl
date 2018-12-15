@@ -1,6 +1,7 @@
 
 import NetConst from "../NetConst";
 import MessageBase from "./MessageBase";
+import { SCardInfo } from "./MsgCardSummon";
 
 /**
  * 登录客户端数据
@@ -29,6 +30,10 @@ export class SCLoginData {
     public stoneSummonNum:number = 0;
     //祭坛视频召唤次数
     public videoSummonNum:number = 0;
+    //拥有的卡牌
+    public ownerCards:Array<SCardInfo> = [];
+    //所有卡牌
+    public lineUpCardsUuid:Array<string> = [];
 
     public static parse(obj:any):SCLoginData{
         var data:SCLoginData = new SCLoginData();
@@ -46,6 +51,12 @@ export class SCLoginData {
         }
         data.stoneSummonNum = obj.stoneSummonNum;
         data.videoSummonNum = obj.videoSummonNum;
+        obj.ownerCards.forEach(cardObj => {
+            data.ownerCards.push(SCardInfo.parse(cardObj));
+        });
+        obj.lineUpCardsUuid.forEach(lineUpCardUUid => {
+            data.lineUpCardsUuid.push(lineUpCardUUid);
+        });
 
         return data;
     }
@@ -174,7 +185,9 @@ export default class MsgLogin extends MessageBase {
                 {type:1,level:2,locked:true},
                 {type:2,level:1,locked:true},
                 {type:3,level:1,locked:true},],
-            stoneSummonNum:0,videoSummonNum:0
+            stoneSummonNum:0,videoSummonNum:0,
+            ownerCards:[],
+            lineUpCardsUuid:[]
         };
         this.resp = this.parse(json);
         return this;

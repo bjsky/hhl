@@ -43,7 +43,7 @@ export default class ConfigManager{
      * @param cfgName  表名
      * @param args  key,value,key,value....
      */
-    public getCfgByKey(cfgName:string,...args):any
+    public getCfgByKey(cfgName:string,...args):Array<any>
     {
         let len = args.length
         if(len%2!=0)

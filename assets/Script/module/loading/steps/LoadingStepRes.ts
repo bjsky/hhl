@@ -7,7 +7,7 @@ export const ResConst = {
     AlertPanel:"prefabs/alertPanel",
     TipPanel:"prefabs/tipPanel",
     BuildPanel:"prefabs/buildPanel",
-    CardGet:"prefabs/cardGet",
+    cardSimple:"prefabs/cardSimple",
     CardDetail:"prefabs/cardDedtail",
     TempleBuild:"prefabs/templeBuild",
     GuideTap:"prefabs/guideTap"

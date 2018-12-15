@@ -3,11 +3,20 @@ import NunmberUtil from "../../utils/NumberUtil";
 import { CFG } from "../../manager/ConfigManager";
 import { ConfigConst } from "../loading/steps/LoadingStepConfig";
 import { NET } from "../../net/core/NetController";
-import MsgCardSummon, { CardSummonType } from "../../net/msg/MsgCardSummon";
+import MsgCardSummon, { CardSummonType, SCardInfo } from "../../net/msg/MsgCardSummon";
 import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
 import { ResType } from "../../model/ResInfo";
 import { COMMON } from "../../CommonData";
+import CardInfo from "../../model/CardInfo";
+
+export enum CardRaceType{
+    WuZu = 1,   //巫族
+    YaoZu,      //妖族
+    XianJie,    //仙界
+    RenJie      //人界
+}
+
 
 export default class CardAssist{
     private static _instance: CardAssist = null;
@@ -18,6 +27,11 @@ export default class CardAssist{
         }
         return CardAssist._instance;
     }
+    //所有卡牌
+    public cardsMap:any = {};
+    //上阵的卡牌
+    public lineUpCards:Array<CardInfo> = [];
+
 
     /**
      * 获取灵石抽取取得的品级
@@ -56,13 +70,26 @@ export default class CardAssist{
 
             COMMON.updateResInfo(msg.resp.retRes);
             COMMON.updateUserInfo(msg.resp.userInfo);
+            this.addNewCard(msg.resp.newCard);
             COMMON.stoneSummonNum = msg.resp.stoneSummonNum;
             COMMON.videoSummonNum = msg.resp.videoSummonNum;
 
-            EVENT.emit(GameEvent.Card_summon_Complete);
+            EVENT.emit(GameEvent.Card_summon_Complete,{uuid:msg.resp.newCard.uuid});
             EVENT.emit(GameEvent.Res_update_Cost_Complete,{types:[{type:ResType.lifeStone,value:stoneCost}]});
             EVENT.emit(GameEvent.UserInfo_update_Complete);
         },this)
+    }
+
+    //获得一张卡牌
+    public addNewCard(card:SCardInfo){
+        var newCard:CardInfo = new CardInfo();
+        newCard.initFormServer(card);
+        this.cardsMap[newCard.uuid] = newCard;
+    }
+
+    //根据uuid查找卡牌
+    public getCardByUUid(uuid:string){
+        return this.cardsMap[uuid];
     }
 }
 export var Card = CardAssist.getInstance();

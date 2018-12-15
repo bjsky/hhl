@@ -55,6 +55,10 @@ export default class Constant{
     public getVideoSummonWeightArr():string[]{
         return this._constantKeyValueMap["video_summon_rate"].split(";");
     }
+    //获取种族名称
+    public getRaceNameWithId(raceId:number):string{
+        return this._constantKeyValueMap["race_name"].split(";")[raceId-1];
+    }
 }
 
 export var CONSTANT:Constant = Constant.getInstance();

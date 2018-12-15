@@ -50,6 +50,10 @@ export default class UIManager{
     }
 
     private _uiPool:UIPool = new UIPool();
+    //获取ui池
+    public get uiPool(){
+        return this._uiPool;
+    }
 
     private _isLoading:boolean = false;
     public loadUI(res:string,data:any,parent:cc.Node,complete?:Function){

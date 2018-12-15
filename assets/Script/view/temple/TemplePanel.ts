@@ -53,7 +53,7 @@ export default class TemplePanel extends UIBase {
         this.lifeStoneBtn.node.on(cc.Node.EventType.TOUCH_START,this.onLifeStoneClick,this);
         this.videoBtn.node.on(cc.Node.EventType.TOUCH_START,this.onVideoClick,this);
         EVENT.on(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
-        EVENT.on(GameEvent.Card_summon_Complete,this.onCardSummon,this);
+        EVENT.on(GameEvent.Card_summon_Complete,this.onCardSummoned,this);
     }
 
     onDisable(){
@@ -61,7 +61,7 @@ export default class TemplePanel extends UIBase {
         this.videoBtn.node.off(cc.Node.EventType.TOUCH_START,this.onVideoClick,this);
 
         EVENT.off(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
-        EVENT.off(GameEvent.Card_summon_Complete,this.onCardSummon,this);
+        EVENT.off(GameEvent.Card_summon_Complete,this.onCardSummoned,this);
     }
 
     public setData(param:any){
@@ -116,13 +116,14 @@ export default class TemplePanel extends UIBase {
         this.initView();
     }
 
-    private onCardSummon(){
+    private onCardSummoned(e){
         this.initView();
+        this.showCardGetEffect(e.detail.uuid);
     }
 
 
     private _summonEffectPlaying:boolean = false;
-    private _summonMoveEndCB:Function = null;
+    private _summonMoveEnd:Function = null;
     private _during:number =0;
     private _speedDir:number = 0; //0加速1匀速2减速3结束 
     private _speedNum:number = 0;
@@ -136,7 +137,7 @@ export default class TemplePanel extends UIBase {
     private playStoneSummonEffect(cb:Function){
         if(this._summonEffectPlaying)
             return;
-        this._summonMoveEndCB = cb;
+        this._summonMoveEnd = cb;
         this._summonEffectPlaying = true;
         this._during = this.Sspeed;
         this._speedDir = 0;
@@ -165,8 +166,7 @@ export default class TemplePanel extends UIBase {
             }
         }else if(this._speedDir == 3){
             this.node.stopAllActions();
-            this._summonEffectPlaying = false;
-            this._summonMoveEndCB && this._summonMoveEndCB();
+            this._summonMoveEnd && this._summonMoveEnd();
             return;
         }
         var summon = cc.sequence(
@@ -184,12 +184,12 @@ export default class TemplePanel extends UIBase {
         this.node.runAction(summon);
     }
 
-    public showCardGetEffect(){
+    public showCardGetEffect(uuid:string){
         for(var i=0;i< this.cardEffects.length;i++){
             var card = this.cardEffects[i];
             if(card.curIndex == 2){
-                card.playShowEffect(()=>{
-                    
+                card.playShowEffect(uuid,()=>{
+                    this._summonEffectPlaying = false;
                 });
             }
         }

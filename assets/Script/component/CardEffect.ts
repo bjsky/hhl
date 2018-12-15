@@ -1,3 +1,10 @@
+import CardInfo from "../model/CardInfo";
+import { Card } from "../module/card/CardAssist";
+import { UI } from "../manager/UIManager";
+import { ResConst } from "../module/loading/steps/LoadingStepRes";
+import CardSimple, { CardSimpleShowType } from "../view/card/CardSimple";
+import UIBase from "./UIBase";
+
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -21,6 +28,8 @@ export default class CardEffect extends cc.Component {
 
     // LIFE-CYCLE CALLBACKS:
 
+    private _cardFrontUI:CardSimple  = null;
+
     onLoad(){
         this.node.position = this.PosArr[this.curIndex];
         this.node.scale = this.ScaleArr[this.curIndex];
@@ -28,6 +37,11 @@ export default class CardEffect extends cc.Component {
 
     private _during:number = 0.3;
     public play(during:number){
+        if(this._cardFrontUI!=null){
+            this._cardFrontUI.node.active = true;
+            UI.removeUI(this._cardFrontUI.node);
+            this._cardFrontUI = null;
+        }
         this.node.stopAllActions();
         this._during = during;
         this.curIndex +=1;
@@ -75,8 +89,21 @@ export default class CardEffect extends cc.Component {
     }
 
     private _showEffectEndCB:Function = null;
-    public playShowEffect(cb:Function){
+    public playShowEffect(cardUuid:string,cb:Function){
         this._showEffectEndCB = cb;
+        this.node.stopAllActions();
+        UI.loadUI(ResConst.cardSimple,{uuid:cardUuid,type:CardSimpleShowType.Small},this.node,(base:UIBase)=>{
+            this._cardFrontUI = base as CardSimple;
+            this._cardFrontUI.node.active = false;
+            var scaleOut = cc.sequence(cc.delayTime(1),cc.scaleTo(0.15,0,1),cc.callFunc(()=>{
+                this._cardFrontUI.node.active = true;
+                var scaleIn = cc.sequence(cc.scaleTo(0.15,1,1),cc.callFunc(()=>{
+                    this._showEffectEndCB && this._showEffectEndCB();
+                }));
+                this.node.runAction(scaleIn);
+            }))
+            this.node.runAction(scaleOut);
+        })
     }
 
     // onLoad () {}

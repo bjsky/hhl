@@ -21,9 +21,6 @@ export default class LoadSprite extends cc.Sprite{
 
     // onLoad () {}
 
-    start () {
-        this.load(this.url,this.resType)
-    }
 
     // update (dt) {}
 
@@ -39,7 +36,7 @@ export default class LoadSprite extends cc.Sprite{
         let self = this;
         if (path.indexOf("http://") >= 0) {
              cc.loader.load({url: path, type: type},this.loadComplete.bind(this));
-        } else if (path.indexOf("resources") >= 0) {
+        }else if (path.indexOf("resources") >= 0) {
             let __self = this;
             var newPath = this.checkUrlPath(path);
             cc.loader.loadRes(newPath,cc.SpriteFrame,
@@ -47,7 +44,14 @@ export default class LoadSprite extends cc.Sprite{
                     __self.spriteFrame = resource;
                 }
             );
-        } 
+        }else{
+            let __self = this;
+            cc.loader.loadRes(path,cc.SpriteFrame,
+                (error: Error, resource: cc.SpriteFrame) => {
+                    __self.spriteFrame = resource;
+                }
+            );
+        }
     }
 
     private loadComplete(err,tex)
