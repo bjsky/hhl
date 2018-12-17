@@ -95,7 +95,7 @@ export default class CardEffect extends cc.Component {
         UI.loadUI(ResConst.cardSimple,{uuid:cardUuid,type:CardSimpleShowType.Small},this.node,(base:UIBase)=>{
             this._cardFrontUI = base as CardSimple;
             this._cardFrontUI.node.active = false;
-            var scaleOut = cc.sequence(cc.delayTime(1),cc.scaleTo(0.15,0,1),cc.callFunc(()=>{
+            var scaleOut = cc.sequence(cc.scaleTo(0.15,0,1),cc.callFunc(()=>{
                 this._cardFrontUI.node.active = true;
                 var scaleIn = cc.sequence(cc.scaleTo(0.15,1,1),cc.callFunc(()=>{
                     this._showEffectEndCB && this._showEffectEndCB();

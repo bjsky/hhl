@@ -88,10 +88,16 @@ export default class BuildPanel extends UIBase{
         var res:string = "";
         switch(this._buildType){
             case BuildType.Temple:
-            res = ResConst.TempleBuild;
+            res = ResConst.TemplePanel;
+            break;
+            case BuildType.Battle:
+            res = ResConst.BattlePanel;
+            break;
+            case BuildType.Hero:
+            res = ResConst.HeroPanel;
             break;
             default:
-            res = ResConst.TempleBuild;
+            res = ResConst.TemplePanel;
             break;
         }
         UI.loadUI(res,{type:this._buildType},this.panelNodeload,this.loadComplete.bind(this));

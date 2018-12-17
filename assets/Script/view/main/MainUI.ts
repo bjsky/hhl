@@ -183,6 +183,6 @@ export default class MainUI extends UIBase {
     }
 
     private onTaskBtnTouch(e){
-        UI.showAlert("功能暂未开放，敬请期待！",null,null,AlertBtnType.OKAndCancel);
+        // UI.showAlert("功能暂未开放，敬请期待！",null,null,AlertBtnType.OKAndCancel);
     }
 }

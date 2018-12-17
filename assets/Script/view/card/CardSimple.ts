@@ -3,6 +3,7 @@ import UIBase from "../../component/UIBase";
 import CardInfo from "../../model/CardInfo";
 import { Card } from "../../module/card/CardAssist";
 import { CONSTANT } from "../../Constant";
+import StringUtil from "../../utils/StringUtil";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -45,6 +46,11 @@ export default class CardSimple extends UIBase {
     cardSmallSrc: LoadSprite = null;
     @property(LoadSprite)
     cardSmallStar: LoadSprite = null;
+    @property(cc.Label)
+    cardSmallLevel: cc.Label = null;
+    @property(cc.Label)
+    cardSmallPower: cc.Label = null;
+
 
 
     // LIFE-CYCLE CALLBACKS:
@@ -86,6 +92,8 @@ export default class CardSimple extends UIBase {
         this.cardSmallRaceName.string = CONSTANT.getRaceNameWithId(this._cardInfo.cardInfoCfg.raceId);
         this.cardSmallStar.load("ui/Common/star"+this._cardInfo.grade);
         this.cardSmallSrc.load("ui/image/card/"+this._cardInfo.cardInfoCfg.imgPath);
+        this.cardSmallLevel.string = "Lv.1";
+        this.cardSmallPower.string = "战力：" + StringUtil.formatReadableNumber(this._cardInfo.carUpCfg.power) ;
     }
 
     onDisable(){

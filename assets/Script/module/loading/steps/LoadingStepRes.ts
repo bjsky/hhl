@@ -8,8 +8,12 @@ export const ResConst = {
     TipPanel:"prefabs/tipPanel",
     BuildPanel:"prefabs/buildPanel",
     cardSimple:"prefabs/cardSimple",
-    CardDetail:"prefabs/cardDedtail",
-    TempleBuild:"prefabs/templeBuild",
+    cardDescrip:"prefabs/cardDescrip",
+    TemplePanel:"prefabs/templePanel",
+    HeroPanel:"prefabs/heroPanel",
+    BattlePanel:"prefabs/battlePanel",
+    LineUpPopup:"prefabs/lineUpPopup",
+    CardRaceHelp:"prefabs/cardRaceHelp",
     GuideTap:"prefabs/guideTap"
 }
 /**

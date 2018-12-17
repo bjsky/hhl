@@ -1,7 +1,7 @@
 import SceneBase from "./SceneBase";
 import { UI } from "../manager/UIManager";
 import { ResConst } from "../module/loading/steps/LoadingStepRes";
-import AlertPanel from "../view/AlertPanel";
+import AlertPanel, { AlertBtnType } from "../view/AlertPanel";
 import { BuildType } from "../view/BuildPanel";
 import TouchHandler from "../component/TouchHandler";
 import { COMMON } from "../CommonData";
@@ -109,7 +109,8 @@ export default class CityScene extends SceneBase {
     }
     private onCastleTouch(e){
         // UI.showTip("你妈逼哦");
-        UI.createPopUp(ResConst.BuildPanel,{buildType:BuildType.Castle});
+        UI.showAlert("功能暂未开放，敬请期待！",null,null,AlertBtnType.OKAndCancel);
+        // UI.createPopUp(ResConst.BuildPanel,{buildType:BuildType.Castle});
     }
     private onTempleTouch(e){
         UI.createPopUp(ResConst.BuildPanel,{buildType:BuildType.Temple});

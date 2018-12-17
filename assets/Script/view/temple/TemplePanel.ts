@@ -32,6 +32,8 @@ export default class TemplePanel extends UIBase {
     lifeStoneBtn: cc.Button = null;
     @property(cc.Button)
     videoBtn: cc.Button = null;
+    @property(cc.Button)
+    helpBtn: cc.Button = null;
 
     @property(cc.Label)
     summonNeedLifeStone: cc.Label = null;
@@ -41,6 +43,7 @@ export default class TemplePanel extends UIBase {
     stoneSummonFree: cc.Label = null;
     @property(cc.Node)
     stoneCost: cc.Node = null;
+    
     @property([CardEffect])
     cardEffects: Array<CardEffect> = [];
 
@@ -52,6 +55,7 @@ export default class TemplePanel extends UIBase {
     onEnable(){
         this.lifeStoneBtn.node.on(cc.Node.EventType.TOUCH_START,this.onLifeStoneClick,this);
         this.videoBtn.node.on(cc.Node.EventType.TOUCH_START,this.onVideoClick,this);
+        this.helpBtn.node.on(cc.Node.EventType.TOUCH_START,this.onHelpClick,this);
         EVENT.on(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
         EVENT.on(GameEvent.Card_summon_Complete,this.onCardSummoned,this);
     }
@@ -59,6 +63,7 @@ export default class TemplePanel extends UIBase {
     onDisable(){
         this.lifeStoneBtn.node.off(cc.Node.EventType.TOUCH_START,this.onLifeStoneClick,this);
         this.videoBtn.node.off(cc.Node.EventType.TOUCH_START,this.onVideoClick,this);
+        this.helpBtn.node.off(cc.Node.EventType.TOUCH_START,this.onHelpClick,this);
 
         EVENT.off(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
         EVENT.off(GameEvent.Card_summon_Complete,this.onCardSummoned,this);
@@ -83,11 +88,14 @@ export default class TemplePanel extends UIBase {
     
 
     private onVideoClick(e){
-        UI.createPopUp(ResConst.CardDetail,{});
+        UI.createPopUp(ResConst.cardDescrip,{});
         // UI.createPopUp(ResConst.CardGet,{});
     }
     onLoad () {
         this.initView();
+    }
+    private onHelpClick(e){
+        UI.createPopUp(ResConst.CardRaceHelp,{});
     }
 
     private initView(){
