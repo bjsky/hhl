@@ -18,15 +18,16 @@ import StringUtil from "../../utils/StringUtil";
 const {ccclass, property} = cc._decorator;
 
 export enum CardSimpleShowType{
-    Normal = 0,
-    Small
+    Owner = 0,
+    Hero
 }
 @ccclass
-export default class CardSimple extends UIBase {
-
-
+export default class CardSmall extends UIBase {
     @property(cc.Node)
-    cardNode: cc.Node = null;
+    ownerNode: cc.Node = null;
+    @property(cc.Node)
+    heorNode: cc.Node = null;
+
     @property(cc.Label)
     cardName: cc.Label = null;
     @property(cc.Label)
@@ -35,21 +36,14 @@ export default class CardSimple extends UIBase {
     cardSrc: LoadSprite = null;
     @property(LoadSprite)
     cardStar: LoadSprite = null;
-
-    @property(cc.Node)
-    cardSmallNode: cc.Node = null;
     @property(cc.Label)
-    cardSmallName: cc.Label = null;
+    cardLevel: cc.Label = null;
     @property(cc.Label)
-    cardSmallRaceName: cc.Label = null;
-    @property(LoadSprite)
-    cardSmallSrc: LoadSprite = null;
-    @property(LoadSprite)
-    cardSmallStar: LoadSprite = null;
+    cardPower: cc.Label = null;
     @property(cc.Label)
-    cardSmallLevel: cc.Label = null;
+    cardHeroName: cc.Label = null;
     @property(cc.Label)
-    cardSmallPower: cc.Label = null;
+    cardHeroRaceName: cc.Label = null;
 
 
 
@@ -68,32 +62,33 @@ export default class CardSimple extends UIBase {
 
     onEnable(){
 
-        if(this._showType == CardSimpleShowType.Normal ){
-            this.cardNode.active = true;
-            this.cardSmallNode.active = false;
-            this.setView();
-        }else if(this._showType == CardSimpleShowType.Small){
-            this.cardNode.active = false;
-            this.cardSmallNode.active = true;
-            this.setSmallView();
+        if(this._showType == CardSimpleShowType.Hero ){
+            this.heorNode.active = true;
+            this.ownerNode.active = false;
+            this.setHeroView();
+        }else if(this._showType == CardSimpleShowType.Owner){
+
+            this.heorNode.active = false;
+            this.ownerNode.active = true;
+            this.setOwnerView();
         }
         
     }
 
-    private setView(){
+    private setHeroView(){
+        // this.cardName.string = this._cardInfo.cardInfoCfg.name;
+        // this.cardRaceName.string = CONSTANT.getRaceNameWithId(this._cardInfo.cardInfoCfg.raceId);
+        // this.cardStar.load("ui/Common/star"+this._cardInfo.grade);
+        // this.cardSrc.load("ui/image/card/"+this._cardInfo.cardInfoCfg.imgPath);
+    }
+
+    private setOwnerView(){
         this.cardName.string = this._cardInfo.cardInfoCfg.name;
         this.cardRaceName.string = CONSTANT.getRaceNameWithId(this._cardInfo.cardInfoCfg.raceId);
         this.cardStar.load("ui/Common/star"+this._cardInfo.grade);
         this.cardSrc.load("ui/image/card/"+this._cardInfo.cardInfoCfg.imgPath);
-    }
-
-    private setSmallView(){
-        this.cardSmallName.string = this._cardInfo.cardInfoCfg.name;
-        this.cardSmallRaceName.string = CONSTANT.getRaceNameWithId(this._cardInfo.cardInfoCfg.raceId);
-        this.cardSmallStar.load("ui/Common/star"+this._cardInfo.grade);
-        this.cardSmallSrc.load("ui/image/card/"+this._cardInfo.cardInfoCfg.imgPath);
-        this.cardSmallLevel.string = "Lv.1";
-        this.cardSmallPower.string = "战力：" + StringUtil.formatReadableNumber(this._cardInfo.carUpCfg.power) ;
+        this.cardLevel.string = "Lv."+this._cardInfo.level;
+        this.cardPower.string = "战力：" + StringUtil.formatReadableNumber(this._cardInfo.carUpCfg.power) ;
     }
 
     onDisable(){

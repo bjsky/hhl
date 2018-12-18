@@ -7,7 +7,8 @@ export default class GameEvent{
     //加载
     public static LOADING_PROGRESS:string = "LOADING_PROGRESS";
     public static LOADING_COMPLETE:string = "LOADING_COMPLETE";
-
+    //遮罩点击
+    public static Mask_touch:string = "Mask_touch";
     //场景
     public static Scene_Change_Complete:string = "Scene_Change_Complete";
     
@@ -21,4 +22,6 @@ export default class GameEvent{
     public static UserInfo_update_Complete:string = "UserInfo_update_Complete";
     //抽卡完成
     public static Card_summon_Complete:string="Card_summon_Complete";
+    //打开界面
+    public static Goto_build_panel:string = "Goto_build_panel";
 }

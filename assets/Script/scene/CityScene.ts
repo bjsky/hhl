@@ -2,7 +2,7 @@ import SceneBase from "./SceneBase";
 import { UI } from "../manager/UIManager";
 import { ResConst } from "../module/loading/steps/LoadingStepRes";
 import AlertPanel, { AlertBtnType } from "../view/AlertPanel";
-import { BuildType } from "../view/BuildPanel";
+import BuildPanel, { BuildType } from "../view/BuildPanel";
 import TouchHandler from "../component/TouchHandler";
 import { COMMON } from "../CommonData";
 import { GUIDE, GuideTypeEnum } from "../manager/GuideManager";
@@ -37,6 +37,13 @@ export default class CityScene extends SceneBase {
     @property(cc.Node)
     content:cc.Node = null;
 
+    private _activeBuild:BuildPanel = null;
+    public set activeBuild(b:BuildPanel){
+        this._activeBuild = b;
+    }
+    public get activeBuild():BuildPanel{
+        return this._activeBuild;
+    }
     // LIFE-CYCLE CALLBACKS:
     onLoad () {
         if(GUIDE.isInGuide && GUIDE.guideInfo.type == GuideTypeEnum.GuideStory){
@@ -66,6 +73,7 @@ export default class CityScene extends SceneBase {
         this.buildBattle.on(TouchHandler.TOUCH_CLICK,this.onBattleTouch,this);
         
         EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
+        EVENT.on(GameEvent.Goto_build_panel,this.onGotoPanelFast,this);
     }
     onDisable(){
         this.buildCastle.off(TouchHandler.TOUCH_CLICK,this.onCastleTouch,this);
@@ -74,16 +82,28 @@ export default class CityScene extends SceneBase {
         this.buildBattle.off(TouchHandler.TOUCH_CLICK,this.onBattleTouch,this);
 
         EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
+        EVENT.off(GameEvent.Goto_build_panel,this.onGotoPanelFast,this);
     }
 
     private onGuideTouch(e){
         var guideId = e.detail.id;
         var nodeName = e.detail.name;
         if(nodeName == "building_temple"){
-            this.onTempleTouch(null);
+            this.openBuildUI(BuildType.Temple);
         }
 
         GUIDE.nextGuide(guideId);
+    }
+
+    private onGotoPanelFast(e){
+        var buildType = e.detail.type;
+        if(this._activeBuild){
+            this._activeBuild.closeUI(()=>{
+                this.openBuildUI(buildType);
+            })
+        }else{
+            this.openBuildUI(buildType);
+        }
     }
 
     public getBuilding(type:number){
@@ -109,19 +129,35 @@ export default class CityScene extends SceneBase {
     }
     private onCastleTouch(e){
         // UI.showTip("你妈逼哦");
-        UI.showAlert("功能暂未开放，敬请期待！",null,null,AlertBtnType.OKAndCancel);
+        this.openBuildUI(BuildType.Castle);
         // UI.createPopUp(ResConst.BuildPanel,{buildType:BuildType.Castle});
     }
     private onTempleTouch(e){
-        UI.createPopUp(ResConst.BuildPanel,{buildType:BuildType.Temple});
+        this.openBuildUI(BuildType.Temple);
     }
     private onHeroTouch(e){
         // UI.showAlert("这是个弹窗");
-        UI.createPopUp(ResConst.BuildPanel,{buildType:BuildType.Hero});
+        this.openBuildUI(BuildType.Hero)
     }
     private onBattleTouch(e){
-        UI.createPopUp(ResConst.BuildPanel,{buildType:BuildType.Battle});
-        
+        this.openBuildUI(BuildType.Battle);
+    }
+
+    private openBuildUI(type:BuildType){
+        switch(type){
+            case BuildType.Castle:
+            UI.showAlert("功能暂未开放，敬请期待！",null,null,AlertBtnType.OKAndCancel);
+            break;
+            case BuildType.Temple:
+            UI.createPopUp(ResConst.BuildPanel,{buildType:BuildType.Temple});
+            break;
+            case BuildType.Hero:
+            UI.createPopUp(ResConst.BuildPanel,{buildType:BuildType.Hero});
+            break;
+            case BuildType.Battle:
+            UI.createPopUp(ResConst.BuildPanel,{buildType:BuildType.Battle});
+            break;
+        }
     }
 
     private _zoomDuring:number =0.3;

@@ -109,6 +109,8 @@ export default class BuildPanel extends UIBase{
         this._buildUI = ui;
         this.doShow(()=>{
             // this.buildName.node.runAction(cc.fadeIn(0.1));
+            var scene:CityScene = SCENE.CurScene as CityScene;
+            scene.activeBuild = this;
         });
     }
 
@@ -127,13 +129,23 @@ export default class BuildPanel extends UIBase{
         EVENT.off(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
     }
 
+    public closeUI(cb:Function){
+        this.doClose(cb);
+    }
     private onClose(){
+        this.doClose();
+    }
+
+    private doClose(cb?:Function){
         this.doHide(false,()=>{
             if(this._buildUI!=null){
                 UI.removeUI(this._buildUI.node);
                 this._buildUI = null;
             }
             UI.closePopUp(this.node);
+            var scene:CityScene = SCENE.CurScene as CityScene;
+            scene.activeBuild = null;
+            cb && cb();
         })
     }
 

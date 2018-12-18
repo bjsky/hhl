@@ -4,6 +4,8 @@ import { AlertBtnType } from "../view/AlertPanel";
 import { ResConst } from "../module/loading/steps/LoadingStepRes";
 import { DirectionEnum } from "../CommonData";
 import { TipTypeEnum } from "../view/TipPanel";
+import { EVENT } from "../message/EventCenter";
+import GameEvent from "../message/GameEvent";
 
 /**
  * 管理各种界面单例,层级
@@ -123,7 +125,7 @@ export default class UIManager{
     }
 
     private onMaskClick(e){
-
+        EVENT.emit(GameEvent.Mask_touch);
     }
 
     public createPopUp(res:string,data:any){

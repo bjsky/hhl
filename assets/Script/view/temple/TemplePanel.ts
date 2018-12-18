@@ -11,7 +11,9 @@ import GameEvent from "../../message/GameEvent";
 import CardEffect from "../../component/CardEffect";
 import { NET } from "../../net/core/NetController";
 import MsgCardSummon, { CardSummonType } from "../../net/msg/MsgCardSummon";
-import { Card } from "../../module/card/CardAssist";
+import { Card, CardRaceType } from "../../module/card/CardAssist";
+import { BuildType } from "../BuildPanel";
+import ButtonGroup from "../../component/ButtonGroup";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -34,6 +36,8 @@ export default class TemplePanel extends UIBase {
     videoBtn: cc.Button = null;
     @property(cc.Button)
     helpBtn: cc.Button = null;
+    @property(cc.Button)
+    buildHeroBtn: cc.Button = null;
 
     @property(cc.Label)
     summonNeedLifeStone: cc.Label = null;
@@ -47,6 +51,9 @@ export default class TemplePanel extends UIBase {
     @property([CardEffect])
     cardEffects: Array<CardEffect> = [];
 
+    @property(ButtonGroup)
+    btnGroup:ButtonGroup = null;
+
     private _buildType:number = 0;
     private _buildInfo:BuildInfo = null;
 
@@ -56,6 +63,9 @@ export default class TemplePanel extends UIBase {
         this.lifeStoneBtn.node.on(cc.Node.EventType.TOUCH_START,this.onLifeStoneClick,this);
         this.videoBtn.node.on(cc.Node.EventType.TOUCH_START,this.onVideoClick,this);
         this.helpBtn.node.on(cc.Node.EventType.TOUCH_START,this.onHelpClick,this);
+        this.buildHeroBtn.node.on(cc.Node.EventType.TOUCH_START,this.onGotoHeroFast,this);
+        this.btnGroup.node.on(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.groupSelectChange,this);
+
         EVENT.on(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
         EVENT.on(GameEvent.Card_summon_Complete,this.onCardSummoned,this);
     }
@@ -64,6 +74,8 @@ export default class TemplePanel extends UIBase {
         this.lifeStoneBtn.node.off(cc.Node.EventType.TOUCH_START,this.onLifeStoneClick,this);
         this.videoBtn.node.off(cc.Node.EventType.TOUCH_START,this.onVideoClick,this);
         this.helpBtn.node.off(cc.Node.EventType.TOUCH_START,this.onHelpClick,this);
+        this.buildHeroBtn.node.off(cc.Node.EventType.TOUCH_START,this.onGotoHeroFast,this);
+        this.btnGroup.node.off(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.groupSelectChange,this);
 
         EVENT.off(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
         EVENT.off(GameEvent.Card_summon_Complete,this.onCardSummoned,this);
@@ -93,11 +105,15 @@ export default class TemplePanel extends UIBase {
     }
     onLoad () {
         this.initView();
+        this.initList();
     }
     private onHelpClick(e){
         UI.createPopUp(ResConst.CardRaceHelp,{});
     }
 
+    private onGotoHeroFast(e){
+        EVENT.emit(GameEvent.Goto_build_panel,{type:BuildType.Hero});
+    }
     private initView(){
         var freeNum:number = CONSTANT.getStoneFreeSummonNum();
         if(COMMON.stoneSummonNum < freeNum){
@@ -113,6 +129,24 @@ export default class TemplePanel extends UIBase {
         
         }
         this.videoLeftTime.string = "剩余："+ (CONSTANT.getVideoFreeSummonNum() - COMMON.videoSummonNum);
+    }
+
+    private initList(){
+        this.btnGroup.labels = "全部;" + CONSTANT.getRaceNameWithId(CardRaceType.WuZu)+";"
+        + CONSTANT.getRaceNameWithId(CardRaceType.YaoZu)+";"
+        + CONSTANT.getRaceNameWithId(CardRaceType.XianJie)+";"
+        + CONSTANT.getRaceNameWithId(CardRaceType.RenJie);
+        this.btnGroup.selectIndex = 0;
+        this.initListWithType(0);
+    }
+
+    private groupSelectChange(e){
+        var idx = e.detail.index;
+        this.initListWithType(idx);
+    }
+
+    private initListWithType(index:number){
+        console.log("____idx:"+index)
     }
 
     start () {
@@ -193,14 +227,21 @@ export default class TemplePanel extends UIBase {
     }
 
     public showCardGetEffect(uuid:string){
+        var centerCard:CardEffect = null;
         for(var i=0;i< this.cardEffects.length;i++){
             var card = this.cardEffects[i];
             if(card.curIndex == 2){
-                card.playShowEffect(uuid,()=>{
-                    this._summonEffectPlaying = false;
-                });
+                centerCard = card;
+                break;
             }
         }
+
+        centerCard.playShowEffect(uuid,()=>{
+            var wPos:cc.Vec2 = centerCard.node.parent.convertToWorldSpaceAR(centerCard.node.position);
+            var toPos:cc.Vec2 = this.buildHeroBtn.node.parent.convertToWorldSpaceAR(this.buildHeroBtn.node.position);
+            UI.createPopUp(ResConst.cardBig,{cardUUid:uuid,fPos:wPos,tPos:toPos})
+            this._summonEffectPlaying = false;
+        });
     }
     
 }
