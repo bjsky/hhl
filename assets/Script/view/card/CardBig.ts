@@ -82,7 +82,7 @@ export default class CardBig extends UIBase{
         this.cardName.string = this._cardInfo.cardInfoCfg.name;
         this.cardRaceName.string = CONSTANT.getRaceNameWithId(this._cardInfo.cardInfoCfg.raceId);
         this.cardStar.load("ui/Common/star"+this._cardInfo.grade);
-        this.cardSrc.load("ui/image/card/"+this._cardInfo.cardInfoCfg.imgPath);
+        this.cardSrc.load("ui/image/card/card1")//+this._cardInfo.cardInfoCfg.imgPath);
         this.cardLevel.string = "Lv."+this._cardInfo.level;
         this.cardPower.string = "战力：" + StringUtil.formatReadableNumber(this._cardInfo.carUpCfg.power) ;
     }

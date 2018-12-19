@@ -14,6 +14,10 @@ import MsgCardSummon, { CardSummonType } from "../../net/msg/MsgCardSummon";
 import { Card, CardRaceType } from "../../module/card/CardAssist";
 import { BuildType } from "../BuildPanel";
 import ButtonGroup from "../../component/ButtonGroup";
+import { CFG } from "../../manager/ConfigManager";
+import { ConfigConst } from "../../module/loading/steps/LoadingStepConfig";
+import DList, { DListDirection } from "../../component/DList";
+import { CardSimpleShowType } from "../card/CardSmall";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -53,6 +57,8 @@ export default class TemplePanel extends UIBase {
 
     @property(ButtonGroup)
     btnGroup:ButtonGroup = null;
+    @property(DList)
+    cardsList:DList = null;
 
     private _buildType:number = 0;
     private _buildInfo:BuildInfo = null;
@@ -146,7 +152,15 @@ export default class TemplePanel extends UIBase {
     }
 
     private initListWithType(index:number){
-        console.log("____idx:"+index)
+        console.log("____idx:"+index);
+        var cardsArr = Card.getCardList(index);
+        var cardsDataArr = [];
+        cardsArr.forEach(item =>{
+            cardsDataArr.push({type:CardSimpleShowType.Hero,cfg:item});
+        })
+        this.cardsList.direction = DListDirection.Vertical;
+        this.cardsList.row = 1;
+        this.cardsList.setListData(cardsDataArr);
     }
 
     start () {

@@ -91,5 +91,15 @@ export default class CardAssist{
     public getCardByUUid(uuid:string){
         return this.cardsMap[uuid];
     }
+
+    public getCardList(type:number){
+        var list:Array<any> = null;
+        if(type == 0){
+            list = CFG.getCfgByKey(ConfigConst.CardInfo,"use","1");
+        }else{
+            list = CFG.getCfgByKey(ConfigConst.CardInfo,"raceId",type,"use",1);
+        }
+        return list;
+    }
 }
 export var Card = CardAssist.getInstance();

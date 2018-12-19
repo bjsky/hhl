@@ -1,9 +1,9 @@
 import LoadSprite from "../../component/LoadSprite";
-import UIBase from "../../component/UIBase";
 import CardInfo from "../../model/CardInfo";
 import { Card } from "../../module/card/CardAssist";
 import { CONSTANT } from "../../Constant";
 import StringUtil from "../../utils/StringUtil";
+import DListItem from "../../component/DListItem";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -22,7 +22,7 @@ export enum CardSimpleShowType{
     Hero
 }
 @ccclass
-export default class CardSmall extends UIBase {
+export default class CardSmall extends DListItem {
     @property(cc.Node)
     ownerNode: cc.Node = null;
     @property(cc.Node)
@@ -53,15 +53,20 @@ export default class CardSmall extends UIBase {
     private _cardUUid:string;
     private _cardInfo:CardInfo;
     private _showType:number = 0;
+    private _cardCfg:any;
 
     public setData(data){
-        this._cardUUid = data.uuid;
-        this._cardInfo = Card.getCardByUUid(this._cardUUid);
         this._showType = data.type;
+        if(this._showType == CardSimpleShowType.Owner){
+            this._cardUUid = data.uuid;
+            this._cardInfo = Card.getCardByUUid(this._cardUUid);
+            
+        }else if(this._showType == CardSimpleShowType.Hero){
+            this._cardCfg = data.cfg;
+        }
     }
 
     onEnable(){
-
         if(this._showType == CardSimpleShowType.Hero ){
             this.heorNode.active = true;
             this.ownerNode.active = false;
@@ -76,17 +81,16 @@ export default class CardSmall extends UIBase {
     }
 
     private setHeroView(){
-        // this.cardName.string = this._cardInfo.cardInfoCfg.name;
-        // this.cardRaceName.string = CONSTANT.getRaceNameWithId(this._cardInfo.cardInfoCfg.raceId);
-        // this.cardStar.load("ui/Common/star"+this._cardInfo.grade);
-        // this.cardSrc.load("ui/image/card/"+this._cardInfo.cardInfoCfg.imgPath);
+        this.cardHeroName.string = this._cardCfg.name;
+        this.cardHeroRaceName.string = CONSTANT.getRaceNameWithId(this._cardCfg.raceId);
+        this.cardSrc.load("ui/image/card/card1");//+this._cardCfg.imgPath);
     }
 
     private setOwnerView(){
         this.cardName.string = this._cardInfo.cardInfoCfg.name;
         this.cardRaceName.string = CONSTANT.getRaceNameWithId(this._cardInfo.cardInfoCfg.raceId);
         this.cardStar.load("ui/Common/star"+this._cardInfo.grade);
-        this.cardSrc.load("ui/image/card/"+this._cardInfo.cardInfoCfg.imgPath);
+        this.cardSrc.load("ui/image/card/card1")//+this._cardInfo.cardInfoCfg.imgPath);
         this.cardLevel.string = "Lv."+this._cardInfo.level;
         this.cardPower.string = "战力：" + StringUtil.formatReadableNumber(this._cardInfo.carUpCfg.power) ;
     }
