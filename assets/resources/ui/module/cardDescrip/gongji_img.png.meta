@@ -1,0 +1,30 @@
+{
+  "ver": "2.0.0",
+  "uuid": "aef4703f-267c-40d9-ad00-d6543d50ba31",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "gongji_img": {
+      "ver": "1.0.3",
+      "uuid": "a54ecd11-2935-484b-bcba-691f8cc332a3",
+      "rawTextureUuid": "aef4703f-267c-40d9-ad00-d6543d50ba31",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 58,
+      "height": 24,
+      "rawWidth": 58,
+      "rawHeight": 24,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "ver": "2.0.0",
+  "uuid": "777b9ab0-7a8f-4dc0-a1b7-2fb082bc2156",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "boss_zhenrong_img": {
+      "ver": "1.0.3",
+      "uuid": "b70e1a77-0b6d-45ac-8c15-f1e4dc45e536",
+      "rawTextureUuid": "777b9ab0-7a8f-4dc0-a1b7-2fb082bc2156",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 101,
+      "height": 28,
+      "rawWidth": 101,
+      "rawHeight": 28,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
