@@ -11,6 +11,8 @@ export default class GameEvent{
     public static Mask_touch:string = "Mask_touch";
     //场景
     public static Scene_Change_Complete:string = "Scene_Change_Complete";
+    //面板显示效果完成
+    public static Panel_Show_Effect_Complete:string ="Panel_Show_Effect_Complete";
     
     public static Guide_Touch_Complete:string ="Guide_Touch_Complete";   //完成引导点击
 

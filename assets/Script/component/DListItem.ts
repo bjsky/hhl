@@ -1,4 +1,6 @@
 import UIBase from "./UIBase";
+import DList from "./DList";
+import TouchHandler from "./TouchHandler";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -14,7 +16,8 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class DListItem extends UIBase {
-    public static ITEM_CLICK:string = "ITEM_CLICK";
+
+
     private _select:boolean = false;
     public set select(val){
         this._select = val;
@@ -22,37 +25,59 @@ export default class DListItem extends UIBase {
     public get select(){
         return this._select;
     }
-
+    public list :DList = null;
     public index:number = -1;
 
-    
+    protected _data:any = null;
+    public setData(data:any){
+        super.setData(data);
+        this._data = data;
+    }
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
-    // onEnable(){
-        
-    // }
+    onLoad () {
+        var handler = this.getComponent(TouchHandler);
+        if(!handler){
+            this.addComponent(TouchHandler);
+        }
+    }
 
     public showEffect(){
-        this.node.opacity = 0;
-        this.node.setPosition(cc.v2(this.node.position.x+50,this.node.position.y));
-        // this.node.position = cc.v2(0,50);
-        var delay:number = this.index *0.05;
-        var fade =cc.sequence(
-            cc.delayTime(delay),
-            cc.spawn(
-                cc.moveBy(0.15,cc.v2(-50,0)),
-                cc.fadeIn(0.15),
+        // this.node.opacity = 255;
+        if(this.isValid){
+            this.node.setPosition(this.node.position.x+50,this.node.position.y);
+            var delay:number = this.index *0.05;
+            var fade =cc.sequence(
+                cc.delayTime(delay),
+                cc.spawn(
+                    cc.moveBy(0.15,cc.v2(-50,0)),
+                    cc.fadeIn(0.15),
+                )
             )
-        )
-        this.node.runAction(fade);
+            this.node.runAction(fade);
+        }
+    }
+
+    public stopEffect(){
+        this.node.stopAllActions();
+    }
+
+    onEnable(){
+        this.node.on(TouchHandler.TOUCH_CLICK,this.onNodeTouch,this);
     }
 
     onDisable(){
-
+        this.node.off(TouchHandler.TOUCH_CLICK,this.onNodeTouch,this);
     }
 
+    private onNodeTouch(e){
+        this.list.node.emit(DList.ITEM_CLICK,{index:this.index,data:this._data});
+        if(this.index!=this.list.selectIndex){
+            this.list.selectIndex = this.index;
+            this.list.node.emit(DList.ITEM_SELECT_CHANGE,{index:this.index,data:this._data});
+        }
+    }
     start () {
 
     }

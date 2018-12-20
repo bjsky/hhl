@@ -156,7 +156,13 @@ export default class BuildPanel extends UIBase{
     private doShow(cb?:Function){
         
         this.topNode.runAction(cc.moveTo(0.3,cc.v2(0,0)).easing(cc.easeInOut(2)));
-        this.panelNode.runAction(cc.moveTo(0.3,cc.v2(0,0)).easing(cc.easeInOut(2)))
+        this.panelNode.runAction(
+            cc.sequence(
+                cc.moveTo(0.3,cc.v2(0,0)).easing(cc.easeInOut(2)),
+                cc.callFunc(()=>{
+                    EVENT.emit(GameEvent.Panel_Show_Effect_Complete)
+                })
+            ) )
         
         var scene:CityScene = SCENE.CurScene as CityScene;
         if(scene){

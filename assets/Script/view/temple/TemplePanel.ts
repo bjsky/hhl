@@ -71,9 +71,11 @@ export default class TemplePanel extends UIBase {
         this.helpBtn.node.on(cc.Node.EventType.TOUCH_START,this.onHelpClick,this);
         this.buildHeroBtn.node.on(cc.Node.EventType.TOUCH_START,this.onGotoHeroFast,this);
         this.btnGroup.node.on(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.groupSelectChange,this);
+        this.cardsList.node.on(DList.ITEM_CLICK,this.onCardClick,this);
 
         EVENT.on(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
         EVENT.on(GameEvent.Card_summon_Complete,this.onCardSummoned,this);
+        EVENT.on(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
     }
 
     onDisable(){
@@ -82,9 +84,13 @@ export default class TemplePanel extends UIBase {
         this.helpBtn.node.off(cc.Node.EventType.TOUCH_START,this.onHelpClick,this);
         this.buildHeroBtn.node.off(cc.Node.EventType.TOUCH_START,this.onGotoHeroFast,this);
         this.btnGroup.node.off(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.groupSelectChange,this);
+        this.cardsList.node.off(DList.ITEM_CLICK,this.onCardClick,this);
 
         EVENT.off(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
         EVENT.off(GameEvent.Card_summon_Complete,this.onCardSummoned,this);
+        EVENT.off(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
+
+        this.cardsList.setListData([]);
     }
 
     public setData(param:any){
@@ -106,12 +112,21 @@ export default class TemplePanel extends UIBase {
     
 
     private onVideoClick(e){
-        UI.createPopUp(ResConst.cardDescrip,{});
-        // UI.createPopUp(ResConst.CardGet,{});
+        if(COMMON.videoSummonNum>=CONSTANT.getVideoFreeSummonNum()){
+            UI.showTip("超过每日视频抽卡上限!")
+            return;
+        }
+        this.playStoneSummonEffect(()=>{
+            Card.summonCard(CardSummonType.Viedo);
+        });
     }
     onLoad () {
         this.initView();
-        this.initList();
+        this.initListGroup();
+    }
+
+    private onPanelShowComplete(e){
+        this.initListWithType(this.btnGroup.selectIndex);
     }
     private onHelpClick(e){
         UI.createPopUp(ResConst.CardRaceHelp,{});
@@ -137,13 +152,12 @@ export default class TemplePanel extends UIBase {
         this.videoLeftTime.string = "剩余："+ (CONSTANT.getVideoFreeSummonNum() - COMMON.videoSummonNum);
     }
 
-    private initList(){
+    private initListGroup(){
         this.btnGroup.labels = "全部;" + CONSTANT.getRaceNameWithId(CardRaceType.WuZu)+";"
         + CONSTANT.getRaceNameWithId(CardRaceType.YaoZu)+";"
         + CONSTANT.getRaceNameWithId(CardRaceType.XianJie)+";"
         + CONSTANT.getRaceNameWithId(CardRaceType.RenJie);
         this.btnGroup.selectIndex = 0;
-        this.initListWithType(0);
     }
 
     private groupSelectChange(e){
@@ -167,6 +181,10 @@ export default class TemplePanel extends UIBase {
 
     }
 
+    private onCardClick(e){
+        var data = e.detail.data;
+        UI.createPopUp(ResConst.cardDescrip,{cardId:data.cfg.id});
+    }
     private onBuildUpdate(e){
         //重置界面
         this.initView();

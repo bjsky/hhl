@@ -18,6 +18,11 @@ export enum DListDirection{
 
 @ccclass
 export default class DList extends cc.Component {
+    //列表项点击
+    public static ITEM_CLICK:string = "ITEM_CLICK";
+    //列表项目改变
+    public static ITEM_SELECT_CHANGE:string = "ITEM_SELECT_CHANGE";
+
     @property(cc.ScrollView)
     scrollView: cc.ScrollView = null;
 
@@ -27,6 +32,7 @@ export default class DList extends cc.Component {
     private _col:number = 1;
     private _row:number = 1;
     private _direction:number = 0;
+    private _selectIndex:number = -1;
     public set col(val){
         this._col = val;
     }
@@ -48,6 +54,16 @@ export default class DList extends cc.Component {
         return this._direction;
     }
     // LIFE-CYCLE CALLBACKS:
+
+    public set selectIndex(index){
+        this._selectIndex = index;
+        this._listItemArr.forEach((listItem:DListItem)=>{
+            listItem.select = (listItem.index == this._selectIndex);
+        })
+    }
+    public get selectIndex(){
+        return this._selectIndex;
+    }
 
     onLoad () {
         this.scrollView.content.anchorX = 0;
@@ -84,11 +100,16 @@ export default class DList extends cc.Component {
             var itemData:any = this._listData[i];
             this.addItem(itemData,i);
         }
+        this.updateContentSize();
+        this.updateItems();
+        this.selectIndex = this._selectIndex;
     }
 
     private removeListItems(){
         while(this._listItemArr.length>0){
-            var listItem = this._listItemArr.shift();
+            var listItem:DListItem = this._listItemArr.shift();
+            listItem.list = null;
+            listItem.stopEffect();
             this._nodePool.put(listItem.node);
         }
     }
@@ -100,6 +121,7 @@ export default class DList extends cc.Component {
         }
         var listItem:DListItem = itemNode.getComponent(DListItem);
         if(listItem){
+            listItem.list = this;
             listItem.setData(itemData);
             listItem.index = index;
             listItem.node.parent = this.scrollView.content;
@@ -147,7 +169,14 @@ export default class DList extends cc.Component {
                 item.x = col * item.width + item.width * item.anchorX;
                 item.y = -row * item.height - item.height * (1 - item.anchorY);
             }
-            lsitItem.showEffect();
+            lsitItem.node.opacity = 0;
+            if(this._listData.length>10){
+                this.scheduleOnce(()=>{
+                    lsitItem.showEffect();
+                },0.15)
+            }else{
+                lsitItem.showEffect();
+            }
         })
     }
     start () {
@@ -157,8 +186,7 @@ export default class DList extends cc.Component {
     update (dt) {
         if(this._dataSourceChanged){
             this._dataSourceChanged = false;
-            this.updateContentSize();
-            this.updateItems();
+            
         }
 
     }

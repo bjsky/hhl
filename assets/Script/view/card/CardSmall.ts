@@ -56,6 +56,7 @@ export default class CardSmall extends DListItem {
     private _cardCfg:any;
 
     public setData(data){
+        super.setData(data)
         this._showType = data.type;
         if(this._showType == CardSimpleShowType.Owner){
             this._cardUUid = data.uuid;
@@ -67,6 +68,7 @@ export default class CardSmall extends DListItem {
     }
 
     onEnable(){
+        super.onEnable();
         if(this._showType == CardSimpleShowType.Hero ){
             this.heorNode.active = true;
             this.ownerNode.active = false;
@@ -78,6 +80,10 @@ export default class CardSmall extends DListItem {
             this.setOwnerView();
         }
         
+    }
+
+    onDisable(){
+        super.onDisable();
     }
 
     private setHeroView(){
@@ -93,10 +99,6 @@ export default class CardSmall extends DListItem {
         this.cardSrc.load("ui/image/card/card1")//+this._cardInfo.cardInfoCfg.imgPath);
         this.cardLevel.string = "Lv."+this._cardInfo.level;
         this.cardPower.string = "战力：" + StringUtil.formatReadableNumber(this._cardInfo.carUpCfg.power) ;
-    }
-
-    onDisable(){
-
     }
 
     start () {
