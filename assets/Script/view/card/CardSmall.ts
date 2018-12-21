@@ -4,6 +4,7 @@ import { Card } from "../../module/card/CardAssist";
 import { CONSTANT } from "../../Constant";
 import StringUtil from "../../utils/StringUtil";
 import DListItem from "../../component/DListItem";
+import PathUtil from "../../utils/PathUtil";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -89,14 +90,14 @@ export default class CardSmall extends DListItem {
     private setHeroView(){
         this.cardHeroName.string = this._cardCfg.name;
         this.cardHeroRaceName.string = CONSTANT.getRaceNameWithId(this._cardCfg.raceId);
-        this.cardSrc.load("ui/image/card/card1");//+this._cardCfg.imgPath);
+        this.cardSrc.load(PathUtil.getCardImgPath(this._cardCfg.imgPath));
     }
 
     private setOwnerView(){
         this.cardName.string = this._cardInfo.cardInfoCfg.name;
         this.cardRaceName.string = CONSTANT.getRaceNameWithId(this._cardInfo.cardInfoCfg.raceId);
-        this.cardStar.load("ui/Common/star"+this._cardInfo.grade);
-        this.cardSrc.load("ui/image/card/card1")//+this._cardInfo.cardInfoCfg.imgPath);
+        this.cardStar.load(PathUtil.getCardGradeImgPath(this._cardInfo.grade));
+        this.cardSrc.load(PathUtil.getCardImgPath(this._cardInfo.cardInfoCfg.imgPath));
         this.cardLevel.string = "Lv."+this._cardInfo.level;
         this.cardPower.string = "战力：" + StringUtil.formatReadableNumber(this._cardInfo.carUpCfg.power) ;
     }

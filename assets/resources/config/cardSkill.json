@@ -1,4 +1,22 @@
 [
-{"id":"1","name":"巨人之力","cardId":"7","activeNeedGrade":"3","activeNeedLevel":"15","skillDesc":"永久提高自身30%的生命","param1":"0.3"},
-{"id":"2","name":"重生","cardId":"7","activeNeedGrade":"5","activeNeedLevel":"25","skillDesc":"死亡后有30%几率重生，并获得50%生命","param1":"0.3;0.5"}
-]
+    {"id":"1","name":"暴殄天物","cardId":"1","skillDesc":"将对方英雄攻击的#%转化为自身攻击附加到每次伤害中","value":"0.1","addValue":"0.01"},
+    {"id":"4","name":"万箭齐发","cardId":"2","skillDesc":"每次攻击有#%的概率对对方造成双倍伤害","value":"0.1","addValue":"0.01"},
+    {"id":"3","name":"巨人之力","cardId":"3","skillDesc":"永久提高自身#%的生命","value":"0.1","addValue":"0.01"},
+    {"id":"2","name":"战无不胜","cardId":"4","skillDesc":"永久提高自身#%的攻击","value":"0.1","addValue":"0.01"},
+    {"id":"5","name":"复仇傀儡","cardId":"5","skillDesc":"对人界英雄的伤害额外提高#%","value":"0.05","addValue":"0.005"},
+    {"id":"6","name":"灭世魔君","cardId":"6","skillDesc":"帝俊攻击时，有#%的几率直接秒杀对方英雄，无视生命和护盾","value":"0.02","addValue":"0.002"},
+    {"id":"7","name":"王者之气","cardId":"7","skillDesc":"增加乙方所有英雄#%的基础攻击","value":"0.02","addValue":"0.002"},
+    {"id":"8","name":"长生不老","cardId":"8","skillDesc":"每次攻击，将对方生命的#%转化成自己的生命","value":"0.05","addValue":"0.005"},
+    {"id":"9","name":"女神之怒","cardId":"9","skillDesc":"英雄死亡后，为下一顺位英雄增加自身#%的基础攻击力","value":"0.1","addValue":"0.01"},
+    {"id":"10","name":"九尾重生","cardId":"10","skillDesc":"对仙界英雄的伤害额外提高#%","value":"0.05","addValue":"0.005"},
+    {"id":"11","name":"圣母之光","cardId":"11","skillDesc":"减低对方全部英雄#%的基础攻击力","value":"0.02","addValue":"0.02"},
+    {"id":"12","name":"教化之鞭","cardId":"12","skillDesc":"对巫族的伤害额外提高#%","value":"0.05","addValue":"0.005"},
+    {"id":"13","name":"以柔克刚","cardId":"13","skillDesc":"降低对方#%的攻击","value":"0.1","addValue":"0.01"},
+    {"id":"14","name":"大圣归来","cardId":"14","skillDesc":"每个攻击有#%的概率对对方造成4倍伤害","value":"0.03","addValue":"0.003"},
+    {"id":"15","name":"眼观八方","cardId":"15","skillDesc":"受到对方攻击时，有#%的概率闪避本次伤害","value":"0.1","addValue":"0.01"},
+    {"id":"16","name":"流芳后世","cardId":"16","skillDesc":"英雄死亡后，为下一顺位英雄增加自身生命#%的护盾","value":"0.1","addValue":"0.01"},
+    {"id":"17","name":"万众一心","cardId":"17","skillDesc":"增加乙方所有英雄#%的生命","value":"0.02","addValue":"0.002"},
+    {"id":"18","name":"同床异梦","cardId":"18","skillDesc":"有#%的概率对对方造成连续两次伤害","value":"0.1","addValue":"0.01"},
+    {"id":"19","name":"诛妖阵法","cardId":"19","skillDesc":"对妖族英雄伤害额外提高#%","value":"0.05","addValue":"0.005"},
+    {"id":"20","name":"金刚护体","cardId":"20","skillDesc":"在受到对方致命攻击时，有#%的概率忽略本次伤害","value":"0.1","addValue":"0.01"}
+    ]

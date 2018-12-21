@@ -8,6 +8,7 @@ import { COMMON } from "../../CommonData";
 import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
 import { UI } from "../../manager/UIManager";
+import PathUtil from "../../utils/PathUtil";
 
 const {ccclass, property} = cc._decorator;
 
@@ -81,8 +82,8 @@ export default class CardBig extends UIBase{
     private initCardView(){
         this.cardName.string = this._cardInfo.cardInfoCfg.name;
         this.cardRaceName.string = CONSTANT.getRaceNameWithId(this._cardInfo.cardInfoCfg.raceId);
-        this.cardStar.load("ui/Common/star"+this._cardInfo.grade);
-        this.cardSrc.load("ui/image/card/card1")//+this._cardInfo.cardInfoCfg.imgPath);
+        this.cardStar.load(PathUtil.getCardGradeImgPath(this._cardInfo.grade));
+        this.cardSrc.load(PathUtil.getCardImgPath(this._cardInfo.cardInfoCfg.imgPath));
         this.cardLevel.string = "Lv."+this._cardInfo.level;
         this.cardPower.string = "战力：" + StringUtil.formatReadableNumber(this._cardInfo.carUpCfg.power) ;
     }
