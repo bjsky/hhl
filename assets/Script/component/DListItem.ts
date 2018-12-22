@@ -21,6 +21,7 @@ export default class DListItem extends UIBase {
     private _select:boolean = false;
     public set select(val){
         this._select = val;
+        this.setSelect(this._select);
     }
     public get select(){
         return this._select;
@@ -41,6 +42,9 @@ export default class DListItem extends UIBase {
         if(!handler){
             this.addComponent(TouchHandler);
         }
+    }
+    protected setSelect(select:boolean){
+
     }
 
     public showEffect(){

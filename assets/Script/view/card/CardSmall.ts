@@ -31,8 +31,8 @@ export default class CardSmall extends DListItem {
 
     @property(cc.Label)
     cardName: cc.Label = null;
-    @property(cc.Label)
-    cardRaceName: cc.Label = null;
+    @property(LoadSprite)
+    cardRace: LoadSprite = null;
     @property(LoadSprite)
     cardSrc: LoadSprite = null;
     @property(LoadSprite)
@@ -43,14 +43,20 @@ export default class CardSmall extends DListItem {
     cardPower: cc.Label = null;
     @property(cc.Label)
     cardHeroName: cc.Label = null;
-    @property(cc.Label)
-    cardHeroRaceName: cc.Label = null;
+    @property(LoadSprite)
+    cardHeroRace: LoadSprite = null;
+    @property(cc.Node)
+    cardSelect: cc.Node = null;
+
 
 
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
+    onLoad () {
+        super.onLoad();
+        this.cardSelect.active = false;
+    }
     private _cardUUid:string;
     private _cardInfo:CardInfo;
     private _showType:number = 0;
@@ -89,17 +95,21 @@ export default class CardSmall extends DListItem {
 
     private setHeroView(){
         this.cardHeroName.string = this._cardCfg.name;
-        this.cardHeroRaceName.string = CONSTANT.getRaceNameWithId(this._cardCfg.raceId);
+        this.cardHeroRace.load(PathUtil.getCardRaceImgPath(this._cardCfg.raceId));
         this.cardSrc.load(PathUtil.getCardImgPath(this._cardCfg.imgPath));
     }
 
     private setOwnerView(){
         this.cardName.string = this._cardInfo.cardInfoCfg.name;
-        this.cardRaceName.string = CONSTANT.getRaceNameWithId(this._cardInfo.cardInfoCfg.raceId);
         this.cardStar.load(PathUtil.getCardGradeImgPath(this._cardInfo.grade));
         this.cardSrc.load(PathUtil.getCardImgPath(this._cardInfo.cardInfoCfg.imgPath));
         this.cardLevel.string = "Lv."+this._cardInfo.level;
         this.cardPower.string = "战力：" + StringUtil.formatReadableNumber(this._cardInfo.carUpCfg.power) ;
+        this.cardRace.load(PathUtil.getCardRaceImgPath(this._cardInfo.cardInfoCfg.raceId));
+    }
+
+    protected setSelect(select:boolean){
+        this.cardSelect.active = select;
     }
 
     start () {

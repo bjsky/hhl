@@ -33,6 +33,10 @@ export default class LoadSprite extends cc.Sprite{
         if (path == null) {
             return;
         }
+        if(path == ""){
+            this.spriteFrame = null;
+            return;
+        }
         let self = this;
         if (path.indexOf("http://") >= 0) {
              cc.loader.load({url: path, type: type},this.loadComplete.bind(this));

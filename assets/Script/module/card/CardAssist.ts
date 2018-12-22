@@ -11,6 +11,7 @@ import { COMMON } from "../../CommonData";
 import CardInfo from "../../model/CardInfo";
 
 export enum CardRaceType{
+    All =0,
     WuZu = 1,   //巫族
     YaoZu,      //妖族
     XianJie,    //仙界
@@ -30,8 +31,7 @@ export default class CardAssist{
     //所有卡牌
     public cardsMap:any = {};
     //上阵的卡牌
-    public lineUpCards:Array<CardInfo> = [];
-
+    public lineUpCardsUuid:Array<string> = [];
 
     /**
      * 获取灵石抽取取得的品级
@@ -92,7 +92,7 @@ export default class CardAssist{
         return this.cardsMap[uuid];
     }
 
-    public getCardList(type:number){
+    public getCardCfgList(type:number){
         var list:Array<any> = null;
         if(type == 0){
             list = CFG.getCfgByKey(ConfigConst.CardInfo,"use","1");
@@ -100,6 +100,27 @@ export default class CardAssist{
             list = CFG.getCfgByKey(ConfigConst.CardInfo,"raceId",type,"use",1);
         }
         return list;
+    }
+
+    //拥有的卡牌
+    public getOwnerCardList(type:number):Array<CardInfo>{
+        var card:CardInfo = null;
+        var cardList:Array<CardInfo> = [];
+        for(var uuid in this.cardsMap){
+            card = this.cardsMap[uuid];
+            if(type == 0 ||card.cardInfoCfg.raceId == type){
+                cardList.push(card);
+            }
+        }
+        return cardList;
+    }
+
+    //初始化卡牌
+    public initCard(cards:Array<SCardInfo>,lineupCardsUuid:Array<string>){
+        this.lineUpCardsUuid = lineupCardsUuid;
+        cards.forEach((card:SCardInfo)=>{
+            this.addNewCard(card);
+        })
     }
 }
 export var Card = CardAssist.getInstance();

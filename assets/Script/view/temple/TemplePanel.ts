@@ -167,7 +167,7 @@ export default class TemplePanel extends UIBase {
 
     private initListWithType(index:number){
         console.log("____idx:"+index);
-        var cardsArr = Card.getCardList(index);
+        var cardsArr = Card.getCardCfgList(index);
         var cardsDataArr = [];
         cardsArr.forEach(item =>{
             cardsDataArr.push({type:CardSimpleShowType.Hero,cfg:item});

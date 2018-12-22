@@ -65,6 +65,10 @@ export default class DList extends cc.Component {
         return this._selectIndex;
     }
 
+    public get selectData():any{
+        return this._listData[this._selectIndex];
+    }
+
     onLoad () {
         this.scrollView.content.anchorX = 0;
         this.scrollView.content.anchorY = 1;

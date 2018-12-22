@@ -4,6 +4,7 @@ import { SCLoginData, SResInfo, SUserInfo } from "./net/msg/MsgLogin";
 import { GUIDE } from "./manager/GuideManager";
 import BuildInfo from "./model/BuildInfo";
 import { BUILD } from "./module/build/BuildAssist";
+import { Card } from "./module/card/CardAssist";
 
 export enum DirectionEnum{
     Left = 0,       //左
@@ -57,6 +58,8 @@ export default class CommonData{
         BUILD.initBuilding(data.buildInfos);
 
         GUIDE.initGuide(data.guideInfo);
+
+        Card.initCard(data.ownerCards,data.lineUpCardsUuid);
     }
 
     public updateResInfo(data:SResInfo){
