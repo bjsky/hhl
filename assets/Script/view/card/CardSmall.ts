@@ -104,7 +104,7 @@ export default class CardSmall extends DListItem {
         this.cardStar.load(PathUtil.getCardGradeImgPath(this._cardInfo.grade));
         this.cardSrc.load(PathUtil.getCardImgPath(this._cardInfo.cardInfoCfg.imgPath));
         this.cardLevel.string = "Lv."+this._cardInfo.level;
-        this.cardPower.string = "战力：" + StringUtil.formatReadableNumber(this._cardInfo.carUpCfg.power) ;
+        this.cardPower.string = "战力：" + this._cardInfo.carUpCfg.power ;
         this.cardRace.load(PathUtil.getCardRaceImgPath(this._cardInfo.cardInfoCfg.raceId));
     }
 

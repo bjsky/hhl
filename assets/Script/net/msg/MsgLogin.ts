@@ -1,7 +1,7 @@
 
 import NetConst from "../NetConst";
 import MessageBase from "./MessageBase";
-import { SCardInfo } from "./MsgCardSummon";
+import MsgCardSummon, { SCardInfo, CardSummonType } from "./MsgCardSummon";
 
 /**
  * 登录客户端数据
@@ -177,6 +177,10 @@ export default class MsgLogin extends MessageBase {
     }
 
     public respFromLocal(){
+        var ownerCards:Array<any> = [];
+        for(var i:number = 0;i<5;i++){
+            ownerCards.push(MsgCardSummon.randomCardInfo(CardSummonType.LifeStone));
+        }
         var json:any = {firstLogin:true,
             userInfo:{nickName:"上古战神",headPic:"",exp:100,level:5},
             resInfo:{gold:9000,diamond:20,lifeStone:5000,soulStone:370},
@@ -186,7 +190,7 @@ export default class MsgLogin extends MessageBase {
                 {type:2,level:1,locked:true},
                 {type:3,level:1,locked:true},],
             stoneSummonNum:0,videoSummonNum:0,
-            ownerCards:[],
+            ownerCards:ownerCards,
             lineUpCardsUuid:[]
         };
         this.resp = this.parse(json);

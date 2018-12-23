@@ -88,17 +88,10 @@ export default class MsgCardSummon extends  MessageBase {
 
 
     public respFromLocal(){
-        var cardUUid:string = new Date().getTime()+ Number(Math.random()*1000000).toFixed(0);
-        var cardId = Card.getSummonCardId();
-        var cardInfo = {
-            uuid:cardUUid,
-            level:1,
-            cardId:cardId,
-            grade:(this.param.summonType == CardSummonType.LifeStone)?Card.getStoneSummonGuide():Card.getVideoSummonGuide()
-        }
+        var cardInfo = MsgCardSummon.randomCardInfo(this.param.summonType);
         var retRes:SResInfo = COMMON.resInfo.cloneServerInfo();
         retRes.lifeStone -= this.param.stoneCost;
-        var card:any = CFG.getCfgDataById(ConfigConst.CardInfo,cardId);
+        var card:any = CFG.getCfgDataById(ConfigConst.CardInfo,cardInfo.cardId);
         var userInfo = COMMON.userInfo.cloneAddExpServerInfo(card.summonGetExp);
         var json:any ={
             newCard:cardInfo,
@@ -110,6 +103,18 @@ export default class MsgCardSummon extends  MessageBase {
         
         this.resp = this.parse(json);
         return this;
+    }
+
+    public static randomCardInfo(type:number){
+        var cardUUid:string = new Date().getTime()+ Number(Math.random()*1000000).toFixed(0);
+        var cardId = Card.getSummonCardId();
+        var cardInfo = {
+            uuid:cardUUid,
+            level:1,
+            cardId:cardId,
+            grade:(type == CardSummonType.LifeStone)?Card.getStoneSummonGuide():Card.getVideoSummonGuide()
+        }
+        return cardInfo;
     }
 
     protected parse(obj:any){

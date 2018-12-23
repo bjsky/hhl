@@ -93,7 +93,7 @@ export default class HeroPanel extends UIBase {
 
     private initView(nolist:boolean = false){
         var sortList = Card.getOwnerCardList(this.btnGroup.selectIndex);
-        //排序，按星级，等级，id
+        //排序，按星级倒序，等级倒序，id正序
         sortList.sort((a:CardInfo,b:CardInfo)=>{
             if(a.grade == b.grade){
                 if(a.level == b.level){

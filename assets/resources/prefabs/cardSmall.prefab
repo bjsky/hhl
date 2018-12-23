@@ -915,8 +915,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 141,
-      "height": 40
+      "width": 129.1,
+      "height": 35.86
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -925,7 +925,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 97
+      "y": 92
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -943,12 +943,14 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 22,
-    "_fontSize": 22,
+    "_actualFontSize": 26,
+    "_fontSize": 26,
     "_lineHeight": 40,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "c4810e99-328b-49d6-af15-b37c20f228a1"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_N$string": "战力：888888",
     "_N$horizontalAlign": 1,

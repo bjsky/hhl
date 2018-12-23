@@ -20,8 +20,8 @@ export default class CardBig extends UIBase{
     cardNode: cc.Node = null;
     @property(cc.Label)
     cardName: cc.Label = null;
-    @property(cc.Label)
-    cardRaceName: cc.Label = null;
+    @property(LoadSprite)
+    cardRace: LoadSprite = null;
     @property(LoadSprite)
     cardSrc: LoadSprite = null;
     @property(LoadSprite)
@@ -81,11 +81,11 @@ export default class CardBig extends UIBase{
 
     private initCardView(){
         this.cardName.string = this._cardInfo.cardInfoCfg.name;
-        this.cardRaceName.string = CONSTANT.getRaceNameWithId(this._cardInfo.cardInfoCfg.raceId);
+        this.cardRace.load(PathUtil.getCardRaceImgPath(this._cardInfo.cardInfoCfg.raceId));
         this.cardStar.load(PathUtil.getCardGradeImgPath(this._cardInfo.grade));
         this.cardSrc.load(PathUtil.getCardImgPath(this._cardInfo.cardInfoCfg.imgPath));
         this.cardLevel.string = "Lv."+this._cardInfo.level;
-        this.cardPower.string = "战力：" + StringUtil.formatReadableNumber(this._cardInfo.carUpCfg.power) ;
+        this.cardPower.string = "战力：" + this._cardInfo.carUpCfg.power ;
     }
     
     private _showEffect:boolean =false;
