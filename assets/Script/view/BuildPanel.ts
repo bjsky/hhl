@@ -13,6 +13,7 @@ import { BUILD } from "../module/build/BuildAssist";
 import { EVENT } from "../message/EventCenter";
 import GameEvent from "../message/GameEvent";
 import StringUtil from "../utils/StringUtil";
+import { GUIDE } from "../manager/GuideManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -119,6 +120,7 @@ export default class BuildPanel extends UIBase{
         this.upgradeBtn.node.on(ButtonEffect.CLICK_END,this.onUpdate,this);
         
         EVENT.on(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
+        EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
 
         this.loadBuild();
     }
@@ -127,6 +129,7 @@ export default class BuildPanel extends UIBase{
         this.upgradeBtn.node.off(ButtonEffect.CLICK_END,this.onUpdate,this)
 
         EVENT.off(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
+        EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
     }
 
     public closeUI(cb:Function){
@@ -192,13 +195,13 @@ export default class BuildPanel extends UIBase{
     private initBuildView(){
         this.buildName.string = this._buildInfo.level+" 级";// + "  " + CONSTANT.getBuidlingName(this._buildType);
         var str = CONSTANT.getBuildingBuffDesc(this._buildType);
-        this.curLevelDesc.string = "当前等级：" + str.replace("#",(this._buildInfo.buildLevelCfg.addValue*100).toFixed(0));
+        this.curLevelDesc.string = str.replace("#",(this._buildInfo.buildLevelCfg.addValue*100).toFixed(0));
         if(this._nextLevelCfg!=null){
-            this.nextLevelDesc.string = "下一等级：" + str.replace("#",(this._nextLevelCfg.addValue*100).toFixed(0));
+            this.nextLevelDesc.string = str.replace("#",(this._nextLevelCfg.addValue*100).toFixed(0));
             this.upgradeBtn.node.active = true;
             this.costGold.string = StringUtil.formatReadableNumber(this._buildInfo.buildLevelCfg.upNeedGold);
         }else{
-            this.nextLevelDesc.string ="下一等级：(已满级)";
+            this.nextLevelDesc.string ="(已满级)";
             this.upgradeBtn.node.active = false;
             this.costGold.string = ""
         }
@@ -222,6 +225,24 @@ export default class BuildPanel extends UIBase{
     private onBuildUpdate(e){
         this.setData({buildType:this._buildType});
         this.initBuildView();
+    }
+
+    public getGuideNode(name:string):cc.Node{
+        if(name == "buildPanel_close"){
+            return this.closeBtn.node;
+        }else{
+            return this._buildUI.getGuideNode(name);
+        }
+    }
+
+    private onGuideTouch(e){
+        var guideId = e.detail.id;
+        var nodeName = e.detail.name;
+        if(nodeName == "buildPanel_close"){
+            this.onClose();
+            GUIDE.nextGuide(guideId);
+        }
+
     }
 
     // update (dt) {}

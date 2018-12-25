@@ -54,6 +54,8 @@ export class SCardInfo{
     public grade:number = 0;
     //卡牌的等级
     public level:number = 0;
+    //技能等级
+    public skillLevel:number = 1;
 
     public static parse(obj:any):SCardInfo{
         var data:SCardInfo = new SCardInfo();
@@ -61,6 +63,7 @@ export class SCardInfo{
         data.cardId = obj.cardId;
         data.grade = obj.grade;
         data.level = obj.level;
+        data.skillLevel = obj.skillLevel;
         return data;
     }
 
@@ -112,7 +115,8 @@ export default class MsgCardSummon extends  MessageBase {
             uuid:cardUUid,
             level:1,
             cardId:cardId,
-            grade:(type == CardSummonType.LifeStone)?Card.getStoneSummonGuide():Card.getVideoSummonGuide()
+            grade:(type == CardSummonType.LifeStone)?Card.getStoneSummonGuide():Card.getVideoSummonGuide(),
+            skillLevel:1
         }
         return cardInfo;
     }

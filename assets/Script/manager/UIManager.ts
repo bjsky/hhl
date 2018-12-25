@@ -104,6 +104,7 @@ export default class UIManager{
     ///////////////////////
     private _popups:Array<UIBase> = [];
     private _mask:cc.Node = null;
+    private _curPopup:UIBase = null;
 
     private initMaskLayer() {
         if (this._mask != null) {
@@ -134,6 +135,7 @@ export default class UIManager{
         this.loadUI(res,data,this.PopupLayer,(ui:UIBase)=>{
             if(ui){
                 this._popups.push(ui);
+                this._curPopup = ui;
                 ui.node.zIndex = this._popups.length * 2;
                 // this.checkMaskLayer();
             }
@@ -150,12 +152,23 @@ export default class UIManager{
             if(this._popups.length > 0){
                 this._mask.active = true;
                 this._mask.zIndex = this._popups[this._popups.length -1].node.zIndex-1;
+                this._curPopup = this._popups[this._popups.length-1];
             }else{
                 this._mask.active = false;
                 this._mask.zIndex = 0;
+                this._curPopup = null;
             }
         }
         this.removeUI(node);
+    }
+
+    //获得当前弹窗上的节点
+    public getPopupGuideNode(name:string):cc.Node{
+        if(this._curPopup){
+            return this._curPopup.getGuideNode(name);
+        }else{
+            return null;
+        }
     }
 
     /////////////////////////

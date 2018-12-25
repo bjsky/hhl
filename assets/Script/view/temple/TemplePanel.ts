@@ -18,6 +18,7 @@ import { CFG } from "../../manager/ConfigManager";
 import { ConfigConst } from "../../module/loading/steps/LoadingStepConfig";
 import DList, { DListDirection } from "../../component/DList";
 import { CardSimpleShowType } from "../card/CardSmall";
+import { GUIDE } from "../../manager/GuideManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -76,6 +77,7 @@ export default class TemplePanel extends UIBase {
         EVENT.on(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
         EVENT.on(GameEvent.Card_summon_Complete,this.onCardSummoned,this);
         EVENT.on(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
+        EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
     }
 
     onDisable(){
@@ -89,6 +91,7 @@ export default class TemplePanel extends UIBase {
         EVENT.off(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
         EVENT.off(GameEvent.Card_summon_Complete,this.onCardSummoned,this);
         EVENT.off(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
+        EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
 
         this.cardsList.setListData([]);
     }
@@ -153,7 +156,7 @@ export default class TemplePanel extends UIBase {
     }
 
     private initListGroup(){
-        this.btnGroup.labels = "全部;" + CONSTANT.getRaceNameWithId(CardRaceType.WuZu)+";"
+        this.btnGroup.labels = CONSTANT.getRaceNameWithId(CardRaceType.WuZu)+";"
         + CONSTANT.getRaceNameWithId(CardRaceType.YaoZu)+";"
         + CONSTANT.getRaceNameWithId(CardRaceType.XianJie)+";"
         + CONSTANT.getRaceNameWithId(CardRaceType.RenJie);
@@ -167,7 +170,7 @@ export default class TemplePanel extends UIBase {
 
     private initListWithType(index:number){
         console.log("____idx:"+index);
-        var cardsArr = Card.getCardCfgList(index);
+        var cardsArr = Card.getCardCfgList(index+1);
         var cardsDataArr = [];
         cardsArr.forEach(item =>{
             cardsDataArr.push({type:CardSimpleShowType.Hero,cfg:item});
@@ -276,4 +279,23 @@ export default class TemplePanel extends UIBase {
         });
     }
     
+
+    public getGuideNode(name:string):cc.Node{
+        if(name == "buildPanel_getCard"){
+            return this.lifeStoneBtn.node;
+        }else{
+            return null;
+        }
+    }
+
+    private onGuideTouch(e){
+        var guideId = e.detail.id;
+        var nodeName = e.detail.name;
+        if(nodeName == "buildPanel_getCard"){
+            this.onLifeStoneClick(null);
+            GUIDE.nextGuide(guideId);
+        }
+
+    }
+
 }

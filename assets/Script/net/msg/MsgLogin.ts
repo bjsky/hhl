@@ -184,7 +184,7 @@ export default class MsgLogin extends MessageBase {
         var json:any = {firstLogin:true,
             userInfo:{nickName:"上古战神",headPic:"",exp:100,level:5},
             resInfo:{gold:9000,diamond:20,lifeStone:5000,soulStone:370},
-            guideInfo:{guideId:-1},
+            guideInfo:{guideId:5},
             buildInfos:[{type:0,level:1,locked:true},
                 {type:1,level:2,locked:true},
                 {type:2,level:1,locked:true},

@@ -23,7 +23,7 @@ export default class CardEffect extends cc.Component {
     @property
     curIndex: number = 0;
 
-    public PosArr:Array<cc.Vec2> = [cc.v2(-288,-166),cc.v2(-165,-166),cc.v2(0,-166),cc.v2(165,-166),cc.v2(288,-166)];
+    public PosArr:Array<cc.Vec2> = [cc.v2(-288,-148),cc.v2(-165,-148),cc.v2(0,-148),cc.v2(165,-148),cc.v2(288,-148)];
     public ScaleArr:Array<number> = [0.6,0.8,1,0.8,0.6];
 
     // LIFE-CYCLE CALLBACKS:

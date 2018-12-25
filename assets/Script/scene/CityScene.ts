@@ -90,9 +90,12 @@ export default class CityScene extends SceneBase {
         var nodeName = e.detail.name;
         if(nodeName == "building_temple"){
             this.openBuildUI(BuildType.Temple);
+            GUIDE.nextGuide(guideId);
+        }else if(nodeName == "building_hero"){
+            this.openBuildUI(BuildType.Hero);
+            GUIDE.nextGuide(guideId);
         }
 
-        GUIDE.nextGuide(guideId);
     }
 
     private onGotoPanelFast(e){
@@ -195,12 +198,30 @@ export default class CityScene extends SceneBase {
         }
     }
 
-    public moveSceneByPos(toPos:cc.Vec2,cb?:Function){
+    public moveSceneToPos(toPos:cc.Vec2,cb?:Function){
+        var local:cc.Vec2 = this.content.parent.convertToNodeSpaceAR(toPos);
         var move;
+        var contentPos = this.content.position.sub(local);
+        var contentMaxX = (this.content.width-this.content.parent.width)/2;
+        var contentMinX = -(this.content.width-this.content.parent.width)/2;
+        var contentMaxY = (this.content.height - this.content.parent.height)/2;
+        var contentMinY = -(this.content.height - this.content.parent.height)/2;
+        if(contentPos.x<contentMinX){
+            contentPos.x = contentMinX;
+        }
+        if(contentPos.x>contentMaxX){
+            contentPos.x = contentMaxX;
+        }
+        if(contentPos.y<contentMinY){
+            contentPos.y = contentMinY;
+        }
+        if(contentPos.y>contentMaxY){
+            contentPos.y = contentMaxY;
+        }
         if(cb!=undefined){
-            move = cc.sequence(cc.moveBy(0.3,toPos),cc.callFunc(cb));
+            move = cc.sequence(cc.moveTo(0.3,contentPos),cc.callFunc(cb));
         }else{
-            move = cc.moveBy(0.3,toPos);
+            move = cc.moveTo(0.3,contentPos);
         }
         this.content.runAction(move);
     }

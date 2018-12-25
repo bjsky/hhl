@@ -7,6 +7,7 @@ import { SCENE } from "../../manager/SceneManager";
 import { GuideTypeEnum, GUIDE, GuideNpcDir } from "../../manager/GuideManager";
 import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
+import { UI } from "../../manager/UIManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -83,7 +84,7 @@ export default class GuideTapPanel extends UIBase {
         this._guideInfo = data;
         this._guideId = this._guideInfo.guideId;
 
-
+        this.unscheduleAllCallbacks();
         if(this._guideInfo.type == GuideTypeEnum.GuideStory){
             this.storyNode.active = true;
             this.dialogNode.active = false;
@@ -93,17 +94,25 @@ export default class GuideTapPanel extends UIBase {
             GUIDE.updateGuideMaskPosAndSize(cc.v2(0,0),cc.size(0,0),cc.v2(0.5,0.5),255,false);
             this.showStory();
         }else if(this._guideInfo.type == GuideTypeEnum.GuideTalk){
-            this.dialogNode.active = true;
-            this.dialogNode.opacity = 0;
             this.storyNode.active = this.arrowNode.active = false;
-            this.setClickArea(this.dialogBg);
-            GUIDE.updateGuideMaskPosAndSize(cc.v2(0,0),cc.size(0,0),cc.v2(0.5,0.5),0,false);
-            this.showDialog();
+            if(this._guideInfo.delay>0){
+                this.scheduleOnce(()=>{
+                    this.setDialogShow();
+                },this._guideInfo.delay)
+            }else{
+                this.setDialogShow();
+            }
         }else if(this._guideInfo.type == GuideTypeEnum.GuideArrow){
             this.arrowNode.active = false;
             this.storyNode.active = this.dialogNode.active = false;
             this._checkNodeTime = 0;
-            this.schedule(this.checkNode,this._checkNodeInterval);
+            if(this._guideInfo.delay>0){
+                this.scheduleOnce(()=>{
+                    this.schedule(this.checkNode,this._checkNodeInterval);
+                },this._guideInfo.delay)
+            }else{
+                this.schedule(this.checkNode,this._checkNodeInterval);
+            }
         }
     }
 
@@ -147,8 +156,16 @@ export default class GuideTapPanel extends UIBase {
         
     }
 
+    private setDialogShow(){
+        this.dialogNode.active = true;
+        this.dialogNode.opacity = 0;
+        this.setClickArea(this.dialogBg);
+        GUIDE.updateGuideMaskPosAndSize(cc.v2(0,0),cc.size(0,0),cc.v2(0.5,0.5),0,false);
+        this.showDialog();
+    }
+
     private showDialog(){
-        this.title.string = this._guideInfo.npc+"：";
+        this.title.string = this._guideInfo.npc;
         this.npc.active = (this._guideInfo.npcDic == GuideNpcDir.NpcDirLeft)?true:false;
         this.npc2.active = (this._guideInfo.npcDic == GuideNpcDir.NpcDirRight)?true:false;
         this.content.string = "";
@@ -180,15 +197,16 @@ export default class GuideTapPanel extends UIBase {
     private checkNode(){
         this._checkNodeTime += this._checkNodeInterval;
         if(this._checkNodeTime < this._checkNodeMaxTime){
-            var node:cc.Node = this.getGuideNode();
+            var node:cc.Node = this.findGuideNode();
             if(node){
                 this.unscheduleAllCallbacks();
                 this._checkNodeTime = 0;
                 if(this._guideInfo.nodeName.indexOf("building_")>-1){
                     var city:CityScene = SCENE.CurScene as CityScene;
-                    var tPos:cc.Vec2 = cc.v2(cc.winSize.width/2,cc.winSize.height/2).sub(node.parent.convertToWorldSpaceAR(node.position));
+                    // var tPos:cc.Vec2 = cc.v2(cc.winSize.width/2,cc.winSize.height/2).sub(node.parent.convertToWorldSpaceAR(node.position));
                     // var tPos:cc.Vec2 = this.node.parent.convertToWorldSpaceAR(COMMON.ZERO);
-                    city.moveSceneByPos(tPos,()=>{
+                    var wPos = node.parent.convertToWorldSpaceAR(node.position);
+                    city.moveSceneToPos(wPos,()=>{
                         this.showArrow(node);
                     })
                 }else{
@@ -200,30 +218,40 @@ export default class GuideTapPanel extends UIBase {
         }
     }
 
-    private getGuideNode():cc.Node{
-        if(this._guideInfo.nodeName.indexOf("building_")>-1){
-            var city:CityScene = SCENE.CurScene as CityScene;
+    private findGuideNode():cc.Node{
+        var city:CityScene = SCENE.CurScene as CityScene;
+            if(this._guideInfo.nodeName.indexOf("building_")>-1){
             return city.getGuideNode(this._guideInfo.nodeName);
-        }else {
+        }else if (this._guideInfo.nodeName.indexOf("buildPanel_")>-1){
+            if(city.activeBuild){
+                return city.activeBuild.getGuideNode(this._guideInfo.nodeName);
+            }else{
+                return null;
+            }
+        }else if(this._guideInfo.nodeName.indexOf("popup_")>-1){
+            return UI.getPopupGuideNode(this._guideInfo.nodeName);
+        }
+        else {
             return null;
         }
     }
 
     private showArrow(find:cc.Node){
         this.arrowNode.active = true;
+        this.setClickArea(find);
+        var wPos:cc.Vec2 = find.parent.convertToWorldSpaceAR(find.position);
+        GUIDE.updateGuideMaskPosAndSize(wPos,find.getContentSize(),cc.v2(find.anchorX,find.anchorY),51);
+        this.guideArrowNode.setPosition(this.clickNode.position)
         this.guideArrowNode.runAction(cc.sequence(
             cc.moveBy(0.5,cc.v2(0,50))
             ,cc.moveBy(0.5,cc.v2(0,-50))
             ).repeatForever());
-        this.setClickArea(find);
-        var wPos:cc.Vec2 = find.parent.convertToWorldSpaceAR(find.position);
-        GUIDE.updateGuideMaskPosAndSize(wPos,find.getContentSize(),cc.v2(find.anchorX,find.anchorY),51);
-        this.clickNode.on(cc.Node.EventType.TOUCH_START,this.onArrowClick,this);
+       this.clickNode.on(cc.Node.EventType.TOUCH_START,this.onArrowClick,this);
     }
 
     private onArrowClick(){
         this.clickNode.off(cc.Node.EventType.TOUCH_START,this.onArrowClick,this);
-        this.guideArrowNode.resumeAllActions();
+        this.guideArrowNode.stopAllActions();
         this.arrowNode.active = false;
         EVENT.emit(GameEvent.Guide_Touch_Complete,{id:this._guideId,name:this._guideInfo.nodeName});
     }

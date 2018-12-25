@@ -9,6 +9,7 @@ import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
 import { UI } from "../../manager/UIManager";
 import PathUtil from "../../utils/PathUtil";
+import { GUIDE } from "../../manager/GuideManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -60,7 +61,7 @@ export default class CardBig extends UIBase{
             
         //     this.showEffect();
         // },0.05)
-
+        EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
 
         this.initCardView();
         this.showEffect();
@@ -76,7 +77,7 @@ export default class CardBig extends UIBase{
     }
 
     onDisable(){
-
+        EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
     }
 
     private initCardView(){
@@ -127,5 +128,23 @@ export default class CardBig extends UIBase{
             this._showEffectNextFrame = false;
             this.showEffect();
         }
+    }
+
+    public getGuideNode(name:string):cc.Node{
+        if(name == "popup_cardBig"){
+            return this.node;
+        }else{
+            return null;
+        }
+    }
+
+    private onGuideTouch(e){
+        var guideId = e.detail.id;
+        var nodeName = e.detail.name;
+        if(nodeName == "popup_cardBig"){
+            this.onMaskTouch(null);
+            GUIDE.nextGuide(guideId);
+        }
+
     }
 }

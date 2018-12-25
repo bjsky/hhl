@@ -27,6 +27,8 @@ export default class GuideInfo extends InfoBase{
     public arrowDir:number = 0;
     //节点名
     public nodeName:string ="";
+    //延迟时间
+    public delay:number = 0;
     // 参数
     public params:any = {};
 
@@ -49,6 +51,7 @@ export default class GuideInfo extends InfoBase{
             this.content = info.content;
             this.arrowDir = info.arrowDir;
             this.nodeName = info.node_name;
+            this.delay = Number(info.delay);
             this.params = this.parseParams(info.param);
         }else{
             this.guideName = "";
@@ -60,6 +63,7 @@ export default class GuideInfo extends InfoBase{
             this.content ="";
             this.arrowDir = 0;
             this.nodeName = "";
+            this.delay = 0;
             this.params = null;
         }
 

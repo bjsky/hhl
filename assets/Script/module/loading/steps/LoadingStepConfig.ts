@@ -14,7 +14,8 @@ export const ConfigConst = {
     PlayerLevel:"config/playerLevel",
     Stand:"config/stand",
     Guide:"config/guide",
-    CardSkill:"config/cardSkill"
+    CardSkill:"config/cardSkill",
+    SkillUp:"config/skillUp"
 }
 /**
  * 加载配置

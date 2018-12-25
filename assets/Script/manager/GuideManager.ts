@@ -58,6 +58,10 @@ export default class GuideManager{
     }
 
     public startGuide(){
+        if(!this._isINGuide){
+            this.endGuide();
+            return;
+        }
         this.showGuideMask();
         if(this.guideTap == null){
             UI.loadUI(ResConst.GuideTap,{},UI.PlotLayer,(res:UIBase)=>{

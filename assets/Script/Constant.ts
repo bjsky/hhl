@@ -59,6 +59,10 @@ export default class Constant{
     public getRaceNameWithId(raceId:number):string{
         return this._constantKeyValueMap["race_name"].split(";")[raceId-1];
     }
+
+    public getSkillMaxLevelArr(){
+        return this._constantKeyValueMap["grade_skillMaxLv"].split(";");
+    }
 }
 
 export var CONSTANT:Constant = Constant.getInstance();
