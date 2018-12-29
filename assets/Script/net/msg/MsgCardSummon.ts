@@ -71,21 +71,20 @@ export class SCardInfo{
 /**
  * 卡牌召唤消息
  */
-export default class MsgCardSummon extends  MessageBase {
+export default class MsgCardSummon extends MessageBase {
     public param:CSCardSummon;
     public resp:SCCardSummon;
 
-    constructor(summonType:CardSummonType,stoneCost:number=0){
+    constructor(){
         super(NetConst.CardSummon);
-
-        this.param = new CSCardSummon();
-        this.param.summonType = summonType;
-        this.param.stoneCost = stoneCost;
+        this.isLocal = true;
     }
 
-    public static createLocal(summonType:CardSummonType,stoneCost:number=0){
-        var msg = new MsgCardSummon(summonType,stoneCost);
-        msg.isLocal = true;
+    public static create(summonType,stoneCost){
+        var msg = new MsgCardSummon();
+        msg.param = new CSCardSummon();
+        msg.param.summonType = summonType;
+        msg.param.stoneCost = stoneCost;
         return msg;
     }
 
@@ -103,9 +102,7 @@ export default class MsgCardSummon extends  MessageBase {
             stoneSummonNum:(this.param.summonType == CardSummonType.LifeStone)?COMMON.stoneSummonNum+1:COMMON.stoneSummonNum,
             videoSummonNum:(this.param.summonType == CardSummonType.Viedo)?COMMON.videoSummonNum+1:COMMON.videoSummonNum
         };
-        
-        this.resp = this.parse(json);
-        return this;
+        return this.parse(json);
     }
 
     public static randomCardInfo(type:number){
@@ -121,7 +118,11 @@ export default class MsgCardSummon extends  MessageBase {
         return cardInfo;
     }
 
-    protected parse(obj:any){
-        return SCCardSummon.parse(obj);
+    private parse(obj:any):MessageBase{
+        this.resp = SCCardSummon.parse(obj);
+        return this;
+    }
+    public respFromServer(obj:any):MessageBase{
+        return this.parse(obj);
     }
 }

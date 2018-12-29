@@ -24,16 +24,15 @@ export default class MsgGuideUpdate extends MessageBase{
     public param:CSGuideUpdate;
     public resp:SCGuideUpdate;
 
-    constructor(guideId:number){
+    constructor(){
         super(NetConst.GuideUpdate);
-
-        this.param = new CSGuideUpdate();
-        this.param.currentGuideId = guideId;
+        this.isLocal = true;
     }
 
-    public static createLocal(guideId:number){
-        var msg = new MsgGuideUpdate(guideId);
-        msg.isLocal = true;
+    public static create(guideId:number){
+        var msg = new MsgGuideUpdate();
+        msg.param = new CSGuideUpdate();
+        msg.param.currentGuideId = guideId;
         return msg;
     }
 
@@ -47,13 +46,14 @@ export default class MsgGuideUpdate extends MessageBase{
             json = {nextGuideId:-1
             };
         }
-        
-        this.resp = this.parse(json);
-        return this;
+        return this.parse(json);
     }
 
-    protected parse(obj:any){
-        var data:SCGuideUpdate = SCGuideUpdate.parse(obj);
-        return data;
+    private parse(obj:any):MessageBase{
+        this.resp = SCGuideUpdate.parse(obj);
+        return this;
+    }
+    public respFromServer(obj:any):MessageBase{
+        return this.parse(obj);
     }
 }

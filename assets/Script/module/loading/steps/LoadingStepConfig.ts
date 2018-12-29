@@ -2,9 +2,6 @@ import LoadingStep from "../loadingStep";
 import { RES } from "../../../manager/ResourceManager";
 import { CFG } from "../../../manager/ConfigManager";
 import { LoadingStepEnum } from "../LoadingStepManager";
-import { EVENT } from "../../../message/EventCenter";
-import GameEvent from "../../../message/GameEvent";
-import LoadingStepServerData from "./LoadingStepServerData";
 
 export const ConfigConst = {
     Constant:"config/constant",
@@ -39,8 +36,8 @@ export default class LoadingStepConfig extends LoadingStep{
         });
         console.log("Config loaded!");
 
-        //必须加载完配置后
-        var serverStep:LoadingStepServerData = this.getStep(LoadingStepEnum.ServerData);
+        var serverStep:LoadingStep = this.getStep(LoadingStepEnum.Login);
+        
         if(serverStep){
             serverStep.startStep();
         }

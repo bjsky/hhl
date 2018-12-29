@@ -2,6 +2,7 @@
 import NetConst from "../NetConst";
 import MessageBase from "./MessageBase";
 import MsgCardSummon, { SCardInfo, CardSummonType } from "./MsgCardSummon";
+import { GLOBAL, ServerType } from "../../GlobalData";
 
 /**
  * 登录客户端数据
@@ -157,22 +158,22 @@ export class SColorStoneInfo{
     }
 }
 
-export default class MsgLogin extends MessageBase {
+export default class MsgLogin
+ extends MessageBase {
     public param:CSLoginData;
     public resp:SCLoginData;
 
-    constructor(accountId,shareId,adId){
+    constructor(){
         super(NetConst.Login);
-
-        this.param = new CSLoginData();
-        this.param.accountId = accountId;
-        this.param.shareId = shareId;
-        this.param.adId = adId;
+        this.isLocal = true;
     }
 
-    public static createLocal(){
-        var msg = new MsgLogin("123","","");
-        msg.isLocal = true;
+    public static create(accountId,shareId,adId){
+        var msg = new MsgLogin();
+        msg.param = new CSLoginData();
+        msg.param.accountId = accountId;
+        msg.param.shareId = shareId;
+        msg.param.adId = adId;
         return msg;
     }
 
@@ -193,12 +194,16 @@ export default class MsgLogin extends MessageBase {
             ownerCards:ownerCards,
             lineUpCardsUuid:[]
         };
-        this.resp = this.parse(json);
+        return this.parse(json);
+    }
+
+    private parse(obj:any):MessageBase{
+        var data:SCLoginData = SCLoginData.parse(obj);
+        this.resp = data;
         return this;
     }
 
-    protected parse(obj:any){
-        var data:SCLoginData = SCLoginData.parse(obj);
-        return data;
+    public respFromServer(obj:any):MessageBase{
+        return this.parse(obj);
     }
 }

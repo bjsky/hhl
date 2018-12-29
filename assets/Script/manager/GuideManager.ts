@@ -76,7 +76,7 @@ export default class GuideManager{
 
     public endStoryGuide(guideId:number){
         this._guideColorLayer.runAction(cc.sequence(cc.fadeOut(0.6),cc.callFunc(()=>{
-            NET.send(MsgGuideUpdate.createLocal(guideId),(msg:MsgGuideUpdate)=>{
+            NET.send(MsgGuideUpdate.create(guideId),(msg:MsgGuideUpdate)=>{
                 if(msg && msg.resp){
                     GUIDE.guideInfo.updateGuide(msg.resp);
                     var scene:CityScene = SCENE.CurScene as CityScene;
@@ -90,7 +90,7 @@ export default class GuideManager{
 
 
     public nextGuide(guideId:number){
-        NET.send(MsgGuideUpdate.createLocal(guideId),(msg:MsgGuideUpdate)=>{
+        NET.send(MsgGuideUpdate.create(guideId),(msg:MsgGuideUpdate)=>{
             if(msg && msg.resp){
                 this.guideInfo.updateGuide(msg.resp);
                 this.startGuide();

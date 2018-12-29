@@ -3,6 +3,8 @@ import { EVENT } from "../../message/EventCenter";
 import NetConst from "../NetConst";
 import NetMessage from "../NetMessage";
 import MessageBase from "../msg/MessageBase";
+import { GLOBAL, ServerType } from "../../GlobalData";
+import MsgUtil from "../msg/MsgUtil";
 
 export class NetController
 {
@@ -73,7 +75,8 @@ export class NetController
      */
     public send(message:MessageBase, cb: Function, thisObj: any, fail: Function = null)
     {
-        if(message.isLocal){    //本地数据
+        var sType:number = GLOBAL.serverType;
+        if(sType == ServerType.Client || message.isLocal == true){    //本地数据
             cb.call(thisObj,message.respFromLocal());
             return;
         }
@@ -256,7 +259,7 @@ export class NetController
 
     /** 处理成功消息 */
     private doSuccMessage(json: any) {
-        var message:MessageBase = MessageBase.createMessage(json.id);
+        var message:MessageBase = MsgUtil.createMessage(json.id);
         let obj = this._msgDict[json.seq];
         if(obj != null) {
             delete this._msgDict[json.seq];

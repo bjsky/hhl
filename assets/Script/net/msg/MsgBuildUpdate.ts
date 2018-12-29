@@ -36,20 +36,17 @@ export default class MsgBuildUpdate extends MessageBase{
     public param:CSBuildUpdate;
     public resp:SCBuildUpdate;
 
-    constructor(buildType:number){
+    constructor(){
         super(NetConst.BuildUpdate);
-
-        this.param = new CSBuildUpdate();
-        this.param.buildType = buildType;
+        this.isLocal = true;
     }
-
-    public static createLocal(buildType:number){
-        var msg = new MsgBuildUpdate(buildType);
-        msg.isLocal = true;
+    public static create(buildType:number){
+        var msg:MsgBuildUpdate = new MsgBuildUpdate();
+        msg.param = new CSBuildUpdate();
+        msg.param.buildType = buildType;
         return msg;
+        
     }
-
-
     public respFromLocal(){
         var info:BuildInfo = BUILD.getBuildInfo(this.param.buildType)
         var sInfo:SBuildInfo = info.cloneServerInfo();
@@ -66,11 +63,11 @@ export default class MsgBuildUpdate extends MessageBase{
             userInfo:userInfo
         };
         
-        this.resp = this.parse(json);
-        return this;
+        return this.parse(json);
     }
 
-    protected parse(obj:any){
-        return SCBuildUpdate.parse(obj);
+    private parse(obj:any):MessageBase{
+        this.resp = SCBuildUpdate.parse(obj);
+        return this;
     }
 }

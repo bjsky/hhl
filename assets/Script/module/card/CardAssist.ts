@@ -65,7 +65,7 @@ export default class CardAssist{
 
     public summonCard(summonType:CardSummonType,stoneCost:number=0){
         //召唤卡牌
-        NET.send(MsgCardSummon.createLocal(summonType,stoneCost),(msg:MsgCardSummon)=>{
+        NET.send(MsgCardSummon.create(summonType,stoneCost),(msg:MsgCardSummon)=>{
             console.log(JSON.stringify(msg.resp) );
 
             COMMON.updateResInfo(msg.resp.retRes);

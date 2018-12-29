@@ -1,4 +1,5 @@
 import LoadingStepManager from "./module/loading/LoadingStepManager";
+import { GLOBAL } from "./GlobalData";
 
 /**
  *  游戏逻辑控制器
@@ -22,6 +23,9 @@ export default class GameController{
      * 
      */
     public start(){
+        //初始化
+        GLOBAL.initGameConfig();
+        //加载
         this.loadingStepMgr = new LoadingStepManager();
         this.loadingStepMgr.startLoading();
     }

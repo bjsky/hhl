@@ -10,7 +10,7 @@ export default class LoadingStepServerData extends LoadingStep{
 
     public doStep(){
         CONSTANT.initConstant();
-        NET.send(MsgLogin.createLocal(),(msg:MsgLogin)=>{
+        NET.send(MsgLogin.create("123","",""),(msg:MsgLogin)=>{
             if(msg && msg.resp){
                 console.log(msg.resp);
             }
