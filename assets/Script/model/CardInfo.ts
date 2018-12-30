@@ -38,8 +38,19 @@ export default class CardInfo{
     //技能的当前加成
     public getSkillValue(index){
         var cfg:any = this.cardSkillCfg[index];
-        var num = Number(cfg.value) + this.skillLevel * Number(cfg.addValue);
+        var num = Number(cfg.value) + (this.grade-1) * Number(cfg.addValue);
         console.log(num);
         return num;
+    }
+    //下级技能的加成
+    public getSkillNextGradeValue(index){
+        var cfg:any = this.cardSkillCfg[index];
+        var num = Number(cfg.value) + this.grade * Number(cfg.addValue);
+        console.log(num);
+        return num;
+    }
+
+    public get isMaxGrade(){
+        return this.grade == 5;
     }
 }

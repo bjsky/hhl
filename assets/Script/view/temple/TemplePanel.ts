@@ -139,19 +139,19 @@ export default class TemplePanel extends UIBase {
         EVENT.emit(GameEvent.Goto_build_panel,{type:BuildType.Hero});
     }
     private initView(){
-        var freeNum:number = CONSTANT.getStoneFreeSummonNum();
-        if(COMMON.stoneSummonNum < freeNum){
-            this.stoneSummonFree.node.active = true;
-            this.stoneSummonFree.string = "第"+(COMMON.stoneSummonNum +1)+"次免费";
-            this.stoneCost.active = false;
-            this._stoneSummonCost = 0;
-        }else{
+        // var freeNum:number = CONSTANT.getStoneFreeSummonNum();
+        // if(COMMON.stoneSummonNum < freeNum){
+        //     this.stoneSummonFree.node.active = true;
+        //     this.stoneSummonFree.string = "第"+(COMMON.stoneSummonNum +1)+"次免费";
+        //     this.stoneCost.active = false;
+        //     this._stoneSummonCost = 0;
+        // }else{
             this.stoneCost.active = true;
             this.stoneSummonFree.node.active = false;
-            this._stoneSummonCost = BUILD.getSummonStoneCostBuffed(COMMON.stoneSummonNum-freeNum);
+            this._stoneSummonCost = BUILD.getSummonStoneCostBuffed(0);  //COMMON.stoneSummonNum-freeNum
             this.summonNeedLifeStone.string = StringUtil.formatReadableNumber(this._stoneSummonCost);
         
-        }
+        // }
         this.videoLeftTime.string = "剩余："+ (CONSTANT.getVideoFreeSummonNum() - COMMON.videoSummonNum);
     }
 
@@ -205,12 +205,12 @@ export default class TemplePanel extends UIBase {
     private _speedDir:number = 0; //0加速1匀速2减速3结束 
     private _speedNum:number = 0;
 
-    private Sspeed:number = 0.4;
-    private Aspeed:number = 0.1;
+    private Sspeed:number = 0.25;
+    private Aspeed:number = 0.05;
     private MaxSpeed:number =0.2;
-    private MaxSpeedNum:number = 7;
+    private MaxSpeedNum:number = 4;
     private Dspeed:number = 0.05;
-    private MinSpeed:number = 0.4;
+    private MinSpeed:number = 0.3;
     private playStoneSummonEffect(cb:Function){
         if(this._summonEffectPlaying)
             return;

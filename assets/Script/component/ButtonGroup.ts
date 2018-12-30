@@ -17,28 +17,49 @@ export default class ButtonGroup extends cc.Component {
 
     @property([LoadSprite])
     btnSprites: Array<LoadSprite> = [];
-    @property
-    labels: string = "";
-
+    
     @property
     selectIcon: string = 'ui/Common/hPageSelect';
     @property
     unSelectIcon: string = 'ui/Common/hPageUnselect';
     
+    private _updateComponent:boolean = false;
     private _selectIndex:number = 0;
     public set selectIndex(index:number){
+        var old:number = this._selectIndex;
         this._selectIndex = index;
+        console.log("ButtonGroup:selectIndex:"+this._selectIndex);
+        if(old != this._selectIndex){
+            this._updateComponent = true;
+        }
     }
     public get selectIndex(){
         return this._selectIndex;
     }
 
+    private _labels: string = "";
+    public set labels(value:string){
+        var oldValue = this._labels;
+        this._labels = value;
+        console.log("ButtonGroup:labels:"+this._labels);
+        if(oldValue!=this._labels){
+            this._updateComponent = true;
+        }
+    }
+
+    public get labels(){
+        return this._labels;
+    }
 
     //按钮组改变
     public static BUTTONGROUP_SELECT_CHANGE:string = "BUTTONGROUP_SELECT_CHANGE";
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
+        
+    }
+
+    private updateLabels(){
         var labelArr:Array<string> = [];
         if(this.labels!=""){
             labelArr= this.labels.split(";");
@@ -52,11 +73,16 @@ export default class ButtonGroup extends cc.Component {
                 btn.load(this.unSelectIcon);
             }
 
-            if(btn.node.childrenCount>0){
-                var label:cc.Label = btn.node.children[0].getComponent(cc.Label);
-                if(label && i<labelArr.length){
-                     label.string = labelArr[i];
+            if(i<labelArr.length){
+                btn.node.active = true;
+                if(btn.node.childrenCount>0){
+                    var label:cc.Label = btn.node.children[0].getComponent(cc.Label);
+                    if(label){
+                        label.string = labelArr[i];
+                    }
                 }
+            }else{
+                btn.node.active = false;
             }
         }
     }
@@ -88,5 +114,10 @@ export default class ButtonGroup extends cc.Component {
 
     }
 
-    // update (dt) {}
+    update (dt) {
+        if(this._updateComponent){
+            this._updateComponent = false;
+            this.updateLabels();
+        }
+    }
 }

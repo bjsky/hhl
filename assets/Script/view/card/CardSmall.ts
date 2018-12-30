@@ -56,6 +56,8 @@ export default class CardSmall extends DListItem {
     onLoad () {
         super.onLoad();
         this.cardSelect.active = false;
+        this.cardSrc.load("");
+        
     }
     private _cardUUid:string;
     private _cardInfo:CardInfo;
@@ -91,6 +93,8 @@ export default class CardSmall extends DListItem {
 
     onDisable(){
         super.onDisable();
+        this.cardSrc.load("");
+        
     }
 
     private setHeroView(){
@@ -104,7 +108,7 @@ export default class CardSmall extends DListItem {
         this.cardStar.load(PathUtil.getCardGradeImgPath(this._cardInfo.grade));
         this.cardSrc.load(PathUtil.getCardImgPath(this._cardInfo.cardInfoCfg.imgPath));
         this.cardLevel.string = "Lv."+this._cardInfo.level;
-        this.cardPower.string = "战力：" + this._cardInfo.carUpCfg.power ;
+        this.cardPower.string = this._cardInfo.carUpCfg.power ;
         this.cardRace.load(PathUtil.getCardRaceImgPath(this._cardInfo.cardInfoCfg.raceId));
     }
 

@@ -17,7 +17,7 @@ export default class SkillAssist{
         var skillDesc:string = skillCfg.skillDesc;
         var value:string =(Number(skillCfg.value)*100).toString();
         var addValue:string = (Number(skillCfg.addValue)*100).toString();
-        var valueStr = "（<color=#29b92f>"+value+"</color>+技能等级*<color=#29b92f>"+addValue+"</color>）";
+        var valueStr = "（<color=#29b92f>"+value+"</color>+英雄星级*<color=#29b92f>"+addValue+"</color>）";
         return "<color=#D35C21>" + skillDesc.replace("#",valueStr)+"</color>";
     }
 
@@ -32,9 +32,17 @@ export default class SkillAssist{
 
     public getCardSkillAddDescHtml(info:CardInfo,index:number = 0):string{
         var cfg:any = info.cardSkillCfg[index];
-        var addValue:string = "<color=#29b92f>+"+(Math.round(cfg.addValue*1000)/10).toString()+"%</color>";
-        var maxLevel:number = this.getSkillMaxLevel(info.grade);
-        return "<color=#D35C21>（下一级: " + addValue +"  等级上限:"+ maxLevel + "级）</color>";
+        // var addValue:string = "<color=#29b92f>+"+(Math.round(cfg.addValue*1000)/10).toString()+"%</color>";
+        // var maxLevel:number = this.getSkillMaxLevel(info.grade);
+        // return "<color=#D35C21>（下一级: " + addValue +"  等级上限:"+ maxLevel + "级）</color>";
+
+        if(info.isMaxGrade){
+            return "<color=#D35C21>已是最高级技能</color>"
+        }else{
+            var value:string =(Math.round(info.getSkillNextGradeValue(index)*1000)/10).toString();
+            var nextGrade:number = info.grade+1;
+            return "<color=#D35C21>"+nextGrade+"星：" + value +"%</color>";
+        }
     }
 
     //获取技能的最大等级

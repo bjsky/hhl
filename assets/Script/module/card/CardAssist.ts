@@ -115,6 +115,33 @@ export default class CardAssist{
         return cardList;
     }
 
+    //按照类型卡牌列表
+    public getOwnerCardListMap():any{
+        var map:any ={};
+        var card:CardInfo = null;
+        for(var uuid in this.cardsMap){
+            card = this.cardsMap[uuid];
+            if(map[card.cardInfoCfg.raceId]== undefined){
+                map[card.cardInfoCfg.raceId] = [];
+            }
+            map[card.cardInfoCfg.raceId].push(card);
+        }
+        return map;
+    }
+
+    //获取升星同星级卡牌
+    public getUpStarCardOne(info:CardInfo):CardInfo{
+        var card:CardInfo = null;
+        for(var uuid in this.cardsMap){
+            card = this.cardsMap[uuid];
+            if(card.uuid != info.uuid &&
+                card.grade == info.grade && card.cardId == info.cardId){
+                return card;
+            }
+        }
+        return null;
+    }
+
     //初始化卡牌
     public initCard(cards:Array<SCardInfo>,lineupCardsUuid:Array<string>){
         this.lineUpCardsUuid = lineupCardsUuid;

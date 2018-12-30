@@ -38,6 +38,8 @@ export default class CardBig extends UIBase{
         this.node.width = cc.winSize.width;
         this.node.height = cc.winSize.height;
         this.node.position = cc.v2(0,0)//cc.v2(cc.winSize.width/2,cc.winSize.height/2);
+        this.cardSrc.load("");
+        
     }
     private _cardUUid:string;
     private _cardInfo:CardInfo;
@@ -77,6 +79,7 @@ export default class CardBig extends UIBase{
     }
 
     onDisable(){
+        this.cardSrc.load("");
         EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
     }
 
@@ -86,7 +89,7 @@ export default class CardBig extends UIBase{
         this.cardStar.load(PathUtil.getCardGradeImgPath(this._cardInfo.grade));
         this.cardSrc.load(PathUtil.getCardImgPath(this._cardInfo.cardInfoCfg.imgPath));
         this.cardLevel.string = "Lv."+this._cardInfo.level;
-        this.cardPower.string = "战力：" + this._cardInfo.carUpCfg.power ;
+        this.cardPower.string = this._cardInfo.carUpCfg.power ;
     }
     
     private _showEffect:boolean =false;
@@ -94,7 +97,7 @@ export default class CardBig extends UIBase{
     private showEffect(){
         this.initEffect();
         var scaleAct = cc.sequence(cc.spawn(
-            cc.moveTo(0.3,cc.v2(0,0)),cc.scaleTo(0.3,1)
+            cc.moveTo(0.2,cc.v2(0,0)),cc.scaleTo(0.2,1)
         ),cc.callFunc(()=>{
             this.node.on(cc.Node.EventType.TOUCH_START,this.onMaskTouch,this);
         }))

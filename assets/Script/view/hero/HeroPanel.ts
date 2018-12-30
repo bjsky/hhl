@@ -13,6 +13,10 @@ import { CFG } from "../../manager/ConfigManager";
 import { ConfigConst } from "../../module/loading/steps/LoadingStepConfig";
 import { Skill } from "../../module/skill/SkillAssist";
 import { GUIDE } from "../../manager/GuideManager";
+import TouchHandler from "../../component/TouchHandler";
+import { COMMON } from "../../CommonData";
+import { UI } from "../../manager/UIManager";
+import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -83,7 +87,21 @@ export default class HeroPanel extends UIBase {
     
     @property(cc.Button)
     btnUpgrade:cc.Button = null;
+    @property(cc.Button)
+    btnSkillUpgrade:cc.Button = null;
+    @property(cc.Button)
+    btnDestroy:cc.Button = null;
+
     
+    //升星组件
+    @property(cc.Node)
+    nodeUpStar:cc.Node = null;
+    @property(LoadSprite)
+    sprNeedCardGrade:LoadSprite = null;
+    @property(cc.Node)
+    cardHeadFromNode:cc.Node = null;
+    @property(cc.Node)
+    cardHeadToNode:cc.Node = null;
 
 
     // LIFE-CYCLE CALLBACKS:
@@ -92,23 +110,36 @@ export default class HeroPanel extends UIBase {
 
     private _currentCardList:Array<CardInfo> =[];
 
+    private _cardListMap:any = {};
+    private _groupListDatas:Array<any> =[];
 
     onLoad () {
-
-        this.initListGroup();
+        
     }
 
     private initListGroup(){
-        this.btnGroup.labels = "全部;" + CONSTANT.getRaceNameWithId(CardRaceType.WuZu)+";"
-        + CONSTANT.getRaceNameWithId(CardRaceType.YaoZu)+";"
-        + CONSTANT.getRaceNameWithId(CardRaceType.XianJie)+";"
-        + CONSTANT.getRaceNameWithId(CardRaceType.RenJie);
+        this._cardListMap = Card.getOwnerCardListMap();
+        var labels:string ="";
+        this._groupListDatas = [];
+
+        for(var key in CardRaceType){
+            if(this._cardListMap[key]!=undefined &&this._cardListMap[key].length>0){
+                var label:string = CONSTANT.getRaceNameWithId(Number(key));
+                this._groupListDatas.push({raceId:Number(key)})
+                labels +=(label)+";";
+            }
+        }
+        labels = labels.substr(0,labels.length-1);
+        this.btnGroup.labels = labels;
         this.btnGroup.selectIndex = 0;
     }
 
     onEnable(){
         this.btnGroup.node.on(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.groupSelectChange,this);
         this.cardsList.node.on(DList.ITEM_CLICK,this.onCardClick,this);
+        this.btnUpgrade.node.on(TouchHandler.TOUCH_CLICK,this.upgradeHero,this);
+        this.btnSkillUpgrade.node.on(TouchHandler.TOUCH_CLICK,this.upgradeHeroSkill,this);
+        this.btnDestroy.node.on(TouchHandler.TOUCH_CLICK,this.destroyHero,this);
 
         EVENT.on(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
         EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
@@ -119,6 +150,9 @@ export default class HeroPanel extends UIBase {
     onDisable(){
         this.btnGroup.node.off(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.groupSelectChange,this);
         this.cardsList.node.off(DList.ITEM_CLICK,this.onCardClick,this);
+        this.btnUpgrade.node.off(TouchHandler.TOUCH_CLICK,this.upgradeHero,this);
+        this.btnSkillUpgrade.node.off(TouchHandler.TOUCH_CLICK,this.upgradeHeroSkill,this);
+        this.btnDestroy.node.off(TouchHandler.TOUCH_CLICK,this.destroyHero,this);
 
         EVENT.off(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
         EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
@@ -131,7 +165,7 @@ export default class HeroPanel extends UIBase {
 
     private groupSelectChange(e){
         var idx = e.detail.index;
-        this.initView();
+        this.listGroupSelected();
     }
 
     private onCardClick(e){
@@ -142,7 +176,13 @@ export default class HeroPanel extends UIBase {
     }
 
     private initView(nolist:boolean = false){
-        var sortList = Card.getOwnerCardList(this.btnGroup.selectIndex);
+        this.initListGroup();
+        this.listGroupSelected(nolist);
+        
+    }
+    private listGroupSelected(nolist:boolean = false){
+        var cardRace = this._groupListDatas[this.btnGroup.selectIndex];
+        var sortList = Card.getOwnerCardList(cardRace.raceId);
         //排序，按星级倒序，等级倒序，id正序
         sortList.sort((a:CardInfo,b:CardInfo)=>{
             if(a.grade == b.grade){
@@ -181,10 +221,14 @@ export default class HeroPanel extends UIBase {
             this.labelPower.string = this._currentCard.carUpCfg.power;
             this.initProperty();
             this.initSkill();
+            this.initUpStar();
         }
     }
 
     private _nextLvCardCfg:any = null;
+    private _upLvCost:number = 0;
+    private _destoryGet:number = 0;
+    private _upSkillLvCost:number = 0;
     private initProperty(){
         var cfgs:any = CFG.getCfgByKey(ConfigConst.CardUp,"grade",this._currentCard.grade,"level",this._currentCard.level+1);
         if(cfgs.length>0){
@@ -196,18 +240,47 @@ export default class HeroPanel extends UIBase {
         this.labelPtPowerAdd.string = this._nextLvCardCfg?"+" + (this._nextLvCardCfg.power - this._currentCard.carUpCfg.power):"已满级";
         this.labelPtLife.string = this._currentCard.carUpCfg.body;
         this.labelPtLifeAdd.string = this._nextLvCardCfg?"+" + (this._nextLvCardCfg.body - this._currentCard.carUpCfg.body):"已满级";
-        this.labelUpLvCost.string = this._currentCard.carUpCfg.needStore;
-        this.labelDestoryGet.string = this._currentCard.carUpCfg.destoryGetStore;
+        this._upLvCost =  Number(this._currentCard.carUpCfg.needStore);
+        this.labelUpLvCost.string = this._upLvCost.toString();
+        this._destoryGet =  Number(this._currentCard.carUpCfg.destoryGetStore);
+        this.labelDestoryGet.string = this._destoryGet.toString();
     }
 
 
     private initSkill(){
         this.labelSkillName.string = this._currentCard.cardSkillCfg[0].name;
-        this.labelSkillLv.string =this._currentCard.skillLevel+"级";
-        this.labelSkillCost.string = this._currentCard.skillUpCfg.upNeedStone;
+        this.labelSkillLv.string =this._currentCard.grade+"星";
 
         this.labelSkillDesc.string = Skill.getCardSkillDescHtml(this._currentCard);
         this.labelSkillAdd.string = Skill.getCardSkillAddDescHtml(this._currentCard);
+    }
+
+    private _upStarCard:CardInfo = null;
+    //升星
+    private initUpStar(){
+        if(this._currentCard.isMaxGrade){
+            this.nodeUpStar.active = false;
+        }else{
+            this.nodeUpStar.active = true;
+            this.sprNeedCardGrade.load(PathUtil.getCardUpstarNeedCard(this._currentCard.grade));
+
+            if(this.cardHeadFromNode.childrenCount>0){
+                UI.removeUI(this.cardHeadFromNode.children[0]);
+            }
+            if(this.cardHeadToNode.childrenCount>0){
+                UI.removeUI(this.cardHeadToNode.children[0]);
+            }
+
+            this._upStarCard = Card.getUpStarCardOne(this._currentCard);
+            if(this._upStarCard){
+                var cardObj ={head:this._upStarCard.cardInfoCfg.head,grade:this._upStarCard.grade,power:this._upStarCard.carUpCfg.power}
+                UI.loadUI(ResConst.CardHead,cardObj,this.cardHeadFromNode);
+                var upStar = this._upStarCard.grade+1;
+                var cardUpInfo = CFG.getCfgByKey(ConfigConst.CardUp,"grade",upStar,"level",1)[0];
+                var upStarObj = {head:this._upStarCard.cardInfoCfg.head,grade:upStar,power:cardUpInfo.power}
+                UI.loadUI(ResConst.CardHead,upStarObj,this.cardHeadToNode);
+            }
+        }
     }
 
     private initCardList(){
@@ -232,7 +305,24 @@ export default class HeroPanel extends UIBase {
     start () {
 
     }
-    
+
+    public upgradeHero(e){
+        if(!this._nextLvCardCfg)
+            return;
+        if(COMMON.resInfo.soulStone< this._upLvCost){
+            UI.showTip("魂石不足");
+            return;
+        }
+
+    }
+
+    public upgradeHeroSkill(e){
+
+    }
+
+    public destroyHero(e){
+
+    }
 
     public getGuideNode(name:string):cc.Node{
         if(name == "buildPanel_upgradeCard"){

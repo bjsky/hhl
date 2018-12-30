@@ -29,14 +29,15 @@ export default class Constant{
 
     //获得当前抽取卡片消耗的灵石
     public getSummonStoneCost(unfreeIndex:number):number{
-        var stoneSummonCost:Array<any> = this._constantKeyValueMap["store_summon_use"].split(";");
-        var cost:string =""
-        if(unfreeIndex <= stoneSummonCost.length-1){
-            cost = stoneSummonCost[unfreeIndex];
-        }else{
-            cost = stoneSummonCost[stoneSummonCost.length-1];
-        }
-        return Number(cost);
+        // var stoneSummonCost:Array<any> = this._constantKeyValueMap["store_summon_use"].split(";");
+        // var cost:string =""
+        // if(unfreeIndex <= stoneSummonCost.length-1){
+        //     cost = stoneSummonCost[unfreeIndex];
+        // }else{
+        //     cost = stoneSummonCost[stoneSummonCost.length-1];
+        // }
+        // return Number(cost);
+        return this._constantKeyValueMap["store_summon_use"].split(";")[0];
     }
 
     //灵石免费次数

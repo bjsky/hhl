@@ -182,6 +182,9 @@ export default class MsgLogin
         for(var i:number = 0;i<5;i++){
             ownerCards.push(MsgCardSummon.randomCardInfo(CardSummonType.LifeStone));
         }
+        var uuid = new Date().getTime()+ Number(Math.random()*1000000).toFixed(0);
+        var copy:any = {uuid:uuid,level:1,cardId:ownerCards[0].cardId,grade:ownerCards[0].grade,skillLevel:1}
+        ownerCards.push(copy);
         var json:any = {firstLogin:true,
             userInfo:{nickName:"上古战神",headPic:"",exp:100,level:5},
             resInfo:{gold:9000,diamond:20,lifeStone:5000,soulStone:370},
