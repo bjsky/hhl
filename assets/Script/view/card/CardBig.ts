@@ -38,7 +38,6 @@ export default class CardBig extends UIBase{
         this.node.width = cc.winSize.width;
         this.node.height = cc.winSize.height;
         this.node.position = cc.v2(0,0)//cc.v2(cc.winSize.width/2,cc.winSize.height/2);
-        this.cardSrc.load("");
         
     }
     private _cardUUid:string;
@@ -66,30 +65,27 @@ export default class CardBig extends UIBase{
         EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
 
         this.initCardView();
-        this.showEffect();
         // this._showEffect = true;
     }
 
-    private initEffect(){
-        this.node.position = this.node.parent.convertToNodeSpaceAR(this._cardWorldPos);
-        console.log(this.node.position.x,this.node.position.y)
-        this.node.scaleX = 0.4;
-        this.node.scaleY = 0.4;
-        this.node.rotation = 0;
-    }
 
     onDisable(){
-        this.cardSrc.load("");
         EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
     }
 
     private initCardView(){
+        this.node.opacity = 0;
         this.cardName.string = this._cardInfo.cardInfoCfg.name;
-        this.cardRace.load(PathUtil.getCardRaceImgPath(this._cardInfo.cardInfoCfg.raceId));
+        this.cardRace.load(PathUtil.getCardRaceImgPath(this._cardInfo.cardInfoCfg.raceId),null,this.loadCardCb.bind(this));
         this.cardStar.load(PathUtil.getCardGradeImgPath(this._cardInfo.grade));
         this.cardSrc.load(PathUtil.getCardImgPath(this._cardInfo.cardInfoCfg.imgPath));
         this.cardLevel.string = "Lv."+this._cardInfo.level;
         this.cardPower.string = this._cardInfo.carUpCfg.power ;
+    }
+
+    private loadCardCb(){
+        this.node.opacity = 255;
+        this.showEffect();
     }
     
     private _showEffect:boolean =false;
@@ -104,6 +100,13 @@ export default class CardBig extends UIBase{
         this.node.runAction(scaleAct)
     }
 
+    private initEffect(){
+        this.node.position = this.node.parent.convertToNodeSpaceAR(this._cardWorldPos);
+        console.log(this.node.position.x,this.node.position.y)
+        this.node.scaleX = 0.4;
+        this.node.scaleY = 0.4;
+        this.node.rotation = 0;
+    }
     private onMaskTouch(e){
         this.node.off(cc.Node.EventType.TOUCH_START,this.onMaskTouch,this);
         var toPos = this.node.convertToNodeSpaceAR(this._cardToPos);

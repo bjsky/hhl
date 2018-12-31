@@ -23,20 +23,22 @@ export default class LoadSprite extends cc.Sprite{
 
 
     // update (dt) {}
+    private _callback:Function = null;
 
     /**
      * 加载图片
      * @param path 
      * @param type 
      */
-    public load(path:string,type:string = null){
-        if (path == null) {
+    public load(path:string,type:string = null,cb:Function = null){
+        if (path == null ) {
             return;
         }
         if(path == ""){
             this.spriteFrame = null;
             return;
         }
+        this._callback = cb;
         let self = this;
         if (path.indexOf("http://") >= 0) {
              cc.loader.load({url: path, type: type},this.loadComplete.bind(this));
@@ -46,6 +48,7 @@ export default class LoadSprite extends cc.Sprite{
             cc.loader.loadRes(newPath,cc.SpriteFrame,
                 (error: Error, resource: cc.SpriteFrame) => {
                     __self.spriteFrame = resource;
+                    cb && cb();
                 }
             );
         }else{
@@ -53,6 +56,7 @@ export default class LoadSprite extends cc.Sprite{
             cc.loader.loadRes(path,cc.SpriteFrame,
                 (error: Error, resource: cc.SpriteFrame) => {
                     __self.spriteFrame = resource;
+                    cb && cb();
                 }
             );
         }
@@ -64,6 +68,7 @@ export default class LoadSprite extends cc.Sprite{
             console.log("MIconLoader.load fial: "+ err);
         }else{
             this.spriteFrame = new cc.SpriteFrame(tex);
+            this._callback && this._callback();
         }
     }
 

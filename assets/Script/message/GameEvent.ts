@@ -26,4 +26,8 @@ export default class GameEvent{
     public static Card_summon_Complete:string="Card_summon_Complete";
     //打开界面
     public static Goto_build_panel:string = "Goto_build_panel";
+    //卡牌更新
+    public static Card_update_Complete:string = "Card_update_Complete";
+    //卡牌删除
+    public static Card_Remove:string = "Card_Remove";
 }

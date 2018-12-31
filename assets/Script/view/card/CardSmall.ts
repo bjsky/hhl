@@ -57,7 +57,6 @@ export default class CardSmall extends DListItem {
         super.onLoad();
         this.cardSelect.active = false;
         this.cardSrc.load("");
-        
     }
     private _cardUUid:string;
     private _cardInfo:CardInfo;
@@ -86,15 +85,34 @@ export default class CardSmall extends DListItem {
 
             this.heorNode.active = false;
             this.ownerNode.active = true;
-            this.setOwnerView();
+            this.setOwnerView(true);
         }
         
     }
 
+    onUpdate(){
+        if(this._showType == CardSimpleShowType.Owner){
+            this._cardInfo = Card.getCardByUUid(this._cardUUid);
+            this.setOwnerView();
+        }
+    }
+
+    onRemove(cb?:Function){
+        var act= cc.sequence(
+            cc.spawn(
+                cc.fadeOut(0.15),
+                cc.scaleTo(0.15,0.4,0.4)
+            ),
+            cc.callFunc(()=>{
+                cb && cb();
+            })
+        );
+        this.node.runAction(act);
+    }
+
     onDisable(){
         super.onDisable();
-        this.cardSrc.load("");
-        
+        this.node.scale = 1;
     }
 
     private setHeroView(){
@@ -103,10 +121,12 @@ export default class CardSmall extends DListItem {
         this.cardSrc.load(PathUtil.getCardImgPath(this._cardCfg.imgPath));
     }
 
-    private setOwnerView(){
+    private setOwnerView(isInit:boolean = false){
         this.cardName.string = this._cardInfo.cardInfoCfg.name;
-        this.cardStar.load(PathUtil.getCardGradeImgPath(this._cardInfo.grade));
-        this.cardSrc.load(PathUtil.getCardImgPath(this._cardInfo.cardInfoCfg.imgPath));
+        if(isInit){
+            this.cardStar.load(PathUtil.getCardGradeImgPath(this._cardInfo.grade));
+            this.cardSrc.load(PathUtil.getCardImgPath(this._cardInfo.cardInfoCfg.imgPath));
+        }
         this.cardLevel.string = "Lv."+this._cardInfo.level;
         this.cardPower.string = this._cardInfo.carUpCfg.power ;
         this.cardRace.load(PathUtil.getCardRaceImgPath(this._cardInfo.cardInfoCfg.raceId));

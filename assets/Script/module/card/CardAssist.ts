@@ -9,6 +9,11 @@ import GameEvent from "../../message/GameEvent";
 import { ResType } from "../../model/ResInfo";
 import { COMMON } from "../../CommonData";
 import CardInfo from "../../model/CardInfo";
+import BuildInfo from "../../model/BuildInfo";
+import { BUILD } from "../build/BuildAssist";
+import { BuildType } from "../../view/BuildPanel";
+import MsgCardUpLv from "../../net/msg/MsgCardUpLv";
+import MsgCardUpStar from "../../net/msg/MsgCardUpStar";
 
 export enum CardRaceType{
     All =0,
@@ -18,6 +23,14 @@ export enum CardRaceType{
     RenJie      //人界
 }
 
+export enum CardUpType{
+    UpLevel = 0,    //升级等级
+    UpGrade,    //升级星级
+}
+export enum CardRemoveType{
+    upStarRemove = 0,//升星移除
+    destroyRemove,//回收移除
+}
 
 export default class CardAssist{
     private static _instance: CardAssist = null;
@@ -91,6 +104,10 @@ export default class CardAssist{
     public getCardByUUid(uuid:string){
         return this.cardsMap[uuid];
     }
+    //移除一张卡牌
+    private removeCardByUUid(uuid:string){
+        delete this.cardsMap[uuid];
+    }
 
     public getCardCfgList(type:number){
         var list:Array<any> = null;
@@ -149,5 +166,46 @@ export default class CardAssist{
             this.addNewCard(card);
         })
     }
+
+    //获取加成后的升级消耗
+    public getUpLvCostBuffed(cost:number){
+        var build:BuildInfo = BUILD.getBuildInfo(BuildType.Hero);
+        if(build){
+            var buffedValue = build.buildLevelCfg.addValue;
+            cost *= (1-buffedValue)
+        }
+        return Number(Math.ceil(cost).toFixed(0));
+    }
+    
+    //升级卡牌
+    public upCardLv(uuid,cost){
+        NET.send(MsgCardUpLv.create(uuid,cost),(msg:MsgCardUpLv)=>{
+            if(msg && msg.resp){
+                this.updateCardInfo(msg.resp.cardInfo);
+                COMMON.updateResInfo(msg.resp.resInfo);
+                EVENT.emit(GameEvent.Res_update_Cost_Complete,{types:[{type:ResType.lifeStone,value:cost}]});
+                EVENT.emit(GameEvent.Card_update_Complete,{uuid:msg.resp.cardInfo.uuid,type:CardUpType.UpLevel});
+            }
+        },this);
+    }
+    //升星卡牌
+    public upCardStar(uuid,useUUid){
+        NET.send(MsgCardUpStar.create(uuid,useUUid),(msg:MsgCardUpStar)=>{
+            if(msg && msg.resp){
+                this.updateCardInfo(msg.resp.cardInfo);
+                var removeUuid = msg.resp.useCardUuid;
+                this.removeCardByUUid(removeUuid);
+                EVENT.emit(GameEvent.Card_update_Complete,{uuid:msg.resp.cardInfo.uuid,type:CardUpType.UpGrade});
+                EVENT.emit(GameEvent.Card_Remove,{uuid:removeUuid,type:CardRemoveType.destroyRemove});
+            }
+        },this);
+    }
+
+    public updateCardInfo(info:SCardInfo){
+        var cardInfo:CardInfo = this.getCardByUUid(info.uuid);
+        cardInfo.updateInfo(info);
+    }
+
+
 }
 export var Card = CardAssist.getInstance();

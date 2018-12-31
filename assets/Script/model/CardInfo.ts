@@ -35,6 +35,20 @@ export default class CardInfo{
         this.skillUpCfg = CFG.getCfgDataById(ConfigConst.SkillUp,this.skillLevel);
     }
 
+    public updateInfo(info:SCardInfo){
+        this.initFormServer(info);
+    }
+
+    public cloneServerInfo():SCardInfo{
+        var info:SCardInfo = new SCardInfo();
+        info.uuid = this.uuid;
+        info.cardId = this.cardId;
+        info.grade = this.grade;
+        info.level = this.level;
+        info.skillLevel = this.skillLevel;
+        return info;
+    }
+
     //技能的当前加成
     public getSkillValue(index){
         var cfg:any = this.cardSkillCfg[index];
@@ -53,4 +67,6 @@ export default class CardInfo{
     public get isMaxGrade(){
         return this.grade == 5;
     }
+
+
 }

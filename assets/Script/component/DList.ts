@@ -96,6 +96,32 @@ export default class DList extends cc.Component {
             return null;
         }
     }
+    
+
+    public updateIndex(index:number){
+        var item:DListItem = null;
+        if(index<this._listItemArr.length){
+            item = this._listItemArr[index];
+            item.onUpdate();
+        }
+    }   
+
+    public removeIndex(index:number){
+        var item:DListItem = null;
+        if(index<this._listItemArr.length){
+            this._listData.splice(index,1);
+            var listItem:DListItem = this._listItemArr.splice(index,1)[0];
+            for(var i:number = index;i<this._listItemArr.length;i++){
+                this._listItemArr[i].index = i;
+            }
+            listItem.onRemove(()=>{
+                this.removeListItem(listItem);
+                // this.updateContentSize();
+                //之后的重新排列
+                this.updateItems(index,false);
+            });
+        }
+    }
 
     private updateDataSource(){
         this.removeListItems();
@@ -104,7 +130,7 @@ export default class DList extends cc.Component {
             var itemData:any = this._listData[i];
             this.addItem(itemData,i);
         }
-        this.updateContentSize();
+        this.updateContentSize(true);
         this.updateItems();
         this.selectIndex = this._selectIndex;
     }
@@ -112,10 +138,14 @@ export default class DList extends cc.Component {
     private removeListItems(){
         while(this._listItemArr.length>0){
             var listItem:DListItem = this._listItemArr.shift();
-            listItem.list = null;
-            listItem.stopEffect();
-            this._nodePool.put(listItem.node);
+            this.removeListItem(listItem);
         }
+    }
+
+    private removeListItem(listItem:DListItem){
+        listItem.list = null;
+        listItem.stopEffect();
+        this._nodePool.put(listItem.node);
     }
 
     private addItem(itemData:any,index:number){
@@ -135,7 +165,7 @@ export default class DList extends cc.Component {
         }
     }
 
-    private updateContentSize(){
+    private updateContentSize(resetPostion:boolean = false){
         var viewWidth = this.scrollView.node.width;
         var viewHeight = this.scrollView.node.height;
         var listWidth = viewWidth;
@@ -155,33 +185,46 @@ export default class DList extends cc.Component {
             }
         }
         this.scrollView.content.setContentSize(listWidth, listHeight);
-        this.scrollView.setContentPosition(cc.v2(0, 0));
+        if(resetPostion){
+            this.scrollView.setContentPosition(cc.v2(0, 0));
+        }
     }
 
 
-    private updateItems(){
-        this._listItemArr.forEach((lsitItem:DListItem)=>{
+    private updateItems(fromIndex:number = 0,reset:boolean = true){
+
+        for(var i:number = 0;i<this._listItemArr.length;i++){
+            var lsitItem:DListItem = this._listItemArr[i];
+            if(lsitItem.index<fromIndex){
+                continue;
+            }
+            var toPos:cc.Vec2 = new cc.Vec2();
             var item:cc.Node = lsitItem.node;
             if(this._direction == DListDirection.Vertical){  //垂直排列
                 let col = Math.floor(lsitItem.index / this._row);
                 let row = lsitItem.index % this._row;
-                item.x = col * item.width + item.width * item.anchorX;
-                item.y = -row * item.height - item.height * (1 - item.anchorY); 
+                toPos.x = col * item.width + item.width * item.anchorX;
+                toPos.y = -row * item.height - item.height * (1 - item.anchorY); 
             }else if(this._direction == DListDirection.Horizontal){ //水平排列
                 let row = Math.floor(lsitItem.index / this.col);
                 let col = lsitItem.index % this.col;
-                item.x = col * item.width + item.width * item.anchorX;
-                item.y = -row * item.height - item.height * (1 - item.anchorY);
+                toPos.x = col * item.width + item.width * item.anchorX;
+                toPos.y = -row * item.height - item.height * (1 - item.anchorY);
             }
-            lsitItem.node.opacity = 0;
-            if(this._listData.length>10){
-                this.scheduleOnce(()=>{
-                    lsitItem.showEffect();
-                },0.15)
-            }else{
-                lsitItem.showEffect();
+            // lsitItem.node.opacity = 0;
+            // if(this._listData.length>10){
+            //     this.scheduleOnce(()=>{
+            //         lsitItem.showEffect();
+            //     },0.15)
+            // }else{
+            //     lsitItem.showEffect();
+            // }
+            if(reset){
+                item.setPosition(cc.v2(toPos.x+50,toPos.y));
+                lsitItem.node.opacity = 0;
             }
-        })
+            lsitItem.showEffect(toPos,reset);
+        }
     }
     start () {
 

@@ -35,6 +35,10 @@ export default class DListItem extends UIBase {
         this._data = data;
     }
 
+    public getData(){
+        return this._data;
+    }
+
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -47,19 +51,22 @@ export default class DListItem extends UIBase {
 
     }
 
-    public showEffect(){
+    public showEffect(toPos:cc.Vec2,reset:boolean = false){
         // this.node.opacity = 255;
         if(this.isValid){
-            this.node.setPosition(this.node.position.x+50,this.node.position.y);
             var delay:number = this.index *0.05;
-            var fade =cc.sequence(
+            var noResetFade =cc.sequence(
+                cc.delayTime(delay),
+                cc.moveTo(0.15,toPos),
+            )
+            var restFade = cc.sequence(
                 cc.delayTime(delay),
                 cc.spawn(
-                    cc.moveBy(0.15,cc.v2(-50,0)),
+                    cc.moveTo(0.15,toPos),
                     cc.fadeIn(0.15),
                 )
             )
-            this.node.runAction(fade);
+            this.node.runAction(reset?restFade:noResetFade);
         }
     }
 
@@ -81,6 +88,15 @@ export default class DListItem extends UIBase {
             this.list.selectIndex = this.index;
             this.list.node.emit(DList.ITEM_SELECT_CHANGE,{index:this.index,data:this._data});
         }
+    }
+    //更新的处理
+    onUpdate(completeCB?:Function){
+
+    }
+
+    //移除的处理
+    onRemove(completeCB?:Function){
+
     }
     start () {
 

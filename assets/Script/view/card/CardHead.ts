@@ -26,7 +26,10 @@ export default class CardHead extends UIBase {
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
+    onLoad () {
+        this.star.load("");
+        this.head.load("");
+    }
 
     private _head:string = "";
     private _grade:number = 0;

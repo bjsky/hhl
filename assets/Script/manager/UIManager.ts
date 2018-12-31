@@ -57,14 +57,14 @@ export default class UIManager{
         return this._uiPool;
     }
 
-    private _isLoading:boolean = false;
+    // private _isLoading:boolean = false;
     public loadUI(res:string,data:any,parent:cc.Node,complete?:Function){
-        if(this._isLoading)
-            return;
-        this._isLoading = true;
+        // if(this._isLoading)
+        //     return;
+        // this._isLoading = true;
         var node:cc.Node = this._uiPool.getUIFromPool(res);
         if(node!=null){
-            this._isLoading = false;
+            // this._isLoading = false;
             let ui = node.getComponent(UIBase);
             if (ui != undefined) {
                 data!=null && ui.setData(data);
@@ -77,7 +77,7 @@ export default class UIManager{
                     console.log(err.message || err);
                     return;
                 }
-                this._isLoading = false;
+                // this._isLoading = false;
                 let node: cc.Node = cc.instantiate(prefab);
                 let ui = node.getComponent(UIBase);
                 if (ui != undefined) {

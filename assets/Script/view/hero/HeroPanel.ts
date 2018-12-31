@@ -2,7 +2,7 @@ import UIBase from "../../component/UIBase";
 import ButtonGroup from "../../component/ButtonGroup";
 import DList, { DListDirection } from "../../component/DList";
 import { CONSTANT } from "../../Constant";
-import { CardRaceType, Card } from "../../module/card/CardAssist";
+import { CardRaceType, Card, CardUpType, CardRemoveType } from "../../module/card/CardAssist";
 import CardInfo from "../../model/CardInfo";
 import LoadSprite from "../../component/LoadSprite";
 import PathUtil from "../../utils/PathUtil";
@@ -17,6 +17,8 @@ import TouchHandler from "../../component/TouchHandler";
 import { COMMON } from "../../CommonData";
 import { UI } from "../../manager/UIManager";
 import { ResConst } from "../../module/loading/steps/LoadingStepRes";
+import { NET } from "../../net/core/NetController";
+import MsgCardUpLv from "../../net/msg/MsgCardUpLv";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -58,6 +60,8 @@ export default class HeroPanel extends UIBase {
     @property(cc.Node)
     propertyNode:cc.Node = null;
     @property(cc.Node)
+    upLvNode:cc.Node = null;
+    @property(cc.Node)
     skillNode:cc.Node = null;
     @property(cc.Node)
     destroyNode:cc.Node = null;
@@ -90,6 +94,8 @@ export default class HeroPanel extends UIBase {
     @property(cc.Button)
     btnSkillUpgrade:cc.Button = null;
     @property(cc.Button)
+    btnUpStar:cc.Button = null;
+    @property(cc.Button)
     btnDestroy:cc.Button = null;
 
     
@@ -112,6 +118,7 @@ export default class HeroPanel extends UIBase {
 
     private _cardListMap:any = {};
     private _groupListDatas:Array<any> =[];
+    private _cardListData:Array<any> = [];
 
     onLoad () {
         
@@ -138,11 +145,15 @@ export default class HeroPanel extends UIBase {
         this.btnGroup.node.on(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.groupSelectChange,this);
         this.cardsList.node.on(DList.ITEM_CLICK,this.onCardClick,this);
         this.btnUpgrade.node.on(TouchHandler.TOUCH_CLICK,this.upgradeHero,this);
-        this.btnSkillUpgrade.node.on(TouchHandler.TOUCH_CLICK,this.upgradeHeroSkill,this);
+        // this.btnSkillUpgrade.node.on(TouchHandler.TOUCH_CLICK,this.upgradeHeroSkill,this);
         this.btnDestroy.node.on(TouchHandler.TOUCH_CLICK,this.destroyHero,this);
+        this.btnUpStar.node.on(TouchHandler.TOUCH_CLICK,this.onCardUpStar,this);
 
         EVENT.on(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
         EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
+        EVENT.on(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
+        EVENT.on(GameEvent.Card_update_Complete,this.onCardUpdate,this);
+        EVENT.on(GameEvent.Card_Remove,this.onCardRemoved,this);
 
         this.initView(true);
     }
@@ -151,11 +162,15 @@ export default class HeroPanel extends UIBase {
         this.btnGroup.node.off(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.groupSelectChange,this);
         this.cardsList.node.off(DList.ITEM_CLICK,this.onCardClick,this);
         this.btnUpgrade.node.off(TouchHandler.TOUCH_CLICK,this.upgradeHero,this);
-        this.btnSkillUpgrade.node.off(TouchHandler.TOUCH_CLICK,this.upgradeHeroSkill,this);
+        // this.btnSkillUpgrade.node.off(TouchHandler.TOUCH_CLICK,this.upgradeHeroSkill,this);
         this.btnDestroy.node.off(TouchHandler.TOUCH_CLICK,this.destroyHero,this);
+        this.btnUpStar.node.off(TouchHandler.TOUCH_CLICK,this.onCardUpStar,this);
 
         EVENT.off(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
         EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
+        EVENT.off(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
+        EVENT.off(GameEvent.Card_update_Complete,this.onCardUpdate,this);
+        EVENT.off(GameEvent.Card_Remove,this.onCardRemoved,this);
 
         this.cardsList.setListData([]);
     }
@@ -173,6 +188,48 @@ export default class HeroPanel extends UIBase {
         this.cardsList.selectIndex = index;
         this._currentCard = Card.getCardByUUid(this.cardsList.selectData.uuid);
         this.initCard();
+    }
+
+    private onBuildUpdate(e){
+        if(this._currentCard != null){
+            this.initProperty();
+        }
+    }
+
+    private onCardUpdate(e){
+        var cardUUid = e.detail.uuid;
+        var type = e.detail.type;
+        if(cardUUid != this._currentCard.uuid){
+            return;
+        }
+        this._currentCard = Card.getCardByUUid(cardUUid);
+
+        if(type == CardUpType.UpLevel){
+            this.labelPower.string = this._currentCard.carUpCfg.power;
+            this.labelLv.string = "Lv."+this._currentCard.level;
+            this.initProperty();
+        }else if(type == CardUpType.UpGrade){
+            this.labelPower.string = this._currentCard.carUpCfg.power;
+            this.labelLv.string = "Lv."+this._currentCard.level;
+            this.cardGrade.load(PathUtil.getCardGradeImgPath(this._currentCard.grade));
+            this.initProperty();
+            this.initSkill();
+            this.initUpStar();
+        }
+        var upIndex = this.getCardIndexWithUUid(cardUUid);
+        this.cardsList.updateIndex(upIndex);
+    }
+
+    private onCardRemoved(e){
+        var uuid = e.detail.uuid;
+        var type = e.detail.type;
+        // if(type == CardRemoveType.upStarRemove){    //动画后移除
+
+        // }else if(type == CardRemoveType.destroyRemove){  //直接移除
+            
+        // }
+        var rIndex = this.getCardIndexWithUUid(uuid);
+        this.cardsList.removeIndex(rIndex);
     }
 
     private initView(nolist:boolean = false){
@@ -240,8 +297,13 @@ export default class HeroPanel extends UIBase {
         this.labelPtPowerAdd.string = this._nextLvCardCfg?"+" + (this._nextLvCardCfg.power - this._currentCard.carUpCfg.power):"已满级";
         this.labelPtLife.string = this._currentCard.carUpCfg.body;
         this.labelPtLifeAdd.string = this._nextLvCardCfg?"+" + (this._nextLvCardCfg.body - this._currentCard.carUpCfg.body):"已满级";
-        this._upLvCost =  Number(this._currentCard.carUpCfg.needStore);
-        this.labelUpLvCost.string = this._upLvCost.toString();
+        if(this._nextLvCardCfg){
+            this.upLvNode.active = true;
+            this._upLvCost =  Card.getUpLvCostBuffed(this._currentCard.carUpCfg.needStore);
+            this.labelUpLvCost.string = this._upLvCost.toString();
+        }else{
+            this.upLvNode.active = false;
+        }
         this._destoryGet =  Number(this._currentCard.carUpCfg.destoryGetStore);
         this.labelDestoryGet.string = this._destoryGet.toString();
     }
@@ -284,22 +346,33 @@ export default class HeroPanel extends UIBase {
     }
 
     private initCardList(){
-        var listData:Array<any> = [];
+        this._cardListData = [];
         this._currentCardList.forEach((item:CardInfo) =>{
-            listData.push({type:CardSimpleShowType.Owner,uuid:item.uuid});
+            this._cardListData.push({type:CardSimpleShowType.Owner,uuid:item.uuid});
         })
         this.cardsList.direction = DListDirection.Vertical;
         this.cardsList.row = 1;
-        this.cardsList.setListData(listData);
+        this.cardsList.setListData(this._cardListData);
 
-        for(var i:number = 0;i<listData.length;i++){
-            var data = listData[i];
+        for(var i:number = 0;i<this._cardListData.length;i++){
+            var data = this._cardListData[i];
             if(data.uuid == this._currentCard.uuid){
                 this.cardsList.selectIndex = i;
                 break;
             }
         }
 
+    }
+
+    //获取卡牌在list中的索引
+    private getCardIndexWithUUid(uuid:string):number{
+        for(var i:number = 0;i<this._cardListData.length;i++){
+            var data = this._cardListData[i];
+            if(data.uuid == uuid){
+                return i;
+            }
+        }
+        return -1;
     }
 
     start () {
@@ -310,10 +383,27 @@ export default class HeroPanel extends UIBase {
         if(!this._nextLvCardCfg)
             return;
         if(COMMON.resInfo.soulStone< this._upLvCost){
-            UI.showTip("魂石不足");
+            UI.showTip("灵石不足");
+            return;
+        }
+        Card.upCardLv(this._currentCard.uuid,this._upLvCost);
+    }
+
+    private onCardUpStar(e){
+        if(this._currentCard.isMaxGrade){
+            UI.showTip("已经是最高星级");
+            return;
+        }
+        if(this._upStarCard== null){
+            UI.showTip("没有可合成升星的英雄！");
+            return;
+        }
+        if(this._nextLvCardCfg){
+            UI.showTip("英雄未满级，请先升级");
             return;
         }
 
+        Card.upCardStar(this._currentCard.uuid,this._upStarCard.uuid);
     }
 
     public upgradeHeroSkill(e){

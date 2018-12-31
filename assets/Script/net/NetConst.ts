@@ -21,5 +21,11 @@ export default class NetConst{
 
     //召唤卡牌
     public static CardSummon:number = 30001;
+    //卡牌升级
+    public static CardUpLv:number = 30002;
+    //卡牌升星
+    public static CardUpStar:number = 30003;
+    //卡牌回收
+    public static CardDestroy:number = 30004;
 }
 
