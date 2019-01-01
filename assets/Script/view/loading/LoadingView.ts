@@ -1,6 +1,9 @@
 import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
 import { SCENE, SceneConst } from "../../manager/SceneManager";
+import { WeiXin } from "../../wxInterface";
+import { GLOBAL, ServerType } from "../../GlobalData";
+import { GAME } from "../../GameController";
 
 
 // Learn TypeScript:
@@ -26,22 +29,28 @@ export default class LoadingView extends cc.Component {
 
     @property(cc.Label)
     version: cc.Label = null;
+    @property(cc.Button)
+    btnEnterGame: cc.Button = null;
+
 
 
     onEnable(){
         EVENT.on(GameEvent.LOADING_PROGRESS,this.onLoadingProgress,this);
         EVENT.on(GameEvent.LOADING_COMPLETE,this.onLoadingComplete,this);
+        EVENT.on(GameEvent.Show_UserInfo_AuthButton,this.showUserInfoButton,this);
     }
 
     onDisable(){
         EVENT.off(GameEvent.LOADING_PROGRESS,this.onLoadingProgress,this);
         EVENT.off(GameEvent.LOADING_COMPLETE,this.onLoadingComplete,this);
+        EVENT.off(GameEvent.Show_UserInfo_AuthButton,this.showUserInfoButton,this);
     }
 
     // LIFE-CYCLE CALLBACKS:
     onLoad () {
         this.progress.progress = 0;
         this.progressLabel.string ="0 %";
+        this.btnEnterGame.node.active = false;
     }
 
     public onLoadingProgress(e:any){
@@ -55,10 +64,31 @@ export default class LoadingView extends cc.Component {
         },0.1)
     }
 
+    private showUserInfoButton(e){
+        this.btnEnterGame.node.active = true;
+        var btnNode = this.btnEnterGame.node;
+        let btnSize = cc.size(btnNode.width+10,btnNode.height+10);
+        let frameSize = cc.view.getFrameSize();
+        let winSize = cc.director.getWinSize();
+        // console.log("winSize: ",winSize);
+        // console.log("frameSize: ",frameSize);
+        //适配不同机型来创建微信授权按钮
+        let left = (winSize.width*0.5+btnNode.x-btnSize.width*0.5)/winSize.width*frameSize.width;
+        let top = (winSize.height*0.5-btnNode.y-btnSize.height*0.5)/winSize.height*frameSize.height;
+        let width = btnSize.width/winSize.width*frameSize.width;
+        let height = btnSize.height/winSize.height*frameSize.height;
+        WeiXin.createUserInfoButton(left,top,width,height,(userInfo)=>{
+            GLOBAL.initUserInfo(userInfo);
+            GAME.resumeLogin();
+        });
+    }
     start () {
 
     }
 
+    private infoButtonTap(useInfo){
+
+    }
 
     private _speed:number  = 50;
     private _curPro:number = 0;
@@ -87,4 +117,6 @@ export default class LoadingView extends cc.Component {
             this.setProgressValue(pro);
         }
     }
+
+    
 }

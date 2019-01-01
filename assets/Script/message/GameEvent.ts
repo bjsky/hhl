@@ -7,6 +7,8 @@ export default class GameEvent{
     //加载
     public static LOADING_PROGRESS:string = "LOADING_PROGRESS";
     public static LOADING_COMPLETE:string = "LOADING_COMPLETE";
+    //登录验证button
+    public static Show_UserInfo_AuthButton:string = "Show_UserInfo_AuthButton";
     //遮罩点击
     public static Mask_touch:string = "Mask_touch";
     //场景

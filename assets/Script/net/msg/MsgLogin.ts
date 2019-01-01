@@ -12,6 +12,9 @@ export class CSLoginData {
     public code:string;  //微信code
     public adId:string;
     public shareId:string;
+    public name:string;
+    public icon:string;
+    public gender:number;   
 }
 
 /**
@@ -52,7 +55,7 @@ export class SCLoginData {
                 data.buildInfos.push(buildInfo);
             });
         }
-        data.stoneSummonNum = obj.stoneSummonNum;
+        // data.stoneSummonNum = obj.stoneSummonNum;
         data.videoSummonNum = obj.videoSummonNum;
         obj.ownerCards.forEach(cardObj => {
             data.ownerCards.push(SCardInfo.parse(cardObj));
@@ -67,9 +70,11 @@ export class SCLoginData {
 
 export class SUserInfo {
     //用户名
-    public nickName:string = "";
+    public name:string = "";
     //头像url
-    public headPic:string = "";
+    public icon:string = "";
+    //性别
+    public gender:number = 0;
     //当前经验
     public exp:number = 0;
     //当前等级
@@ -77,8 +82,9 @@ export class SUserInfo {
 
     public static parse(obj:any):SUserInfo{
         var info:SUserInfo = new SUserInfo();
-        info.nickName = obj.nickName;
-        info.headPic = obj.headPic;
+        info.name = obj.name;
+        info.icon = obj.icon;
+        info.gender = obj.gender;
         info.exp = obj.exp;
         info.level = obj.level;
 
@@ -170,11 +176,18 @@ export default class MsgLogin
         // this.isLocal = true;
     }
 
-    public static create(accountId,code,shareId,adId){
+    public static create(accountId:string,code:string,userInfo:any = null
+        ,shareId:string="",adId:string=""){
         var msg = new MsgLogin();
         msg.param = new CSLoginData();
         msg.param.accountId = accountId;
         msg.param.code = code;
+        console.log("MsgLogin create:",userInfo)
+        if(userInfo!=null){
+            msg.param.name = userInfo.nickName;
+            msg.param.icon = userInfo.avatarUrl;
+            msg.param.gender = userInfo.gender;
+        }
         msg.param.shareId = shareId;
         msg.param.adId = adId;
         return msg;
@@ -190,7 +203,7 @@ export default class MsgLogin
             ownerCards.push(copy);
         }
         var json:any = {firstLogin:true,
-            userInfo:{nickName:"上古战神",headPic:"",exp:100,level:5},
+            userInfo:{name:"上古战神",icon:"",gender:1,exp:100,level:5},
             resInfo:{gold:9000,diamond:20,lifeStone:5000,soulStone:370},
             guideInfo:{guideId:-1},
             buildInfos:[{type:0,level:1,locked:true},

@@ -1,14 +1,14 @@
 {
   "ver": "2.0.0",
-  "uuid": "c18f7bc5-c79c-4eab-b517-0398b406c823",
+  "uuid": "772714f2-b82d-4ddd-a9e7-de342a7c84f9",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
-    "shouqu_btn": {
+    "btn_normal2": {
       "ver": "1.0.3",
-      "uuid": "c5c0a9c9-6c48-484c-9d2f-b8b388572ee6",
-      "rawTextureUuid": "c18f7bc5-c79c-4eab-b517-0398b406c823",
+      "uuid": "eed2dc4b-c49f-4056-a18e-54bf4587cbf1",
+      "rawTextureUuid": "772714f2-b82d-4ddd-a9e7-de342a7c84f9",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,

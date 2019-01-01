@@ -12,7 +12,7 @@ export default class LoadingStepServerData extends LoadingStep{
     public doStep(){
         CONSTANT.initConstant();
         if(GLOBAL.serverType == ServerType.Client){
-            NET.send(MsgLogin.create("123","","",""),(msg:MsgLogin)=>{
+            NET.send(MsgLogin.create("",""),(msg:MsgLogin)=>{
                 if(msg && msg.resp){
                     console.log(msg.resp);
                 }
@@ -20,7 +20,7 @@ export default class LoadingStepServerData extends LoadingStep{
                 this.endStep();
             },this)
         }else if(GLOBAL.serverType == ServerType.Debug){
-            NET.send(MsgLogin.create(GLOBAL.testAccount,"","",""),(msg:MsgLogin)=>{
+            NET.send(MsgLogin.create(GLOBAL.testAccount,"",{name:"测试1"}),(msg:MsgLogin)=>{
                 if(msg && msg.resp){
                     console.log(msg.resp);
                 }
@@ -28,7 +28,7 @@ export default class LoadingStepServerData extends LoadingStep{
                 this.endStep();
             },this)
         }else if(GLOBAL.serverType == ServerType.Publish){
-            NET.send(MsgLogin.create("",GLOBAL.code,"",""),(msg:MsgLogin)=>{
+            NET.send(MsgLogin.create("",GLOBAL.code,GLOBAL.loginUserInfo),(msg:MsgLogin)=>{
                 if(msg && msg.resp){
                     console.log(msg.resp);
                 }

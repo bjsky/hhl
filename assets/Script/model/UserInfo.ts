@@ -8,9 +8,11 @@ import { ConfigConst } from "../module/loading/steps/LoadingStepConfig";
  */
 export default class UserInfo  extends InfoBase{
     //用户名
-    public nickName:string = "";
+    public name:string = "";
     //头像url
-    public headPic:string = "";
+    public icon:string = "";
+    //性别
+    public gender:number = 0;
     //当前经验
     public exp:number = 0;
     //当前等级总经验
@@ -20,8 +22,8 @@ export default class UserInfo  extends InfoBase{
     
 
     public initFromServer(data:SUserInfo){
-        this.nickName = data.nickName;
-        this.headPic = data.headPic;
+        this.name = data.name;
+        this.icon = data.icon;
         this.exp = data.exp;
         this.level = data.level;
         
@@ -34,8 +36,9 @@ export default class UserInfo  extends InfoBase{
 
     public cloneServerInfo():SUserInfo{
         var clone:SUserInfo = new SUserInfo();
-        clone.nickName = this.nickName;
-        clone.headPic = this.headPic;
+        clone.name = this.name;
+        clone.icon = this.icon;
+        clone.gender = this.gender;
         clone.exp = this.exp;
         clone.level = this.level;
         return clone;

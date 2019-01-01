@@ -1,3 +1,6 @@
+import { GAME } from "./GameController";
+import { GLOBAL } from "./GlobalData";
+
 export class WXInterface{
     public static _inst:WXInterface;
     public static getInstance():WXInterface
@@ -15,6 +18,16 @@ export class WXInterface{
     public wxLogin(loginCallback:Function){
         var loginFunc = window["wxlogin"];
         loginFunc(loginCallback);
+    }
+
+    public createUserInfoButton(left,top,width,height,cb){
+        var func = window["createUserInfoButton"];
+        func(left,top,width,height,cb);
+    }
+
+    public getUserInfo(cb){
+        var func = window["getUserInfo"];
+        func(cb)
     }
 }
 

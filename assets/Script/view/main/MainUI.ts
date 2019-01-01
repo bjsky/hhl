@@ -96,7 +96,7 @@ export default class MainUI extends UIBase {
     }
 
     private initTopView(){
-        this.lblName.string = COMMON.userInfo.nickName;
+        this.lblName.string = COMMON.userInfo.name;
         this.lblExp.string = COMMON.userInfo.exp + " / "+COMMON.userInfo.totalExp;
         this.lblGold.string = StringUtil.formatReadableNumber(COMMON.resInfo.gold);
         this.lblDiamond.string = StringUtil.formatReadableNumber(COMMON.resInfo.diamond);

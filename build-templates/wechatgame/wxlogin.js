@@ -1,6 +1,7 @@
 var util = require("./util");
 
 let login = function(gameCallback) {
+    clearLoginInfo();
     wx.login({
         success: function (res) {
         if (res.code) {
@@ -23,6 +24,7 @@ let login = function(gameCallback) {
             //     }
             // )
             //没有账号服，直接登录游戏服
+            saveLoginInfo(res);
             gameCallback(res);
         } else {
             loginFail('登录失败，请稍后再试！', () => {
@@ -48,6 +50,39 @@ let loginFail = function (msg, success) {
     })
 }
 
+let getLoginInfo = function () {
+    let data = localStorage.getItem('login_info');
+    if (data == null) {
+      return null;
+    }
+    if (!data.length) {
+      return null;
+    }
+    try {
+      data = JSON.parse(data);
+    } catch (e) {
+    }
+    if (data == null || data.token == null || data.uid == null || data.serverid == null) {
+      return null;
+    }
+    if (data.token == '' || data.uid == '' || data.serverid == '') {
+      return null;
+    }
+    return data;
+}
+
+let clearLoginInfo = function() {
+    localStorage.setItem('login_info', '');
+}
+
+let saveLoginInfo =function(data) {
+    let s = JSON.stringify(data);
+    localStorage.setItem('login_info', s);
+}
+
 module.exports = {
-    login:login
+    login:login,
+    getLoginInfo:getLoginInfo,
+    clearLoginInfo:clearLoginInfo,
+    saveLoginInfo:saveLoginInfo
 }

@@ -1,5 +1,6 @@
-import LoadingStepManager from "./module/loading/LoadingStepManager";
+import LoadingStepManager, { LoadingStepEnum } from "./module/loading/LoadingStepManager";
 import { GLOBAL } from "./GlobalData";
+import LoadingStepLogin from "./module/loading/steps/LoadingStepLogin";
 
 /**
  *  游戏逻辑控制器
@@ -28,6 +29,13 @@ export default class GameController{
         //加载
         this.loadingStepMgr = new LoadingStepManager();
         this.loadingStepMgr.startLoading();
+    }
+
+    public resumeLogin(){
+        var loginStep:LoadingStepLogin = this.loadingStepMgr.getStep(LoadingStepEnum.Login)
+        if(loginStep){
+            loginStep.setNext(LoadingStepEnum.ServerConnect);
+        }
     }
 }
 
