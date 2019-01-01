@@ -84,10 +84,10 @@ export class NetController
         {
             let obj = {seq: this._seqId, "id":message.id,"data":message.param||{}}
             let msg = JSON.stringify(obj);
-            //Log.debug("[net] send msg: "+msg);
             if(cb != null) {
                 this._msgDict[this._seqId] = {"id": message.id, "cb":cb, "this":thisObj, fail: fail, "msg":msg};
             }
+            console.log("[net] send msg: "+msg);
             this._socket.send(msg);
             this._seqId += 1;
         }
@@ -147,9 +147,10 @@ export class NetController
             self._connectCbObj.cb.call(self._connectCbObj.this);
             self._connectCbObj = null;
         }
-        for(let key in self._msgDict) {
-            self._socket.send(self._msgDict[key].msg);
-        }
+        // for(let key in self._msgDict) {
+        //     console.log("[net]open send msg: "+self._msgDict[key].msg);
+        //     self._socket.send(self._msgDict[key].msg);
+        // }
 
         // if ( SOCIAL.social_type == SocialAssist.SOCIAL_Wechat){
         //     loginData = {

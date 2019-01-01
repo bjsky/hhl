@@ -51,7 +51,7 @@ export default class SkillAssist{
             this._skillMaxLevel = {};
             var maxLevelArr =CONSTANT.getSkillMaxLevelArr();
             maxLevelArr.forEach(str => {
-                var arr = str.split(",");
+                var arr = str.split(";");
                 this._skillMaxLevel[arr[0]] = arr[1];
             });
         }

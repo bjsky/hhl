@@ -50,11 +50,11 @@ export default class Constant{
     }
     //灵石抽奖权重
     public getStoneSummonWeightArr():string[]{
-        return this._constantKeyValueMap["store_summon_rate"].split(";");
+        return this._constantKeyValueMap["store_summon_rate"].split("|");
     }
     //视频抽奖权重
     public getVideoSummonWeightArr():string[]{
-        return this._constantKeyValueMap["video_summon_rate"].split(";");
+        return this._constantKeyValueMap["video_summon_rate"].split("|");
     }
     //获取种族名称
     public getRaceNameWithId(raceId:number):string{
@@ -62,7 +62,7 @@ export default class Constant{
     }
 
     public getSkillMaxLevelArr(){
-        return this._constantKeyValueMap["grade_skillMaxLv"].split(";");
+        return this._constantKeyValueMap["grade_skillMaxLv"].split("|");
     }
 }
 

@@ -1,3 +1,8 @@
+export enum PropertyTypeEnum{
+    PNmber = 0,
+    PString ,
+    PArray,
+}
 export default class MessageBase {
 
     public id:number = -1;

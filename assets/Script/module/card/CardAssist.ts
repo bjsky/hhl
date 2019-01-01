@@ -14,6 +14,7 @@ import { BUILD } from "../build/BuildAssist";
 import { BuildType } from "../../view/BuildPanel";
 import MsgCardUpLv from "../../net/msg/MsgCardUpLv";
 import MsgCardUpStar from "../../net/msg/MsgCardUpStar";
+import MsgCardDestroy from "../../net/msg/MsgCardDestroy";
 
 export enum CardRaceType{
     All =0,
@@ -196,9 +197,19 @@ export default class CardAssist{
                 var removeUuid = msg.resp.useCardUuid;
                 this.removeCardByUUid(removeUuid);
                 EVENT.emit(GameEvent.Card_update_Complete,{uuid:msg.resp.cardInfo.uuid,type:CardUpType.UpGrade});
-                EVENT.emit(GameEvent.Card_Remove,{uuid:removeUuid,type:CardRemoveType.destroyRemove});
+                EVENT.emit(GameEvent.Card_Remove,{uuid:removeUuid,type:CardRemoveType.upStarRemove});
             }
         },this);
+    }
+    //回收卡牌
+    public destroyCard(uuid){
+        NET.send(MsgCardDestroy.create(uuid),(msg:MsgCardDestroy)=>{
+            if(msg && msg.resp){
+                var removeUuid = msg.resp.cardUuid;
+                this.removeCardByUUid(removeUuid);
+                EVENT.emit(GameEvent.Card_Remove,{uuid:removeUuid,type:CardRemoveType.destroyRemove});
+            }
+        },this)
     }
 
     public updateCardInfo(info:SCardInfo){

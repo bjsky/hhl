@@ -13,15 +13,17 @@ let login = function(gameCallback) {
             // version: window.client_version,
             };
             //发起网络请求
-            util.request('login', reqData, (res) => {
-                gameCallback(res);
-            }, (err) => {
-                loginFail('登录失败，请稍后再试！', () => {
-                    login(gameCallback);
-                });
-                console.log("[wxlogin]登陆服请求失败:");
-            }
-            )
+            // util.request('login', reqData, (res) => {
+            //         gameCallback(res);
+            //     }, (err) => {
+            //         loginFail('登录失败，请稍后再试！', () => {
+            //             login(gameCallback);
+            //         });
+            //         console.log("[wxlogin]登陆服请求失败:");
+            //     }
+            // )
+            //没有账号服，直接登录游戏服
+            gameCallback(res);
         } else {
             loginFail('登录失败，请稍后再试！', () => {
                 login(gameCallback);

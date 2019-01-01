@@ -124,9 +124,10 @@ export default class CardSmall extends DListItem {
     private setOwnerView(isInit:boolean = false){
         this.cardName.string = this._cardInfo.cardInfoCfg.name;
         if(isInit){
-            this.cardStar.load(PathUtil.getCardGradeImgPath(this._cardInfo.grade));
             this.cardSrc.load(PathUtil.getCardImgPath(this._cardInfo.cardInfoCfg.imgPath));
         }
+
+        this.cardStar.load(PathUtil.getCardGradeImgPath(this._cardInfo.grade));
         this.cardLevel.string = "Lv."+this._cardInfo.level;
         this.cardPower.string = this._cardInfo.carUpCfg.power ;
         this.cardRace.load(PathUtil.getCardRaceImgPath(this._cardInfo.cardInfoCfg.raceId));

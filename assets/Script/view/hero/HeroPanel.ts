@@ -19,6 +19,7 @@ import { UI } from "../../manager/UIManager";
 import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 import { NET } from "../../net/core/NetController";
 import MsgCardUpLv from "../../net/msg/MsgCardUpLv";
+import { AlertBtnType } from "../AlertPanel";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -230,6 +231,11 @@ export default class HeroPanel extends UIBase {
         // }
         var rIndex = this.getCardIndexWithUUid(uuid);
         this.cardsList.removeIndex(rIndex);
+        if(type == CardRemoveType.destroyRemove){
+            this.cardsList.selectIndex = rIndex;
+            this._currentCard = Card.getCardByUUid(this.cardsList.selectData.uuid);
+            this.initCard();
+        }
     }
 
     private initView(nolist:boolean = false){
@@ -411,7 +417,18 @@ export default class HeroPanel extends UIBase {
     }
 
     public destroyHero(e){
-
+        if(this._cardListData.length<=1){
+            UI.showTip("卡牌不能回收");
+            return;
+        }
+        if(this._currentCard.grade>=3){
+            UI.showAlert("当前为"+this._currentCard.grade+"星卡牌，确定回收？",this.destoryOK.bind(this),null,AlertBtnType.OKAndCancel);
+        }else{
+            this.destoryOK();
+        }
+    }
+    private destoryOK(){
+        Card.destroyCard(this._currentCard.uuid);
     }
 
     public getGuideNode(name:string):cc.Node{

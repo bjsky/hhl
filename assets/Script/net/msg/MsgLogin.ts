@@ -8,7 +8,8 @@ import { GLOBAL, ServerType } from "../../GlobalData";
  * 登录客户端数据
  */
 export class CSLoginData {
-    public accountId:string;  
+    public accountId:string;   //账号id
+    public code:string;  //微信code
     public adId:string;
     public shareId:string;
 }
@@ -17,6 +18,7 @@ export class CSLoginData {
  * 登录服务器数据
  */
 export class SCLoginData {
+    public accountId:string //账号id
     //每天首次登录
     public firstLogin:boolean  = false;
     //用户信息
@@ -165,13 +167,14 @@ export default class MsgLogin
 
     constructor(){
         super(NetConst.Login);
-        this.isLocal = true;
+        // this.isLocal = true;
     }
 
-    public static create(accountId,shareId,adId){
+    public static create(accountId,code,shareId,adId){
         var msg = new MsgLogin();
         msg.param = new CSLoginData();
         msg.param.accountId = accountId;
+        msg.param.code = code;
         msg.param.shareId = shareId;
         msg.param.adId = adId;
         return msg;

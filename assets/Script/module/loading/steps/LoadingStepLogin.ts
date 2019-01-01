@@ -22,5 +22,7 @@ export default class LoadingStepLogin extends LoadingStep{
 
     public loginCb(res){
         console.log("LoadingStepLogin:wxLogin,",JSON.stringify(res));
+        GLOBAL.code = res.code;
+        this.setNext(LoadingStepEnum.ServerConnect);
     }
 }

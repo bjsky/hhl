@@ -9,7 +9,7 @@ export default class NunmberUtil{
         var totalWeight:number = 0;
         var objs:Array<any> = [];
         arr.forEach(str => {
-            var obj:any = {val:str.split(",")[0],weight:Number(str.split(",")[1])};
+            var obj:any = {val:str.split(";")[0],weight:Number(str.split(";")[1])};
             objs.push(obj);
             totalWeight+=obj.weight;
         });

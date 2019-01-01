@@ -56,7 +56,14 @@ export default class DList extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     public set selectIndex(index){
-        this._selectIndex = index;
+        if(this._listData.length == 0)
+            return;
+        if(index<this._listData.length){
+            this._selectIndex = index;
+        }else{
+            this._selectIndex = this._listData.length-1;
+        }
+
         this._listItemArr.forEach((listItem:DListItem)=>{
             listItem.select = (listItem.index == this._selectIndex);
         })
