@@ -1,5 +1,5 @@
 [
-    {"id":"1","key":"start_res","name":"初始资源","param1":"0;50000|1;500|2;1000|3;1000"},
+    {"id":"1","key":"start_res","name":"初始资源","param1":"0;10000|1;500|2;20000|3;0"},
     {"id":"2","key":"first_guide","name":"初始引导","param1":"-1"},
     {"id":"3","key":"buidling_names","name":"建筑名字","param1":"内城;洪荒祭坛;英雄殿堂;试炼之地"},
     {"id":"4","key":"build_buffDesc","name":"建筑加成描述","param1":";祭坛召唤的灵石消耗减少#%;升级英雄的灵石消耗减少#%;关卡挂机的产量增加#%"},
@@ -7,7 +7,7 @@
     {"id":"6","key":"race_talent","name":"种族天赋","param1":"对仙界英雄伤害提高10%;对人界英雄伤害提高10%;对妖族英雄伤害提高10%;对巫族伤害提高10%"},
     {"id":"7","key":"race_talent_buff","name":"种族天赋加成","param1":"0.1;0.1;0.1;0.1"},
     {"id":"8","key":"stone_free_summon_num","name":"灵石免费次数","param1":"3"},
-    {"id":"9","key":"store_summon_use","name":"灵石抽奖消耗","param1":"200"},
+    {"id":"9","key":"store_summon_use","name":"灵石抽奖消耗","param1":"2000"},
     {"id":"10","key":"store_summon_rate","name":"灵石抽奖概率","param1":"1;57.5|2;32|3;8|4;2|5;0.5"},
     {"id":"11","key":"video_summon_num","name":"视频抽奖次数","param1":"6"},
     {"id":"12","key":"video_summon_rate","name":"钻石抽奖概率","param1":"1;7.5|2;40|3;40|4;10|5;2.5"},

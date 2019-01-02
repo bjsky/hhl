@@ -203,8 +203,8 @@ export default class MsgLogin
             ownerCards.push(copy);
         }
         var json:any = {firstLogin:true,
-            userInfo:{name:"上古战神",icon:"",gender:1,exp:100,level:5},
-            resInfo:{gold:9000,diamond:20,lifeStone:2000,soulStone:370},
+            userInfo:{name:"上古战神",icon:"",gender:1,exp:1000,level:5},
+            resInfo:{gold:10000,diamond:500,lifeStone:20000,soulStone:0},
             guideInfo:{guideId:-1},
             buildInfos:[{type:0,level:1,locked:true},
                 {type:1,level:2,locked:true},

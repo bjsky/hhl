@@ -9,7 +9,7 @@ export const ConfigConst = {
     CardInfo:"config/cardInfo",
     CardUp:"config/cardUp",
     PlayerLevel:"config/playerLevel",
-    Stand:"config/stand",
+    Passage:"config/passage",
     Guide:"config/guide",
     CardSkill:"config/cardSkill",
     SkillUp:"config/skillUp"
