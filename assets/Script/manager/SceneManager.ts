@@ -32,6 +32,7 @@ export default class SceneManager{
 
     //切换场景
     public changeScene(name:string,complete?:Function){
+        console.log("切换场景："+name);
         cc.director.loadScene(name, () => {
             console.log("加载场景结束："+name);
             let node = cc.director.getScene().getChildByName('Canvas');

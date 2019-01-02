@@ -18,7 +18,6 @@ export const ConfigConst = {
  * 加载配置
  */
 export default class LoadingStepConfig extends LoadingStep{
-
     private _cfgArr:string[];
     public doStep(){
 
@@ -35,12 +34,7 @@ export default class LoadingStepConfig extends LoadingStep{
             CFG.parseCfg(res,RES.get(res));
         });
         console.log("Config loaded!");
-
-        var serverStep:LoadingStep = this.getStep(LoadingStepEnum.Login);
         
-        if(serverStep){
-            serverStep.startStep();
-        }
         this.setNext(LoadingStepEnum.Res);
     }
     private loadConfigProgress(pro:number){

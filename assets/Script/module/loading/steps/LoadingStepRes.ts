@@ -22,7 +22,7 @@ export const ResConst = {
  * 加载配置
  */
 export default class LoadingStepRes extends LoadingStep{
-
+    
     private _resArr:string[];
     private _loadedCount:number = 0;
     private _totalCount:number = 0;

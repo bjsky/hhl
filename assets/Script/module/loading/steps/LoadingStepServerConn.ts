@@ -6,6 +6,7 @@ import { LoadingStepEnum } from "../LoadingStepManager";
  * 加载配置
  */
 export default class LoadingStepServerConn extends LoadingStep{
+
     public doStep(){
         console.log("LoadingStepServerConn:start");
         NET.connect(GLOBAL.serverUrl,(resp)=>{

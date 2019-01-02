@@ -1,10 +1,10 @@
 import LoadingStep from "../loadingStep";
 import { SceneConst } from "../../../manager/SceneManager";
+import { LoadingStepEnum } from "../LoadingStepManager";
 /**
  * 加载配置
  */
 export default class LoadingStepScene extends LoadingStep{
-
 
     private preloadSceneNameArr:string[];
     public doStep(){
@@ -24,7 +24,7 @@ export default class LoadingStepScene extends LoadingStep{
         if(this.preloadSceneNameArr.length>0){
             this.doPreload(this.preloadSceneNameArr.shift());
         }else{
-            this.endStep();
+            this.setNext(LoadingStepEnum.Login);
         }
     }
 }

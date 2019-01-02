@@ -68,7 +68,7 @@ export default class CardAssist{
         var usedCards = this.getUsedCardsConfig();
         var weightArr:string[] =[];
         usedCards.forEach((card)=>{
-            weightArr.push(card.id + ",1");
+            weightArr.push(card.id + ";1");
         })
         return Number(NunmberUtil.getRandomFromWeightArr(weightArr));
     }

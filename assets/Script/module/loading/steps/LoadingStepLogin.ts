@@ -8,6 +8,7 @@ import GameEvent from "../../../message/GameEvent";
  * 登录平台
  */
 export default class LoadingStepLogin extends LoadingStep{
+    
     public doStep(){
         if(GLOBAL.serverType == ServerType.Client){
             //客户端直接返回测试数据

@@ -4,6 +4,7 @@ import MsgLogin from "../../../net/msg/MsgLogin";
 import { COMMON } from "../../../CommonData";
 import { CONSTANT } from "../../../Constant";
 import { GLOBAL, ServerType } from "../../../GlobalData";
+import { LoadingStepEnum } from "../LoadingStepManager";
 /**
  * 加载配置
  */
