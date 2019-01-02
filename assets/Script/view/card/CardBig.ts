@@ -93,7 +93,7 @@ export default class CardBig extends UIBase{
     private showEffect(){
         this.initEffect();
         var scaleAct = cc.sequence(cc.spawn(
-            cc.moveTo(0.2,cc.v2(0,0)),cc.scaleTo(0.2,1)
+            cc.moveTo(0.2,cc.v2(0,0)),cc.scaleTo(0.2,1).easing(cc.easeIn(1.5))
         ),cc.callFunc(()=>{
             this.node.on(cc.Node.EventType.TOUCH_START,this.onMaskTouch,this);
         }))
@@ -116,7 +116,7 @@ export default class CardBig extends UIBase{
         var getAct = cc.sequence(
             cc.spawn(
                 cc.bezierTo(0.4,[fPos,centerPos,toPos]),
-                cc.scaleTo(0.4,0.2),
+                cc.scaleTo(0.4,0.2).easing(cc.easeOut(1.5)),
                 cc.rotateBy(0.4,360)
             ),cc.callFunc(()=>{
                 UI.closePopUp(this.node);

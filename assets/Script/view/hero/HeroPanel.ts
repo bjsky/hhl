@@ -232,6 +232,7 @@ export default class HeroPanel extends UIBase {
         var rIndex = this.getCardIndexWithUUid(uuid);
         this.cardsList.removeIndex(rIndex);
         if(type == CardRemoveType.destroyRemove){
+            //选中下一个
             this.cardsList.selectIndex = rIndex;
             this._currentCard = Card.getCardByUUid(this.cardsList.selectData.uuid);
             this.initCard();

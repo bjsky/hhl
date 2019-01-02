@@ -1,4 +1,5 @@
 import { CardRaceType } from "../module/card/CardAssist";
+import { ResType } from "../model/ResInfo";
 
 export default class PathUtil{
 
@@ -31,5 +32,24 @@ export default class PathUtil{
 
     public static getCardUpstarNeedCard(grade:number):string{
         return "ui/module/cardUp/lbl_kpxj_"+grade;
+    }
+
+    public static getResIconUrl(type:ResType):string{
+        var url:string = "";
+        switch(type){
+            case ResType.gold:
+            url = "ui/Common2/jinbi_icon";
+            break;
+            case ResType.diamond:
+            url = "ui/Common/diamond";
+            break;
+            case ResType.lifeStone:
+            url = "ui/Common2/lingshi_icon";
+            break;
+            case ResType.soulStone:
+            url = "ui/Common2/hunshi_icon";
+            break;
+        }
+        return url;
     }
 }

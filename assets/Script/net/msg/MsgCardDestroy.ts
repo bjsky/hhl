@@ -46,7 +46,7 @@ export default class MsgCardDestroy extends MessageBase{
         var cfg:any = CFG.getCfgByKey(ConfigConst.CardUp,"grade",cardInfo.grade,"level",cardInfo.level)[0];
         var destroyGet:number = Number(cfg.destoryGetStore);
         var res:SResInfo = COMMON.resInfo.cloneServerInfo();
-        res.lifeStone-= destroyGet;
+        res.lifeStone+= destroyGet;
         json ={
             cardUuid:this.param.cardUuid,
             resInfo:res

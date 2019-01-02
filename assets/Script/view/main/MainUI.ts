@@ -7,6 +7,9 @@ import GameEvent from "../../message/GameEvent";
 import { ResType } from "../../model/ResInfo";
 import { UI } from "../../manager/UIManager";
 import { AlertBtnType } from "../AlertPanel";
+import { RES } from "../../manager/ResourceManager";
+import { ResConst } from "../../module/loading/steps/LoadingStepRes";
+import ResBounceEffect from "../../component/ResBounceEffect";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -69,6 +72,13 @@ export default class MainUI extends UIBase {
     chatBtn: cc.Button = null;
 
     // LIFE-CYCLE CALLBACKS:
+    @property(ResBounceEffect)
+    goldEffect: ResBounceEffect = null;
+    @property(ResBounceEffect)
+    diamondEffect: ResBounceEffect = null;
+    @property(ResBounceEffect)
+    stoneEffect: ResBounceEffect = null;
+
 
     onLoad () {
 
@@ -125,6 +135,33 @@ export default class MainUI extends UIBase {
 
     }
 
+    private showResAddAni(e) {
+        var types:any[] = e.detail.types;
+        types.forEach(obj => {
+            var bounce:ResBounceEffect;
+            switch(obj.type){
+                case ResType.gold:
+                bounce = this.goldEffect;
+                this.lblGold.string = StringUtil.formatReadableNumber(COMMON.resInfo.gold);
+                break;
+                case ResType.diamond:
+                this.lblDiamond.string = StringUtil.formatReadableNumber(COMMON.resInfo.diamond);
+                bounce = this.diamondEffect;
+                break;
+                case ResType.lifeStone:
+                bounce = this.stoneEffect;
+                this.lblLifeStone.string = StringUtil.formatReadableNumber(COMMON.resInfo.lifeStone);
+                break;
+            }
+            bounce.play();
+        });
+    }
+
+    private showAwardPop(e){
+        var data = e.detail;
+        UI.createPopUp(ResConst.AwardPanel,data);
+    }
+
     onEnable(){
         this.lblExp.node.on(cc.Node.EventType.TOUCH_START,this.onLabelExpTouch,this);
 
@@ -134,6 +171,8 @@ export default class MainUI extends UIBase {
         this.taskBtn.node.on(cc.Node.EventType.TOUCH_START,this.onTaskBtnTouch,this);
 
         EVENT.on(GameEvent.Res_update_Cost_Complete,this.resUpdateCost,this);
+        EVENT.on(GameEvent.Show_AwardPanel,this.showAwardPop,this);
+        EVENT.on(GameEvent.Show_Res_Add,this.showResAddAni,this);
     }
 
 
@@ -147,6 +186,8 @@ export default class MainUI extends UIBase {
         this.taskBtn.node.off(cc.Node.EventType.TOUCH_START,this.onTaskBtnTouch,this)
 
         EVENT.off(GameEvent.Res_update_Cost_Complete,this.resUpdateCost,this);
+        EVENT.off(GameEvent.Show_AwardPanel,this.showAwardPop,this);
+        EVENT.off(GameEvent.Show_Res_Add,this.showResAddAni,this);
     }
 
 

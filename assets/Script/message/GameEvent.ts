@@ -22,6 +22,10 @@ export default class GameEvent{
     public static Build_Update_Complete:string ="Build_Update_Complete";
     //资源消耗
     public static Res_update_Cost_Complete:string ="Res_update_Cost_Complete";
+    //获得资源面板
+    public static Show_AwardPanel:string ="Show_AwardPanel";
+    //资源增加
+    public static Show_Res_Add:string ="Show_Res_Add";
     //用户数据更新
     public static UserInfo_update_Complete:string = "UserInfo_update_Complete";
     //抽卡完成

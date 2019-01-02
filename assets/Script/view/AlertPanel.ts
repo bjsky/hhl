@@ -74,10 +74,10 @@ export default class AlertPanel extends UIBase {
 
     private showPanel(){
         this.node.opacity = 0;
-        this.node.runAction(cc.fadeIn(0.15))
+        this.node.runAction(cc.fadeIn(0.2).easing(cc.easeIn(2)))
     }
     private closePanel(clickOk:boolean){
-        this.node.runAction(cc.sequence(cc.fadeOut(0.1),cc.callFunc(()=>{
+        this.node.runAction(cc.sequence(cc.fadeOut(0.2).easing(cc.easeOut(2)),cc.callFunc(()=>{
             UI.closePopUp(this.node);
             if(clickOk) this._okCb && this._okCb(this);
             else this._cancelCb && this._cancelCb(this);

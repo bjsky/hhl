@@ -15,6 +15,8 @@ import { BuildType } from "../../view/BuildPanel";
 import MsgCardUpLv from "../../net/msg/MsgCardUpLv";
 import MsgCardUpStar from "../../net/msg/MsgCardUpStar";
 import MsgCardDestroy from "../../net/msg/MsgCardDestroy";
+import { ResConst } from "../loading/steps/LoadingStepRes";
+import { AwardTypeEnum } from "../../view/AwardPanel";
 
 export enum CardRaceType{
     All =0,
@@ -208,6 +210,9 @@ export default class CardAssist{
                 var removeUuid = msg.resp.cardUuid;
                 this.removeCardByUUid(removeUuid);
                 EVENT.emit(GameEvent.Card_Remove,{uuid:removeUuid,type:CardRemoveType.destroyRemove});
+                var addStone = msg.resp.resInfo.lifeStone - COMMON.resInfo.lifeStone;
+                COMMON.updateResInfo(msg.resp.resInfo);
+                EVENT.emit(GameEvent.Show_AwardPanel,{type:AwardTypeEnum.CardDestroyAward,arr:[{type:ResType.lifeStone,value:addStone}]})
             }
         },this)
     }

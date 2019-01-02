@@ -29,12 +29,16 @@ export default class PopUpBase extends UIBase {
 
     // onLoad () {}
     onEnable(){
-        this.closeBtn.node.on(ButtonEffect.CLICK_END,this.onClose,this);
+        if(this.closeBtn!=null){
+            this.closeBtn.node.on(ButtonEffect.CLICK_END,this.onClose,this);
+        }
         this.onShow();
     }
 
     onDisable(){
-        this.closeBtn.node.off(ButtonEffect.CLICK_END,this.onClose,this);
+        if(this.closeBtn!=null){
+            this.closeBtn.node.off(ButtonEffect.CLICK_END,this.onClose,this);
+        }
     }
     start () {
 
