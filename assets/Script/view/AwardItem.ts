@@ -2,6 +2,7 @@ import LoadSprite from "../component/LoadSprite";
 import UIBase from "../component/UIBase";
 import { ResType } from "../model/ResInfo";
 import PathUtil from "../utils/PathUtil";
+import StringUtil from "../utils/StringUtil";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -42,7 +43,7 @@ export default class AwardItem extends UIBase{
 
 
     private initView(){
-        this.num.string = this._val.toString();
+        this.num.string = StringUtil.formatReadableNumber(this._val);
         this.awardIcon.load(PathUtil.getResIconUrl(this._type));
     }
     start () {

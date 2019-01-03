@@ -78,19 +78,20 @@ export default class TipPanel extends UIBase {
     private moveEffect(){
         var moveByPos:cc.Vec2 = new cc.Vec2(0,0);
         if(this._type == TipTypeEnum.Normal){
-            moveByPos = new cc.Vec2(0,80);
+            moveByPos = new cc.Vec2(0,50);
         }else if(this._type == TipTypeEnum.ResCost){
-            moveByPos = new cc.Vec2(0,-50);
+            moveByPos = new cc.Vec2(0,-30);
         }
         this.node.runAction(
             cc.sequence(
-                cc.spawn(
-                    cc.moveBy(0.8,moveByPos),
-                    cc.sequence(
-                        cc.delayTime(0.5),
-                        cc.fadeOut(0.3).easing(cc.fadeOut(2))
-                    )
-                ),cc.callFunc(
+                // cc.spawn(
+                    cc.moveBy(0.6,moveByPos).easing(cc.easeOut(1.5)),
+                    // cc.sequence(
+                    //     cc.delayTime(0.5),
+                    //     cc.fadeOut(0.1).easing(cc.easeOut(2))
+                    // )
+                // ),
+                cc.callFunc(
                     ()=>{
                         UI.removeUI(this.node);
                     }

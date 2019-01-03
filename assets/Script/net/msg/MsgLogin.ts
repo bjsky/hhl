@@ -40,6 +40,8 @@ export class SCLoginData {
     public ownerCards:Array<SCardInfo> = [];
     //所有卡牌
     public lineUpCardsUuid:Array<string> = [];
+    //挂机关卡数据
+    public passageInfo:SPassageInfo = null;
 
     public static parse(obj:any):SCLoginData{
         var data:SCLoginData = new SCLoginData();
@@ -63,6 +65,7 @@ export class SCLoginData {
         obj.lineUpCardsUuid.forEach(lineUpCardUUid => {
             data.lineUpCardsUuid.push(lineUpCardUUid);
         });
+        data.passageInfo = SPassageInfo.parse(obj.passageInfo);
 
         return data;
     }
@@ -166,6 +169,32 @@ export class SColorStoneInfo{
     }
 }
 
+export class SPassageInfo{
+    //当前关卡id
+    public passId:number = 0;
+    //当前关卡开始的时间（计算当前关卡收益）
+    public passStartTime:number = 0;
+    //所有未领取收益的时间(计算是否领取)
+    public passUncollectedTime:number = 0;
+    //未领取的金币(之前关卡已累计的金币)
+    public passUncollectGold:number =0;
+    //未领取的经验(之前关卡已累计的经验)
+    public passUncollectExp:number =0;
+    //未领取的石头(之前关卡已累计的灵石)
+    public passUncollectStone:number =0;
+
+    public static parse(obj:any):SPassageInfo{
+        var info:SPassageInfo = new SPassageInfo();
+        info.passId = obj.passId;
+        info.passStartTime = obj.passStartTime;
+        info.passUncollectedTime = obj.passUncollectedTime;
+        info.passUncollectGold = obj.passUncollectGold;
+        info.passUncollectExp = obj.passUncollectExp;
+        info.passUncollectStone = obj.passUncollectStone;
+        return info;
+    }
+}
+
 export default class MsgLogin
  extends MessageBase {
     public param:CSLoginData;
@@ -198,7 +227,7 @@ export default class MsgLogin
         for(var i:number = 0;i<5;i++){
             ownerCards.push(MsgCardSummon.randomCardInfo(CardSummonType.LifeStone));
         }
-        for(i= 0;i<11;i++){
+        for(i= 0;i<4;i++){
             var copy = this.copyCard(ownerCards[0]);
             ownerCards.push(copy);
         }
@@ -212,7 +241,15 @@ export default class MsgLogin
                 {type:3,level:1,locked:true},],
             stoneSummonNum:0,videoSummonNum:0,
             ownerCards:ownerCards,
-            lineUpCardsUuid:[]
+            lineUpCardsUuid:[],
+            passageInfo:{
+                passId:1,
+                passStartTime:new Date().getTime(),
+                passUncollectedTime:0,
+                passUncollectExp:0,
+                passUncollectGold:0,
+                passUncollectStone:0
+            }
         };
         return this.parse(json);
     }

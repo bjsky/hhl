@@ -5,6 +5,8 @@ import { GUIDE } from "./manager/GuideManager";
 import BuildInfo from "./model/BuildInfo";
 import { BUILD } from "./module/build/BuildAssist";
 import { Card } from "./module/card/CardAssist";
+import PassageInfo from "./model/PassageInfo";
+import { Passage } from "./module/battle/PassageAssist";
 
 export enum DirectionEnum{
     Left = 0,       //左
@@ -60,6 +62,8 @@ export default class CommonData{
         GUIDE.initGuide(data.guideInfo);
 
         Card.initCard(data.ownerCards,data.lineUpCardsUuid);
+
+        Passage.initPassageInfo(data.passageInfo);
     }
 
     public updateResInfo(data:SResInfo){

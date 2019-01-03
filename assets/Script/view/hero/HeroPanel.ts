@@ -20,6 +20,7 @@ import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 import { NET } from "../../net/core/NetController";
 import MsgCardUpLv from "../../net/msg/MsgCardUpLv";
 import { AlertBtnType } from "../AlertPanel";
+import StringUtil from "../../utils/StringUtil";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -307,12 +308,12 @@ export default class HeroPanel extends UIBase {
         if(this._nextLvCardCfg){
             this.upLvNode.active = true;
             this._upLvCost =  Card.getUpLvCostBuffed(this._currentCard.carUpCfg.needStore);
-            this.labelUpLvCost.string = this._upLvCost.toString();
+            this.labelUpLvCost.string = StringUtil.formatReadableNumber(this._upLvCost);
         }else{
             this.upLvNode.active = false;
         }
         this._destoryGet =  Number(this._currentCard.carUpCfg.destoryGetStore);
-        this.labelDestoryGet.string = this._destoryGet.toString();
+        this.labelDestoryGet.string = StringUtil.formatReadableNumber(this._destoryGet);
     }
 
 
@@ -389,7 +390,7 @@ export default class HeroPanel extends UIBase {
     public upgradeHero(e){
         if(!this._nextLvCardCfg)
             return;
-        if(COMMON.resInfo.soulStone< this._upLvCost){
+        if(COMMON.resInfo.lifeStone< this._upLvCost){
             UI.showTip("灵石不足");
             return;
         }

@@ -73,15 +73,24 @@ export default class AlertPanel extends UIBase {
     }
 
     private showPanel(){
-        this.node.opacity = 0;
-        this.node.runAction(cc.fadeIn(0.2).easing(cc.easeIn(2)))
+        this.node.scale = 0.1
+        var seq = cc.sequence(
+            cc.scaleTo(0.12,1.2),
+            cc.scaleTo(0.05,1)
+        );
+        this.node.runAction(seq)
     }
     private closePanel(clickOk:boolean){
-        this.node.runAction(cc.sequence(cc.fadeOut(0.2).easing(cc.easeOut(2)),cc.callFunc(()=>{
-            UI.closePopUp(this.node);
-            if(clickOk) this._okCb && this._okCb(this);
-            else this._cancelCb && this._cancelCb(this);
-        })))
+        var seq = cc.sequence(
+            cc.scaleTo(0.05,1.2),
+            cc.scaleTo(0.12,0.1),
+            cc.callFunc(()=>{
+                UI.closePopUp(this.node);
+                if(clickOk) this._okCb && this._okCb(this);
+                else this._cancelCb && this._cancelCb(this);
+            })
+        );
+        this.node.runAction(seq)
     }
     start () {
         

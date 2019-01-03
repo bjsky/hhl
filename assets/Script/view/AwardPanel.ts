@@ -44,7 +44,8 @@ export default class AwardPanel extends PopUpBase {
         this.node.scale = 0.4;
         this.node.position = COMMON.ZERO;
         var seq = cc.sequence(
-            cc.scaleTo(0.2,1).easing(cc.easeBackOut()),
+            cc.scaleTo(0.12,1.2),
+            cc.scaleTo(0.05,1),
             cc.callFunc(()=>{})
         )
         this.node.runAction(seq);
