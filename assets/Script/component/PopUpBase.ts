@@ -45,11 +45,11 @@ export default class PopUpBase extends UIBase {
     }
     protected onShow(){
         this.node.opacity = 0;
-        this.node.runAction(cc.fadeIn(0.15))
+        this.node.runAction(cc.fadeIn(0.15).easing(cc.easeOut(1.5)))
     }
 
     protected onClose(e){
-        this.node.runAction(cc.sequence(cc.fadeOut(0.1),cc.callFunc(()=>{
+        this.node.runAction(cc.sequence(cc.fadeOut(0.1).easing(cc.easeIn(1.5)),cc.callFunc(()=>{
             UI.closePopUp(this.node);
         })))
     }

@@ -18,8 +18,8 @@ export default class ButtonEffect extends cc.Component {
     private onNodeTouchStart(evt) {
         this.node.stopAllActions();
         var seq = cc.sequence(
-            cc.scaleTo(0.1, 1.3 * this.originalScale),
-            cc.scaleTo(0.1, 1.1 * this.originalScale)
+            cc.scaleTo(0.08, 1.3 * this.originalScale),
+            cc.scaleTo(0.05, 1.1 * this.originalScale)
         );
         this.node.runAction(seq);
     }
@@ -27,8 +27,8 @@ export default class ButtonEffect extends cc.Component {
     private onNodeTouchEnd(evt) {
         this.node.stopAllActions();
         var seq = cc.sequence(
-            cc.scaleTo(0.05, 1.2 * this.originalScale),
-            cc.scaleTo(0.1, 1 * this.originalScale),
+            cc.scaleTo(0.04, 1.2 * this.originalScale),
+            cc.scaleTo(0.07, 1 * this.originalScale),
             cc.callFunc(()=>{
                 this.node.emit(ButtonEffect.CLICK_END);
             },this)
