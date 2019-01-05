@@ -21,6 +21,7 @@ import { NET } from "../../net/core/NetController";
 import MsgCardUpLv from "../../net/msg/MsgCardUpLv";
 import { AlertBtnType } from "../AlertPanel";
 import StringUtil from "../../utils/StringUtil";
+import CardHead from "../card/CardHead";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -87,8 +88,6 @@ export default class HeroPanel extends UIBase {
     @property(cc.RichText)
     labelSkillAdd:cc.RichText = null;
     @property(cc.Label)
-    labelSkillCost:cc.Label = null;
-    @property(cc.Label)
     labelDestoryGet:cc.Label = null;
     
     @property(cc.Button)
@@ -100,6 +99,11 @@ export default class HeroPanel extends UIBase {
     @property(cc.Button)
     btnDestroy:cc.Button = null;
 
+    @property(cc.Label)
+    labelUpstarCost:cc.Label = null;
+
+    @property(cc.Node)
+    upstarCostNode:cc.Node = null;
     
     //升星组件
     @property(cc.Node)
@@ -210,6 +214,14 @@ export default class HeroPanel extends UIBase {
             this.labelPower.string = this._currentCard.carUpCfg.power;
             this.labelLv.string = "Lv."+this._currentCard.level;
             this.initProperty();
+            if(this.cardHeadToNode.childrenCount>0){
+                var cardHead :CardHead = this.cardHeadToNode.children[0].getComponent(CardHead);
+                if(cardHead){
+                    var cardUpInfo = CFG.getCfgByKey(ConfigConst.CardUp,"grade",this._currentCard.grade +1 ,"level",this._currentCard.level)[0];
+                    var nextPower:number = cardUpInfo.power;
+                    cardHead.updatePower(nextPower);
+                }
+            }
         }else if(type == CardUpType.UpGrade){
             this.labelPower.string = this._currentCard.carUpCfg.power;
             this.labelLv.string = "Lv."+this._currentCard.level;
@@ -292,6 +304,7 @@ export default class HeroPanel extends UIBase {
 
     private _nextLvCardCfg:any = null;
     private _upLvCost:number = 0;
+    private _upLvNeedLv:number = 0;
     private _destoryGet:number = 0;
     private _upSkillLvCost:number = 0;
     private initProperty(){
@@ -308,6 +321,7 @@ export default class HeroPanel extends UIBase {
         if(this._nextLvCardCfg){
             this.upLvNode.active = true;
             this._upLvCost =  Card.getUpLvCostBuffed(this._currentCard.carUpCfg.needStore);
+            this._upLvNeedLv = this._currentCard.carUpCfg.playerLevel;
             this.labelUpLvCost.string = StringUtil.formatReadableNumber(this._upLvCost);
         }else{
             this.upLvNode.active = false;
@@ -326,6 +340,7 @@ export default class HeroPanel extends UIBase {
     }
 
     private _upStarCard:CardInfo = null;
+    private _upStarCost:number = 0;
     //升星
     private initUpStar(){
         if(this._currentCard.isMaxGrade){
@@ -343,12 +358,17 @@ export default class HeroPanel extends UIBase {
 
             this._upStarCard = Card.getUpStarCardOne(this._currentCard);
             if(this._upStarCard){
+                this.upstarCostNode.active = true;
+                this._upStarCost = this._currentCard.carUpCfg.needGold;
+                this.labelUpstarCost.string  = StringUtil.formatReadableNumber(this._upStarCost);
                 var cardObj ={head:this._upStarCard.cardInfoCfg.head,grade:this._upStarCard.grade,power:this._upStarCard.carUpCfg.power}
                 UI.loadUI(ResConst.CardHead,cardObj,this.cardHeadFromNode);
                 var upStar = this._upStarCard.grade+1;
-                var cardUpInfo = CFG.getCfgByKey(ConfigConst.CardUp,"grade",upStar,"level",1)[0];
+                var cardUpInfo = CFG.getCfgByKey(ConfigConst.CardUp,"grade",upStar,"level",this._currentCard.level)[0];
                 var upStarObj = {head:this._upStarCard.cardInfoCfg.head,grade:upStar,power:cardUpInfo.power}
                 UI.loadUI(ResConst.CardHead,upStarObj,this.cardHeadToNode);
+            }else{
+                this.upstarCostNode.active = false;
             }
         }
     }
@@ -394,6 +414,10 @@ export default class HeroPanel extends UIBase {
             UI.showTip("灵石不足");
             return;
         }
+        if(COMMON.userInfo.level< this._upLvNeedLv){
+            UI.showTip("不能超过角色等级");
+            return;
+        }
         Card.upCardLv(this._currentCard.uuid,this._upLvCost);
     }
 
@@ -406,8 +430,8 @@ export default class HeroPanel extends UIBase {
             UI.showTip("没有可合成升星的英雄！");
             return;
         }
-        if(this._nextLvCardCfg){
-            UI.showTip("英雄未满级，请先升级");
+        if(COMMON.resInfo.gold < this._upStarCost){
+            UI.showTip("金币不足");
             return;
         }
 

@@ -51,6 +51,11 @@ export default class CardHead extends UIBase {
         this.head.load(PathUtil.getCardHeadUrl(this._head));
     }
 
+    public updatePower(power){
+        this._power = power;
+        this.power.string = this._power.toString();
+    }
+
     onDisable(){
         this.power.string ="";
         this.star.load("");

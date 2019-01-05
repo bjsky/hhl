@@ -212,11 +212,11 @@ export default class BuildPanel extends UIBase{
         var needGold:number = this._buildInfo.buildLevelCfg.upNeedGold;
         var needLevel:number = this._buildInfo.buildLevelCfg.upNeedPlayerLv;
         if(COMMON.resInfo.gold<needGold){
-            UI.showTip("资源不足!");
+            UI.showTip("金币不足!");
             return;
         }
         if(COMMON.userInfo.level<needLevel ){
-            UI.showTip("角色等级不足!");
+            UI.showTip("不能超过角色等级!");
             return;
         }
         BUILD.updateBuild(this._buildType,needGold);
