@@ -24,6 +24,8 @@ export class SCLoginData {
     public accountId:string //账号id
     //每天首次登录
     public firstLogin:boolean  = false;
+    //服务器时间
+    public serverTime:number = 0;
     //用户信息
     public userInfo:SUserInfo = null;
     //资源信息
@@ -46,6 +48,7 @@ export class SCLoginData {
     public static parse(obj:any):SCLoginData{
         var data:SCLoginData = new SCLoginData();
         data.firstLogin = obj.firstLogin;
+        data.serverTime = obj.serverTime;
         data.userInfo = SUserInfo.parse(obj.userInfo);
         data.resInfo = SResInfo.parse(obj.resInfo);
         data.guideInfo = SGuideInfo.parse(obj.guideInfo);
@@ -227,12 +230,13 @@ export default class MsgLogin
         for(var i:number = 0;i<5;i++){
             ownerCards.push(MsgCardSummon.randomCardInfo(CardSummonType.LifeStone));
         }
-        for(i= 0;i<4;i++){
+        for(i= 0;i<1;i++){
             var copy = this.copyCard(ownerCards[0]);
             ownerCards.push(copy);
         }
         var json:any = {firstLogin:true,
-            userInfo:{name:"上古战神",icon:"",gender:1,exp:1000,level:5},
+            serverTime:new Date().getTime(),
+            userInfo:{name:"上古战神",icon:"",gender:1,exp:0,level:1},
             resInfo:{gold:10000,diamond:500,lifeStone:20000,soulStone:0},
             guideInfo:{guideId:-1},
             buildInfos:[{type:0,level:1,locked:true},

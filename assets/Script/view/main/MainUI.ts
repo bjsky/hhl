@@ -10,6 +10,7 @@ import { AlertBtnType } from "../AlertPanel";
 import { RES } from "../../manager/ResourceManager";
 import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 import ResBounceEffect from "../../component/ResBounceEffect";
+import ExpLevelEffect from "../../component/ExpLevelEffect";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -79,6 +80,9 @@ export default class MainUI extends UIBase {
     @property(ResBounceEffect)
     stoneEffect: ResBounceEffect = null;
 
+    @property(ExpLevelEffect)
+    explevelEffect:ExpLevelEffect = null;
+
 
     onLoad () {
 
@@ -107,14 +111,18 @@ export default class MainUI extends UIBase {
 
     private initTopView(){
         this.lblName.string = COMMON.userInfo.name;
-        this.lblExp.string = COMMON.userInfo.exp + " / "+COMMON.userInfo.totalExp;
+        // this.lblExp.string = COMMON.userInfo.exp + " / "+COMMON.userInfo.totalExp;
         this.lblGold.string = StringUtil.formatReadableNumber(COMMON.resInfo.gold);
         this.lblDiamond.string = StringUtil.formatReadableNumber(COMMON.resInfo.diamond);
         this.lblLifeStone.string = StringUtil.formatReadableNumber(COMMON.resInfo.lifeStone);
         this.lblSoulStone.string = StringUtil.formatReadableNumber(COMMON.resInfo.soulStone);
-        this.progressExp.progress = COMMON.userInfo.exp / COMMON.userInfo.totalExp;
-        this.labelLv.string = COMMON.userInfo.level.toString();
+        // this.progressExp.progress = COMMON.userInfo.exp / COMMON.userInfo.totalExp;
+        
+        // this.labelLv.string = COMMON.userInfo.level.toString();
+
+        this.explevelEffect.initProgress(COMMON.userInfo.exp,COMMON.userInfo.totalExp,COMMON.userInfo.level);
     }
+    
 
     private resUpdateCost(e){
         var types:any[] = e.detail.types;
@@ -138,22 +146,18 @@ export default class MainUI extends UIBase {
     private showResAddAni(e) {
         var types:any[] = e.detail.types;
         types.forEach(obj => {
-            var bounce:ResBounceEffect;
-            switch(obj.type){
-                case ResType.gold:
-                bounce = this.goldEffect;
+            if(obj.type == ResType.gold){
                 this.lblGold.string = StringUtil.formatReadableNumber(COMMON.resInfo.gold);
-                break;
-                case ResType.diamond:
+                this.goldEffect.play();
+            }else if(obj.type == ResType.diamond){
                 this.lblDiamond.string = StringUtil.formatReadableNumber(COMMON.resInfo.diamond);
-                bounce = this.diamondEffect;
-                break;
-                case ResType.lifeStone:
-                bounce = this.stoneEffect;
+                this.diamondEffect.play();
+            }else if(obj.type == ResType.lifeStone){
                 this.lblLifeStone.string = StringUtil.formatReadableNumber(COMMON.resInfo.lifeStone);
-                break;
+                this.stoneEffect.play();
+            }else if(obj.type == ResType.exp){
+                this.explevelEffect.playProgressAnim(COMMON.userInfo.exp,COMMON.userInfo.totalExp,COMMON.userInfo.level);
             }
-            bounce.play();
         });
     }
 

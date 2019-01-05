@@ -19,6 +19,7 @@ import GameEvent from "../message/GameEvent";
 
 export enum AwardTypeEnum{
     CardDestroyAward = 1,
+    PassageCollect,
 }
 
 const {ccclass, property} = cc._decorator;
@@ -89,6 +90,8 @@ export default class AwardPanel extends PopUpBase {
     private showAward(){
         if(this._type == AwardTypeEnum.CardDestroyAward){
             this.lblDesc.string ="回收获得："
+        }else if(this._type == AwardTypeEnum.PassageCollect){
+            this.lblDesc.string = "挂机获得：";
         }
         this.awardGroup.setGroupData(this._resArr);
     }

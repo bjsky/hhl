@@ -40,13 +40,22 @@ export default class Constant{
         return this._constantKeyValueMap["store_summon_use"].split(";")[0];
     }
 
+    //灵石抽取获得的经验
+    public getSummonStoneExpGet(){
+        return Number(this._constantKeyValueMap["store_summon_use"].split(";")[1]);
+    }
+
     //灵石免费次数
     public getStoneFreeSummonNum():number{
         return this._constantKeyValueMap["stone_free_summon_num"];
     }
     //视频免费抽卡次数
     public getVideoFreeSummonNum():number{
-        return this._constantKeyValueMap["video_summon_num"];
+        return Number(this._constantKeyValueMap["video_summon_num"].split(";")[0]);
+    }
+    //灵石抽取获得的经验
+    public getSummonVideoExpGet(){
+        return Number(this._constantKeyValueMap["video_summon_num"].split(";")[1]);
     }
     //灵石抽奖权重
     public getStoneSummonWeightArr():string[]{
@@ -63,6 +72,16 @@ export default class Constant{
 
     public getSkillMaxLevelArr(){
         return this._constantKeyValueMap["grade_skillMaxLv"].split("|");
+    }
+
+    //挂机最短可领取时间
+    public getPassCollectMinTime(){
+        return Number(this._constantKeyValueMap["produce_minTime"]);
+    }
+
+    //挂机最长可积累时间
+    public getPassIncreaseMaxTime(){
+        return Number(this._constantKeyValueMap["produce_maxTime"]);
     }
 }
 

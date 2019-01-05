@@ -49,6 +49,9 @@ export default class PathUtil{
             case ResType.soulStone:
             url = "ui/Common2/hunshi_icon";
             break;
+            case ResType.exp:
+            url = "ui/Common2/jinyan_icon";
+            break;
         }
         return url;
     }

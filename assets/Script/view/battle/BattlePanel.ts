@@ -3,6 +3,13 @@ import { CFG } from "../../manager/ConfigManager";
 import { ConfigConst } from "../../module/loading/steps/LoadingStepConfig";
 import { COMMON } from "../../CommonData";
 import { Passage } from "../../module/battle/PassageAssist";
+import { EVENT } from "../../message/EventCenter";
+import GameEvent from "../../message/GameEvent";
+import PassageFly from "./PassageFly";
+import StringUtil from "../../utils/StringUtil";
+import TouchHandler from "../../component/TouchHandler";
+import Constant, { CONSTANT } from "../../Constant";
+import { UI } from "../../manager/UIManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -33,8 +40,18 @@ export default class BattlePanel extends UIBase {
     @property(cc.Label)
     lblCurStone:cc.Label = null;
     
+    @property(cc.Label)
+    lblPassName:cc.Label = null;
+
     @property(cc.Button)
     btnCollect:cc.Button = null;
+
+    @property(PassageFly)
+    goldFly:PassageFly = null;
+    @property(PassageFly)
+    stoneFly:PassageFly = null;
+    @property(PassageFly)
+    expFly:PassageFly = null;
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
@@ -45,34 +62,107 @@ export default class BattlePanel extends UIBase {
 
     onEnable(){
         this.initView();
+        this.btnCollect.node.on(TouchHandler.TOUCH_CLICK,this.collectRes,this);
+        EVENT.on(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
+        EVENT.on(GameEvent.Passage_Collected,this.onPassageCollectd,this);
+
+        this.schedule(this.showPassageAddEffect,this._interval);
     }
 
     onDisable(){
+        this.btnCollect.node.off(TouchHandler.TOUCH_CLICK,this.collectRes,this);
+        EVENT.off(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
+        EVENT.off(GameEvent.Passage_Collected,this.onPassageCollectd,this);
 
+        this.unscheduleAllCallbacks();
+        this.goldFly.reset();
+        this.expFly.reset();
+        this.stoneFly.reset();
+    }
+
+    private onBuildUpdate(e){
+        this.initPassageleftView();
+    }
+
+    private onPassageCollectd(e){
+        this.initPassageTopView();
+    }
+
+    private collectRes(e){
+        var needTime = CONSTANT.getPassCollectMinTime();
+        var curTime = Passage.passageInfo.getAllPassUncollectTime()/1000;
+        if(curTime < needTime){
+            UI.showTip(""+Math.floor(needTime-curTime)+"秒后可领取");
+            return;
+        }
+        Passage.collectRes();
     }
 
     private _passCfg:any = null;
 
+    private _curGold:number = 0;
+    private _curExp:number = 0;
+    private _curStone:number = 0;
     private initView(){
-        this._passCfg = Passage.passageInfo.passageCfg;
-
         this.initPassageleftView();
+        this.initPassageTopView();
     }
 
 
     private _passGoldPM:number = 0;
     private _passExpPM:number = 0;
     private _passStonePM:number = 0;
-    private initPassageleftView(){
-        if(this._passCfg){
-            this._passExpPM = Number(this._passCfg.passageExp);
-            this._passGoldPM = Number(this._passCfg.passageGold);
-            this._passStonePM = Number(this._passCfg.passageStone);
 
-            this.lblPassageExp.string = this._passExpPM+"/分";
-            this.lblPassageGold.string = this._passGoldPM+"/分";
-            this.lblPassageStone.string = this._passStonePM+"/分";
+    private _passGoldPS:number = 0;
+    private _passExpPS:number = 0;
+    private _passStonePS:number = 0;
+    private initPassageleftView(){
+        this._passCfg = Passage.passageInfo.passageCfg;
+        if(this._passCfg){
+            this._passExpPM = Passage.getPassageValueBuffed(this._passCfg.passageExp);
+            this._passGoldPM = Passage.getPassageValueBuffed(this._passCfg.passageGold);
+            this._passStonePM = Passage.getPassageValueBuffed(this._passCfg.passageStone);
+            this._passGoldPS =(this._passGoldPM * this._interval)/60;
+            this._passExpPS =(this._passExpPM * this._interval)/60;
+            this._passStonePS =(this._passStonePM * this._interval)/60;
+
+            this.lblPassageExp.string = StringUtil.formatReadableNumber(this._passExpPM)+"/分";
+            this.lblPassageGold.string = StringUtil.formatReadableNumber(this._passGoldPM)+"/分";
+            this.lblPassageStone.string = StringUtil.formatReadableNumber(this._passStonePM)+"/分";
+
+            this.lblPassName.string = this._passCfg.areaName;
         }
+    }
+
+    private _interval:number = 3;
+    private initPassageTopView(){
+        this._curGold = Number(Math.floor(Passage.geUnCollectGold()).toFixed(0));
+        this._curExp = Number(Math.floor(Passage.getUnCollectExp()).toFixed(0));
+        this._curStone = Number(Math.floor(Passage.getUnCollectStone()).toFixed(0));
+        this.setPassageTopLabels();
+    }
+
+    private setPassageTopLabels(){
+        console.log("collect:",this._curGold,this._curStone,this._curExp);
+        this.lblCurGold.string = StringUtil.formatReadableNumber(this._curGold.toString());
+        this.lblCurExp.string = StringUtil.formatReadableNumber(this._curExp.toString());
+        this.lblCurStone.string = StringUtil.formatReadableNumber(this._curStone.toString());
+    }
+
+    private showPassageAddEffect(){
+        var max = CONSTANT.getPassIncreaseMaxTime()*1000;
+        if(Passage.passageInfo.getAllPassUncollectTime()>max){
+            this.unscheduleAllCallbacks();
+            return;
+        }
+        var addGold = this.goldFly.playEffect(this._passGoldPS);
+        this._curGold += addGold;
+        var addExp = this.expFly.playEffect(this._passExpPS);
+        this._curExp += addExp;
+        var addStone = this.stoneFly.playEffect(this._passStonePS);
+        this._curStone += addStone;
+        this.setPassageTopLabels();
+        
     }
     // update (dt) {}
 }

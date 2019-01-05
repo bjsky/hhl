@@ -46,10 +46,20 @@ export default class CommonData{
     //祭坛视频召唤次数
     public videoSummonNum:number = 0;
 
+    private _serverTime: number = 0;
+    //获取服务器时间
+    public getServerTime(){
+        var offset:number = new Date().getTime() - this._loginTime;
+        return this._serverTime + offset;
+    }
+
+    private _loginTime:number = 0;
     //服务器数据初始化
     public initFromServer(data:SCLoginData){
+        this._loginTime = new Date().getTime();
 
         this.isFristLogin = data.firstLogin;
+        this._serverTime = data.serverTime;
         this.userInfo.initFromServer(data.userInfo);
         this.resInfo.initFromServer(data.resInfo);
 

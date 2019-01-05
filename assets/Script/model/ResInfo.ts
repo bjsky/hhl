@@ -7,7 +7,8 @@ export enum ResType{
     gold = 0,
     diamond,
     lifeStone,
-    soulStone
+    soulStone,
+    exp,
 }
 
 export default class ResInfo extends InfoBase{

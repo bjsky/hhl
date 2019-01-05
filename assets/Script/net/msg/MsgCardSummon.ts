@@ -5,6 +5,7 @@ import { Card } from "../../module/card/CardAssist";
 import { COMMON } from "../../CommonData";
 import { CFG } from "../../manager/ConfigManager";
 import { ConfigConst } from "../../module/loading/steps/LoadingStepConfig";
+import { CONSTANT } from "../../Constant";
 
 export enum CardSummonType{
     LifeStone = 0,  //灵石
@@ -93,8 +94,9 @@ export default class MsgCardSummon extends MessageBase {
         var cardInfo = MsgCardSummon.randomCardInfo(this.param.summonType);
         var retRes:SResInfo = COMMON.resInfo.cloneServerInfo();
         retRes.lifeStone -= this.param.stoneCost;
-        var card:any = CFG.getCfgDataById(ConfigConst.CardInfo,cardInfo.cardId);
-        var userInfo = COMMON.userInfo.cloneAddExpServerInfo(card.summonGetExp);
+        // var card:any = CFG.getCfgDataById(ConfigConst.CardInfo,cardInfo.cardId);
+        var getExp = (this.param.summonType == CardSummonType.LifeStone)?CONSTANT.getSummonStoneExpGet():CONSTANT.getSummonVideoExpGet();
+        var userInfo = COMMON.userInfo.cloneAddExpServerInfo(getExp); //card.summonGetExp
         var json:any ={
             newCard:cardInfo,
             retRes:retRes,

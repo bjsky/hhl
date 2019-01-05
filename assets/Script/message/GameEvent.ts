@@ -36,4 +36,6 @@ export default class GameEvent{
     public static Card_update_Complete:string = "Card_update_Complete";
     //卡牌删除
     public static Card_Remove:string = "Card_Remove";
+    //挂机领取
+    public static Passage_Collected:string ="PassageCollected";
 }

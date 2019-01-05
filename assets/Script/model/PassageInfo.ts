@@ -1,6 +1,8 @@
 import { SPassageInfo } from "../net/msg/MsgLogin";
 import { CFG } from "../manager/ConfigManager";
 import { ConfigConst } from "../module/loading/steps/LoadingStepConfig";
+import { COMMON } from "../CommonData";
+import { CONSTANT } from "../Constant";
 
 export default class PassageInfo{
     //当前关卡id
@@ -29,4 +31,35 @@ export default class PassageInfo{
 
         this.passageCfg = CFG.getCfgDataById(ConfigConst.Passage,this.passId);
     }
+
+    public cloneServerInfo():SPassageInfo{
+        var info:SPassageInfo = new SPassageInfo();
+        info.passId  = this.passId;
+        info.passStartTime = this.passStartTime;
+        info.passUncollectedTime = this.passUncollectedTime;
+        info.passUncollectExp = this.passUncollectExp;
+        info.passUncollectGold = this.passUncollectGold;
+        info.passUncollectStone = this.passUncollectStone;
+        return info;
+    }
+
+
+    //当前关卡已经积累的时间-毫秒
+    public getCurPassIncreaseTime():number{
+        var max = CONSTANT.getPassIncreaseMaxTime()*1000;
+        if(this.getAllPassUncollectTime() > max){
+            return max - this.passUncollectedTime;
+        }else{
+            var time = COMMON.getServerTime() - this.passStartTime;
+            if(time<0){
+                time = 0;
+            }
+            return time;
+        }
+    }
+    //所有关卡未领取的时间
+    public getAllPassUncollectTime(){
+        return (COMMON.getServerTime() - this.passStartTime)+this.passUncollectedTime;
+    }
+
 }

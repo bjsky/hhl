@@ -86,6 +86,7 @@ export default class CardAssist{
 
             COMMON.updateResInfo(msg.resp.retRes);
             COMMON.updateUserInfo(msg.resp.userInfo);
+            EVENT.emit(GameEvent.Show_Res_Add,{types:[{type:ResType.exp,value:0}]});
             this.addNewCard(msg.resp.newCard);
             COMMON.stoneSummonNum = msg.resp.stoneSummonNum;
             COMMON.videoSummonNum = msg.resp.videoSummonNum;

@@ -27,5 +27,7 @@ export default class NetConst{
     public static CardUpStar:number = 30003;
     //卡牌回收
     public static CardDestroy:number = 30004;
+    //挂机领取
+    public static CollectPassageRes:number = 40001;
 }
 
