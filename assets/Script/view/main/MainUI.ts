@@ -128,16 +128,14 @@ export default class MainUI extends UIBase {
         var types:any[] = e.detail.types;
         types.forEach((obj)=>{
             switch(obj.type){
-                case ResType.gold:
-                this.lblGold.string = StringUtil.formatReadableNumber(COMMON.resInfo.gold);
-                UI.showCostTip("-"+StringUtil.formatReadableNumber(obj.value),this.lblGold.node.parent.convertToWorldSpaceAR(this.lblGold.node.position));
-                break;
-                case ResType.lifeStone:
-                this.lblLifeStone.string = StringUtil.formatReadableNumber(COMMON.resInfo.lifeStone);
-                if(obj.value>0){
-                    UI.showCostTip("-"+StringUtil.formatReadableNumber(obj.value),this.lblLifeStone.node.parent.convertToWorldSpaceAR(this.lblLifeStone.node.position));
-                }
-                break;
+                case ResType.gold:{
+                    this.lblGold.string = StringUtil.formatReadableNumber(COMMON.resInfo.gold);
+                    UI.showCostTip("-"+StringUtil.formatReadableNumber(Math.abs(obj.value)),this.lblGold.node.parent.convertToWorldSpaceAR(this.lblGold.node.position));
+                }break;
+                case ResType.lifeStone:{
+                    this.lblLifeStone.string = StringUtil.formatReadableNumber(COMMON.resInfo.lifeStone);
+                    UI.showCostTip("-"+StringUtil.formatReadableNumber(Math.abs(obj.value)),this.lblLifeStone.node.parent.convertToWorldSpaceAR(this.lblLifeStone.node.position));
+                }break;
             }
         })
 

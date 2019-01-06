@@ -1,4 +1,4 @@
-import { SPassageInfo } from "../../net/msg/MsgLogin";
+import { SPassageInfo, SResInfo } from "../../net/msg/MsgLogin";
 import PassageInfo from "../../model/PassageInfo";
 import BuildInfo from "../../model/BuildInfo";
 import { BUILD } from "../build/BuildAssist";
@@ -65,10 +65,10 @@ export default class PassageAssist{
                 Passage.updatePassageInfo(msg.resp.passageInfo);
                 EVENT.emit(GameEvent.Passage_Collected);
 
-                COMMON.updateResInfo(msg.resp.resInfo);
+                var cost:SResInfo = COMMON.updateResInfo(msg.resp.resInfo);
                 EVENT.emit(GameEvent.Show_AwardPanel,{type:AwardTypeEnum.PassageCollect,
-                    arr:[{type:ResType.gold,value:msg.resp.addGold},
-                        {type:ResType.lifeStone,value:msg.resp.addStone},
+                    arr:[{type:ResType.gold,value:cost.gold},
+                        {type:ResType.lifeStone,value:cost.lifeStone},
                         {type:ResType.exp,value:msg.resp.addExp},
                     ]})
             }

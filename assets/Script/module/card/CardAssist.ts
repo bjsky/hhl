@@ -17,6 +17,7 @@ import MsgCardUpStar from "../../net/msg/MsgCardUpStar";
 import MsgCardDestroy from "../../net/msg/MsgCardDestroy";
 import { ResConst } from "../loading/steps/LoadingStepRes";
 import { AwardTypeEnum } from "../../view/AwardPanel";
+import { SResInfo } from "../../net/msg/MsgLogin";
 
 export enum CardRaceType{
     All =0,
@@ -186,8 +187,8 @@ export default class CardAssist{
         NET.send(MsgCardUpLv.create(uuid,cost),(msg:MsgCardUpLv)=>{
             if(msg && msg.resp){
                 this.updateCardInfo(msg.resp.cardInfo);
-                COMMON.updateResInfo(msg.resp.resInfo);
-                EVENT.emit(GameEvent.Res_update_Cost_Complete,{types:[{type:ResType.lifeStone,value:cost}]});
+                var cost:SResInfo = COMMON.updateResInfo(msg.resp.resInfo);
+                EVENT.emit(GameEvent.Res_update_Cost_Complete,{types:[{type:ResType.lifeStone,value:cost.lifeStone}]});
                 EVENT.emit(GameEvent.Card_update_Complete,{uuid:msg.resp.cardInfo.uuid,type:CardUpType.UpLevel});
             }
         },this);
@@ -201,6 +202,8 @@ export default class CardAssist{
                 this.removeCardByUUid(removeUuid);
                 EVENT.emit(GameEvent.Card_update_Complete,{uuid:msg.resp.cardInfo.uuid,type:CardUpType.UpGrade});
                 EVENT.emit(GameEvent.Card_Remove,{uuid:removeUuid,type:CardRemoveType.upStarRemove});
+                var cost:SResInfo = COMMON.updateResInfo(msg.resp.resInfo);
+                EVENT.emit(GameEvent.Res_update_Cost_Complete,{types:[{type:ResType.gold,value:cost.gold}]});
             }
         },this);
     }
@@ -211,9 +214,8 @@ export default class CardAssist{
                 var removeUuid = msg.resp.cardUuid;
                 this.removeCardByUUid(removeUuid);
                 EVENT.emit(GameEvent.Card_Remove,{uuid:removeUuid,type:CardRemoveType.destroyRemove});
-                var addStone = msg.resp.resInfo.lifeStone - COMMON.resInfo.lifeStone;
-                COMMON.updateResInfo(msg.resp.resInfo);
-                EVENT.emit(GameEvent.Show_AwardPanel,{type:AwardTypeEnum.CardDestroyAward,arr:[{type:ResType.lifeStone,value:addStone}]})
+                var cost:SResInfo = COMMON.updateResInfo(msg.resp.resInfo);
+                EVENT.emit(GameEvent.Show_AwardPanel,{type:AwardTypeEnum.CardDestroyAward,arr:[{type:ResType.lifeStone,value:cost.lifeStone}]})
             }
         },this)
     }

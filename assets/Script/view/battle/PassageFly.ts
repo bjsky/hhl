@@ -34,6 +34,7 @@ export default class PassageFly extends cc.Component {
 
     public reset(){
         this._addFloatValue = 0;
+        this.node.opacity = 0;
         this.node.stopAllActions();
     }
 

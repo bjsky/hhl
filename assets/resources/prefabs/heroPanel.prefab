@@ -3679,7 +3679,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 2,
-      "y": -178
+      "y": -186
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -3993,7 +3993,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 19
+      "y": 26
     },
     "_skewX": 0,
     "_skewY": 0,

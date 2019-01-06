@@ -5,10 +5,6 @@ import { COMMON } from "../../CommonData";
 import { Passage } from "../../module/battle/PassageAssist";
 
 export class SCCollectRes{
-    //收集的金币数
-    public addGold:number = 0;
-    //收集的灵石数
-    public addStone:number = 0;
     //收集的经验
     public addExp:number = 0;
     //收集后的res信息
@@ -20,8 +16,6 @@ export class SCCollectRes{
 
     public static parse(obj:any):SCCollectRes{
         var data:SCCollectRes = new SCCollectRes();
-        data.addGold = obj.addGold;
-        data.addStone = obj.addStone;
         data.addExp = obj.addExp;
         data.resInfo = SResInfo.parse(obj.resInfo);
         data.userInfo = SUserInfo.parse(obj.userInfo);
@@ -63,8 +57,6 @@ export default class MsgCollectRes extends MessageBase{
         passage.passUncollectStone = 0;
 
         json ={
-            addGold:addGold,
-            addStone:addStone,
             addExp:addExp,
             resInfo:resInfo,
             userInfo:userInfo,

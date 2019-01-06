@@ -76,8 +76,8 @@ export default class CommonData{
         Passage.initPassageInfo(data.passageInfo);
     }
 
-    public updateResInfo(data:SResInfo){
-        this.resInfo.updateInfo(data);
+    public updateResInfo(data:SResInfo):SResInfo{
+        return this.resInfo.updateInfo(data);
     }
 
     public updateUserInfo(data:SUserInfo){

@@ -29,8 +29,14 @@ export default class ResInfo extends InfoBase{
         this.soulStone = data.soulStone;
     }
 
-    public updateInfo(data:SResInfo){
+    public updateInfo(data:SResInfo):SResInfo{
+        var change:SResInfo = new SResInfo();
+        change.diamond = data.diamond - this.diamond;
+        change.gold = data.gold - this.gold;
+        change.lifeStone = data.lifeStone - this.lifeStone;
+        change.soulStone = data.soulStone - this.soulStone;
         this.initFromServer(data);
+        return change;
     }
 
     public cloneServerInfo():SResInfo{
