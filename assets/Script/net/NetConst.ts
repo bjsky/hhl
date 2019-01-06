@@ -17,10 +17,10 @@ export default class NetConst{
     public static GuideUpdate:number = 10002;
 
     //升级建筑
-    public static BuildUpdate:number = 20001;
+    public static BuildUpdate:number = 21020;
 
     //召唤卡牌
-    public static CardSummon:number = 30001;
+    public static CardSummon:number = 21000;
     //卡牌升级
     public static CardUpLv:number = 30002;
     //卡牌升星

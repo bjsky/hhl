@@ -68,7 +68,18 @@ export class SCLoginData {
         obj.lineUpCardsUuid.forEach(lineUpCardUUid => {
             data.lineUpCardsUuid.push(lineUpCardUUid);
         });
-        data.passageInfo = SPassageInfo.parse(obj.passageInfo);
+        if(obj.passageInfo){
+            data.passageInfo = SPassageInfo.parse(obj.passageInfo);
+        }else{
+            data.passageInfo = SPassageInfo.parse({
+                passId:1,
+                passStartTime:new Date().getTime(),
+                passUncollectedTime:0,
+                passUncollectExp:0,
+                passUncollectGold:0,
+                passUncollectStone:0
+            });
+        }
 
         return data;
     }

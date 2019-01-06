@@ -38,7 +38,7 @@ export default class MsgBuildUpdate extends MessageBase{
 
     constructor(){
         super(NetConst.BuildUpdate);
-        this.isLocal = true;
+        // this.isLocal = true;
     }
     public static create(buildType:number){
         var msg:MsgBuildUpdate = new MsgBuildUpdate();

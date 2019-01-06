@@ -78,7 +78,7 @@ export default class MsgCardSummon extends MessageBase {
 
     constructor(){
         super(NetConst.CardSummon);
-        this.isLocal = true;
+        // this.isLocal = true;
     }
 
     public static create(summonType,stoneCost){
