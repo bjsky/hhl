@@ -41,7 +41,7 @@ export class SCLoginData {
     //拥有的卡牌
     public ownerCards:Array<SCardInfo> = [];
     //所有卡牌
-    public lineUpCardsUuid:Array<string> = [];
+    public lineUpCardsUuid:Array<SLineupCard> = [];
     //挂机关卡数据
     public passageInfo:SPassageInfo = null;
 
@@ -65,8 +65,8 @@ export class SCLoginData {
         obj.ownerCards.forEach(cardObj => {
             data.ownerCards.push(SCardInfo.parse(cardObj));
         });
-        obj.lineUpCardsUuid.forEach(lineUpCardUUid => {
-            data.lineUpCardsUuid.push(lineUpCardUUid);
+        obj.lineUpCardsUuid.forEach(linUpCard => {
+            data.lineUpCardsUuid.push(SLineupCard.parse(linUpCard));
         });
         if(obj.passageInfo){
             data.passageInfo = SPassageInfo.parse(obj.passageInfo);
@@ -205,6 +205,21 @@ export class SPassageInfo{
         info.passUncollectGold = obj.passUncollectGold;
         info.passUncollectExp = obj.passUncollectExp;
         info.passUncollectStone = obj.passUncollectStone;
+        return info;
+    }
+}
+
+export class SLineupCard{
+    //位置
+    public pos:number = 0;
+    //uuid
+    public uuid:string = "";
+
+
+    public static parse(obj:any):SLineupCard{
+        var info:SLineupCard = new SLineupCard();
+        info.pos = obj.pos;
+        info.uuid = obj.uuid;
         return info;
     }
 }

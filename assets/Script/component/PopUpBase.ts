@@ -43,15 +43,29 @@ export default class PopUpBase extends UIBase {
     start () {
 
     }
+    
     protected onShow(){
         this.node.opacity = 0;
-        this.node.runAction(cc.fadeIn(0.15).easing(cc.easeOut(1.5)))
+        var seq = cc.sequence(
+            cc.fadeIn(0.15).easing(cc.easeOut(1.5)),
+            cc.callFunc(this.onShowComplete.bind(this))
+        )
+        this.node.runAction(seq);
+    }
+    protected onShowComplete(){
+
     }
 
     protected onClose(e){
-        this.node.runAction(cc.sequence(cc.fadeOut(0.1).easing(cc.easeIn(1.5)),cc.callFunc(()=>{
-            UI.closePopUp(this.node);
-        })))
+        var seq = cc.sequence(
+            cc.fadeOut(0.1).easing(cc.easeIn(1.5)),
+            cc.callFunc(this.onCloseComplete.bind(this))
+        )
+        this.node.runAction(seq);
+    }
+
+    protected onCloseComplete(){
+        UI.closePopUp(this.node);
     }
 
     // update (dt) {}

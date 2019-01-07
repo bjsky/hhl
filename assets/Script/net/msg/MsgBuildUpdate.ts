@@ -70,4 +70,7 @@ export default class MsgBuildUpdate extends MessageBase{
         this.resp = SCBuildUpdate.parse(obj);
         return this;
     }
+    public respFromServer(obj:any):MessageBase{
+        return this.parse(obj);
+    }
 }

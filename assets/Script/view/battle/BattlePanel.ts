@@ -10,6 +10,11 @@ import StringUtil from "../../utils/StringUtil";
 import TouchHandler from "../../component/TouchHandler";
 import Constant, { CONSTANT } from "../../Constant";
 import { UI } from "../../manager/UIManager";
+import LineUpUI from "./LineUpUI";
+import { Card } from "../../module/card/CardAssist";
+import CardInfo from "../../model/CardInfo";
+import { SLineupCard } from "../../net/msg/MsgLogin";
+import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -54,6 +59,22 @@ export default class BattlePanel extends UIBase {
     expFly:PassageFly = null;
     // LIFE-CYCLE CALLBACKS:
 
+
+    @property(LineUpUI)
+    lineUpMine:LineUpUI = null;
+    @property(LineUpUI)
+    lineUpBoss:LineUpUI = null;
+    @property(cc.Button)
+    changeLineUp:cc.Button = null;
+    @property(cc.Button)
+    btnFight:cc.Button = null;
+    @property(cc.Label)
+    bossGold:cc.Label = null;
+    @property(cc.Label)
+    bossStone:cc.Label = null;
+    @property(cc.Label)
+    bossExp:cc.Label = null;
+    
     // onLoad () {}
 
     start () {
@@ -63,6 +84,8 @@ export default class BattlePanel extends UIBase {
     onEnable(){
         this.initView();
         this.btnCollect.node.on(TouchHandler.TOUCH_CLICK,this.collectRes,this);
+        this.changeLineUp.node.on(TouchHandler.TOUCH_CLICK,this.showLineup,this);
+
         EVENT.on(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
         EVENT.on(GameEvent.Passage_Collected,this.onPassageCollectd,this);
 
@@ -71,6 +94,7 @@ export default class BattlePanel extends UIBase {
 
     onDisable(){
         this.btnCollect.node.off(TouchHandler.TOUCH_CLICK,this.collectRes,this);
+        this.changeLineUp.node.off(TouchHandler.TOUCH_CLICK,this.showLineup,this);
         EVENT.off(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
         EVENT.off(GameEvent.Passage_Collected,this.onPassageCollectd,this);
 
@@ -88,6 +112,10 @@ export default class BattlePanel extends UIBase {
         this.initPassageTopView();
     }
 
+    private showLineup(e){
+        UI.createPopUp(ResConst.LineUpPopup,{});
+    }
+
     private collectRes(e){
         var needTime = CONSTANT.getPassCollectMinTime();
         var curTime = Passage.passageInfo.getAllPassUncollectTime()/1000;
@@ -98,7 +126,6 @@ export default class BattlePanel extends UIBase {
         Passage.collectRes();
     }
 
-    private _passCfg:any = null;
 
     private _curGold:number = 0;
     private _curExp:number = 0;
@@ -106,6 +133,8 @@ export default class BattlePanel extends UIBase {
     private initView(){
         this.initPassageleftView();
         this.initPassageTopView();
+        this.initLineupMine();
+        this.initLineupBoss();
     }
 
 
@@ -117,11 +146,10 @@ export default class BattlePanel extends UIBase {
     private _passExpPS:number = 0;
     private _passStonePS:number = 0;
     private initPassageleftView(){
-        this._passCfg = Passage.passageInfo.passageCfg;
-        if(this._passCfg){
-            this._passExpPM = Passage.getPassageValueBuffed(this._passCfg.passageExp);
-            this._passGoldPM = Passage.getPassageValueBuffed(this._passCfg.passageGold);
-            this._passStonePM = Passage.getPassageValueBuffed(this._passCfg.passageStone);
+        if(Passage.passageInfo.passageCfg){
+            this._passExpPM = Passage.getPassageValueBuffed(Passage.passageInfo.passageCfg.passageExp);
+            this._passGoldPM = Passage.getPassageValueBuffed(Passage.passageInfo.passageCfg.passageGold);
+            this._passStonePM = Passage.getPassageValueBuffed(Passage.passageInfo.passageCfg.passageStone);
             this._passGoldPS =(this._passGoldPM * this._interval)/60;
             this._passExpPS =(this._passExpPM * this._interval)/60;
             this._passStonePS =(this._passStonePM * this._interval)/60;
@@ -130,7 +158,7 @@ export default class BattlePanel extends UIBase {
             this.lblPassageGold.string = StringUtil.formatReadableNumber(this._passGoldPM)+"/分";
             this.lblPassageStone.string = StringUtil.formatReadableNumber(this._passStonePM)+"/分";
 
-            this.lblPassName.string = this._passCfg.areaName;
+            this.lblPassName.string = Passage.passageInfo.passageCfg.areaName;
         }
     }
 
@@ -163,6 +191,17 @@ export default class BattlePanel extends UIBase {
         this._curStone += addStone;
         this.setPassageTopLabels();
         
+    }
+
+    private initLineupMine(){
+        this.lineUpMine.updateLineup(Card.lineUpCards);
+    }
+
+    private initLineupBoss(){
+        this.lineUpBoss.updateLineup(Passage.passageInfo.lineupBoss);
+        this.bossGold.string = StringUtil.formatReadableNumber(Passage.passageInfo.passageCfg.firstGold);
+        this.bossStone.string = StringUtil.formatReadableNumber(Passage.passageInfo.passageCfg.firstStone);
+        this.bossExp.string = StringUtil.formatReadableNumber(Passage.passageInfo.passageCfg.firstExp);
     }
     // update (dt) {}
 }

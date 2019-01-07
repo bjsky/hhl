@@ -74,7 +74,6 @@ export default class PassageAssist{
             }
         },this)
     }
-    
 }
 
 export var Passage = PassageAssist.getInstance();

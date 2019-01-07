@@ -17,7 +17,8 @@ import MsgCardUpStar from "../../net/msg/MsgCardUpStar";
 import MsgCardDestroy from "../../net/msg/MsgCardDestroy";
 import { ResConst } from "../loading/steps/LoadingStepRes";
 import { AwardTypeEnum } from "../../view/AwardPanel";
-import { SResInfo } from "../../net/msg/MsgLogin";
+import { SResInfo, SLineupCard } from "../../net/msg/MsgLogin";
+import LineupInfo from "../../model/LineupInfo";
 
 export enum CardRaceType{
     All =0,
@@ -48,7 +49,7 @@ export default class CardAssist{
     //所有卡牌
     public cardsMap:any = {};
     //上阵的卡牌
-    public lineUpCardsUuid:Array<string> = [];
+    public lineUpCards:Array<LineupInfo> = [];
 
     /**
      * 获取灵石抽取取得的品级
@@ -165,10 +166,15 @@ export default class CardAssist{
     }
 
     //初始化卡牌
-    public initCard(cards:Array<SCardInfo>,lineupCardsUuid:Array<string>){
-        this.lineUpCardsUuid = lineupCardsUuid;
+    public initCard(cards:Array<SCardInfo>,lineupCards:Array<SLineupCard>){
         cards.forEach((card:SCardInfo)=>{
             this.addNewCard(card);
+        })
+        this.lineUpCards = [];
+        lineupCards.forEach((lineup:SLineupCard)=>{
+            var info:LineupInfo = new LineupInfo();
+            info.initFromServer(lineup);
+            this.lineUpCards.push(info);
         })
     }
 
