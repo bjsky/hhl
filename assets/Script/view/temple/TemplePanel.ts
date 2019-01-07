@@ -19,6 +19,7 @@ import { ConfigConst } from "../../module/loading/steps/LoadingStepConfig";
 import DList, { DListDirection } from "../../component/DList";
 import { CardSimpleShowType } from "../card/CardSmall";
 import { GUIDE } from "../../manager/GuideManager";
+import { CardBigShowType } from "../card/CardBig";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -274,7 +275,7 @@ export default class TemplePanel extends UIBase {
         centerCard.playShowEffect(uuid,()=>{
             var wPos:cc.Vec2 = centerCard.node.parent.convertToWorldSpaceAR(centerCard.node.position);
             var toPos:cc.Vec2 = this.buildHeroBtn.node.parent.convertToWorldSpaceAR(this.buildHeroBtn.node.position);
-            UI.createPopUp(ResConst.cardBig,{cardUUid:uuid,fPos:wPos,tPos:toPos})
+            UI.createPopUp(ResConst.cardBig,{type:CardBigShowType.GetCard, cardUUid:uuid,fPos:wPos,tPos:toPos})
             this._summonEffectPlaying = false;
         });
     }

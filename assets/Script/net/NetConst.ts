@@ -29,5 +29,9 @@ export default class NetConst{
     public static CardDestroy:number = 30004;
     //挂机领取
     public static CollectPassageRes:number = 40001;
+    //修改阵容
+    public static LineupModify:number = 50001;
+    //挑战boss
+    public static FightBoss:number = 60001;
 }
 

@@ -40,23 +40,12 @@ export default class AwardPanel extends PopUpBase {
 
     // onLoad () {}
 
-    protected onShow(){
-        // this.node.opacity = 0;
-        this.node.scale = 0.5;
-        this.node.position = COMMON.ZERO;
-        var seq = cc.sequence(
-            // cc.scaleTo(0.1,1.2),
-            // cc.scaleTo(0.05,1),
-            cc.scaleTo(0.15,1).easing(cc.easeBackOut()),
-            cc.callFunc(()=>{})
-        )
-        this.node.runAction(seq);
-    }
 
     protected onClose(e){
         var seq = cc.sequence(
             cc.moveBy(0.3,cc.v2(0,500)).easing(cc.easeBackIn()),
             cc.callFunc(()=>{
+                this.node.position = COMMON.ZERO;
                 UI.closePopUp(this.node);
             })
         )

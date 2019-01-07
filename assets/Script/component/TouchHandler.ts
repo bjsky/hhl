@@ -23,11 +23,14 @@ export default class TouchHandler extends cc.Component {
     public static DRAG_MOVE:string ="DRAG_MOVE";
     public static DRAG_END:string ="DRAG_END";
 
+    public static DOUBLE_CLICK:string ="DOUBLE_CLICK";
+
     start () {
 
     }
     private _isMove:boolean = false;
     private _isStartDrag:boolean = false;
+
 
     //开始位置
     public startLoc:cc.Vec2 = null;
@@ -67,14 +70,26 @@ export default class TouchHandler extends cc.Component {
         this.endTouch();
     }
 
+    private _clickNum:number = 0;
     private endTouch(){
         if(this._isMove){
             this.onDragEnd();
         }else{
-                this.onTouchClick();
+            this._clickNum ++;
+            this.startDoubleTouchSchedule();
+            this.onTouchClick();
         }
         this._isMove= false;
         this._isStartDrag = false;
+    }
+    private startDoubleTouchSchedule(){
+        this.scheduleOnce(()=>{
+            this._clickNum = 0;
+        },0.6)
+    }
+    private stopDoubleTouchSchedule(){
+        this._clickNum = 0;
+        this.unscheduleAllCallbacks();
     }
     /**
      * 在此地图对象上滑动时被调用
@@ -92,19 +107,34 @@ export default class TouchHandler extends cc.Component {
         defaultDis *= targetDpiRatio
         if(offx>defaultDis ||offy>defaultDis){
             this._isMove= true;
+            this.stopDoubleTouchSchedule();
             if(!this._isStartDrag){
                 this._isStartDrag = true;
-                this.onDragStart();
+                this.onDragStart(offx,offy);
             }
             this.onDragMove();
         }
 
     }
 
-    protected onDragStart(){
+    public dragStartAngle:number = 0;
+    protected onDragStart(offx,offy){
+        this.dragStartAngle = this.getAngle(offx,offy);
         this.node.emit(TouchHandler.DRAG_START,this);
     }
 
+    private getAngle(x, y) {
+        var a = Math.atan2(y, x);
+        var ret = a * 180 / Math.PI; //弧度转角度，方便调试
+        if (ret > 360) {
+            ret -= 360;
+        }
+        if (ret < 0) {
+            ret += 360;
+        }
+        return ret;
+    }
+    
     protected onDragMove(){
         this.node.emit(TouchHandler.DRAG_MOVE,this);
     }
@@ -118,7 +148,13 @@ export default class TouchHandler extends cc.Component {
      * @param evt 跟移动互斥的点击
      */
     protected onTouchClick(){
-        this.node.emit(TouchHandler.TOUCH_CLICK,this);
+        if(this._clickNum >= 2){
+            this.stopDoubleTouchSchedule();
+            this.node.emit(TouchHandler.DOUBLE_CLICK,this);
+            // console.log("double click___");
+        }else{
+            this.node.emit(TouchHandler.TOUCH_CLICK,this);
+        }
     }
 
     // update (dt) {}

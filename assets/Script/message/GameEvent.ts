@@ -38,4 +38,8 @@ export default class GameEvent{
     public static Card_Remove:string = "Card_Remove";
     //挂机领取
     public static Passage_Collected:string ="PassageCollected";
+    //挑战boss完成
+    public static Passage_FightBossEnd:string ="Passage_FightBossEnd";
+    //阵容修改
+    public static Lineup_Changed:string ="Lineup_Changed";
 }

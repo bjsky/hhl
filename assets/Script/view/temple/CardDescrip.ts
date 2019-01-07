@@ -7,6 +7,8 @@ import { CFG } from "../../manager/ConfigManager";
 import { ConfigConst } from "../../module/loading/steps/LoadingStepConfig";
 import PathUtil from "../../utils/PathUtil";
 import { Skill } from "../../module/skill/SkillAssist";
+import { ResConst } from "../../module/loading/steps/LoadingStepRes";
+import { CardBigShowType } from "../card/CardBig";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -51,12 +53,28 @@ export default class CardDescrip extends PopUpBase {
 
     onEnable(){
         super.onEnable();
+        this.cardImg.node.on(cc.Node.EventType.TOUCH_START,this.showCardBig,this)
+
+        this.initView();
+    }
+
+    onDisable(){
+        super.onDisable();
+
+        this.cardImg.node.off(cc.Node.EventType.TOUCH_START,this.showCardBig,this)
+    }
+
+    private initView(){
         this.cardName.string = this._cardCfg.name;
         this.cardSkillName.string = this._cardSkillCfg.name;
         this.cardDesc.string = String(this._cardCfg.desc).replace("$","\n");
         this.cardImg.load(PathUtil.getCardImgPath(this._cardCfg.imgPath));
         this.cardRace.load(PathUtil.getCardRaceImgPath(this._cardCfg.raceId));
         this.cardSkillDesc.string = Skill.getSkillHelDescHtml(this._cardSkillCfg);
+    }
+
+    private showCardBig(e){
+        UI.createPopUp(ResConst.cardBig,{type:CardBigShowType.ShowCard, cardId:this._cardId})
     }
     // update (dt) {}
 }

@@ -41,7 +41,7 @@ export class SCLoginData {
     //拥有的卡牌
     public ownerCards:Array<SCardInfo> = [];
     //所有卡牌
-    public lineUpCardsUuid:Array<SLineupCard> = [];
+    public lineUpOwner:Array<SOwnerLineup> = [];
     //挂机关卡数据
     public passageInfo:SPassageInfo = null;
 
@@ -65,9 +65,11 @@ export class SCLoginData {
         obj.ownerCards.forEach(cardObj => {
             data.ownerCards.push(SCardInfo.parse(cardObj));
         });
-        obj.lineUpCardsUuid.forEach(linUpCard => {
-            data.lineUpCardsUuid.push(SLineupCard.parse(linUpCard));
-        });
+        if(obj.lineUpOwner){
+            obj.lineUpOwner.forEach(lineupObj => {
+                data.lineUpOwner.push(SOwnerLineup.parse(lineupObj));
+            });
+        }
         if(obj.passageInfo){
             data.passageInfo = SPassageInfo.parse(obj.passageInfo);
         }else{
@@ -209,15 +211,14 @@ export class SPassageInfo{
     }
 }
 
-export class SLineupCard{
-    //位置
+export class SOwnerLineup{
+    //阵容位置
     public pos:number = 0;
-    //uuid
+    //阵容uuid
     public uuid:string = "";
 
-
-    public static parse(obj:any):SLineupCard{
-        var info:SLineupCard = new SLineupCard();
+    public static parse(obj:any):SOwnerLineup{
+        var info:SOwnerLineup = new SOwnerLineup();
         info.pos = obj.pos;
         info.uuid = obj.uuid;
         return info;
@@ -271,7 +272,7 @@ export default class MsgLogin
                 {type:3,level:1,locked:true},],
             stoneSummonNum:0,videoSummonNum:0,
             ownerCards:ownerCards,
-            lineUpCardsUuid:[],
+            lineUpOwner:[],
             passageInfo:{
                 passId:1,
                 passStartTime:new Date().getTime(),

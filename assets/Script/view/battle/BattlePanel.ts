@@ -11,10 +11,9 @@ import TouchHandler from "../../component/TouchHandler";
 import Constant, { CONSTANT } from "../../Constant";
 import { UI } from "../../manager/UIManager";
 import LineUpUI from "./LineUpUI";
-import { Card } from "../../module/card/CardAssist";
-import CardInfo from "../../model/CardInfo";
-import { SLineupCard } from "../../net/msg/MsgLogin";
 import { ResConst } from "../../module/loading/steps/LoadingStepRes";
+import { Lineup } from "../../module/battle/LineupAssist";
+import { FightResult } from "../../net/msg/MsgFightBoss";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -85,9 +84,12 @@ export default class BattlePanel extends UIBase {
         this.initView();
         this.btnCollect.node.on(TouchHandler.TOUCH_CLICK,this.collectRes,this);
         this.changeLineUp.node.on(TouchHandler.TOUCH_CLICK,this.showLineup,this);
+        this.btnFight.node.on(TouchHandler.TOUCH_CLICK,this.onFightBoss,this);
 
         EVENT.on(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
         EVENT.on(GameEvent.Passage_Collected,this.onPassageCollectd,this);
+        EVENT.on(GameEvent.Passage_FightBossEnd,this.onPassageFightBossEnd,this);
+        EVENT.on(GameEvent.Lineup_Changed,this.onLineupChange,this);
 
         this.schedule(this.showPassageAddEffect,this._interval);
     }
@@ -95,8 +97,12 @@ export default class BattlePanel extends UIBase {
     onDisable(){
         this.btnCollect.node.off(TouchHandler.TOUCH_CLICK,this.collectRes,this);
         this.changeLineUp.node.off(TouchHandler.TOUCH_CLICK,this.showLineup,this);
+        this.btnFight.node.off(TouchHandler.TOUCH_CLICK,this.onFightBoss,this);
+
         EVENT.off(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
         EVENT.off(GameEvent.Passage_Collected,this.onPassageCollectd,this);
+        EVENT.off(GameEvent.Passage_FightBossEnd,this.onPassageFightBossEnd,this);
+        EVENT.off(GameEvent.Lineup_Changed,this.onLineupChange,this);
 
         this.unscheduleAllCallbacks();
         this.goldFly.reset();
@@ -111,9 +117,27 @@ export default class BattlePanel extends UIBase {
     private onPassageCollectd(e){
         this.initPassageTopView();
     }
+    private onPassageFightBossEnd(e){
+        this.initPassageleftView();
+        this.initLineupBoss();
+    }
+
+    private onLineupChange(e){
+        this.initLineupMine();
+    }
 
     private showLineup(e){
         UI.createPopUp(ResConst.LineUpPopup,{});
+    }
+
+    private onFightBoss(e){
+        var myPower = this.lineUpMine.totalPower;
+        var boosPower = this.lineUpBoss.totalPower;
+        if(myPower>boosPower){
+            Passage.fightBossEnd();
+        }else{
+            UI.showAlert("挑战失败");
+        }
     }
 
     private collectRes(e){
@@ -171,7 +195,7 @@ export default class BattlePanel extends UIBase {
     }
 
     private setPassageTopLabels(){
-        console.log("collect:",this._curGold,this._curStone,this._curExp);
+        // console.log("collect:",this._curGold,this._curStone,this._curExp);
         this.lblCurGold.string = StringUtil.formatReadableNumber(this._curGold.toString());
         this.lblCurExp.string = StringUtil.formatReadableNumber(this._curExp.toString());
         this.lblCurStone.string = StringUtil.formatReadableNumber(this._curStone.toString());
@@ -194,11 +218,12 @@ export default class BattlePanel extends UIBase {
     }
 
     private initLineupMine(){
-        this.lineUpMine.updateLineup(Card.lineUpCards);
+        this.lineUpMine.initLineup(Lineup.ownerLineupMap);
     }
 
     private initLineupBoss(){
-        this.lineUpBoss.updateLineup(Passage.passageInfo.lineupBoss);
+        var bossLineup = Lineup.getBossLineupMap(Passage.passageInfo.passId);
+        this.lineUpBoss.initLineup(bossLineup);
         this.bossGold.string = StringUtil.formatReadableNumber(Passage.passageInfo.passageCfg.firstGold);
         this.bossStone.string = StringUtil.formatReadableNumber(Passage.passageInfo.passageCfg.firstStone);
         this.bossExp.string = StringUtil.formatReadableNumber(Passage.passageInfo.passageCfg.firstExp);

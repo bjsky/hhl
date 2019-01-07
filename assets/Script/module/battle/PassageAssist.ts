@@ -10,6 +10,7 @@ import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
 import { AwardTypeEnum } from "../../view/AwardPanel";
 import { ResType } from "../../model/ResInfo";
+import MsgFightBoss from "../../net/msg/MsgFightBoss";
 
 export default class PassageAssist{
 
@@ -64,6 +65,23 @@ export default class PassageAssist{
                 COMMON.updateUserInfo(msg.resp.userInfo);
                 Passage.updatePassageInfo(msg.resp.passageInfo);
                 EVENT.emit(GameEvent.Passage_Collected);
+
+                var cost:SResInfo = COMMON.updateResInfo(msg.resp.resInfo);
+                EVENT.emit(GameEvent.Show_AwardPanel,{type:AwardTypeEnum.PassageCollect,
+                    arr:[{type:ResType.gold,value:cost.gold},
+                        {type:ResType.lifeStone,value:cost.lifeStone},
+                        {type:ResType.exp,value:msg.resp.addExp},
+                    ]})
+            }
+        },this)
+    }
+
+    public fightBossEnd(){
+        NET.send(MsgFightBoss.create(),(msg:MsgFightBoss)=>{
+            if(msg && msg.resp){
+                COMMON.updateUserInfo(msg.resp.userInfo);
+                Passage.updatePassageInfo(msg.resp.passageInfo);
+                EVENT.emit(GameEvent.Passage_FightBossEnd);
 
                 var cost:SResInfo = COMMON.updateResInfo(msg.resp.resInfo);
                 EVENT.emit(GameEvent.Show_AwardPanel,{type:AwardTypeEnum.PassageCollect,

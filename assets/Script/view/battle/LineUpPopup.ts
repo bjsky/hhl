@@ -6,6 +6,10 @@ import { CONSTANT } from "../../Constant";
 import ButtonGroup from "../../component/ButtonGroup";
 import CardInfo from "../../model/CardInfo";
 import { CardSimpleShowType } from "../card/CardSmall";
+import { UI } from "../../manager/UIManager";
+import { Lineup } from "../../module/battle/LineupAssist";
+import { EVENT } from "../../message/EventCenter";
+import GameEvent from "../../message/GameEvent";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -45,13 +49,20 @@ export default class LineUpPopup extends PopUpBase {
     onEnable(){
         super.onEnable();
         this.btnGroup.node.on(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.groupSelectChange,this);
-        
+        this.cardsList.node.on(DList.ITEM_CLICK,this.onCardClick,this);
+        this.lineup.node.on(LineUpUI.Remove_lineupCard,this.onRemoveLineupCard,this);
+
+        EVENT.on(GameEvent.Lineup_Changed,this.onLineupChange,this);
         this.initView(true);
     }
 
     onDisable(){
         super.onDisable();
         this.btnGroup.node.off(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.groupSelectChange,this);
+        this.cardsList.node.off(DList.ITEM_CLICK,this.onCardClick,this);
+        this.lineup.node.off(LineUpUI.Remove_lineupCard,this.onRemoveLineupCard,this);
+
+        EVENT.off(GameEvent.Lineup_Changed,this.onLineupChange,this);
         
         this.cardsList.setListData([]);
     }
@@ -72,10 +83,41 @@ export default class LineUpPopup extends PopUpBase {
         this.listGroupSelected();
     }
 
+    private onCardClick(e){
+        var index = e.detail.index;
+        this.cardsList.selectIndex = index;
+        var cardUUid = this.cardsList.selectData.uuid;
+        var cardInfo = Card.getCardByUUid(cardUUid);
+        if(this.lineup.selectIndex>-1){
+            if(Lineup.checkOwnerDuplicate(cardInfo.cardId)){
+                UI.showAlert("每个卡牌角色只能上阵一个")
+            }else{
+                Lineup.changeLineUp(this.lineup.selectIndex,cardUUid);
+            }
+        }else{
+            UI.showAlert("请先选择要上阵的位置");
+        }
+    }
+
+    private onRemoveLineupCard(e){
+        var pos:number = e.detail.pos;
+        if(Lineup.ownerLineupMap[pos]){
+            Lineup.changeLineUp(pos,"");
+            console.log("remove card")
+        }
+    }
+
+    private onLineupChange(){
+        this.lineup.initLineup(Lineup.ownerLineupMap);
+        this.lineup.selectIndex = this.lineup.getEmptyIndex();
+    }
+
     private initView(nolist:boolean = false){
         this.initListGroup();
         this.listGroupSelected(nolist);
         
+        this.lineup.initLineup(Lineup.ownerLineupMap);
+        this.lineup.selectIndex = this.lineup.getEmptyIndex();
     }
     
 
@@ -122,6 +164,7 @@ export default class LineUpPopup extends PopUpBase {
             this._cardListData.push({type:CardSimpleShowType.Owner,uuid:item.uuid});
         })
         this.cardsList.direction = DListDirection.Vertical;
+        // this.cardsList.setDragEnable(true,DListDirection.Vertical);
         this.cardsList.row = 1;
         this.cardsList.setListData(this._cardListData);
     }

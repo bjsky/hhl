@@ -1,5 +1,5 @@
 import UIBase from "./UIBase";
-import DList from "./DList";
+import DList, { DListDirection } from "./DList";
 import TouchHandler from "./TouchHandler";
 
 // Learn TypeScript:
@@ -74,12 +74,26 @@ export default class DListItem extends UIBase {
         this.node.stopAllActions();
     }
 
+    private _listenDragEvent:boolean  = false;
     onEnable(){
         this.node.on(TouchHandler.TOUCH_CLICK,this.onNodeTouch,this);
+        if(this.list && this.list.enableDrag){
+            this._listenDragEvent = true;
+            this.node.on(TouchHandler.DRAG_START,this.onDragStart,this);
+            this.node.on(TouchHandler.DRAG_MOVE,this.onDragMove,this);
+            this.node.on(TouchHandler.DRAG_END,this.onDragEnd,this);
+        }
+
     }
 
     onDisable(){
         this.node.off(TouchHandler.TOUCH_CLICK,this.onNodeTouch,this);
+        if(this._listenDragEvent){
+            this._listenDragEvent = false;
+            this.node.off(TouchHandler.DRAG_START,this.onDragStart,this);
+            this.node.off(TouchHandler.DRAG_MOVE,this.onDragMove,this);
+            this.node.off(TouchHandler.DRAG_END,this.onDragEnd,this);
+        }
     }
 
     private onNodeTouch(e){
@@ -87,6 +101,30 @@ export default class DListItem extends UIBase {
         if(this.index!=this.list.selectIndex){
             this.list.selectIndex = this.index;
             this.list.node.emit(DList.ITEM_SELECT_CHANGE,{index:this.index,data:this._data});
+        }
+    }
+
+    private _isDrag:boolean = false;
+    private onDragStart(e){
+        var dragAngle = (e.detail as TouchHandler).dragStartAngle;
+        if(this.list.enableDragDirection == DListDirection.Horizontal && dragAngle<45 
+            ||this.list.enableDragDirection == DListDirection.Vertical && dragAngle>45){
+            console.log("dragStart____",dragAngle)
+            this._isDrag = true;
+            this.list.scrollView.horizontal = false;
+        }
+    }
+
+    private onDragMove(e){
+        if(this._isDrag){
+            console.log("dragMove____")
+        }
+    }
+    private onDragEnd(e){
+        if(this._isDrag){
+            console.log("dragEnd____")
+            this._isDrag = false;
+            this.list.scrollView.horizontal = true;
         }
     }
     //更新的处理

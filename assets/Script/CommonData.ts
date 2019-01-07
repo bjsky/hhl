@@ -7,6 +7,7 @@ import { BUILD } from "./module/build/BuildAssist";
 import { Card } from "./module/card/CardAssist";
 import PassageInfo from "./model/PassageInfo";
 import { Passage } from "./module/battle/PassageAssist";
+import { Lineup } from "./module/battle/LineupAssist";
 
 export enum DirectionEnum{
     Left = 0,       //左
@@ -71,7 +72,9 @@ export default class CommonData{
 
         GUIDE.initGuide(data.guideInfo);
 
-        Card.initCard(data.ownerCards,data.lineUpCardsUuid);
+        Card.initCard(data.ownerCards);
+
+        Lineup.initOwnerLineup(data.lineUpOwner);
 
         Passage.initPassageInfo(data.passageInfo);
     }

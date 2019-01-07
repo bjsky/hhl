@@ -10,11 +10,19 @@ import GameEvent from "../../message/GameEvent";
 import { UI } from "../../manager/UIManager";
 import PathUtil from "../../utils/PathUtil";
 import { GUIDE } from "../../manager/GuideManager";
+import { CFG } from "../../manager/ConfigManager";
+import { ConfigConst } from "../../module/loading/steps/LoadingStepConfig";
+import PopUpBase from "../../component/PopUpBase";
 
 const {ccclass, property} = cc._decorator;
 
+export enum CardBigShowType{
+    GetCard = 1,
+    ShowCard
+}
+
 @ccclass
-export default class CardBig extends UIBase{
+export default class CardBig extends PopUpBase{
 
     
     @property(cc.Node)
@@ -32,6 +40,9 @@ export default class CardBig extends UIBase{
     @property(cc.Label)
     cardPower: cc.Label = null;
 
+    @property(cc.Node)
+    heroNode:cc.Node = null;
+
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -40,17 +51,25 @@ export default class CardBig extends UIBase{
         this.node.position = cc.v2(0,0)//cc.v2(cc.winSize.width/2,cc.winSize.height/2);
         
     }
+    private _type:CardBigShowType = 0;
     private _cardUUid:string;
     private _cardInfo:CardInfo;
     private _cardWorldPos:cc.Vec2 = null;
     private _cardToPos:cc.Vec2 = null;
 
-    public setData(data){
-        this._cardUUid = data.cardUUid;
-        this._cardInfo = Card.getCardByUUid(this._cardUUid);
+    private _cardId:number = 0;
 
-        this._cardWorldPos = data.fPos;
-        this._cardToPos = data.tPos;
+    public setData(data){
+        this._type = data.type;
+        if(this._type == CardBigShowType.GetCard){
+            this._cardUUid = data.cardUUid;
+            this._cardInfo = Card.getCardByUUid(this._cardUUid);
+
+            this._cardWorldPos = data.fPos;
+            this._cardToPos = data.tPos;
+        }else if(this._type == CardBigShowType.ShowCard){
+            this._cardId = data.cardId;
+        }
     }
 
     start () {
@@ -58,14 +77,9 @@ export default class CardBig extends UIBase{
     }
 
     onEnable(){
-        // this.scheduleOnce(()=>{
-            
-        //     this.showEffect();
-        // },0.05)
         EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
 
         this.initCardView();
-        // this._showEffect = true;
     }
 
 
@@ -75,40 +89,39 @@ export default class CardBig extends UIBase{
 
     private initCardView(){
         this.node.opacity = 0;
-        this.cardName.string = this._cardInfo.cardInfoCfg.name;
-        this.cardRace.load(PathUtil.getCardRaceImgPath(this._cardInfo.cardInfoCfg.raceId),null,this.loadCardCb.bind(this));
-        this.cardStar.load(PathUtil.getCardGradeImgPath(this._cardInfo.grade));
-        this.cardSrc.load(PathUtil.getCardImgPath(this._cardInfo.cardInfoCfg.imgPath));
-        this.cardLevel.string = "Lv."+this._cardInfo.level;
-        this.cardPower.string = this._cardInfo.carUpCfg.power ;
+        if(this._type == CardBigShowType.GetCard){
+            this.heroNode.active = true;
+            this.cardName.string = this._cardInfo.cardInfoCfg.name;
+            this.cardRace.load(PathUtil.getCardRaceImgPath(this._cardInfo.cardInfoCfg.raceId));
+            this.cardStar.load(PathUtil.getCardGradeImgPath(this._cardInfo.grade));
+            this.cardSrc.load(PathUtil.getCardImgPath(this._cardInfo.cardInfoCfg.imgPath),null,this.loadCardCb.bind(this));
+            this.cardLevel.string = "Lv."+this._cardInfo.level;
+            this.cardPower.string = this._cardInfo.carUpCfg.power ;
+        }else if(this._type == CardBigShowType.ShowCard){
+            this.heroNode.active = false;
+            var infoCfg = CFG.getCfgDataById(ConfigConst.CardInfo,this._cardId);
+            this.cardSrc.load(PathUtil.getCardImgPath(infoCfg.imgPath),null,this.loadCardCb.bind(this));
+        }
     }
 
     private loadCardCb(){
-        this.node.opacity = 255;
-        this.showEffect();
+        this.onShow();
+    }
+    protected onShowComplete(){
+        this.node.on(cc.Node.EventType.TOUCH_START,this.onMaskTouch,this);
     }
     
-    private _showEffect:boolean =false;
-    private _showEffectNextFrame:boolean = false;
-    private showEffect(){
-        this.initEffect();
-        var scaleAct = cc.sequence(cc.spawn(
-            cc.moveTo(0.2,cc.v2(0,0)),cc.scaleTo(0.2,1),
-        ),cc.callFunc(()=>{
-            this.node.on(cc.Node.EventType.TOUCH_START,this.onMaskTouch,this);
-        }))
-        this.node.runAction(scaleAct)
-    }
 
-    private initEffect(){
-        this.node.position = this.node.parent.convertToNodeSpaceAR(this._cardWorldPos);
-        console.log(this.node.position.x,this.node.position.y)
-        this.node.scaleX = 0.4;
-        this.node.scaleY = 0.4;
-        this.node.rotation = 0;
-    }
     private onMaskTouch(e){
         this.node.off(cc.Node.EventType.TOUCH_START,this.onMaskTouch,this);
+        if(this._type == CardBigShowType.GetCard){
+            this.rotationOut();
+        }else if(this._type == CardBigShowType.ShowCard){
+            this.onClose(e);
+        }
+    }
+
+    private rotationOut(){
         var toPos = this.node.convertToNodeSpaceAR(this._cardToPos);
         var fPos = this.node.position;
         var centerPos = cc.v2(fPos.x + (toPos.x - fPos.x) * 0.1, fPos.y - (toPos.y - fPos.y) * 0.7);
@@ -119,21 +132,14 @@ export default class CardBig extends UIBase{
                 cc.scaleTo(0.4,0.2),
                 cc.rotateBy(0.4,360)
             ),cc.callFunc(()=>{
+                this.node.scaleX = 1;
+                this.node.scaleY = 1;
+                this.node.position = COMMON.ZERO;
+                this.node.rotation = 0;
                 UI.closePopUp(this.node);
             })
         )
         this.node.runAction(getAct);
-    }
-    update (dt) {
-        if(this._showEffect){
-            this._showEffect = false;
-            this._showEffectNextFrame = true;
-            return;
-        }
-        if(this._showEffectNextFrame){
-            this._showEffectNextFrame = false;
-            this.showEffect();
-        }
     }
 
     public getGuideNode(name:string):cc.Node{

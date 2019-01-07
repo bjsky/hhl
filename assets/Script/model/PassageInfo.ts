@@ -1,4 +1,4 @@
-import { SPassageInfo, SLineupCard } from "../net/msg/MsgLogin";
+import { SPassageInfo } from "../net/msg/MsgLogin";
 import { CFG } from "../manager/ConfigManager";
 import { ConfigConst } from "../module/loading/steps/LoadingStepConfig";
 import { COMMON } from "../CommonData";
@@ -21,9 +21,6 @@ export default class PassageInfo{
 
     //关卡配置表
     public passageCfg:any = null;
-    //关卡boss
-    public lineupBoss:Array<LineupInfo> =  [];
-
     public initFromServer(info:SPassageInfo){
         this.passId = info.passId;
         this.passStartTime = info.passStartTime;
@@ -33,23 +30,6 @@ export default class PassageInfo{
         this.passUncollectStone  = info.passUncollectStone;
 
         this.passageCfg = CFG.getCfgDataById(ConfigConst.Passage,this.passId);
-
-
-        this.lineupBoss  = [];
-        var lineupIds:string = this.passageCfg.amyHero;
-        var lineupGradeLevel = this.passageCfg.amyHeroGradeLv;
-        if(lineupIds!=""){
-            var ids:Array<string> = lineupIds.split(";");
-            var lineup:LineupInfo;
-            var gradeLvs:Array<string> = lineupGradeLevel.split("|");
-            var gradelv:string;
-            for(var i:number = 0;i<ids.length;i++){
-                lineup = new LineupInfo();
-                gradelv = gradeLvs[i];
-                lineup.initFromCfg(i,Number(ids[i]),Number(gradelv.split(";")[0]),Number(gradelv.split(";")[1]));
-                this.lineupBoss.push(lineup);
-            }
-        }
     }
 
     public cloneServerInfo():SPassageInfo{

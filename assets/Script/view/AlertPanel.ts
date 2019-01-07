@@ -1,5 +1,6 @@
 import UIBase from "../component/UIBase";
 import { UI } from "../manager/UIManager";
+import PopUpBase from "../component/PopUpBase";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -19,7 +20,7 @@ export enum AlertBtnType {
 }
 
 @ccclass
-export default class AlertPanel extends UIBase {
+export default class AlertPanel extends PopUpBase {
 
     @property(cc.Label)
     content: cc.Label = null;
@@ -55,43 +56,31 @@ export default class AlertPanel extends UIBase {
     }
 
     onEnable(){
+        super.onEnable();
         this.btnOk.node.on(cc.Node.EventType.TOUCH_START,this.onOKTouch,this);
         this.btnCancel.node.on(cc.Node.EventType.TOUCH_START,this.onCancelTouch,this);
-        this.showPanel();
     }
 
     onDisable(){
+        super.onDisable();
         this.btnOk.node.off(cc.Node.EventType.TOUCH_START,this.onOKTouch,this);
         this.btnCancel.node.off(cc.Node.EventType.TOUCH_START,this.onCancelTouch,this);
     }
 
+    private _clickOk:boolean =false;
     private onOKTouch(e){
-        this.closePanel(true);
+        this._clickOk = true;
+        this.onClose(e);
     }
     private onCancelTouch(e){
-        this.closePanel(false);
+        this._clickOk = false;
+        this.onClose(e);
     }
 
-    private showPanel(){
-        // var seq = cc.sequence(
-        //     cc.scaleTo(0.1,1.2),
-        //     cc.scaleTo(0.05,1)
-        // );
-        this.node.scale = 0.5;
-        this.node.runAction(cc.scaleTo(0.15,1).easing(cc.easeBackOut()))
-    }
-    private closePanel(clickOk:boolean){
-        var seq = cc.sequence(
-            // cc.scaleTo(0.05,1.2),
-            // cc.scaleTo(0.1,1),
-            cc.scaleTo(0.1,0.5).easing(cc.easeBackIn()),
-            cc.callFunc(()=>{
-                UI.closePopUp(this.node);
-                if(clickOk) this._okCb && this._okCb(this);
-                else this._cancelCb && this._cancelCb(this);
-            })
-        );
-        this.node.runAction(seq)
+    protected onCloseComplete(){
+        UI.closePopUp(this.node);
+        if(this._clickOk) this._okCb && this._okCb(this);
+        else this._cancelCb && this._cancelCb(this);
     }
     start () {
         

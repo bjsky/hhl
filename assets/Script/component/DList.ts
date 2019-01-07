@@ -32,6 +32,8 @@ export default class DList extends cc.Component {
     private _col:number = 1;
     private _row:number = 1;
     private _direction:number = 0;
+    public enableDrag:boolean = false;
+    public enableDragDirection :number = 0;
     private _selectIndex:number = -1;
     public set col(val){
         this._col = val;
@@ -52,6 +54,11 @@ export default class DList extends cc.Component {
     }
     public get direction(){
         return this._direction;
+    }
+    //允许拖动的方向 
+    public setDragEnable(enable,dir){
+        this.enableDrag = enable;
+        this.enableDragDirection = dir;
     }
     // LIFE-CYCLE CALLBACKS:
 

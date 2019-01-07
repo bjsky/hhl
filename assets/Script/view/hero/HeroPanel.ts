@@ -22,6 +22,7 @@ import MsgCardUpLv from "../../net/msg/MsgCardUpLv";
 import { AlertBtnType } from "../AlertPanel";
 import StringUtil from "../../utils/StringUtil";
 import CardHead from "../card/CardHead";
+import { CardBigShowType } from "../card/CardBig";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -154,6 +155,7 @@ export default class HeroPanel extends UIBase {
         // this.btnSkillUpgrade.node.on(TouchHandler.TOUCH_CLICK,this.upgradeHeroSkill,this);
         this.btnDestroy.node.on(TouchHandler.TOUCH_CLICK,this.destroyHero,this);
         this.btnUpStar.node.on(TouchHandler.TOUCH_CLICK,this.onCardUpStar,this);
+        this.cardImg.node.on(cc.Node.EventType.TOUCH_START,this.showCardBig,this);
 
         EVENT.on(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
         EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
@@ -171,6 +173,7 @@ export default class HeroPanel extends UIBase {
         // this.btnSkillUpgrade.node.off(TouchHandler.TOUCH_CLICK,this.upgradeHeroSkill,this);
         this.btnDestroy.node.off(TouchHandler.TOUCH_CLICK,this.destroyHero,this);
         this.btnUpStar.node.off(TouchHandler.TOUCH_CLICK,this.onCardUpStar,this);
+        this.cardImg.node.off(cc.Node.EventType.TOUCH_START,this.showCardBig,this);
 
         EVENT.off(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
         EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
@@ -180,6 +183,10 @@ export default class HeroPanel extends UIBase {
 
         this.cardsList.setListData([]);
     }
+    private showCardBig(e){
+        UI.createPopUp(ResConst.cardBig,{type:CardBigShowType.ShowCard, cardId:this._currentCard.cardId})
+    }
+
     private onPanelShowComplete(e){
         this.initCardList();
     }

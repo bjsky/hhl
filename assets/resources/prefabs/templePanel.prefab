@@ -1940,8 +1940,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 110,
-      "height": 118
+      "width": 121,
+      "height": 121
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -1968,7 +1968,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "c1160a97-8910-48be-95f4-d69e820a1321"
+      "__uuid__": "4703e4f0-d1dd-4c52-a894-2543618d98ef"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -3579,7 +3579,6 @@
         "__id__": 101
       }
     ],
-    "labels": "",
     "selectIcon": "ui/Common2/btn_2",
     "unSelectIcon": "ui/Common2/btn_1"
   },

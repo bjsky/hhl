@@ -44,10 +44,13 @@ export default class PopUpBase extends UIBase {
 
     }
     
-    protected onShow(){
-        this.node.opacity = 0;
+    public onShow(){
+        this.node.scale = 0.8;
         var seq = cc.sequence(
-            cc.fadeIn(0.15).easing(cc.easeOut(1.5)),
+            cc.spawn(
+                cc.scaleTo(0.2,1).easing(cc.easeBackOut())
+                ,cc.fadeIn(0.2)
+            ),
             cc.callFunc(this.onShowComplete.bind(this))
         )
         this.node.runAction(seq);
@@ -56,10 +59,15 @@ export default class PopUpBase extends UIBase {
 
     }
 
-    protected onClose(e){
+    public onClose(e){
         var seq = cc.sequence(
-            cc.fadeOut(0.1).easing(cc.easeIn(1.5)),
-            cc.callFunc(this.onCloseComplete.bind(this))
+            cc.spawn(
+                cc.scaleTo(0.2,0.8).easing(cc.easeBackIn())
+                ,cc.fadeOut(0.2)
+            ),
+            cc.callFunc(()=>{
+                this.onCloseComplete();
+            })
         )
         this.node.runAction(seq);
     }
