@@ -14,6 +14,7 @@ import LineUpUI from "./LineUpUI";
 import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 import { Lineup } from "../../module/battle/LineupAssist";
 import { FightResult } from "../../net/msg/MsgFightBoss";
+import { Fight } from "../../module/fight/FightAssist";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -131,13 +132,14 @@ export default class BattlePanel extends UIBase {
     }
 
     private onFightBoss(e){
-        var myPower = this.lineUpMine.totalPower;
-        var boosPower = this.lineUpBoss.totalPower;
-        if(myPower>boosPower){
-            Passage.fightBossEnd();
-        }else{
-            UI.showAlert("挑战失败");
-        }
+        // var myPower = this.lineUpMine.totalPower;
+        // var boosPower = this.lineUpBoss.totalPower;
+        // if(myPower>boosPower){
+        //     Passage.fightBossEnd();
+        // }else{
+        //     UI.showAlert("挑战失败");
+        // }
+        Fight.showFight(Lineup.ownerLineupMap,this._bossLineup);
     }
 
     private collectRes(e){
@@ -221,9 +223,10 @@ export default class BattlePanel extends UIBase {
         this.lineUpMine.initLineup(Lineup.ownerLineupMap);
     }
 
+    private _bossLineup:any;
     private initLineupBoss(){
-        var bossLineup = Lineup.getBossLineupMap(Passage.passageInfo.passId);
-        this.lineUpBoss.initLineup(bossLineup);
+        this._bossLineup = Lineup.getBossLineupMap(Passage.passageInfo.passId);
+        this.lineUpBoss.initLineup(this._bossLineup);
         this.bossGold.string = StringUtil.formatReadableNumber(Passage.passageInfo.passageCfg.firstGold);
         this.bossStone.string = StringUtil.formatReadableNumber(Passage.passageInfo.passageCfg.firstStone);
         this.bossExp.string = StringUtil.formatReadableNumber(Passage.passageInfo.passageCfg.firstExp);

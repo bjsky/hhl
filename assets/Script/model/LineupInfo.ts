@@ -50,6 +50,7 @@ export default class LineupInfo{
     //boss阵容
     public initBoss(index:number,cardId:number,grade:number,level:number){
         this.pos = index;
+        this.cardId = cardId,
         this.grade = grade;
         this.level = level;
         var upCfg = CFG.getCfgByKey(ConfigConst.CardUp,"grade",this.grade,"level",this.level);

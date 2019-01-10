@@ -24,6 +24,8 @@ export default class UIManager{
 
     //ui层
     public UILayer:cc.Node = null;
+    //战斗层
+    public FightLyaer:cc.Node = null;
     //弹窗层级
     public PopupLayer:cc.Node = null;
     //提示层级
@@ -43,6 +45,7 @@ export default class UIManager{
         root.addComponent(NetMessage);
         
         this.UILayer = root.getChildByName("UILayer");
+        this.FightLyaer = root.getChildByName("FightLayer");
         this.PopupLayer = root.getChildByName("PopupLayer");
         this.TipLayer = root.getChildByName("TipLayer");
         this.PlotLayer = root.getChildByName("PlotLayer");
@@ -129,7 +132,7 @@ export default class UIManager{
         EVENT.emit(GameEvent.Mask_touch);
     }
 
-    public createPopUp(res:string,data:any){
+    public createPopUp(res:string,data:any,createComplete?:Function){
         this._mask.active = true;
         this._mask.zIndex = this._popups.length > 0?this._popups[this._popups.length -1].node.zIndex+1:0;
         this.loadUI(res,data,this.PopupLayer,(ui:UIBase)=>{
@@ -138,6 +141,7 @@ export default class UIManager{
                 this._curPopup = ui;
                 ui.node.zIndex = this._popups.length * 2;
                 // this.checkMaskLayer();
+                createComplete && createComplete(ui);
             }
         });
     }

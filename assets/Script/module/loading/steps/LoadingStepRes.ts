@@ -17,7 +17,9 @@ export const ResConst = {
     CardRaceHelp:"prefabs/cardRaceHelp",
     GuideTap:"prefabs/guideTap",
     CardHead:"prefabs/cardHead",
-    AwardPanel:"prefabs/awardPanel"
+    AwardPanel:"prefabs/awardPanel",
+    FightPanel:"prefabs/fightPanel",
+    CardFight:"prefabs/cardFight"
 }
 /**
  * 加载配置
