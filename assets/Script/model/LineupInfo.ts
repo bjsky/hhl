@@ -21,6 +21,10 @@ export default class LineupInfo{
     public power:number = 0;
     //头像
     public headUrl:string ="";
+    //卡牌名
+    public cardName:string = "";
+    //种族
+    public raceId:number = 0;
 
     //自己的阵容
     public initOwner(lineup:SOwnerLineup){
@@ -34,6 +38,8 @@ export default class LineupInfo{
             this.grade = card.carUpCfg.grade;
             this.level = card.carUpCfg.level;
             this.headUrl = card.cardInfoCfg.head;
+            this.cardName = card.cardInfoCfg.name;
+            this.raceId = Number(card.cardInfoCfg.raceId);
         }
     }
 
@@ -45,6 +51,8 @@ export default class LineupInfo{
             this.grade = card.carUpCfg.grade;
             this.level = card.carUpCfg.level;
             this.headUrl = card.cardInfoCfg.head;
+            this.cardName = card.cardInfoCfg.name;
+            this.raceId = Number(card.cardInfoCfg.raceId);
         }
     }
     //boss阵容
@@ -57,5 +65,7 @@ export default class LineupInfo{
         this.power = Number(upCfg[0].power);
         var cardCfg = CFG.getCfgDataById(ConfigConst.CardInfo,cardId);
         this.headUrl = cardCfg.head;
+        this.cardName = cardCfg.name;
+        this.raceId = Number(cardCfg.raceId);
     }
 }

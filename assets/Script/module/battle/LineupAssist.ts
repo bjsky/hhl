@@ -6,6 +6,8 @@ import { NET } from "../../net/core/NetController";
 import MsgLineupModify from "../../net/msg/MsgLineupModify";
 import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
+import FightInfo from "../../model/FightInfo";
+import { COMMON } from "../../CommonData";
 
 export default class LineupAssist{
 
@@ -43,16 +45,19 @@ export default class LineupAssist{
     
     //上阵的卡牌
     public ownerLineupMap:any = {};
+    public ownerLineupPower:number = 0;
     private _ownerSLineup:SOwnerLineup[] = [];
 
     public initOwnerLineup(lineups:Array<SOwnerLineup>){
         this._ownerSLineup = lineups;
         this.ownerLineupMap = {};
+        this.ownerLineupPower = 0;
         lineups.forEach((lineup:SOwnerLineup)=>{
             if(lineup.uuid!=""){
                 var info:LineupInfo = new LineupInfo();
                 info.initOwner(lineup);
                 this.ownerLineupMap[lineup.pos] = info;
+                this.ownerLineupPower += Number(info.power);
             }
         })
     }
@@ -61,9 +66,30 @@ export default class LineupAssist{
         return this._ownerSLineup.slice();
     }
 
-    public getBossLineupMap(passageId:number):any{
+    public getOwnerFightInfo():FightInfo{
+        var info:FightInfo = new FightInfo();
+        info.isPlayer = true;
+        info.lineup = this.ownerLineupMap;
+        info.totalPower = this.ownerLineupPower;
+        info.playerName = COMMON.userInfo.name;
+        info.playerLevel = COMMON.userInfo.level;
+        info.playerSex = COMMON.userInfo.gender;
+        info.playerIcon  = COMMON.userInfo.icon;
+
+        return info;
+    }
+
+    public getBossFightInfo(passId:number):FightInfo{
+        var info:FightInfo = new FightInfo();
+        info.isPlayer = false;
+        var passCfg = CFG.getCfgDataById(ConfigConst.Passage,passId);
+        info.playerName ="关卡BOSS："  +passCfg.areaName;
+        info.playerLevel = 1;
+        info.playerSex = 1;
+        info.playerIcon  = "";
+
         var lineupBoss:any  = {};
-        var passCfg = CFG.getCfgDataById(ConfigConst.Passage,passageId);
+        var lineupPower:number = 0;
         var lineupIds:string = passCfg.amyHero;
         var lineupGradeLevel:string = passCfg.amyHeroGradeLv;
         if(lineupIds!=""){
@@ -76,9 +102,12 @@ export default class LineupAssist{
                 gradelv = gradeLvs[i];
                 lineup.initBoss(i,Number(ids[i]),Number(gradelv.split(";")[0]),Number(gradelv.split(";")[1]));
                 lineupBoss[i] = lineup;
+                lineupPower += Number(lineup.power);
             }
         }
-        return lineupBoss;
+        info.lineup = lineupBoss;
+        info.totalPower = lineupPower;
+        return info;
     }
 
     public checkOwnerDuplicate(cardId:number){
@@ -106,6 +135,8 @@ export default class LineupAssist{
 
         },this)
     }
+
+
 }
 
 export var Lineup = LineupAssist.getInstance();

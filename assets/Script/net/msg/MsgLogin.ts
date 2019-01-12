@@ -253,14 +253,14 @@ export default class MsgLogin
     }
 
     public respFromLocal(){
-        var ownerCards:Array<any> = [];
-        for(var i:number = 0;i<5;i++){
-            ownerCards.push(MsgCardSummon.randomCardInfo(CardSummonType.LifeStone));
-        }
-        for(i= 0;i<1;i++){
-            var copy = this.copyCard(ownerCards[0]);
-            ownerCards.push(copy);
-        }
+        var ownerCards:Array<any> = [this.getSkillCard(15),this.getSkillCard(3),this.getSkillCard(6),this.getSkillCard(9)];
+        // for(var i:number = 0;i<5;i++){
+        //     ownerCards.push(MsgCardSummon.randomCardInfo(CardSummonType.LifeStone));
+        // }
+        // for(i= 0;i<1;i++){
+        //     var copy = this.copyCard(ownerCards[0]);
+        //     ownerCards.push(copy);
+        // }
         var json:any = {firstLogin:true,
             serverTime:new Date().getTime(),
             userInfo:{name:"上古战神",icon:"",gender:1,exp:0,level:1},
@@ -285,6 +285,11 @@ export default class MsgLogin
         return this.parse(json);
     }
 
+    private getSkillCard(cardId:number){
+        var uuid = new Date().getTime()+ Number(Math.random()*1000000).toFixed(0);
+        var card:any = {uuid:uuid,level:1,cardId:cardId,grade:5,skillLevel:1}
+        return card;
+    }
     private copyCard(card:any){
         var uuid = new Date().getTime()+ Number(Math.random()*1000000).toFixed(0);
         var copy:any = {uuid:uuid,level:1,cardId:card.cardId,grade:card.grade,skillLevel:1}
