@@ -18,14 +18,14 @@ export class SCCardUpStar{
     //升星卡牌信息
     public cardInfo:SCardInfo = null;
     //合成消耗卡牌uuid
-    public useCardUuid:string = "";
+    public useCardInfo:SCardInfo = null;
     //最新的资源
     public resInfo:SResInfo = null;
 
     public static parse(obj:any){
         var data:SCCardUpStar = new SCCardUpStar();
         data.cardInfo = SCardInfo.parse(obj.cardInfo);
-        data.useCardUuid = obj.useCardUUid;
+        data.useCardInfo = SCardInfo.parse(obj.useCardUuid);
         data.resInfo = SResInfo.parse(obj.resInfo);
         return data;
     }
@@ -37,7 +37,7 @@ export default class MsgCardUpStar extends MessageBase{
 
     constructor(){
         super(NetConst.CardUpStar);
-        this.isLocal = true;
+        // this.isLocal = true;
     }
 
     public static create(cardUUid:string,useCardUUid:string){

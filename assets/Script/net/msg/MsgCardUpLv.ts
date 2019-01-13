@@ -34,7 +34,7 @@ export default class MsgCardUpLv extends MessageBase{
 
     constructor(){
         super(NetConst.CardUpLv);
-        this.isLocal = true;
+        // this.isLocal = true;
     }
 
     public static create(cardUUid:string,cost:number){

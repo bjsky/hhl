@@ -196,7 +196,7 @@ export default class CardAssist{
         NET.send(MsgCardUpStar.create(uuid,useUUid),(msg:MsgCardUpStar)=>{
             if(msg && msg.resp){
                 this.updateCardInfo(msg.resp.cardInfo);
-                var removeUuid = msg.resp.useCardUuid;
+                var removeUuid = msg.resp.useCardInfo.uuid;
                 this.removeCardByUUid(removeUuid);
                 EVENT.emit(GameEvent.Card_update_Complete,{uuid:msg.resp.cardInfo.uuid,type:CardUpType.UpGrade});
                 EVENT.emit(GameEvent.Card_Remove,{uuid:removeUuid,type:CardRemoveType.upStarRemove});

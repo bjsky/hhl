@@ -437,7 +437,8 @@ export default class HeroPanel extends UIBase {
             UI.showTip("没有可合成升星的英雄！");
             return;
         }
-        if(COMMON.resInfo.gold < this._upStarCost){
+        var gold:number = COMMON.resInfo.gold;
+        if(gold < this._upStarCost){
             UI.showTip("金币不足");
             return;
         }

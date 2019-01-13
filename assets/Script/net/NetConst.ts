@@ -22,15 +22,15 @@ export default class NetConst{
     //召唤卡牌
     public static CardSummon:number = 21000;
     //卡牌升级
-    public static CardUpLv:number = 30002;
+    public static CardUpLv:number = 21001;
     //卡牌升星
-    public static CardUpStar:number = 30003;
+    public static CardUpStar:number = 21002;
     //卡牌回收
-    public static CardDestroy:number = 30004;
+    public static CardDestroy:number = 21003;
     //挂机领取
     public static CollectPassageRes:number = 40001;
     //修改阵容
-    public static LineupModify:number = 50001;
+    public static LineupModify:number = 21040;
     //挑战boss
     public static FightBoss:number = 60001;
 }

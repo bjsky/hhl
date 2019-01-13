@@ -31,6 +31,10 @@ export default class CardDescrip extends PopUpBase {
     cardRace: LoadSprite = null;
     @property(cc.Label)
     cardSkillName: cc.Label = null;
+    @property(cc.Label)
+    cardSkillType: cc.Label = null;
+    @property(cc.Label)
+    cardSkillChar: cc.Label = null;
     @property(cc.RichText)
     cardSkillDesc: cc.RichText = null;
     @property(cc.Label)
@@ -70,7 +74,9 @@ export default class CardDescrip extends PopUpBase {
         this.cardDesc.string = String(this._cardCfg.desc).replace("$","\n");
         this.cardImg.load(PathUtil.getCardImgPath(this._cardCfg.imgPath));
         this.cardRace.load(PathUtil.getCardRaceImgPath(this._cardCfg.raceId));
-        this.cardSkillDesc.string = Skill.getSkillHelDescHtml(this._cardSkillCfg);
+        this.cardSkillDesc.string = "          "+Skill.getSkillHelDescHtml(this._cardSkillCfg);
+        this.cardSkillType.string = this._cardSkillCfg.cardType;
+        this.cardSkillChar.string = this._cardSkillCfg.skillchar;
     }
 
     private showCardBig(e){

@@ -4,6 +4,10 @@ import MsgLogin from "./MsgLogin";
 import MsgGuideUpdate from "./MsgGuideUpdate";
 import MsgCardSummon from "./MsgCardSummon";
 import MsgBuildUpdate from "./MsgBuildUpdate";
+import MsgCardUpLv from "./MsgCardUpLv";
+import MsgCardUpStar from "./MsgCardUpStar";
+import MsgCardDestroy from "./MsgCardDestroy";
+import MsgLineupModify from "./MsgLineupModify";
 /**
  * 太特么坑了，父类中还不能导入子类
  */
@@ -24,6 +28,18 @@ export default class MsgUtil{
             }break;
             case NetConst.BuildUpdate:
                 message = new MsgBuildUpdate();
+            break;
+            case NetConst.CardUpLv:
+                message = new MsgCardUpLv();
+            break;
+            case NetConst.CardUpStar:
+                message = new MsgCardUpStar();
+            break;
+            case NetConst.CardDestroy:
+                message = new MsgCardDestroy();
+            break;
+            case NetConst.LineupModify:
+                message = new MsgLineupModify();
             break;
             default:
             message = null;

@@ -656,9 +656,9 @@
     "_enabled": true,
     "_color": {
       "__type__": "cc.Color",
-      "r": 0,
-      "g": 0,
-      "b": 0,
+      "r": 65,
+      "g": 26,
+      "b": 4,
       "a": 255
     },
     "_width": 1
@@ -763,9 +763,9 @@
     "_enabled": true,
     "_color": {
       "__type__": "cc.Color",
-      "r": 0,
-      "g": 0,
-      "b": 0,
+      "r": 65,
+      "g": 26,
+      "b": 4,
       "a": 255
     },
     "_width": 1
@@ -1198,7 +1198,7 @@
       }
     ],
     "_tag": -1,
-    "_active": false,
+    "_active": true,
     "_components": [],
     "_prefab": {
       "__id__": 49
@@ -1328,9 +1328,9 @@
     "_enabled": true,
     "_color": {
       "__type__": "cc.Color",
-      "r": 0,
-      "g": 0,
-      "b": 0,
+      "r": 65,
+      "g": 26,
+      "b": 4,
       "a": 255
     },
     "_width": 1

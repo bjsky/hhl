@@ -554,9 +554,9 @@
     "_enabled": true,
     "_color": {
       "__type__": "cc.Color",
-      "r": 0,
-      "g": 0,
-      "b": 0,
+      "r": 65,
+      "g": 26,
+      "b": 4,
       "a": 255
     },
     "_width": 3
@@ -661,9 +661,9 @@
     "_enabled": true,
     "_color": {
       "__type__": "cc.Color",
-      "r": 0,
-      "g": 0,
-      "b": 0,
+      "r": 65,
+      "g": 26,
+      "b": 4,
       "a": 255
     },
     "_width": 3

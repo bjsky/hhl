@@ -22,7 +22,7 @@ export default class GlobalData{
     public serverUrl:string = "wss://www.xh52.top:8580/websocket";
     // public serverUrl:string = "ws://192.168.0.102:8502/websocket";
 
-    public testAccount:string ="test004";
+    public testAccount:string ="test017";
 
     public code:string ="";//微信登录code
 

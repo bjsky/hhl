@@ -31,7 +31,7 @@ export default class MsgCardDestroy extends MessageBase{
 
     constructor(){
         super(NetConst.CardDestroy);
-        this.isLocal = true;
+        // this.isLocal = true;
     }
     public static create(cardUUid:string){
         var msg = new MsgCardDestroy();

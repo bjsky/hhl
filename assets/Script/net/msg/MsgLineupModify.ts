@@ -33,7 +33,7 @@ export default class MsgLineupModify extends MessageBase{
 
     constructor(){
         super(NetConst.LineupModify);
-        this.isLocal = true;
+        // this.isLocal = true;
     }
 
     public static create(str:string){
