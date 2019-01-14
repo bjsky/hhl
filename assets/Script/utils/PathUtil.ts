@@ -1,8 +1,27 @@
 import { CardRaceType } from "../module/card/CardAssist";
 import { ResType } from "../model/ResInfo";
+import { SexEnum } from "../CommonData";
+import { BuffType } from "../module/fight/SkillLogic";
 
 export default class PathUtil{
 
+    public static getBuffIconUrl(buffType:BuffType):string{
+        var buffImg:string = "";
+        if(buffType == BuffType.Team){
+            buffImg = "buff_g";
+        }else if(buffType == BuffType.Mine){
+            buffImg = "buff_y";
+        }else if(buffType == BuffType.Debuff){
+            buffImg = "buff_r";
+        }
+        return "ui/module/fight/"+buffImg;
+    }
+    public static getSkillNameUrl(skill:string):string{
+        return "ui/image/skill/"+skill;
+    }
+    public static getSexIconUrl(sex:number ):string{
+        return "ui/Common2/"+(sex == SexEnum.Male?"nan":"nv");
+    }
     public static getCardGradeImgPath(grade:number):string{
         return "ui/Common/star"+grade;
     }

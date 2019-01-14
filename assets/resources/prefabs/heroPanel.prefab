@@ -833,8 +833,8 @@
     "_enabled": true,
     "_color": {
       "__type__": "cc.Color",
-      "r": 65,
-      "g": 26,
+      "r": 46,
+      "g": 4,
       "b": 4,
       "a": 255
     },
@@ -940,8 +940,8 @@
     "_enabled": true,
     "_color": {
       "__type__": "cc.Color",
-      "r": 65,
-      "g": 26,
+      "r": 46,
+      "g": 4,
       "b": 4,
       "a": 255
     },
@@ -3296,9 +3296,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 211,
-      "g": 92,
-      "b": 33,
+      "r": 83,
+      "g": 0,
+      "b": 0,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,

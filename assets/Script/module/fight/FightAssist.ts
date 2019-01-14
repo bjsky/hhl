@@ -17,7 +17,11 @@ export default class FightAssist{
         return FightAssist._instance;
     }
 
-    public _fightPanel:FightPanel = null;
+    private _fightPanel:FightPanel = null;
+    public get panel():FightPanel{
+        return this._fightPanel;
+    }
+
     private _infoMine:FightInfo = null;
     private _infoEnemy:FightInfo = null;
     private _fight:FightLogic= null;
@@ -31,6 +35,9 @@ export default class FightAssist{
     }
 
     private _isFighting:boolean = false;
+    public get isFighting(){
+        return this._isFighting;
+    }
 
 
     public showFight(infoMine:FightInfo,infoEnemy:FightInfo){
@@ -54,7 +61,10 @@ export default class FightAssist{
 
 
     private endFunc(result:FightResult){
-        result.fightReady.buffs.forEach((action: BuffAction)=> {
+        result.fightReady.myBuffs.forEach((action: BuffAction)=> {
+            console.log(action.desc);
+        });
+        result.fightReady.enemyBuffs.forEach((action: BuffAction)=> {
             console.log(action.desc);
         });
         result.fights.forEach((fight: FightOnce)=> {
@@ -67,15 +77,18 @@ export default class FightAssist{
         });
         console.log(">>>"+(result.victory?"胜利":"失败"));
         if(this._fightPanel){
-            this._fightPanel.playAction(result);
+            this._fightPanel.initResult(result);
         }
     }
 
     public endFight(){
-        if(!this._isFighting || this._fightPanel==null)
-        this._fightPanel = null;
+        if(!this._isFighting || this._fightPanel==null){
+            return;
+        }
         this._isFighting = false;
-        this._fightPanel.hide();
+        this._fightPanel.hide(()=>{
+            this._fightPanel = null;
+        });
     }
 }
 

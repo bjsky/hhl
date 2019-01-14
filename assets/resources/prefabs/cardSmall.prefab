@@ -605,7 +605,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 90,
+      "width": 98,
       "height": 40
     },
     "_rotationX": 0,
@@ -615,7 +615,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 6,
-      "y": -72
+      "y": -71
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -633,8 +633,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 22,
-    "_fontSize": 22,
+    "_actualFontSize": 24,
+    "_fontSize": 24,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": null,
@@ -656,8 +656,8 @@
     "_enabled": true,
     "_color": {
       "__type__": "cc.Color",
-      "r": 65,
-      "g": 26,
+      "r": 46,
+      "g": 4,
       "b": 4,
       "a": 255
     },
@@ -683,7 +683,7 @@
     },
     "_children": [],
     "_tag": -1,
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 21
@@ -712,7 +712,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 42,
+      "width": 40,
       "height": 40
     },
     "_rotationX": 0,
@@ -763,9 +763,9 @@
     "_enabled": true,
     "_color": {
       "__type__": "cc.Color",
-      "r": 65,
-      "g": 26,
-      "b": 4,
+      "r": 15,
+      "g": 6,
+      "b": 0,
       "a": 255
     },
     "_width": 1
@@ -887,7 +887,7 @@
       }
     ],
     "_tag": -1,
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 31
@@ -1277,7 +1277,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 46,
+      "width": 50,
       "height": 40
     },
     "_rotationX": 0,
@@ -1305,8 +1305,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 22,
-    "_fontSize": 22,
+    "_actualFontSize": 24,
+    "_fontSize": 24,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": null,
@@ -1328,8 +1328,8 @@
     "_enabled": true,
     "_color": {
       "__type__": "cc.Color",
-      "r": 65,
-      "g": 26,
+      "r": 46,
+      "g": 4,
       "b": 4,
       "a": 255
     },
@@ -1394,8 +1394,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 68,
-      "y": -93
+      "x": 55.8,
+      "y": -94
     },
     "_skewX": 0,
     "_skewY": 0,

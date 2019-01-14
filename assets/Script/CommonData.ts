@@ -19,6 +19,11 @@ export enum DirectionEnum{
     Bottom,         //下
     LeftBottom      //左下
 }
+
+export enum SexEnum{
+    Male = 1,
+    Female,
+}
 /**
  *  全局的游戏数据，
  * 

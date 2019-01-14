@@ -27,6 +27,8 @@ export class BuffAction extends FightAction{
     public buffProperty:BuffProperty = 0;
     //buff值
     public buffValue:number = 0;
+    //起始位置
+    public fromPos:number = 0;
     //buff位置
     public buffPos:number[] = [];
 

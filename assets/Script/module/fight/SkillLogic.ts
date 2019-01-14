@@ -66,7 +66,7 @@ export default class SkillLogic{
             action = this.checkSkillReadyBuff(fo);
             if(action!=null){
                 action.applyBuff();
-                ready.buffs.push(action);
+                ready.myBuffs.push(action);
             }
         });
         var enemyTeam :FightTeamObject = Fight.fight.getTeam(false);
@@ -74,7 +74,7 @@ export default class SkillLogic{
             action = this.checkSkillReadyBuff(fo);
             if(action!=null){
                 action.applyBuff();
-                ready.buffs.push(action);
+                ready.enemyBuffs.push(action);
             }
         });
         return ready;
@@ -99,6 +99,7 @@ export default class SkillLogic{
                 buff.buffProperty = property;
                 buff.buffValue = fo.skill.skillVal;
                 buff.buffPos = [fo.lineup.pos];
+                buff.fromPos = fo.lineup.pos;
             }break;
             case 6: //魔君统御
             case 9: //十日光辉
@@ -130,6 +131,7 @@ export default class SkillLogic{
                     buff.buffProperty = property;
                     buff.buffValue = fo.skill.skillVal;
                     buff.buffPos = pos;
+                    buff.fromPos = fo.lineup.pos;
                }
             }break;
         }

@@ -999,9 +999,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 161,
-      "g": 88,
-      "b": 34,
+      "r": 92,
+      "g": 0,
+      "b": 0,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -1480,9 +1480,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 211,
-      "g": 92,
-      "b": 33,
+      "r": 92,
+      "g": 0,
+      "b": 0,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -1493,7 +1493,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 108,
+      "width": 104,
       "height": 40
     },
     "_rotationX": 0,
@@ -1541,7 +1541,7 @@
     "node": {
       "__id__": 44
     },
-    "_enabled": true,
+    "_enabled": false,
     "_color": {
       "__type__": "cc.Color",
       "r": 255,

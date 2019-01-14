@@ -5,7 +5,9 @@ import { Fight } from "./FightAssist";
 //准备阶段
 export default class FightReady{
     //buff
-    public buffs:Array<BuffAction> = [];
+    public myBuffs:Array<BuffAction> = [];
+    //敌方buff
+    public enemyBuffs:Array<BuffAction> = [];
 }
 
 //单次攻击
