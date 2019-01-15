@@ -12,7 +12,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "tipPanel",
+    "_name": "fightTip",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -27,11 +27,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 8
+        "__id__": 9
       }
     ],
     "_prefab": {
-      "__id__": 9
+      "__id__": 10
     },
     "_id": "",
     "_opacity": 255,
@@ -50,8 +50,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 750,
-      "height": 1334
+      "width": 224,
+      "height": 40
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -78,7 +78,7 @@
     },
     "_children": [],
     "_tag": -1,
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 3
@@ -155,9 +155,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "f485d70f-75ed-4d8c-9413-3fe660556bc6"
+      "__uuid__": "411dcca8-d88b-4734-9060-250d08105a47"
     },
-    "fileId": "27/zdsCrFD3KHop3FDPtDe",
+    "fileId": "7dDKfBR9RBgqtGa66CF3T2",
     "sync": false
   },
   {
@@ -173,18 +173,21 @@
     "_components": [
       {
         "__id__": 6
+      },
+      {
+        "__id__": 7
       }
     ],
     "_prefab": {
-      "__id__": 7
+      "__id__": 8
     },
     "_id": "",
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 251,
-      "g": 242,
-      "b": 200,
+      "r": 82,
+      "g": 255,
+      "b": 36,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -195,7 +198,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 210,
+      "width": 191,
       "height": 40
     },
     "_rotationX": 0,
@@ -230,11 +233,28 @@
     "_N$file": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
-    "_N$string": "您的等级不足！",
+    "_N$string": "攻击力+10000",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
     "_N$overflow": 0
+  },
+  {
+    "__type__": "cc.LabelOutline",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 5
+    },
+    "_enabled": true,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 20,
+      "g": 20,
+      "b": 20,
+      "a": 255
+    },
+    "_width": 2
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -242,13 +262,13 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "f485d70f-75ed-4d8c-9413-3fe660556bc6"
+      "__uuid__": "411dcca8-d88b-4734-9060-250d08105a47"
     },
-    "fileId": "b5Ayu9IlpBSavcnGMX56YX",
+    "fileId": "44asHucNlL+qmlsXI+jgUX",
     "sync": false
   },
   {
-    "__type__": "faa8enIwetPTZJT8FaQ7ANB",
+    "__type__": "11a99k2UUlAuoeytzls7LwA",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -256,8 +276,8 @@
     },
     "_enabled": true,
     "flyX": 0,
-    "flyY": 50,
-    "during": 0.6,
+    "flyY": 15,
+    "during": 0.4,
     "label": {
       "__id__": 6
     },
@@ -271,9 +291,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "f485d70f-75ed-4d8c-9413-3fe660556bc6"
+      "__uuid__": "411dcca8-d88b-4734-9060-250d08105a47"
     },
-    "fileId": "178pDk09JD/6VfpcOQRZXM",
+    "fileId": "fcxfJOaxtFfYRJzAbiBFh0",
     "sync": false
   }
 ]

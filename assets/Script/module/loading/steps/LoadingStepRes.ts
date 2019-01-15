@@ -1,5 +1,4 @@
 import LoadingStep from "../loadingStep";
-import { RES } from "../../../manager/ResourceManager";
 import { LoadingStepEnum } from "../LoadingStepManager";
 
 export const ResConst = {
@@ -20,7 +19,9 @@ export const ResConst = {
     AwardPanel:"prefabs/awardPanel",
     FightPanel:"prefabs/fightPanel",
     CardFight:"prefabs/cardFight",
-    BuffNode:"prefabs/buffNode"
+    BuffNode:"prefabs/buffNode",
+    CostTipPanel:"prefabs/costTipPanel",
+    FightTip:"prefabs/fightTip"
 }
 /**
  * 加载配置

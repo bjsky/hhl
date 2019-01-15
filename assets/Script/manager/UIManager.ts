@@ -2,8 +2,6 @@ import NetMessage from "../net/NetMessage";
 import UIBase from "../component/UIBase";
 import { AlertBtnType } from "../view/AlertPanel";
 import { ResConst } from "../module/loading/steps/LoadingStepRes";
-import { DirectionEnum } from "../CommonData";
-import { TipTypeEnum } from "../view/TipPanel";
 import { EVENT } from "../message/EventCenter";
 import GameEvent from "../message/GameEvent";
 
@@ -202,16 +200,11 @@ export default class UIManager{
      * @param pos 位置
      */
     public showTip(content:string){
-        this.loadUI(ResConst.TipPanel,{content:content,type:TipTypeEnum.Normal},this.TipLayer);
+        this.loadUI(ResConst.TipPanel,{content:content},this.TipLayer);
     }
 
-    /**
-     * 资源消耗漂浮提示
-     * @param content 、
-     * @param pos 
-     */
-    public showCostTip(content,pos:cc.Vec2){
-        this.loadUI(ResConst.TipPanel,{content:content,type:TipTypeEnum.ResCost,position:pos},this.TipLayer);
+    public showTipCustom(tipRes:string,data:any,pos?:cc.Vec2,complete?:Function){
+        this.loadUI(tipRes,{data:data,pos:pos,complete:complete},this.TipLayer);
     }
 
     public showAlert(content:string,okCallback?:Function,cancelCallback?:Function,btnType:number = AlertBtnType.OKButton){

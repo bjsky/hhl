@@ -133,14 +133,14 @@ export default class MainUI extends UIBase {
                     this.lblGold.string = StringUtil.formatReadableNumber(COMMON.resInfo.gold);
                     absVal = Math.abs(obj.value);
                     if(absVal>0){
-                        UI.showCostTip("-"+StringUtil.formatReadableNumber(absVal),this.lblGold.node.parent.convertToWorldSpaceAR(this.lblGold.node.position));
+                        UI.showTipCustom(ResConst.CostTipPanel,"-"+StringUtil.formatReadableNumber(absVal),this.lblGold.node.parent.convertToWorldSpaceAR(this.lblGold.node.position));
                     }
                 }break;
                 case ResType.lifeStone:{
                     this.lblLifeStone.string = StringUtil.formatReadableNumber(COMMON.resInfo.lifeStone);
                     absVal = Math.abs(obj.value);
                     if(absVal>0){
-                        UI.showCostTip("-"+StringUtil.formatReadableNumber(absVal),this.lblLifeStone.node.parent.convertToWorldSpaceAR(this.lblLifeStone.node.position));
+                        UI.showTipCustom(ResConst.CostTipPanel,"-"+StringUtil.formatReadableNumber(absVal),this.lblLifeStone.node.parent.convertToWorldSpaceAR(this.lblLifeStone.node.position));
                     }
                 }break;
             }

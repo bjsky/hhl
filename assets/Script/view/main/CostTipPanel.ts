@@ -1,5 +1,4 @@
-import { DirectionEnum, COMMON } from "../CommonData";
-import TipBase from "../component/TipBase";
+import TipBase from "../../component/TipBase";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -14,42 +13,30 @@ import TipBase from "../component/TipBase";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class TipPanel extends TipBase {
+export default class CostTipPanel extends TipBase {
 
-    @property(cc.Label)
-    label: cc.Label = null;
-    @property(cc.Node)
-    bgNode: cc.Node = null;
 
     // LIFE-CYCLE CALLBACKS:
+    @property(cc.Label)
+    label:cc.Label = null;
 
-    onLoad () {
-        // super.onLoad();
-        
-        
-    }
-
+    // onLoad () {}
     private _content:string ="";
-    public setData(data:any){
+    public setData(data){
         super.setData(data);
-        this._content = data.content;
+        this._content = data.data as string;
     }
-
     onEnable(){
         super.onEnable();
         this.initView();
     }
 
     private initView(){
-        this.label.node.active = true;
         this.label.string = this._content;
-        this.bgNode.active = true;
-        this.bgNode.width = this.label.node.width + 100;
-
-        this.node.position = COMMON.ZERO;
+            
     }
     start () {
-        
+
     }
 
     // update (dt) {}
