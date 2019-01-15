@@ -55,4 +55,7 @@ export default class NumberEffect extends cc.Component{
         this.label.string = (this.format == 1?StringUtil.formatReadableNumber(this._curValue):showValue);
     }
 
+    public stop(){
+        this._isUpdating = false;
+    }
 }

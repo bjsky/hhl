@@ -4,9 +4,9 @@ import { ResConst } from "../loading/steps/LoadingStepRes";
 import UIBase from "../../component/UIBase";
 import FightInfo from "../../model/FightInfo";
 import FightLogic, { FightResult } from "./FightLogic";
-import FightAction, { BuffAction } from "./FightAction";
+import { BuffAction } from "./FightAction";
 import SkillLogic from "./SkillLogic";
-import { FightOnce } from "./FightReady";
+import FightOnce from "./FightOnce";
 
 export default class FightAssist{
     private static _instance: FightAssist = null;
@@ -61,10 +61,10 @@ export default class FightAssist{
 
 
     private endFunc(result:FightResult){
-        result.fightReady.myBuffs.forEach((action: BuffAction)=> {
+        result.myReadyBuffs.forEach((action: BuffAction)=> {
             console.log(action.desc);
         });
-        result.fightReady.enemyBuffs.forEach((action: BuffAction)=> {
+        result.enemyReadyBuffs.forEach((action: BuffAction)=> {
             console.log(action.desc);
         });
         result.fights.forEach((fight: FightOnce)=> {
@@ -72,8 +72,8 @@ export default class FightAssist{
                 console.log(fight.attackSkill.desc);
             if(fight.beAttackSkill)
                 console.log(fight.beAttackSkill.desc);
-            if(fight.fightAction)
-                console.log(fight.fightAction.desc);
+            if(fight.attack)
+                console.log(fight.attack.desc);
         });
         console.log(">>>"+(result.victory?"胜利":"失败"));
         if(this._fightPanel){

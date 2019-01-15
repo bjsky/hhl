@@ -2,7 +2,7 @@ import LineupInfo from "../../model/LineupInfo";
 import { CFG } from "../../manager/ConfigManager";
 import { ConfigConst } from "../loading/steps/LoadingStepConfig";
 import { SkillObject, SkillProperty, BuffProperty, BuffObject } from "./SkillLogic";
-import FightAction from "./FightAction";
+import { AttackAction } from "./FightAction";
 
 export class SkillInfo{
     constructor(cardId:number,grade:number){
@@ -95,7 +95,7 @@ export default class FightObject{
         return this.curLife <= 0;
     }
     //攻击
-    public fight(beAttack:FightObject):FightAction{
+    public fight(beAttack:FightObject):AttackAction{
         var attackPower:number = this.buffedPower;
         if(this.skillObj!= null && this.skillObj.skillProperty == SkillProperty.PowerAttachLife){
             attackPower += beAttack.buffedTotalLife*this.skillObj.skillValue;
@@ -120,11 +120,14 @@ export default class FightObject{
             returnStr = "\n恢复生命"+returnLife;
         }
 
-        var action:FightAction = new FightAction();
+        var action:AttackAction = new AttackAction();
         var desc:string =this.isMyTeam?"［己方］":"［敌方］";
         desc += this.lineup.cardName +"对"+ beAttack.lineup.cardName +"造成"+attackPower+"伤害，剩余生命："+beAttack.curLife;
         desc += returnStr;
         action.desc = desc;
+        action.attackPower = attackPower;
+        action.isEnemyDead = beAttack.isDead;
+        action.returnBlood = returnLife;
         return action;
     }
 

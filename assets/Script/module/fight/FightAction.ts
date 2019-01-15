@@ -12,6 +12,14 @@ export default class FightAction{
         return this._desc;
     }
 }
+export class AttackAction extends FightAction{
+    //受到伤害
+    public attackPower:number = 0;
+    //是否阵亡
+    public isEnemyDead:boolean = false;
+    //回血
+    public returnBlood:number = 0;
+}
 
 export class BuffAction extends FightAction{
     //是否本队

@@ -9,6 +9,7 @@ import PathUtil from "../../utils/PathUtil";
 import CardFight from "./CardFight";
 import FightAction, { BuffAction } from "../../module/fight/FightAction";
 import BuffNode from "./BuffNode";
+import FightOnce from "../../module/fight/FightOnce";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -33,6 +34,11 @@ export default class FightPanel extends UIBase {
     bottom: cc.Node = null;
     @property(cc.Node)
     buffNode:cc.Node = null;
+    @property(cc.Node)
+    fightNode:cc.Node = null;
+
+    @property(cc.Node)
+    skillNode:cc.Node = null;
     @property(cc.Node)
     bg: cc.Node = null;
     // LIFE-CYCLE CALLBACKS:
@@ -97,6 +103,7 @@ export default class FightPanel extends UIBase {
         this.btnEnd.node.active = true;
         this.top.position = cc.v2(0,(this.top.height +10));  //cc.v2((this.top.width +10),0)//
         this.bottom.position = cc.v2(0,(-this.bottom.height-10));//cc.v2((-this.bottom.width-10),0);//
+        this.center.position = cc.v2(0,0);
         this.nodeEnemy.position = cc.v2(15+cc.winSize.width,this.nodeEnemy.position.y);
         this.nodeMine.position = cc.v2(15-cc.winSize.width,this.nodeMine.position.y);
     }
@@ -144,6 +151,14 @@ export default class FightPanel extends UIBase {
         while(this.buffNode.childrenCount>0){
             UI.removeUI(this.buffNode.children[0]);
         }
+        while(this.skillNode.childrenCount>0){
+            var skillNode = this.skillNode.children[0];
+            skillNode.stopAllActions();
+            this._skillPool.put(skillNode);
+        }
+        while(this.fightNode.childrenCount>0){
+            UI.removeUI(this.fightNode.children[0]);
+        }
         var nodeCard:cc.Node;
         for(var i:number = 0;i<this.nodeMyCards.length;i++){
             nodeCard = this.nodeMyCards[i];
@@ -164,6 +179,7 @@ export default class FightPanel extends UIBase {
             }
         }
         this.unscheduleAllCallbacks();
+        this.center.stopAllActions();
     }
 
     private onEndTouch(e){
@@ -234,39 +250,41 @@ export default class FightPanel extends UIBase {
     private _delayAction = 0.6;
     private _myReadyActions:Array<CardAcitonObject> = [];
     private _enemyReadyActions:Array<CardAcitonObject> =[];
+    private _fightOnceActions:Array<FightOnce> = [];
 
     public initResult(result:FightResult){
         this._result = result;
         var card:CardFight;
         var i:number = 0;
         var buff:BuffAction;
-        if(result.fightReady.myBuffs.length>0){
+        if(result.myReadyBuffs.length>0){
             this._myReadyActions = [];
-            for(i = 0;i<this._result.fightReady.myBuffs.length;i++){
-                buff = this._result.fightReady.myBuffs[i];
+            for(i = 0;i<this._result.myReadyBuffs.length;i++){
+                buff = this._result.myReadyBuffs[i];
                 card = this.getCardFightWithPos(buff.fromPos,buff.isMyTeam);
                 this._myReadyActions.push(new CardAcitonObject(card,buff));
             }
         }
-        if(result.fightReady.enemyBuffs.length>0){
+        if(result.enemyReadyBuffs.length>0){
             this._enemyReadyActions =[];
-            for(i = 0;i<this._result.fightReady.enemyBuffs.length;i++){
-                buff = this._result.fightReady.enemyBuffs[i];
+            for(i = 0;i<this._result.enemyReadyBuffs.length;i++){
+                buff = this._result.enemyReadyBuffs[i];
                 card = this.getCardFightWithPos(buff.fromPos,buff.isMyTeam);
                 this._enemyReadyActions.push(new CardAcitonObject(card,buff));
             }
         }
-        this.scheduleOnce(this.playActions,this._delayAction);
+        this._fightOnceActions = this._result.fights.slice();
+        this.scheduleOnce(this.playSequence,this._delayAction);
     }
 
-    private playActions(){
+    private playSequence(){
         if(this._myReadyActions.length > 0){
             this._myReadyActions.forEach((cardAction:CardAcitonObject)=>{
                 cardAction.card.playAction(cardAction.action,()=>{
                     cardAction.complete = true;
-                    if(this.checkAllActionsComplete(this._myReadyActions)){
+                    if(CardAcitonObject.checkAllActionsComplete(this._myReadyActions)){
                         this._myReadyActions =[];
-                        this.scheduleOnce(this.playActions,this._delayAction);
+                        this.scheduleOnce(this.playSequence,this._delayAction);
                     }
                 });
             })
@@ -274,21 +292,80 @@ export default class FightPanel extends UIBase {
             this._enemyReadyActions.forEach((cardAction:CardAcitonObject)=>{
                 cardAction.card.playAction(cardAction.action,()=>{
                     cardAction.complete = true;
-                    if(this.checkAllActionsComplete(this._enemyReadyActions)){
+                    if(CardAcitonObject.checkAllActionsComplete(this._enemyReadyActions)){
                         this._enemyReadyActions =[];
-                        this.scheduleOnce(this.playActions,this._delayAction);
+                        this.scheduleOnce(this.playSequence,this._delayAction);
                     }
                 });
             })
+        }else if(this._fightOnceActions.length>0){
+            this._fightOnce = this._fightOnceActions.shift();
+            this._fightPlayState = 0;
+            this._attackCard = this.getCardFightWithPos(this._fightOnce.attackObj.lineup.pos,this._fightOnce.attackObj.isMyTeam);
+            this._beAttackCard = this.getCardFightWithPos(this._fightOnce.beAttackObj.lineup.pos,this._fightOnce.beAttackObj.isMyTeam);
+            this.playFightOnce();
+        }else{
+            //show result
         }
     }
 
-    private checkAllActionsComplete(actions:CardAcitonObject[]):boolean{
-        var complete:boolean = true;
-        actions.forEach((action:CardAcitonObject)=>{
-            complete = action.complete && complete;
-        })
-        return complete;
+    
+    private _fightOnce:FightOnce = null;
+    private _fightPlayState:FightOncePlayState = 0;
+    private _attackCard:CardFight = null;
+    private _beAttackCard:CardFight = null;
+    private playFightOnce(){
+        this._fightPlayState++;
+        switch(this._fightPlayState){
+            case FightOncePlayState.AttackSkill:{
+                if(this._fightOnce.attackSkill!=null){
+                    var pos:cc.Vec2 = this._attackCard.node.parent.convertToWorldSpaceAR(this._attackCard.node.position);
+                    this.playSkill(pos,this._fightOnce.attackSkill.skill.skillCfg.skillIcon,()=>{
+                        this.playFightOnce();
+                    });
+                }else{
+                    this.playFightOnce();
+                }
+            }break;
+            case FightOncePlayState.Fight:{
+                var hasShake:boolean = false;
+                if(this._fightOnce.attackSkill!=null && this._fightOnce.beAttackSkill==null){
+                    hasShake = true;
+                }
+                this._attackCard.showFight(this._beAttackCard,hasShake,this._fightOnce.attackObj.isMyTeam,()=>{
+                    this.playFightOnce();
+                });
+            }break;
+            case FightOncePlayState.BeAttackSkill:{
+                if(this._fightOnce.beAttackSkill!=null){
+                    var pos:cc.Vec2 = this._beAttackCard.node.parent.convertToWorldSpaceAR(this._beAttackCard.node.position);
+                    Fight.panel.playSkill(pos,this._fightOnce.beAttackSkill.skill.skillCfg.skillIcon,()=>{
+                        this._beAttackCard.beAttack(this._fightOnce.attack.attackPower);
+                        this.playFightOnce();
+                    });
+                }else{
+                    this._beAttackCard.beAttack(this._fightOnce.attack.attackPower);
+                    this.playFightOnce();
+                }
+            }break;
+            case FightOncePlayState.FightBack:{
+                this._attackCard.showFightBack(()=>{
+                    this.playFightOnce();
+                })
+            }break;
+            case FightOncePlayState.AfterAttack:{
+                if(this._fightOnce.attack.returnBlood>0){
+                    this._attackCard.onReturnBlood(this._fightOnce.attack.returnBlood,()=>{
+                        this.playFightOnce();
+                    })
+                }else{
+                    this.playFightOnce();
+                }
+            }break;
+            default:{
+                this.scheduleOnce(this.playSequence,this._delayAction);
+            }break;
+        }
     }
     // update (dt) {}
 
@@ -301,6 +378,63 @@ export default class FightPanel extends UIBase {
             });
         })
     }
+    
+    private _skillPool:cc.NodePool = new cc.NodePool();
+    public playSkill(pos:cc.Vec2,skillIcon:string,cb:Function){
+        var skillSpr:LoadSprite;
+        var skill:cc.Node = this._skillPool.get();
+        if(!skill){
+            skill = new cc.Node();
+            skillSpr = skill.addComponent(LoadSprite);
+        }else{
+            skillSpr = skill.getComponent(LoadSprite);
+        }
+        skill.parent = this.skillNode;
+        skill.setPosition(this.skillNode.convertToNodeSpaceAR(pos));
+        skillSpr.load(PathUtil.getSkillNameUrl(skillIcon),null,()=>{
+            skillSpr.node.scale = 0.6;
+            var skillSeq = cc.sequence(
+                cc.spawn(
+                    cc.fadeIn(0.3).easing(cc.easeOut(2)),
+                    cc.scaleTo(0.3,1).easing(cc.easeBackOut()),
+                ),
+                cc.delayTime(0.5),
+                cc.callFunc(()=>{
+                    skillSpr.load("");
+                    skillSpr.node.stopAllActions();
+                    this._skillPool.put(skillSpr.node);
+                    cb && cb();
+                })
+            )
+            skillSpr.node.runAction(skillSeq);
+        });
+    }
+
+    public showCardFight(cardNode:cc.Node,fromPos:cc.Vec2,toPos:cc.Vec2,forward:boolean,shake:boolean,cb:Function){
+        var fromPos = this.fightNode.parent.convertToNodeSpaceAR(fromPos);
+        var toPos = this.fightNode.parent.convertToNodeSpaceAR(toPos);
+        cardNode.parent = this.fightNode;
+        cardNode.setPosition(fromPos)
+        var move;
+        if(forward){
+            move = cc.moveTo(0.7,toPos).easing(cc.easeBackIn());
+        }else{
+            move = cc.moveTo(0.5,toPos).easing(cc.easeOut(2))
+        }
+        var seq = cc.sequence(
+            move,
+            cc.callFunc(()=>{
+                if(shake){
+                    var pos:cc.Vec2 = toPos.sub(fromPos).div(20);
+                    this.center.setPosition(pos);
+                    var shakeAni = cc.moveTo(0.3,cc.v2(0,0)).easing(cc.easeBounceOut());
+                    this.center.runAction(shakeAni);
+                }
+                cb && cb();
+            })
+        )
+        cardNode.runAction(seq);
+    }
 }
 
 export class CardAcitonObject{
@@ -312,4 +446,21 @@ export class CardAcitonObject{
     public card:CardFight = null;
     public action:FightAction = null;
     public complete:boolean =false;
+
+
+    public static checkAllActionsComplete(actions:CardAcitonObject[]):boolean{
+        var complete:boolean = true;
+        actions.forEach((action:CardAcitonObject)=>{
+            complete = action.complete && complete;
+        })
+        return complete;
+    }
+}
+
+export enum FightOncePlayState{
+    AttackSkill = 1,
+    Fight,
+    BeAttackSkill,
+    FightBack,
+    AfterAttack,
 }

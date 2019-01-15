@@ -2,7 +2,6 @@ import FightObject, { FightTeamObject, SkillInfo } from "./FightObject";
 import { BuffAction, SkillAction } from "./FightAction";
 import { CardRaceType } from "../card/CardAssist";
 import { Fight } from "./FightAssist";
-import FightReady from "./FightReady";
 
 
 export enum BuffProperty{
@@ -58,29 +57,7 @@ export class SkillObject{
 
 export default class SkillLogic{
 
-    public checkReady():FightReady{
-        var ready:FightReady = new FightReady();
-        var action:BuffAction = null;
-        var myTeam :FightTeamObject = Fight.fight.getTeam(true);
-        myTeam.fightObjArr.forEach((fo:FightObject)=>{
-            action = this.checkSkillReadyBuff(fo);
-            if(action!=null){
-                action.applyBuff();
-                ready.myBuffs.push(action);
-            }
-        });
-        var enemyTeam :FightTeamObject = Fight.fight.getTeam(false);
-        enemyTeam.fightObjArr.forEach((fo:FightObject)=>{
-            action = this.checkSkillReadyBuff(fo);
-            if(action!=null){
-                action.applyBuff();
-                ready.enemyBuffs.push(action);
-            }
-        });
-        return ready;
-    }
-
-    private checkSkillReadyBuff(fo:FightObject):BuffAction{
+    public checkSkillReadyBuff(fo:FightObject):BuffAction{
         var buff:BuffAction = null;
         var skillId:number = fo.skill.skillId;
         switch(skillId){

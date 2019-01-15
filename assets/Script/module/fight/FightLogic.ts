@@ -1,6 +1,7 @@
 import FightObject, { FightTeamObject } from "./FightObject";
 import { Fight } from "./FightAssist";
-import FightReady, { FightOnce } from "./FightReady";
+import { BuffAction } from "./FightAction";
+import FightOnce from "./FightOnce";
 
 export class FightResult{
     constructor(victory:boolean ,evaluate:number=0){
@@ -12,7 +13,8 @@ export class FightResult{
     //评价
     public evaluate:number = 0;
     //准备阶段
-    public fightReady:FightReady = new FightReady();
+    public myReadyBuffs:Array<BuffAction> = [];
+    public enemyReadyBuffs:Array<BuffAction> = [];
     //战斗
     public fights:Array<FightOnce> = [];
 }
@@ -28,7 +30,8 @@ export default class FightLogic extends cc.EventTarget{
     private _isMyTeamfight:boolean  = true;
     private _isEnd:boolean = false;
 
-    private _ready:FightReady = null;
+    private _myReadyBuffs:Array<BuffAction>= null;
+    private _enemyReadyBuffs:Array<BuffAction>= null;
     private _fights:Array<FightOnce>  = [];
 
     constructor(lineupMine:any,linupEnemy:any){
@@ -61,10 +64,30 @@ export default class FightLogic extends cc.EventTarget{
         this._isEnd = false;
         this._endCallback = cb;
         this._fights = [];
+        this._myReadyBuffs = [];
+        this._enemyReadyBuffs = [];
 
-        this._ready = Fight.skill.checkReady();
-
+        this.checkReady();
         this.attckOnce();
+    }
+    public checkReady():void{
+        var action:BuffAction = null;
+        var myTeam :FightTeamObject = Fight.fight.getTeam(true);
+        myTeam.fightObjArr.forEach((fo:FightObject)=>{
+            action = Fight.skill.checkSkillReadyBuff(fo);
+            if(action!=null){
+                action.applyBuff();
+                this._myReadyBuffs.push(action);
+            }
+        });
+        var enemyTeam :FightTeamObject = Fight.fight.getTeam(false);
+        enemyTeam.fightObjArr.forEach((fo:FightObject)=>{
+            action = Fight.skill.checkSkillReadyBuff(fo);
+            if(action!=null){
+                action.applyBuff();
+                this._enemyReadyBuffs.push(action);
+            }
+        });
     }
 
     public attckOnce(){
@@ -83,7 +106,7 @@ export default class FightLogic extends cc.EventTarget{
         var fightOnce:FightOnce = new FightOnce(attckObj,beAttackObj);
         fightOnce.fight();
         this._fights.push(fightOnce);
-        if(fightOnce.isEnemyDead){
+        if(fightOnce.attack.isEnemyDead){
             this._isEnd = beAttackTeam.next();
         }
         if(!this._isEnd){
@@ -97,7 +120,8 @@ export default class FightLogic extends cc.EventTarget{
     public endFight(victory:boolean,evaluate:number){
         var result = new FightResult(victory,evaluate);
         result.fights = this._fights;
-        result.fightReady = this._ready;
+        result.myReadyBuffs = this._myReadyBuffs;
+        result.enemyReadyBuffs = this._enemyReadyBuffs;
         this._endCallback && this._endCallback(result);
     }
 
