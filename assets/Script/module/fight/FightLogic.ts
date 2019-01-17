@@ -17,6 +17,22 @@ export class FightResult{
     public enemyReadyBuffs:Array<BuffAction> = [];
     //战斗
     public fights:Array<FightOnce> = [];
+
+    public getHtmlDesc():string{
+        var desc:string = "";
+        this.myReadyBuffs.forEach((buff: BuffAction)=> {
+            desc += buff.getHtmlDesc()+"<br/>";
+        });
+        this.enemyReadyBuffs.forEach((buff: BuffAction)=> {
+            desc += buff.getHtmlDesc()+"<br/>";
+        });
+        this.fights.forEach((fight: FightOnce)=> {
+            desc += fight.getOnceHtmlDesc()+"<br/>";
+        });
+        desc += "战斗结束，<color=#D42834>"+(this.victory?"胜利！":"失败！")+"</color>";
+        // desc = desc.substring(0,desc.length - 5);
+        return desc;
+    }
 }
 
 export default class FightLogic extends cc.EventTarget{

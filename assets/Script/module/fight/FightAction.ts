@@ -3,32 +3,56 @@ import { Fight } from "./FightAssist";
 import { SkillProperty, SkillObject, BuffProperty, BuffObject } from "./SkillLogic";
 
 export default class FightAction{
-    private _desc:string ="";
-    public set desc(str:string){
-        this._desc = str;
-    }
+    // //是否本队
+    // public isMyTeam:boolean = false;
+    // //技能
+    // public skill:SkillInfo = null;
 
-    public get desc():string{
-        return this._desc;
+    // constructor(isMyTeam:boolean,skill:SkillInfo){
+    //     this.isMyTeam = isMyTeam;
+    //     this.skill = skill;
+    // }
+    public attackObj:FightObject = null;
+
+    constructor(fo:FightObject){
+        this.attackObj = fo;
+    }
+    protected getTeamHtmlDesc():string{
+        return "<color=#530000>"+(this.attackObj.isMyTeam?"［己方］":"［敌方］")+"</color>";
+    }
+    protected getSkillHtmlDesc():string{
+        var skillDesc = this.attackObj.skill.skillCfg.skillDesc;
+        var value = "<color=#29b92f>" + (Math.round(this.attackObj.skill.skillVal*1000)/10).toString()+"</color>";
+        skillDesc = skillDesc.replace("#",value);
+        return "<color=#29b92f>" +this.attackObj.lineup.cardName + "</color>获得了"+
+            "<color=#D43F97>［"+this.attackObj.skill.skillName+"］</color>:"+
+            skillDesc;
     }
 }
 export class AttackAction extends FightAction{
+    constructor(attack:FightObject,beAttack:FightObject){
+        super(attack)
+        this.beAttackObj = beAttack;
+    }
+
+    public beAttackObj:FightObject = null;
     //受到伤害
     public attackPower:number = 0;
     //是否阵亡
     public isEnemyDead:boolean = false;
     //回血
     public returnBlood:number = 0;
+
+    public getHtmlDesc():string{ 
+        var str = "<color=#29b92f>"+this.attackObj.lineup.cardName +"</color>对"+
+        "<color=#29b92f>"+ this.beAttackObj.lineup.cardName +"</color>造成"+
+        "<color=#D42834>"+this.attackPower+"</color>伤害，剩余生命："+
+        "<color=#29b92f>"+this.beAttackObj.curLife +"</color>";
+        return this.getTeamHtmlDesc() + str;
+    }
 }
 
 export class BuffAction extends FightAction{
-    //是否本队
-    public isMyTeam:boolean = false;
-    //卡牌名
-    public cardName:string = "";
-    //技能
-    public skill:SkillInfo = null;
- 
     //buff类型
     public buffType:number = 0;
     //buff属性
@@ -40,55 +64,29 @@ export class BuffAction extends FightAction{
     //buff位置
     public buffPos:number[] = [];
 
-     
-    constructor(isMyTeam:boolean,cardName:string,skill:SkillInfo){
-        super();
-        this.isMyTeam = isMyTeam;
-        this.cardName = cardName;
-        this.skill = skill;
-    }
-
     public applyBuff(){
         this.buffPos.forEach((pos:number)=>{
-            var fo:FightObject = Fight.fight.getFightObj(this.isMyTeam,pos);
-            var buff:BuffObject = new BuffObject(this.skill,this.buffType,this.buffProperty,this.buffValue);
+            var fo:FightObject = Fight.fight.getFightObj(this.attackObj.isMyTeam,pos);
+            var buff:BuffObject = new BuffObject(this.attackObj.skill,this.buffType,this.buffProperty,this.buffValue);
             fo.addBuff(buff);
         })
     }
-
-    public get desc():string{
-        var desc:string =this.isMyTeam?"［己方］":"［敌方］";
-        desc +=(this.cardName + "获得了［"+this.skill.skillName+"］:"+this.skill.skillDesc);
-        return desc;
+    
+    public getHtmlDesc():string{
+        return this.getTeamHtmlDesc() + this.getSkillHtmlDesc();
     }
 }
 
 export class SkillAction extends FightAction{
-    //是否本队
-    public isMyTeam:boolean = false;
-    //卡牌名
-    public cardName:string = "";
-    //技能
-    public skill:SkillInfo = null;
-
     public skillProperty:SkillProperty  = 0;
     public skillValue:number = 0;
 
-    constructor(isMyTeam:boolean,cardName:string,skill:SkillInfo){
-        super();
-        this.isMyTeam = isMyTeam;
-        this.cardName = cardName;
-        this.skill = skill;
-    }
-
     public applySkill(fightObj:FightObject){
-        var skillObj =  new SkillObject(this.skill,this.skillProperty,this.skillValue);
+        var skillObj =  new SkillObject(this.attackObj.skill,this.skillProperty,this.skillValue);
         fightObj.skillObj = skillObj;
     }
-
-    public get desc():string{
-        var desc:string =this.isMyTeam?"［己方］":"［敌方］";
-        desc +=(this.cardName + "获得了［"+this.skill.skillName+"］:"+this.skill.skillDesc);
-        return desc;
+    
+    public getHtmlDesc():string{
+        return this.getTeamHtmlDesc() + this.getSkillHtmlDesc();
     }
 }

@@ -211,6 +211,12 @@ export default class FightPanel extends UIBase {
 
     private initEnemyView(){
         if(this._fightEnemy.playerType == FightPlayerType.Boss){
+            this.playerNode.active = false;
+            this.bossNode.active = true;
+
+            this.bossName.string = this._fightEnemy.playerName;
+            this.bossPower.string = this._fightEnemy.totalPower.toString();
+        }else{
             this.playerNode.active = true;
             this.bossNode.active = false;
 
@@ -218,12 +224,6 @@ export default class FightPanel extends UIBase {
             this.playerName.string = this._fightEnemy.playerName;
             this.playerSex.load(PathUtil.getSexIconUrl(this._fightEnemy.playerSex));
             this.playerPower.string = this._fightEnemy.totalPower.toString();
-        }else{
-            this.playerNode.active = false;
-            this.bossNode.active = true;
-
-            this.bossName.string = this._fightEnemy.playerName;
-            this.bossPower.string = this._fightEnemy.totalPower.toString();
         }
         var nodeCard:cc.Node;
         for(var i:number = 0;i<this.nodeEnemyCards.length;i++){
@@ -270,7 +270,7 @@ export default class FightPanel extends UIBase {
             this._myReadyActions = [];
             for(i = 0;i<this._result.myReadyBuffs.length;i++){
                 buff = this._result.myReadyBuffs[i];
-                card = this.getCardFightWithPos(buff.fromPos,buff.isMyTeam);
+                card = this.getCardFightWithPos(buff.fromPos,buff.attackObj.isMyTeam);
                 this._myReadyActions.push(new CardAcitonObject(card,buff));
             }
         }
@@ -278,7 +278,7 @@ export default class FightPanel extends UIBase {
             this._enemyReadyActions =[];
             for(i = 0;i<this._result.enemyReadyBuffs.length;i++){
                 buff = this._result.enemyReadyBuffs[i];
-                card = this.getCardFightWithPos(buff.fromPos,buff.isMyTeam);
+                card = this.getCardFightWithPos(buff.fromPos,buff.attackObj.isMyTeam);
                 this._enemyReadyActions.push(new CardAcitonObject(card,buff));
             }
         }
@@ -338,7 +338,7 @@ export default class FightPanel extends UIBase {
             case FightOncePlayState.AttackSkill:{
                 if(this._fightOnce.attackSkill!=null){
                     var pos:cc.Vec2 = this._attackCard.node.parent.convertToWorldSpaceAR(this._attackCard.node.position);
-                    this.playSkill(pos,this._fightOnce.attackSkill.skill.skillCfg.skillIcon,()=>{
+                    this.playSkill(pos,this._fightOnce.attackSkill.attackObj.skill.skillCfg.skillIcon,()=>{
                         this.playFightOnce();
                     });
                 }else{
@@ -357,7 +357,7 @@ export default class FightPanel extends UIBase {
             case FightOncePlayState.BeAttackSkill:{
                 if(this._fightOnce.beAttackSkill!=null){
                     var pos:cc.Vec2 = this._beAttackCard.node.parent.convertToWorldSpaceAR(this._beAttackCard.node.position);
-                    Fight.panel.playSkill(pos,this._fightOnce.beAttackSkill.skill.skillCfg.skillIcon,()=>{
+                    Fight.panel.playSkill(pos,this._fightOnce.beAttackSkill.attackObj.skill.skillCfg.skillIcon,()=>{
                         this._beAttackCard.beAttack(this._fightOnce.attack.attackPower);
                         this.playFightOnce();
                     });
@@ -390,7 +390,7 @@ export default class FightPanel extends UIBase {
     public showBuffFly(index:number,buff:BuffAction,fromPos:cc.Vec2,toPos:cc.Vec2,cb:Function){
         fromPos = this.buffNode.convertToNodeSpace(fromPos);
         toPos = this.buffNode.convertToNodeSpaceAR(toPos);
-        UI.loadUI(ResConst.BuffNode,{type:buff.buffType,sign:buff.skill.skillCfg.skillSign},this.buffNode,(ui:UIBase)=>{
+        UI.loadUI(ResConst.BuffNode,{type:buff.buffType,sign:buff.attackObj.skill.skillCfg.skillSign},this.buffNode,(ui:UIBase)=>{
             (ui as BuffNode).showFly(index,fromPos,toPos,()=>{
                 cb();
             });

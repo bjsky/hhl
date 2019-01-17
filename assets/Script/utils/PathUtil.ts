@@ -4,7 +4,12 @@ import { SexEnum } from "../CommonData";
 import { BuffType } from "../module/fight/SkillLogic";
 
 export default class PathUtil{
-
+    public static getResultRewardTitleUrl(victory:boolean):string{
+        return "ui/module/fightResult/"+(victory?"sljl":"sbjl");
+    }
+    public static getResultEvalUrl(evaluate:number):string{
+        return "ui/Common/star"+evaluate;
+    }
     public static getMaskBgUrl():string{
         return "ui/Common2/maskbg";
     }

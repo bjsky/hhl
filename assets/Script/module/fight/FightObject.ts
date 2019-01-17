@@ -16,9 +16,6 @@ export class SkillInfo{
             this.skillVal = num;
             this.skillId = Number(cfg.id);
             this.skillName = cfg.name;
-            var skillDesc = cfg.skillDesc;
-            var value = (Math.round(this.skillVal*1000)/10).toString();
-            this.skillDesc = skillDesc.replace("#",value);
         }
     }
 
@@ -29,7 +26,7 @@ export class SkillInfo{
     public skillVal:number = 0;
     public skillId:number = 0;
     public skillName:string = "";
-    public skillDesc:string = "";
+
 
 }
 export class FightTeamObject{
@@ -121,11 +118,7 @@ export default class FightObject{
         }
 
         this.skillObj = null;
-        var action:AttackAction = new AttackAction();
-        var desc:string =this.isMyTeam?"［己方］":"［敌方］";
-        desc += this.lineup.cardName +"对"+ beAttack.lineup.cardName +"造成"+attackPower+"伤害，剩余生命："+beAttack.curLife;
-        desc += returnStr;
-        action.desc = desc;
+        var action:AttackAction = new AttackAction(this,beAttack);
         action.attackPower = attackPower;
         action.isEnemyDead = beAttack.isDead;
         action.returnBlood = returnLife;

@@ -65,7 +65,7 @@ export default class SkillLogic{
             case 1: //暴虐之力
             case 3: //巨人之躯
             {
-                buff = new BuffAction(fo.isMyTeam,fo.lineup.cardName,fo.skill);
+                buff = new BuffAction(fo);
                 buff.buffType = BuffType.Mine;
                 var property:BuffProperty;
                 if(skillId == 1){
@@ -98,7 +98,7 @@ export default class SkillLogic{
                     }
                }
                if(hasBuff){
-                    buff = new BuffAction(fo.isMyTeam,fo.lineup.cardName,fo.skill);
+                    buff = new BuffAction(fo);
                     buff.buffType = BuffType.Team;
                     if(skillId == 6 || skillId == 19){
                         property = BuffProperty.Power;
@@ -135,7 +135,7 @@ export default class SkillLogic{
                     hasAction = true;
                 }
                 if(hasAction){
-                    action = new SkillAction(attack.isMyTeam,attack.lineup.cardName,attack.skill);
+                    action = new SkillAction(attack);
                     action.skillProperty = SkillProperty.AddPower;
                     action.skillValue = (1+attack.skill.skillVal);
                 }
@@ -148,7 +148,7 @@ export default class SkillLogic{
                     hasAction = true;
                 }
                 if(hasAction){
-                    action = new SkillAction(attack.isMyTeam,attack.lineup.cardName,attack.skill);
+                    action = new SkillAction(attack);
                     action.skillProperty = SkillProperty.AddPower;
                     var buffValue = 1;
                     if(skillId == 2){
@@ -161,7 +161,7 @@ export default class SkillLogic{
             }break;
             case 17:    //人皇秩序
             {
-                action = new SkillAction(attack.isMyTeam,attack.lineup.cardName,attack.skill);
+                action = new SkillAction(attack);
                 action.skillProperty = SkillProperty.PowerAttachLife;
                 action.skillValue = attack.skill.skillVal;
             }break;
@@ -172,7 +172,7 @@ export default class SkillLogic{
                     hasAction = true;
                 }
                 if(hasAction){
-                    action = new SkillAction(attack.isMyTeam,attack.lineup.cardName,attack.skill);
+                    action = new SkillAction(attack);
                     action.skillProperty = SkillProperty.ReturnBlood;
                     action.skillValue = 0.25;
                 }
@@ -194,7 +194,7 @@ export default class SkillLogic{
                     hasAction = true;
                 }
                 if(hasAction){
-                    action = new SkillAction(beAttack.isMyTeam,beAttack.lineup.cardName,beAttack.skill);
+                    action = new SkillAction(beAttack);
                     if(skillId == 15){
                         action.skillProperty = SkillProperty.Dodge;
                         action.skillValue = 0;

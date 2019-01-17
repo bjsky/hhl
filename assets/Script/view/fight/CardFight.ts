@@ -209,7 +209,7 @@ export default class CardFight extends  UIBase {
         
         var toWPos:cc.Vec2 = pNode.convertToWorldSpaceAR(toPos);
         Fight.panel.showBuffFly(addIndex,buff,fromPos,toWPos,()=>{
-            UI.loadUI(ResConst.BuffNode,{type:buff.buffType,sign:buff.skill.skillCfg.skillSign},pNode,(ui:UIBase)=>{
+            UI.loadUI(ResConst.BuffNode,{type:buff.buffType,sign:buff.attackObj.skill.skillCfg.skillSign},pNode,(ui:UIBase)=>{
                 ui.node.setPosition(toPos);
             })
             if(buffAnim.prop == BuffProperty.Power){
@@ -273,7 +273,7 @@ export default class CardFight extends  UIBase {
 
         if(action instanceof BuffAction){
             var pos:cc.Vec2 = this.node.parent.convertToWorldSpaceAR(this.node.position);
-            Fight.panel.playSkill(pos,(action as BuffAction).skill.skillCfg.skillIcon,()=>{
+            Fight.panel.playSkill(pos,(action as BuffAction).attackObj.skill.skillCfg.skillIcon,()=>{
                 this.showBuffFly();
             });
         }
@@ -290,7 +290,7 @@ export default class CardFight extends  UIBase {
         this._buffActions = [];
         var fromPos:cc.Vec2 = this.node.parent.convertToWorldSpaceAR(cc.v2(this.node.position));
         buff.buffPos.forEach((pos:number)=>{
-            var card:CardFight = Fight.panel.getCardFightWithPos(pos,buff.isMyTeam);
+            var card:CardFight = Fight.panel.getCardFightWithPos(pos,buff.attackObj.isMyTeam);
             this._buffActions.push(new CardAcitonObject(card,buff));
         })
         var addIndex:number = 0;

@@ -98,9 +98,9 @@ export default class FlowGroup extends cc.Component {
         }
     }
     private updateContentSize(){
-        var colcount = Math.ceil(this.node.width / this.itemRender.data.width);
-        if(this._groupData.length<colcount){
-            this._col = 1;
+        var colcount = Math.floor(this.node.width / this.itemRender.data.width);
+        if(this._groupData.length<=colcount){
+            this._col = this._groupData.length;
             this._row = 1;
         }else{
             this._col = colcount;

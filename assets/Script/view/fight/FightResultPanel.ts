@@ -4,6 +4,10 @@ import FlowGroup from "../../component/FlowGroup";
 import TouchHandler from "../../component/TouchHandler";
 import { Fight } from "../../module/fight/FightAssist";
 import { FightResult } from "../../module/fight/FightLogic";
+import PathUtil from "../../utils/PathUtil";
+import FightInfo, { FightPlayerType } from "../../model/FightInfo";
+import { EVENT } from "../../message/EventCenter";
+import GameEvent from "../../message/GameEvent";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -25,19 +29,29 @@ export default class FightResultPanel extends PopUpBase {
     @property(cc.Node)
     failNode: cc.Node = null;
     @property(cc.Node)
-    headNode: cc.Node = null;
+    rewardNode: cc.Node = null;
     @property(cc.Node)
     detailNode: cc.Node = null;
     @property(LoadSprite)
-    sprLingqu: LoadSprite = null;
+    sprReceive: LoadSprite = null;
     @property(cc.Button)
-    btnLingqu: cc.Button = null;
+    btnReceive: cc.Button = null;
     @property(cc.Button)
-    btnXiangxi: cc.Button = null;
+    btnClose: cc.Button = null;
+    
+    @property(cc.Button)
+    btnDetail: cc.Button = null;
+    @property(cc.Button)
+    btnBack: cc.Button = null;
     @property(LoadSprite)
     sprStar: LoadSprite = null;
     @property(FlowGroup)
     groupReward:FlowGroup = null;
+    @property(cc.Node)
+    fightReward:cc.Node = null;
+    @property(cc.Node)
+    bossFailed:cc.Node = null;
+
 
     @property(LoadSprite)
     headMine: LoadSprite = null;
@@ -50,33 +64,61 @@ export default class FightResultPanel extends PopUpBase {
 
     @property(cc.RichText)
     detailText:cc.RichText = null;
+    @property(cc.ScrollView)
+    detailScroll:cc.ScrollView = null;
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
-    private _result:FightResult;
+    private _result:FightResult = null;
+    private _fightMine:FightInfo = null;
+    private _fightEnemy:FightInfo = null;
     private _rewards:Array<any> =[];
     public setData(data:any){
         super.setData(data);
         this._result = data.result;
+        this._fightMine = data.fightMine;
+        this._fightEnemy = data.fightEnemy;
         this._rewards = data.rewards;
+    }
+    onLoad(){
+        this.btnBack.node.active = false;
+        this.detailNode.active = false;
+        this._showDetail = false;
     }
 
     onEnable(){
         super.onEnable();
-        this.btnLingqu.node.on(TouchHandler.TOUCH_CLICK,this.onReserveClick,this);
+        this.btnReceive.node.on(TouchHandler.TOUCH_CLICK,this.onReceiveClick,this);
+        this.btnClose.node.on(TouchHandler.TOUCH_CLICK,this.onCloseClick,this);
+        this.btnDetail.node.on(cc.Node.EventType.TOUCH_START,this.onShowDetail,this);
+        this.btnBack.node.on(cc.Node.EventType.TOUCH_START,this.onBackReward,this);
         this.initView();
     }
     onDisable(){
         super.onDisable();
-        this.btnLingqu.node.off(TouchHandler.TOUCH_CLICK,this.onReserveClick,this);
+        this.btnReceive.node.off(TouchHandler.TOUCH_CLICK,this.onReceiveClick,this);
+        this.btnClose.node.off(TouchHandler.TOUCH_CLICK,this.onCloseClick,this);
+        this.btnDetail.node.off(cc.Node.EventType.TOUCH_START,this.onShowDetail,this);
+        this.btnBack.node.off(cc.Node.EventType.TOUCH_START,this.onBackReward,this);
     }
 
-    private onReserveClick(e){
-        this.onClose(e);
+    private _showDetail:boolean =false;
+    private onShowDetail(e){
+        this.showDetail(true);
     }
-    protected onCloseComplete(){
-        super.onCloseComplete();
-        
+    private onBackReward(e){
+        this.showDetail(false);
+    }
+    private onReceiveClick(e){
+        EVENT.emit(GameEvent.Show_Res_Add,{types:this._rewards});
+        this.closeEndFight(e);
+    }
+    private onCloseClick(e){
+        this.closeEndFight(e);
+    }
+    
+    private closeEndFight(e){
+        this.onClose(e);
+
         Fight.endFight();
     }
     start () {
@@ -84,7 +126,49 @@ export default class FightResultPanel extends PopUpBase {
     }
 
     private initView(){
-        
+        this.victoryNode.active = this._result.victory;
+        this.failNode.active = !this._result.victory;
+        if(this._result.evaluate>0){
+            this.sprStar.load(PathUtil.getResultEvalUrl(this._result.evaluate));
+        }else{
+            this.sprStar.load("");
+        }
+        this.nameMine.string = this._fightMine.playerName;
+        this.headMine.load(this._fightMine.playerIcon);
+        this.nameEnemy.string = this._fightEnemy.playerName;
+        this.headEnemy.load(this._fightEnemy.playerIcon);
+
+        this.detailText.string = this._result.getHtmlDesc();
+
+        this.sprReceive.load(PathUtil.getResultRewardTitleUrl(this._result.victory));
+        if(!this._result.victory && this._fightEnemy.playerType == FightPlayerType.Boss){ //挑战boss失败
+            this.groupReward.setGroupData([]);
+            this.fightReward.active = false;
+            this.bossFailed.active = true;
+        }else{
+            this.fightReward.active = true;
+            this.bossFailed.active = false;
+            this.groupReward.setGroupData(this._rewards);
+        }
+    }
+
+    private showDetail(show:boolean){
+        this._showDetail = show;
+        if(this._showDetail){
+            this.btnDetail.node.active = false;
+            this.btnBack.node.active = true;
+            this.detailNode.active = true;
+            this.detailNode.runAction(cc.fadeIn(0.3));
+            this.rewardNode.runAction(cc.fadeOut(0.3));
+            this.detailScroll.setContentPosition(cc.v2(0,0))
+        }else{
+            this.btnDetail.node.active = true;
+            this.btnBack.node.active = false;
+            this.detailNode.runAction(cc.sequence(cc.fadeOut(0.3),cc.callFunc(()=>{
+                this.detailNode.active = false;
+            })));
+            this.rewardNode.runAction(cc.fadeIn(0.3));
+        }
     }
 
     // update (dt) {}

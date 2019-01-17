@@ -64,21 +64,6 @@ export default class FightAssist{
 
     private endFunc(result:FightResult){
         this._result = result;
-        result.myReadyBuffs.forEach((action: BuffAction)=> {
-            console.log(action.desc);
-        });
-        result.enemyReadyBuffs.forEach((action: BuffAction)=> {
-            console.log(action.desc);
-        });
-        result.fights.forEach((fight: FightOnce)=> {
-            if(fight.attackSkill)
-                console.log(fight.attackSkill.desc);
-            if(fight.beAttackSkill)
-                console.log(fight.beAttackSkill.desc);
-            if(fight.attack)
-                console.log(fight.attack.desc);
-        });
-        console.log(">>>"+(result.victory?"胜利":"失败"));
         if(this._fightPanel){
             this._fightPanel.initResult(result,this.resultEnd.bind(this));
         }
@@ -91,6 +76,8 @@ export default class FightAssist{
                 Passage.fightBossSuccess((restAdd:ResInfo,expadd:number)=>{
                     UI.createPopUp(ResConst.FightResult,
                             {result:this._result,
+                                fightMine:this._infoMine,
+                                fightEnemy:this._infoEnemy,
                                 rewards:[{type:ResType.gold,value:restAdd.gold},
                                 {type:ResType.lifeStone,value:restAdd.lifeStone},
                                 {type:ResType.exp,value:expadd}
@@ -99,6 +86,8 @@ export default class FightAssist{
             }else{
                 UI.createPopUp(ResConst.FightResult,
                     {result:this._result,
+                        fightMine:this._infoMine,
+                        fightEnemy:this._infoEnemy,
                         rewards:[]});
             }
         }else if(this._infoEnemy.playerType == FightPlayerType.Enemy){  //征战成功

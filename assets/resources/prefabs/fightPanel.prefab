@@ -2472,7 +2472,7 @@
       }
     ],
     "_tag": -1,
-    "_active": true,
+    "_active": false,
     "_components": [],
     "_prefab": {
       "__id__": 104
@@ -3401,7 +3401,7 @@
       }
     ],
     "_tag": -1,
-    "_active": false,
+    "_active": true,
     "_components": [],
     "_prefab": {
       "__id__": 115
@@ -5382,6 +5382,7 @@
       "__id__": 1
     },
     "_enabled": true,
+    "maskOpacity": 40,
     "center": {
       "__id__": 6
     },

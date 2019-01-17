@@ -253,7 +253,7 @@ export default class MsgLogin
     }
 
     public respFromLocal(){
-        var ownerCards:Array<any> = [this.getSkillCard(8),this.getSkillCard(16),this.getSkillCard(6),this.getSkillCard(9),this.getSkillCard(11)];
+        var ownerCards:Array<any> = [];
         // for(var i:number = 0;i<5;i++){
         //     ownerCards.push(MsgCardSummon.randomCardInfo(CardSummonType.LifeStone));
         // }

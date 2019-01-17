@@ -33,4 +33,17 @@ export default class FightOnce{
     public fight(){
         this.attack = this.attackObj.fight(this.beAttackObj);
     }
+
+    public getOnceHtmlDesc():string{
+        var str:string ="";
+        if(this.attackSkill!=null){
+            str += (this.attackSkill.getHtmlDesc()+"<br/>");
+        }
+        str += (this.attack.getHtmlDesc()+"<br/>");
+        if(this.beAttackSkill!=null){
+            str += (this.beAttackSkill.getHtmlDesc() +"<br/>");
+        }
+        str = str.substring(0,str.length - 5);
+        return str;
+    }
 }

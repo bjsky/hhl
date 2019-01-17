@@ -658,7 +658,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 400,
+      "width": 460,
       "height": 60
     },
     "_rotationX": 0,
@@ -734,6 +734,7 @@
       "__id__": 1
     },
     "_enabled": true,
+    "maskOpacity": 40,
     "closeBtn": null,
     "lblDesc": {
       "__id__": 9
