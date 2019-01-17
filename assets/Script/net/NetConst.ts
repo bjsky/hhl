@@ -33,5 +33,9 @@ export default class NetConst{
     public static LineupModify:number = 21040;
     //挑战boss
     public static FightBoss:number = 60001;
+    //世界征战列表
+    public static WorldEnemyList:number = 70001;
+    //玩家战斗
+    public static FightEnemy:number = 70002;
 }
 

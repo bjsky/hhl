@@ -4,6 +4,7 @@ import { AlertBtnType } from "../view/AlertPanel";
 import { ResConst } from "../module/loading/steps/LoadingStepRes";
 import { EVENT } from "../message/EventCenter";
 import GameEvent from "../message/GameEvent";
+import PathUtil from "../utils/PathUtil";
 
 /**
  * 管理各种界面单例,层级
@@ -115,7 +116,10 @@ export default class UIManager{
         this._mask.setAnchorPoint(0.5, 0.5);
         this._mask.addComponent(cc.BlockInputEvents);
         let sp = this._mask.addComponent(cc.Sprite);
-        sp.spriteFrame = new cc.SpriteFrame('res/raw-internal/image/default_sprite_splash.png');
+        cc.loader.loadRes(PathUtil.getMaskBgUrl(),cc.SpriteFrame,(error: Error, spr: cc.SpriteFrame) => {
+            sp.spriteFrame = spr;
+        })
+        //sp.spriteFrame = new cc.SpriteFrame('res/raw-internal/image/default_sprite_splash.png');
         sp.sizeMode = cc.Sprite.SizeMode.CUSTOM;
         this._mask.opacity = 51;
         this._mask.color = cc.color(0, 0, 0);
@@ -133,11 +137,14 @@ export default class UIManager{
     public createPopUp(res:string,data:any,createComplete?:Function){
         this._mask.active = true;
         this._mask.zIndex = this._popups.length > 0?this._popups[this._popups.length -1].node.zIndex+1:0;
+        console.log("createPopup,mask index:"+this._mask.zIndex)
         this.loadUI(res,data,this.PopupLayer,(ui:UIBase)=>{
             if(ui){
                 this._popups.push(ui);
                 this._curPopup = ui;
                 ui.node.zIndex = this._popups.length * 2;
+                this._mask.opacity = ui.maskOpacity;
+                console.log("createPopup,node index:"+ui.node.zIndex)
                 // this.checkMaskLayer();
                 createComplete && createComplete(ui);
             }
@@ -155,11 +162,13 @@ export default class UIManager{
                 this._mask.active = true;
                 this._mask.zIndex = this._popups[this._popups.length -1].node.zIndex-1;
                 this._curPopup = this._popups[this._popups.length-1];
+                this._mask.opacity = this._curPopup.maskOpacity;
             }else{
                 this._mask.active = false;
                 this._mask.zIndex = 0;
                 this._curPopup = null;
             }
+            console.log("closePopup,mask index:"+this._mask.zIndex)
         }
         this.removeUI(node);
     }

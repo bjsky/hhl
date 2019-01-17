@@ -4,15 +4,9 @@ import { SPassageInfo, SResInfo, SUserInfo } from "./MsgLogin";
 import { Passage } from "../../module/battle/PassageAssist";
 import { COMMON } from "../../CommonData";
 
-export enum FightResult{
-    victory = 0,
-    fail
-}
-
-/**
- * 更新引导id
- */
 export class CSFightBoss{
+    //关卡id
+    public passageId:number = 0;
 }
 
 export class SCFightBoss{
@@ -45,9 +39,10 @@ export default class MsgFightBoss extends MessageBase{
         this.isLocal = true;
     }
 
-    public static create(){
+    public static create(passId:number){
         var msg = new MsgFightBoss();
         msg.param = new CSFightBoss();
+        msg.param.passageId = passId;
         return msg;
     }
 

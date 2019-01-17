@@ -41,7 +41,7 @@ export default class AwardPanel extends PopUpBase {
     // onLoad () {}
 
 
-    protected onClose(e){
+    public onClose(e){
         var seq = cc.sequence(
             cc.moveBy(0.3,cc.v2(0,500)).easing(cc.easeBackIn()),
             cc.callFunc(()=>{

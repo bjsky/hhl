@@ -11,6 +11,8 @@ import GameEvent from "../../message/GameEvent";
 import { AwardTypeEnum } from "../../view/AwardPanel";
 import { ResType } from "../../model/ResInfo";
 import MsgFightBoss from "../../net/msg/MsgFightBoss";
+import FightInfo, { FightPlayerType } from "../../model/FightInfo";
+import LineupInfo from "../../model/LineupInfo";
 
 export default class PassageAssist{
 
@@ -76,19 +78,54 @@ export default class PassageAssist{
         },this)
     }
 
-    public fightBossEnd(){
-        NET.send(MsgFightBoss.create(),(msg:MsgFightBoss)=>{
+
+    public getBossFightInfo():FightInfo{
+        var passCfg = this.passageInfo.passageCfg;
+        var info:FightInfo = new FightInfo();
+        info.playerType = FightPlayerType.Boss;
+        info.playerUid ="";
+        info.playerName ="关卡BOSS："  + passCfg.areaName;
+        info.playerLevel = 1;
+        info.playerSex = 1;
+        info.playerIcon  = "";
+
+        var lineupBoss:any  = {};
+        var lineupPower:number = 0;
+        var lineupIds:string = passCfg.amyHero;
+        var lineupGradeLevel:string = passCfg.amyHeroGradeLv;
+        if(lineupIds!=""){
+            var ids:Array<string> = lineupIds.split(";");
+            var lineup:LineupInfo;
+            var gradeLvs:Array<string> = lineupGradeLevel.split("|");
+            var gradelv:string;
+            for(var i:number = 0;i<ids.length;i++){
+                lineup = new LineupInfo();
+                gradelv = gradeLvs[i];
+                lineup.initBoss(i,Number(ids[i]),Number(gradelv.split(";")[0]),Number(gradelv.split(";")[1]));
+                lineupBoss[i] = lineup;
+                lineupPower += Number(lineup.power);
+            }
+        }
+        info.lineup = lineupBoss;
+        info.totalPower = lineupPower;
+        return info;
+    }
+
+    //挑战boss成功
+    public fightBossSuccess(cb:Function){
+        NET.send(MsgFightBoss.create(this.passageInfo.passId),(msg:MsgFightBoss)=>{
             if(msg && msg.resp){
                 COMMON.updateUserInfo(msg.resp.userInfo);
                 Passage.updatePassageInfo(msg.resp.passageInfo);
                 EVENT.emit(GameEvent.Passage_FightBossEnd);
 
                 var cost:SResInfo = COMMON.updateResInfo(msg.resp.resInfo);
-                EVENT.emit(GameEvent.Show_AwardPanel,{type:AwardTypeEnum.PassageCollect,
-                    arr:[{type:ResType.gold,value:cost.gold},
-                        {type:ResType.lifeStone,value:cost.lifeStone},
-                        {type:ResType.exp,value:msg.resp.addExp},
-                    ]})
+                cb && cb(cost,msg.resp.addExp);
+                // EVENT.emit(GameEvent.Show_AwardPanel,{type:AwardTypeEnum.PassageCollect,
+                //     arr:[{type:ResType.gold,value:cost.gold},
+                //         {type:ResType.lifeStone,value:cost.lifeStone},
+                //         {type:ResType.exp,value:msg.resp.addExp},
+                //     ]})
             }
         },this)
     }

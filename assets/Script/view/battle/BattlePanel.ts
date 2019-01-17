@@ -13,7 +13,6 @@ import { UI } from "../../manager/UIManager";
 import LineUpUI from "./LineUpUI";
 import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 import { Lineup } from "../../module/battle/LineupAssist";
-import { FightResult } from "../../net/msg/MsgFightBoss";
 import { Fight } from "../../module/fight/FightAssist";
 import FightInfo from "../../model/FightInfo";
 
@@ -133,13 +132,6 @@ export default class BattlePanel extends UIBase {
     }
 
     private onFightBoss(e){
-        // var myPower = this.lineUpMine.totalPower;
-        // var boosPower = this.lineUpBoss.totalPower;
-        // if(myPower>boosPower){
-        //     Passage.fightBossEnd();
-        // }else{
-        //     UI.showAlert("挑战失败");
-        // }
         var infoMine:FightInfo = Lineup.getOwnerFightInfo();
         if(infoMine.totalPower == 0){
             UI.showAlert("请先上阵英雄");
@@ -231,7 +223,7 @@ export default class BattlePanel extends UIBase {
 
     private _bossFightInfo:FightInfo = null;;
     private initLineupBoss(){
-        this._bossFightInfo = Lineup.getBossFightInfo(Passage.passageInfo.passId);
+        this._bossFightInfo = Passage.getBossFightInfo();
         this.lineUpBoss.initLineup(this._bossFightInfo.lineup);
         this.bossGold.string = StringUtil.formatReadableNumber(Passage.passageInfo.passageCfg.firstGold);
         this.bossStone.string = StringUtil.formatReadableNumber(Passage.passageInfo.passageCfg.firstStone);

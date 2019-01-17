@@ -5,6 +5,9 @@ import { BuffType } from "../module/fight/SkillLogic";
 
 export default class PathUtil{
 
+    public static getMaskBgUrl():string{
+        return "ui/Common2/maskbg";
+    }
     public static getBuffIconUrl(buffType:BuffType):string{
         var buffImg:string = "";
         if(buffType == BuffType.Team){

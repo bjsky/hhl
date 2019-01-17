@@ -15,6 +15,8 @@ export default class UIBase extends cc.Component {
     //ui的资源名 
     public name:string;
 
+    @property()
+    maskOpacity:number = 40;
     //设置数据
     public setData(data){
     }

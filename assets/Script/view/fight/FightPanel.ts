@@ -1,7 +1,7 @@
 import UIBase from "../../component/UIBase";
 import { UI } from "../../manager/UIManager";
 import { Fight } from "../../module/fight/FightAssist";
-import FightInfo from "../../model/FightInfo";
+import FightInfo, { FightPlayerType } from "../../model/FightInfo";
 import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 import { FightResult } from "../../module/fight/FightLogic";
 import LoadSprite from "../../component/LoadSprite";
@@ -184,7 +184,8 @@ export default class FightPanel extends UIBase {
 
     private onEndTouch(e){
         this.btnEnd.node.active = false;
-        Fight.endFight();
+        this.stopSequence();
+        this.endResult();
     }
 
     private initView(){
@@ -209,7 +210,7 @@ export default class FightPanel extends UIBase {
     }
 
     private initEnemyView(){
-        if(this._fightEnemy.isPlayer){
+        if(this._fightEnemy.playerType == FightPlayerType.Boss){
             this.playerNode.active = true;
             this.bossNode.active = false;
 
@@ -243,6 +244,10 @@ export default class FightPanel extends UIBase {
             return null;
         }
     }
+
+    public endResult(){
+        this._reslutEndCb && this._reslutEndCb();
+    }
     /////////////////////// 
     //    ACTIONS 
     //////////////////////
@@ -251,9 +256,13 @@ export default class FightPanel extends UIBase {
     private _myReadyActions:Array<CardAcitonObject> = [];
     private _enemyReadyActions:Array<CardAcitonObject> =[];
     private _fightOnceActions:Array<FightOnce> = [];
+    private _endFight:boolean = false;
+    private _reslutEndCb:Function = null;
 
-    public initResult(result:FightResult){
+    public initResult(result:FightResult,cb:Function){
+        this._endFight = false;
         this._result = result;
+        this._reslutEndCb = cb;
         var card:CardFight;
         var i:number = 0;
         var buff:BuffAction;
@@ -274,7 +283,16 @@ export default class FightPanel extends UIBase {
             }
         }
         this._fightOnceActions = this._result.fights.slice();
-        this.scheduleOnce(this.playSequence,this._delayAction);
+        this.playDelaySequence();
+    }
+    private stopSequence(){
+        this.unschedule(this.playSequence);
+        this._endFight = true;
+    }
+    private playDelaySequence(){
+        if(!this._endFight){
+            this.scheduleOnce(this.playSequence,this._delayAction);
+        }
     }
 
     private playSequence(){
@@ -284,7 +302,7 @@ export default class FightPanel extends UIBase {
                     cardAction.complete = true;
                     if(CardAcitonObject.checkAllActionsComplete(this._myReadyActions)){
                         this._myReadyActions =[];
-                        this.scheduleOnce(this.playSequence,this._delayAction);
+                        this.playDelaySequence();
                     }
                 });
             })
@@ -294,7 +312,7 @@ export default class FightPanel extends UIBase {
                     cardAction.complete = true;
                     if(CardAcitonObject.checkAllActionsComplete(this._enemyReadyActions)){
                         this._enemyReadyActions =[];
-                        this.scheduleOnce(this.playSequence,this._delayAction);
+                        this.playDelaySequence();
                     }
                 });
             })
@@ -305,7 +323,7 @@ export default class FightPanel extends UIBase {
             this._beAttackCard = this.getCardFightWithPos(this._fightOnce.beAttackObj.lineup.pos,this._fightOnce.beAttackObj.isMyTeam);
             this.playFightOnce();
         }else{
-            //show result
+            this.endResult();
         }
     }
 
@@ -363,7 +381,7 @@ export default class FightPanel extends UIBase {
                 }
             }break;
             default:{
-                this.scheduleOnce(this.playSequence,this._delayAction);
+                this.playDelaySequence();
             }break;
         }
     }

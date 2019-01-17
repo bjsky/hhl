@@ -2,11 +2,13 @@ import FightPanel from "../../view/fight/FightPanel";
 import { UI } from "../../manager/UIManager";
 import { ResConst } from "../loading/steps/LoadingStepRes";
 import UIBase from "../../component/UIBase";
-import FightInfo from "../../model/FightInfo";
+import FightInfo, { FightPlayerType } from "../../model/FightInfo";
 import FightLogic, { FightResult } from "./FightLogic";
 import { BuffAction } from "./FightAction";
 import SkillLogic from "./SkillLogic";
 import FightOnce from "./FightOnce";
+import { Passage } from "../battle/PassageAssist";
+import ResInfo, { ResType } from "../../model/ResInfo";
 
 export default class FightAssist{
     private static _instance: FightAssist = null;
@@ -61,6 +63,7 @@ export default class FightAssist{
 
 
     private endFunc(result:FightResult){
+        this._result = result;
         result.myReadyBuffs.forEach((action: BuffAction)=> {
             console.log(action.desc);
         });
@@ -77,7 +80,29 @@ export default class FightAssist{
         });
         console.log(">>>"+(result.victory?"胜利":"失败"));
         if(this._fightPanel){
-            this._fightPanel.initResult(result);
+            this._fightPanel.initResult(result,this.resultEnd.bind(this));
+        }
+    }
+
+    private _result:FightResult = null;
+    private resultEnd(){
+        if(this._infoEnemy.playerType == FightPlayerType.Boss){ 
+            if(this._result.victory){//挑战boss成功
+                Passage.fightBossSuccess((restAdd:ResInfo,expadd:number)=>{
+                    UI.createPopUp(ResConst.FightResult,
+                            {result:this._result,
+                                rewards:[{type:ResType.gold,value:restAdd.gold},
+                                {type:ResType.lifeStone,value:restAdd.lifeStone},
+                                {type:ResType.exp,value:expadd}
+                            ]});
+                });
+            }else{
+                UI.createPopUp(ResConst.FightResult,
+                    {result:this._result,
+                        rewards:[]});
+            }
+        }else if(this._infoEnemy.playerType == FightPlayerType.Enemy){  //征战成功
+
         }
     }
 

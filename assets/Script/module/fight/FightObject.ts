@@ -120,6 +120,7 @@ export default class FightObject{
             returnStr = "\n恢复生命"+returnLife;
         }
 
+        this.skillObj = null;
         var action:AttackAction = new AttackAction();
         var desc:string =this.isMyTeam?"［己方］":"［敌方］";
         desc += this.lineup.cardName +"对"+ beAttack.lineup.cardName +"造成"+attackPower+"伤害，剩余生命："+beAttack.curLife;
