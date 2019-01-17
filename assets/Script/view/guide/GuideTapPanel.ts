@@ -48,6 +48,10 @@ export default class GuideTapPanel extends UIBase {
     storyText: cc.RichText = null;
     @property(TextAni)
     storyTextani: TextAni = null;
+    @property(cc.Node)
+    storyImg: cc.Node = null;
+    @property(cc.Label)
+    clickLabel: cc.Label = null;
 
     @property(cc.Node)
     arrowNode: cc.Node = null;
@@ -59,6 +63,7 @@ export default class GuideTapPanel extends UIBase {
     onLoad () {
         this.storyText.string = "";
         this.content.string ="";
+        this.clickLabel.node.active = false;
     }
 
     // onEnable(){
@@ -135,12 +140,22 @@ export default class GuideTapPanel extends UIBase {
     }
 
     private showStory(){
-        this.storyTextani.addTypewriterAni(this._guideInfo.content,this.storyComplete.bind(this),"#FFFFFF");
+        // this.storyTextani.addTypewriterAni(this._guideInfo.content,this.storyComplete.bind(this),"#FFFFFF");
+        this.storyImg.setPosition(cc.v2(0,-cc.winSize.height+300));
+        var act = cc.sequence(
+            cc.moveTo(4,cc.v2(0,0)),
+            cc.callFunc(()=>{
+                this.storyComplete();
+            })
+        )
+        this.storyImg.runAction(act);
     }
 
     private storyComplete(){
-        this.storyText.scheduleOnce(this.onStoryClick.bind(this),5);
+        this.scheduleOnce(this.onStoryClick.bind(this),5);
+        this.storyImg.stopAllActions();
         this.clickNode.on(cc.Node.EventType.TOUCH_START,this.onStoryClick,this);
+        this.clickLabel.node.active = true;
     }
 
     private onStoryClick(e){

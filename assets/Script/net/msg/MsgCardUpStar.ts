@@ -59,7 +59,7 @@ export default class MsgCardUpStar extends MessageBase{
         sInfo.level = sInfo.level;
         json ={
             cardInfo:sInfo,
-            useCardUUid:this.param.useCardUuid,
+            useCardUuid:Card.getCardByUUid(this.param.useCardUuid).cloneServerInfo(),
             resInfo:res
         }
         
