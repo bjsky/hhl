@@ -158,10 +158,10 @@ export default class BuildPanel extends UIBase{
 
     private doShow(cb?:Function){
         
-        this.topNode.runAction(cc.moveTo(0.3,cc.v2(0,0)).easing(cc.easeInOut(1.5)));
+        this.topNode.runAction(cc.moveTo(0.3,cc.v2(0,0)).easing(cc.easeOut(2)));
         this.panelNode.runAction(
             cc.sequence(
-                cc.moveTo(0.3,cc.v2(0,0)).easing(cc.easeInOut(1.5)),
+                cc.moveTo(0.3,cc.v2(0,0)).easing(cc.easeOut(2)),
                 cc.callFunc(()=>{
                     EVENT.emit(GameEvent.Panel_Show_Effect_Complete)
                 })
@@ -182,8 +182,8 @@ export default class BuildPanel extends UIBase{
             this.topNode.x = 750;
             this.panelNode.y = -1100;
         }else{
-            this.topNode.runAction(cc.moveTo(0.3,cc.v2(750,0)).easing(cc.easeInOut(1.5)));
-            this.panelNode.runAction(cc.moveTo(0.3,cc.v2(0,-1000)).easing(cc.easeInOut(1.5)))
+            this.topNode.runAction(cc.moveTo(0.3,cc.v2(750,0)).easing(cc.easeIn(2)));
+            this.panelNode.runAction(cc.moveTo(0.3,cc.v2(0,-1000)).easing(cc.easeIn(2)))
             // this.buildName.node.runAction(cc.fadeOut(0.1));
             var scene:CityScene = SCENE.CurScene as CityScene;
             if(scene){

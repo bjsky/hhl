@@ -143,7 +143,7 @@ export default class GuideTapPanel extends UIBase {
         // this.storyTextani.addTypewriterAni(this._guideInfo.content,this.storyComplete.bind(this),"#FFFFFF");
         this.storyImg.setPosition(cc.v2(0,-cc.winSize.height+300));
         var act = cc.sequence(
-            cc.moveTo(4,cc.v2(0,0)),
+            cc.moveTo(40,cc.v2(0,0)),
             cc.callFunc(()=>{
                 this.storyComplete();
             })
@@ -183,11 +183,11 @@ export default class GuideTapPanel extends UIBase {
         this.title.string = this._guideInfo.npc;
         this.npc.active = (this._guideInfo.npcDic == GuideNpcDir.NpcDirLeft)?true:false;
         this.npc2.active = (this._guideInfo.npcDic == GuideNpcDir.NpcDirRight)?true:false;
-        this.content.string = "";
-        this.dialogNode.runAction(cc.sequence(cc.fadeIn(0.3),cc.callFunc(this.showComplete.bind(this))));
+        this.content.string = this._guideInfo.content;
+        this.dialogNode.runAction(cc.sequence(cc.fadeIn(0.3),cc.callFunc(this.dialogComplete.bind(this))));
     }
     private showComplete(){
-        this.dialogTextAni.addTypewriterAni(this._guideInfo.content,this.dialogComplete.bind(this),"#FFFFFF");
+        // this.dialogTextAni.addTypewriterAni(this._guideInfo.content,this.dialogComplete.bind(this),"#FFFFFF");
     }
 
     private hideDialog(cb:Function) {
