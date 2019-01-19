@@ -24,9 +24,8 @@ export enum GuideNpcDir{
 }
 
 export enum GuideArrowDir{
-    ArrowDirDown = 1,
-    ArrowDirRight = 2,
-    ArrowDirLeft = 3
+    ArrowDirLeft = 1,
+    ArrowDirRight
 }
 
 

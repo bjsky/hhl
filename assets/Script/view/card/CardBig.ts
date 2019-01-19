@@ -1,9 +1,6 @@
 import LoadSprite from "../../component/LoadSprite";
-import UIBase from "../../component/UIBase";
 import CardInfo from "../../model/CardInfo";
 import { Card } from "../../module/card/CardAssist";
-import { CONSTANT } from "../../Constant";
-import StringUtil from "../../utils/StringUtil";
 import { COMMON } from "../../CommonData";
 import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";

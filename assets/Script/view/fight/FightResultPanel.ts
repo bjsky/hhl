@@ -8,6 +8,7 @@ import PathUtil from "../../utils/PathUtil";
 import FightInfo, { FightPlayerType } from "../../model/FightInfo";
 import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
+import { GUIDE } from "../../manager/GuideManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -91,6 +92,7 @@ export default class FightResultPanel extends PopUpBase {
         this.btnClose.node.on(TouchHandler.TOUCH_CLICK,this.onCloseClick,this);
         this.btnDetail.node.on(cc.Node.EventType.TOUCH_START,this.onShowDetail,this);
         this.btnBack.node.on(cc.Node.EventType.TOUCH_START,this.onBackReward,this);
+        EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
         this.initView();
     }
     onDisable(){
@@ -99,6 +101,7 @@ export default class FightResultPanel extends PopUpBase {
         this.btnClose.node.off(TouchHandler.TOUCH_CLICK,this.onCloseClick,this);
         this.btnDetail.node.off(cc.Node.EventType.TOUCH_START,this.onShowDetail,this);
         this.btnBack.node.off(cc.Node.EventType.TOUCH_START,this.onBackReward,this);
+        EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
     }
 
     private _showDetail:boolean =false;
@@ -171,5 +174,40 @@ export default class FightResultPanel extends PopUpBase {
         }
     }
 
+
+    protected onShowComplete(){
+        super.onShowComplete();
+        this._enableGetGuideNode = true;
+    }
+    ///////////////////
+    // 引导
+    ///////////////////
+    private _enableGetGuideNode:boolean =false;
+    public getGuideNode(name:string):cc.Node{
+        if(name == "popup_resultGetreward" && this._enableGetGuideNode){
+            if(this._result.victory){
+                return this.btnReceive.node;
+            }else{
+                return this.btnClose.node;
+            }
+        }
+        else{
+            return null;
+        }
+    }
+
+    private onGuideTouch(e){
+        var guideId = e.detail.id;
+        var nodeName = e.detail.name;
+        if(nodeName == "popup_resultGetreward"){
+            if(this._result.victory){
+                this.onReceiveClick(null);
+            }else{
+                this.onCloseClick(null);
+            }
+            GUIDE.nextGuide(guideId);
+        }
+
+    }
     // update (dt) {}
 }

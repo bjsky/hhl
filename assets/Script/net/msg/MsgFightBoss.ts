@@ -58,11 +58,6 @@ export default class MsgFightBoss extends MessageBase{
         var userInfo :SUserInfo = COMMON.userInfo.cloneAddExpServerInfo(addExp);
         var passage:SPassageInfo = Passage.passageInfo.cloneServerInfo();
         passage.passId +=1; 
-        passage.passStartTime = new Date().getTime();
-        passage.passUncollectedTime +=Passage.passageInfo.getCurPassIncreaseTime();
-        passage.passUncollectExp +=Passage.getUnCollectExp();
-        passage.passUncollectGold +=Passage.geUnCollectGold();
-        passage.passUncollectStone +=Passage.getUnCollectStone();
 
         json ={
             addExp:addExp,

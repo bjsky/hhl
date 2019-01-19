@@ -190,23 +190,11 @@ export class SPassageInfo{
     public passId:number = 0;
     //当前关卡开始的时间（计算当前关卡收益）
     public passStartTime:number = 0;
-    //所有未领取收益的时间(计算是否领取)
-    public passUncollectedTime:number = 0;
-    //未领取的金币(之前关卡已累计的金币)
-    public passUncollectGold:number =0;
-    //未领取的经验(之前关卡已累计的经验)
-    public passUncollectExp:number =0;
-    //未领取的石头(之前关卡已累计的灵石)
-    public passUncollectStone:number =0;
 
     public static parse(obj:any):SPassageInfo{
         var info:SPassageInfo = new SPassageInfo();
         info.passId = obj.passId;
         info.passStartTime = obj.passStartTime;
-        info.passUncollectedTime = obj.passUncollectedTime;
-        info.passUncollectGold = obj.passUncollectGold;
-        info.passUncollectExp = obj.passUncollectExp;
-        info.passUncollectStone = obj.passUncollectStone;
         return info;
     }
 }
@@ -254,13 +242,13 @@ export default class MsgLogin
 
     public respFromLocal(){
         var ownerCards:Array<any> = [];
-        for(var i:number = 0;i<1;i++){
-            ownerCards.push(MsgCardSummon.randomCardInfo(CardSummonType.LifeStone));
-        }
-        for(i= 0;i<1;i++){
-            var copy = this.copyCard(ownerCards[0]);
-            ownerCards.push(copy);
-        }
+        // for(var i:number = 0;i<1;i++){
+        //     ownerCards.push(MsgCardSummon.randomCardInfo(CardSummonType.LifeStone));
+        // }
+        // for(i= 0;i<1;i++){
+        //     var copy = this.copyCard(ownerCards[0]);
+        //     ownerCards.push(copy);
+        // }
         var json:any = {firstLogin:true,
             serverTime:new Date().getTime(),
             userInfo:{name:"上古战神",icon:"",gender:1,exp:0,level:1},

@@ -47,22 +47,22 @@ export default class PassageAssist{
     //当前未领取的金币
     public geUnCollectGold(){
         var addGoldPerMin = this.getPassageValueBuffed(this.passageInfo.passageCfg.passageGold);
-        return this.passageInfo.getCurPassIncreaseTime() * addGoldPerMin/(1000*60) +this.passageInfo.passUncollectGold;
+        return this.passageInfo.getPassIncreaseTime() * addGoldPerMin/(1000*60);
     }
     //当前未领取的经验
     public getUnCollectExp(){
         var addExpPerMin = this.getPassageValueBuffed(this.passageInfo.passageCfg.passageExp);
-        return this.passageInfo.getCurPassIncreaseTime() * addExpPerMin/(1000*60) +this.passageInfo.passUncollectExp;
+        return this.passageInfo.getPassIncreaseTime() * addExpPerMin/(1000*60);
     }
     //当前未领取的灵石
     public getUnCollectStone(){
         var addStonePerMin = this.getPassageValueBuffed(this.passageInfo.passageCfg.passageStone);
-        return this.passageInfo.getCurPassIncreaseTime() * addStonePerMin/(1000*60) +this.passageInfo.passUncollectStone;
+        return this.passageInfo.getPassIncreaseTime() * addStonePerMin/(1000*60);
     }
 
 
-    public collectRes(){
-        NET.send(MsgCollectRes.create(),(msg:MsgCollectRes)=>{
+    public collectRes(isGuide:boolean){
+        NET.send(MsgCollectRes.create(isGuide),(msg:MsgCollectRes)=>{
             if(msg && msg.resp){
                 COMMON.updateUserInfo(msg.resp.userInfo);
                 Passage.updatePassageInfo(msg.resp.passageInfo);

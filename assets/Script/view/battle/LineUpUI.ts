@@ -48,7 +48,7 @@ export default class LineUpUI extends cc.Component {
         if(this._edit){
             this.nodeHeadArr.forEach((node:cc.Node)=>{
                 node.on(cc.Node.EventType.TOUCH_START,this.onSelectHeadNode,this);
-                node.on(TouchHandler.DOUBLE_CLICK,this.doubleClick,this);
+                node.on(TouchHandler.TOUCH_CLICK,this.doubleClick,this);
             })  
         }
     }
@@ -56,7 +56,7 @@ export default class LineUpUI extends cc.Component {
         if(this._edit){
             this.nodeHeadArr.forEach((node:cc.Node)=>{
                 node.off(cc.Node.EventType.TOUCH_START,this.onSelectHeadNode,this);
-                node.off(TouchHandler.DOUBLE_CLICK,this.doubleClick,this);
+                node.off(TouchHandler.TOUCH_CLICK,this.doubleClick,this);
             })  
         }
     }

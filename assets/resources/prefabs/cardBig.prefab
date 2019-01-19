@@ -903,7 +903,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 240,
-      "height": 36
+      "height": 37
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -912,7 +912,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -288
+      "y": -293
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -957,7 +957,7 @@
     "asset": {
       "__uuid__": "6a9541b7-38b3-4df9-8271-4a0d326cb182"
     },
-    "fileId": "bbrVE/jIBJn7F0LmKa9RhP",
+    "fileId": "3byNz0Us9MOIGLK7yuZrVH",
     "sync": false
   },
   {
@@ -990,6 +990,7 @@
       "__id__": 1
     },
     "_enabled": true,
+    "maskOpacity": 40,
     "closeBtn": null,
     "cardNode": {
       "__id__": 2

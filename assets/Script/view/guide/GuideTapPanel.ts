@@ -4,10 +4,12 @@ import TextAni from "../../component/TextAni";
 import { COMMON } from "../../CommonData";
 import CityScene from "../../scene/CityScene";
 import { SCENE } from "../../manager/SceneManager";
-import { GuideTypeEnum, GUIDE, GuideNpcDir } from "../../manager/GuideManager";
+import { GuideTypeEnum, GUIDE, GuideNpcDir, GuideArrowDir } from "../../manager/GuideManager";
 import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
 import { UI } from "../../manager/UIManager";
+import { NET } from "../../net/core/NetController";
+import MsgGuideUpdate from "../../net/msg/MsgGuideUpdate";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -111,13 +113,8 @@ export default class GuideTapPanel extends UIBase {
             this.arrowNode.active = false;
             this.storyNode.active = this.dialogNode.active = false;
             this._checkNodeTime = 0;
-            if(this._guideInfo.delay>0){
-                this.scheduleOnce(()=>{
-                    this.schedule(this.checkNode,this._checkNodeInterval);
-                },this._guideInfo.delay)
-            }else{
-                this.schedule(this.checkNode,this._checkNodeInterval);
-            }
+            this._checkNodeMaxTime = this._guideInfo.checkTime;
+            this.schedule(this.checkNode,this._checkNodeInterval);
         }
     }
 
@@ -217,20 +214,33 @@ export default class GuideTapPanel extends UIBase {
             if(node){
                 this.unscheduleAllCallbacks();
                 this._checkNodeTime = 0;
-                if(this._guideInfo.nodeName.indexOf("building_")>-1){
-                    var city:CityScene = SCENE.CurScene as CityScene;
-                    // var tPos:cc.Vec2 = cc.v2(cc.winSize.width/2,cc.winSize.height/2).sub(node.parent.convertToWorldSpaceAR(node.position));
-                    // var tPos:cc.Vec2 = this.node.parent.convertToWorldSpaceAR(COMMON.ZERO);
-                    var wPos = node.parent.convertToWorldSpaceAR(node.position);
-                    city.moveSceneToPos(wPos,()=>{
-                        this.showArrow(node);
-                    })
+
+                if(this._guideInfo.delay>0){
+                    this.scheduleOnce(()=>{
+                        this.checkEndShowArrow(node);
+                    },this._guideInfo.delay)
                 }else{
-                    this.showArrow(node);
+                    this.checkEndShowArrow(node);
                 }
             }
         }else{
-            GUIDE.endGuide();
+            NET.send(MsgGuideUpdate.create(-1),(msg:MsgGuideUpdate)=>{
+                GUIDE.endGuide();
+            },this)
+        }
+    }
+
+    private checkEndShowArrow(node){
+        if(this._guideInfo.nodeName.indexOf("building_")>-1){
+            var city:CityScene = SCENE.CurScene as CityScene;
+            // var tPos:cc.Vec2 = cc.v2(cc.winSize.width/2,cc.winSize.height/2).sub(node.parent.convertToWorldSpaceAR(node.position));
+            // var tPos:cc.Vec2 = this.node.parent.convertToWorldSpaceAR(COMMON.ZERO);
+            var wPos = node.parent.convertToWorldSpaceAR(node.position);
+            city.moveSceneToPos(wPos,()=>{
+                this.showArrow(node);
+            })
+        }else{
+            this.showArrow(node);
         }
     }
 
@@ -254,14 +264,20 @@ export default class GuideTapPanel extends UIBase {
 
     private showArrow(find:cc.Node){
         this.arrowNode.active = true;
+        if(this._guideInfo.arrowDir == GuideArrowDir.ArrowDirLeft){
+            this.guideArrowNode.scaleX = 1;
+        }else if(this._guideInfo.arrowDir == GuideArrowDir.ArrowDirRight){
+            this.guideArrowNode.scaleX = -1;
+        }
         this.setClickArea(find);
         var wPos:cc.Vec2 = find.parent.convertToWorldSpaceAR(find.position);
         GUIDE.updateGuideMaskPosAndSize(wPos,find.getContentSize(),cc.v2(find.anchorX,find.anchorY),51);
         this.guideArrowNode.setPosition(this.clickNode.position)
         this.guideArrowNode.runAction(cc.sequence(
-            cc.moveBy(0.5,cc.v2(0,50))
-            ,cc.moveBy(0.5,cc.v2(0,-50))
+            cc.moveBy(0.5,cc.v2(0,30))
+            ,cc.moveBy(0.5,cc.v2(0,-30))
             ).repeatForever());
+        
        this.clickNode.on(cc.Node.EventType.TOUCH_START,this.onArrowClick,this);
     }
 

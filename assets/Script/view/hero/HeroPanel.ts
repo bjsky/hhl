@@ -151,7 +151,7 @@ export default class HeroPanel extends UIBase {
     onEnable(){
         this.btnGroup.node.on(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.groupSelectChange,this);
         this.cardsList.node.on(DList.ITEM_CLICK,this.onCardClick,this);
-        this.btnUpgrade.node.on(TouchHandler.TOUCH_CLICK,this.upgradeHero,this);
+        this.btnUpgrade.node.on(cc.Node.EventType.TOUCH_START,this.upgradeHero,this);
         // this.btnSkillUpgrade.node.on(TouchHandler.TOUCH_CLICK,this.upgradeHeroSkill,this);
         this.btnDestroy.node.on(TouchHandler.TOUCH_CLICK,this.destroyHero,this);
         this.btnUpStar.node.on(TouchHandler.TOUCH_CLICK,this.onCardUpStar,this);
@@ -169,7 +169,7 @@ export default class HeroPanel extends UIBase {
     onDisable(){
         this.btnGroup.node.off(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.groupSelectChange,this);
         this.cardsList.node.off(DList.ITEM_CLICK,this.onCardClick,this);
-        this.btnUpgrade.node.off(TouchHandler.TOUCH_CLICK,this.upgradeHero,this);
+        this.btnUpgrade.node.off(cc.Node.EventType.TOUCH_START,this.upgradeHero,this);
         // this.btnSkillUpgrade.node.off(TouchHandler.TOUCH_CLICK,this.upgradeHeroSkill,this);
         this.btnDestroy.node.off(TouchHandler.TOUCH_CLICK,this.destroyHero,this);
         this.btnUpStar.node.off(TouchHandler.TOUCH_CLICK,this.onCardUpStar,this);
@@ -468,7 +468,10 @@ export default class HeroPanel extends UIBase {
     public getGuideNode(name:string):cc.Node{
         if(name == "buildPanel_upgradeCard"){
             return this.btnUpgrade.node;
-        }else{
+        }else if(name == "buildPanel_upStar"){
+            return this.btnUpStar.node;
+        }
+        else{
             return null;
         }
     }
@@ -477,6 +480,10 @@ export default class HeroPanel extends UIBase {
         var guideId = e.detail.id;
         var nodeName = e.detail.name;
         if(nodeName == "buildPanel_upgradeCard"){
+            this.upgradeHero(null);
+            GUIDE.nextGuide(guideId);
+        }else if(nodeName == "buildPanel_upStar"){
+            this.onCardUpStar(null);
             GUIDE.nextGuide(guideId);
         }
 

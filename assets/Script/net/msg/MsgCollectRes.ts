@@ -3,7 +3,10 @@ import NetConst from "../NetConst";
 import { SResInfo, SUserInfo, SPassageInfo } from "./MsgLogin";
 import { COMMON } from "../../CommonData";
 import { Passage } from "../../module/battle/PassageAssist";
-
+export class CSCollectRes{
+    //是否引导中
+    public isGuide:boolean = false;
+}
 export class SCCollectRes{
     //收集的经验
     public addExp:number = 0;
@@ -26,7 +29,7 @@ export class SCCollectRes{
 
 //卡牌升级
 export default class MsgCollectRes extends MessageBase{
-    public param:any;
+    public param:CSCollectRes;
     public resp:SCCollectRes;
 
     constructor(){
@@ -34,8 +37,10 @@ export default class MsgCollectRes extends MessageBase{
         this.isLocal = true;
     }
 
-    public static create(para?:string){
+    public static create(isGuide:boolean){
         var msg = new MsgCollectRes();
+        msg.param = new CSCollectRes();
+        msg.param.isGuide = isGuide;
         return msg;
     }
 
@@ -51,10 +56,6 @@ export default class MsgCollectRes extends MessageBase{
         var userInfo :SUserInfo = COMMON.userInfo.cloneAddExpServerInfo(addExp);
         var passage:SPassageInfo = Passage.passageInfo.cloneServerInfo();
         passage.passStartTime = new Date().getTime();
-        passage.passUncollectedTime = 0;
-        passage.passUncollectExp = 0;
-        passage.passUncollectGold = 0;
-        passage.passUncollectStone = 0;
 
         json ={
             addExp:addExp,

@@ -53,7 +53,7 @@ export default class UserInfo  extends InfoBase{
         var curExp:number = this.exp + Number(exp);
         var curLevel:number = this.level;
         var total:number = Number(CFG.getCfgDataById(ConfigConst.PlayerLevel,curLevel).exp);
-        while(total!=-1 && curExp>total){
+        while(total!=-1 && curExp>=total){
             curLevel += 1;
             curExp -= total;
             total = Number(CFG.getCfgDataById(ConfigConst.PlayerLevel,curLevel).exp);

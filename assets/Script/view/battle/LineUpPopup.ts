@@ -10,6 +10,8 @@ import { UI } from "../../manager/UIManager";
 import { Lineup } from "../../module/battle/LineupAssist";
 import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
+import { GUIDE } from "../../manager/GuideManager";
+import DListItem from "../../component/DListItem";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -53,6 +55,7 @@ export default class LineUpPopup extends PopUpBase {
         this.lineup.node.on(LineUpUI.Remove_lineupCard,this.onRemoveLineupCard,this);
 
         EVENT.on(GameEvent.Lineup_Changed,this.onLineupChange,this);
+        EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
         this.initView(true);
     }
 
@@ -63,6 +66,7 @@ export default class LineUpPopup extends PopUpBase {
         this.lineup.node.off(LineUpUI.Remove_lineupCard,this.onRemoveLineupCard,this);
 
         EVENT.off(GameEvent.Lineup_Changed,this.onLineupChange,this);
+        EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
         
         this.cardsList.setListData([]);
     }
@@ -167,8 +171,46 @@ export default class LineUpPopup extends PopUpBase {
         // this.cardsList.setDragEnable(true,DListDirection.Vertical);
         this.cardsList.row = 1;
         this.cardsList.setListData(this._cardListData);
+        this.scheduleOnce(()=>{
+            this._enableGetGuideNode = true;
+        },0.3)
     }
 
-        
+    ///////////////////
+    // 引导
+    ///////////////////
+    private _enableGetGuideNode:boolean =false;
+    public getGuideNode(name:string):cc.Node{
+        if(name == "popup_lineupItem0"){
+            if(this._enableGetGuideNode){
+                var item:DListItem = this.cardsList.getItemAt(0);
+                if(item){
+                    return item.node;
+                }else{
+                    return null;
+                }
+            }else{
+                return null;
+            }
+        }else if(name == "popup_lineupClose"){
+            return this.closeBtn.node;
+        }
+        else{
+            return null;
+        }
+    }
+
+    private onGuideTouch(e){
+        var guideId = e.detail.id;
+        var nodeName = e.detail.name;
+        if(nodeName == "popup_lineupItem0"){
+            this.onCardClick({detail:{index:0}})
+            GUIDE.nextGuide(guideId);
+        }else if(nodeName == "popup_lineupClose"){
+            this.onClose(null);
+            GUIDE.nextGuide(guideId);
+        }
+
+    }
     // update (dt) {}
 }

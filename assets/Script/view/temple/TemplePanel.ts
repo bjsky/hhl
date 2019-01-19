@@ -108,7 +108,11 @@ export default class TemplePanel extends UIBase {
             return;
         }
         this.playStoneSummonEffect(()=>{
-            Card.summonCard(CardSummonType.LifeStone,this._stoneSummonCost);
+            if(GUIDE.isInGuide){ //引导
+                Card.summonCardGuide(this._stoneSummonCost);
+            }else{
+                Card.summonCard(CardSummonType.LifeStone,this._stoneSummonCost);
+            }
         });
         
     }

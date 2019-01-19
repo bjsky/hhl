@@ -85,19 +85,6 @@ export default class CityScene extends SceneBase {
         EVENT.off(GameEvent.Goto_build_panel,this.onGotoPanelFast,this);
     }
 
-    private onGuideTouch(e){
-        var guideId = e.detail.id;
-        var nodeName = e.detail.name;
-        if(nodeName == "building_temple"){
-            this.openBuildUI(BuildType.Temple);
-            GUIDE.nextGuide(guideId);
-        }else if(nodeName == "building_hero"){
-            this.openBuildUI(BuildType.Hero);
-            GUIDE.nextGuide(guideId);
-        }
-
-    }
-
     private onGotoPanelFast(e){
         var buildType = e.detail.type;
         if(this._activeBuild){
@@ -268,6 +255,20 @@ export default class CityScene extends SceneBase {
             build = this.buildBattle;
         }
         return build;
+    }
+    private onGuideTouch(e){
+        var guideId = e.detail.id;
+        var nodeName = e.detail.name;
+        if(nodeName == "building_temple"){
+            this.openBuildUI(BuildType.Temple);
+            GUIDE.nextGuide(guideId);
+        }else if(nodeName == "building_hero"){
+            this.openBuildUI(BuildType.Hero);
+            GUIDE.nextGuide(guideId);
+        }else if(nodeName == "building_battle"){
+            this.openBuildUI(BuildType.Battle);
+            GUIDE.nextGuide(guideId);
+        }
     }
     // update (dt) {}
 }

@@ -229,12 +229,20 @@ export default class BuildPanel extends UIBase{
 
     public getGuideNode(name:string):cc.Node{
         if(name == "buildPanel_close"){
-            return this.closeBtn.node;
+            if(this._enableGetGuideNode){
+                return this.closeBtn.node;
+            }else{
+                return null;
+            }
         }else{
             return this._buildUI.getGuideNode(name);
         }
     }
 
+    private _enableGetGuideNode:boolean =true;
+    public set enableGetGuideNode(val:boolean){
+        this._enableGetGuideNode = val;
+    }
     private onGuideTouch(e){
         var guideId = e.detail.id;
         var nodeName = e.detail.name;

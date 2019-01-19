@@ -15,6 +15,7 @@ import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 import { Lineup } from "../../module/battle/LineupAssist";
 import { Fight } from "../../module/fight/FightAssist";
 import FightInfo from "../../model/FightInfo";
+import { GUIDE } from "../../manager/GuideManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -91,6 +92,7 @@ export default class BattlePanel extends UIBase {
         EVENT.on(GameEvent.Passage_Collected,this.onPassageCollectd,this);
         EVENT.on(GameEvent.Passage_FightBossEnd,this.onPassageFightBossEnd,this);
         EVENT.on(GameEvent.Lineup_Changed,this.onLineupChange,this);
+        EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
 
         this.schedule(this.showPassageAddEffect,this._interval);
     }
@@ -104,6 +106,7 @@ export default class BattlePanel extends UIBase {
         EVENT.off(GameEvent.Passage_Collected,this.onPassageCollectd,this);
         EVENT.off(GameEvent.Passage_FightBossEnd,this.onPassageFightBossEnd,this);
         EVENT.off(GameEvent.Lineup_Changed,this.onLineupChange,this);
+        EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
 
         this.unscheduleAllCallbacks();
         this.goldFly.reset();
@@ -141,13 +144,16 @@ export default class BattlePanel extends UIBase {
     }
 
     private collectRes(e){
-        var needTime = CONSTANT.getPassCollectMinTime();
-        var curTime = Passage.passageInfo.getAllPassUncollectTime()/1000;
-        if(curTime < needTime){
-            UI.showTip(""+Math.floor(needTime-curTime)+"秒后可领取");
-            return;
+        if(!GUIDE.isInGuide){
+            var needTime = CONSTANT.getPassCollectMinTime();
+            var curTime = Passage.passageInfo.getPassIncreaseTime()/1000;
+            if(curTime < needTime){
+                UI.showTip(""+Math.floor(needTime-curTime)+"秒后可领取");
+                return;
+            }
         }
-        Passage.collectRes();
+        Passage.collectRes(GUIDE.isInGuide);
+
     }
 
 
@@ -203,7 +209,7 @@ export default class BattlePanel extends UIBase {
 
     private showPassageAddEffect(){
         var max = CONSTANT.getPassIncreaseMaxTime()*1000;
-        if(Passage.passageInfo.getAllPassUncollectTime()>max){
+        if(Passage.passageInfo.getPassIncreaseTime()>max){
             this.unscheduleAllCallbacks();
             return;
         }
@@ -228,6 +234,39 @@ export default class BattlePanel extends UIBase {
         this.bossGold.string = StringUtil.formatReadableNumber(Passage.passageInfo.passageCfg.firstGold);
         this.bossStone.string = StringUtil.formatReadableNumber(Passage.passageInfo.passageCfg.firstStone);
         this.bossExp.string = StringUtil.formatReadableNumber(Passage.passageInfo.passageCfg.firstExp);
+    }
+
+    ///////////////////
+    // 引导
+    ///////////////////
+
+    public getGuideNode(name:string):cc.Node{
+        if(name == "buildPanel_lineup"){
+            return this.changeLineUp.node;
+        }else if(name == "buildPanel_fight"){
+            return this.btnFight.node;
+        }else if(name == "buildPanel_getRes"){
+            return this.btnCollect.node;
+        }
+        else{
+            return null;
+        }
+    }
+
+    private onGuideTouch(e){
+        var guideId = e.detail.id;
+        var nodeName = e.detail.name;
+        if(nodeName == "buildPanel_lineup"){
+            this.showLineup(null);
+            GUIDE.nextGuide(guideId);
+        }else if(nodeName == "buildPanel_fight"){
+            this.onFightBoss(null);
+            GUIDE.nextGuide(guideId);
+        }else if(nodeName == "buildPanel_getRes"){
+            this.collectRes(null);
+            GUIDE.nextGuide(guideId);
+        }
+
     }
     // update (dt) {}
 }

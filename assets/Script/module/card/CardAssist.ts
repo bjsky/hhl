@@ -19,6 +19,7 @@ import { ResConst } from "../loading/steps/LoadingStepRes";
 import { AwardTypeEnum } from "../../view/AwardPanel";
 import { SResInfo } from "../../net/msg/MsgLogin";
 import LineupInfo from "../../model/LineupInfo";
+import MsgCardSummonGuide from "../../net/msg/MsgCardSummonGuide";
 
 export enum CardRaceType{
     All =0,
@@ -93,7 +94,23 @@ export default class CardAssist{
 
             EVENT.emit(GameEvent.Card_summon_Complete,{uuid:msg.resp.newCard.uuid});
             EVENT.emit(GameEvent.Res_update_Cost_Complete,{types:[{type:ResType.lifeStone,value:stoneCost}]});
-            EVENT.emit(GameEvent.UserInfo_update_Complete);
+        },this)
+    }
+    public summonCardGuide(stoneCost:number = 0){
+        //召唤卡牌
+        NET.send(MsgCardSummonGuide.create(stoneCost),(msg:MsgCardSummonGuide)=>{
+            console.log(JSON.stringify(msg.resp) );
+
+            COMMON.updateResInfo(msg.resp.retRes);
+            COMMON.updateUserInfo(msg.resp.userInfo);
+            EVENT.emit(GameEvent.Show_Res_Add,{types:[{type:ResType.exp,value:0}]});
+            this.addNewCard(msg.resp.newCard);
+            this.addNewCard(msg.resp.upStarCard);
+            COMMON.stoneSummonNum = msg.resp.stoneSummonNum;
+            COMMON.videoSummonNum = msg.resp.videoSummonNum;
+
+            EVENT.emit(GameEvent.Card_summon_Complete,{uuid:msg.resp.newCard.uuid});
+            EVENT.emit(GameEvent.Res_update_Cost_Complete,{types:[{type:ResType.lifeStone,value:stoneCost}]});
         },this)
     }
 

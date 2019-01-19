@@ -29,6 +29,8 @@ export default class GuideInfo extends InfoBase{
     public nodeName:string ="";
     //延迟时间
     public delay:number = 0;
+    //检查节点时间
+    public checkTime:number = 0;
     // 参数
     public params:any = {};
 
@@ -49,9 +51,10 @@ export default class GuideInfo extends InfoBase{
             this.npcIcon = info.npcIcon;
             this.npcDic = info.npcDir;
             this.content = info.content;
-            this.arrowDir = info.arrowDir;
+            this.arrowDir = Number(info.arrowDir);
             this.nodeName = info.node_name;
             this.delay = Number(info.delay);
+            this.checkTime = Number(info.checkTime);
             this.params = this.parseParams(info.param);
         }else{
             this.guideName = "";
@@ -64,6 +67,7 @@ export default class GuideInfo extends InfoBase{
             this.arrowDir = 0;
             this.nodeName = "";
             this.delay = 0;
+            this.checkTime = 0;
             this.params = null;
         }
 
