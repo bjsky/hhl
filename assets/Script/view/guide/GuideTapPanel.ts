@@ -183,7 +183,8 @@ export default class GuideTapPanel extends UIBase {
         this.title.string = this._guideInfo.npc;
         this.npc.active = (this._guideInfo.npcDic == GuideNpcDir.NpcDirLeft)?true:false;
         this.npc2.active = (this._guideInfo.npcDic == GuideNpcDir.NpcDirRight)?true:false;
-        this.content.string = this._guideInfo.content;
+        var content:string = this._guideInfo.content.replace("#","<color=#33FF00>" + COMMON.userInfo.name +"</color> ");
+        this.content.string = content;
         this.dialogNode.runAction(cc.sequence(cc.fadeIn(0.3),cc.callFunc(this.dialogComplete.bind(this))));
     }
     private showComplete(){

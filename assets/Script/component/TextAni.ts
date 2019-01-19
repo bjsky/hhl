@@ -36,7 +36,7 @@ export default class TextAni extends cc.Component {
         var len:number = arr.length;
         var func = ()=> {
             if(arr[this.step] == "#"){
-                arr[this.step] = "<color=#33FF00>" + COMMON.userInfo.nickName +"</color> ";
+                arr[this.step] = "<color=#33FF00>" + COMMON.userInfo.name +"</color> ";
             }
             if(arr[this.step] == "$"){
                 arr[this.step] = "<br/>";
@@ -63,7 +63,7 @@ export default class TextAni extends cc.Component {
             var len:number = arr.length;
             var func = ()=> {
                 if(arr[this.step] == "#"){
-                    arr[this.step] = "<color= '#FF0000'>" + COMMON.userInfo.nickName +"</color>  "
+                    arr[this.step] = "<color= '#FF0000'>" + COMMON.userInfo.name +"</color>  "
                 }
                 if(arr[this.step] == "$"){
                     arr[this.step] = "<br/>";
