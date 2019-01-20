@@ -253,7 +253,7 @@ export default class MsgLogin
             serverTime:new Date().getTime(),
             userInfo:{name:"上古战神",icon:"",gender:1,exp:0,level:1},
             resInfo:{gold:10000,diamond:500,lifeStone:20000,soulStone:0},
-            guideInfo:{guideId:1},
+            guideInfo:{guideId:-1},
             buildInfos:[{type:0,level:1,locked:true},
                 {type:1,level:1,locked:true},
                 {type:2,level:1,locked:true},

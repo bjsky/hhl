@@ -140,7 +140,7 @@ export default class GuideTapPanel extends UIBase {
         // this.storyTextani.addTypewriterAni(this._guideInfo.content,this.storyComplete.bind(this),"#FFFFFF");
         this.storyImg.setPosition(cc.v2(0,-cc.winSize.height+300));
         var act = cc.sequence(
-            cc.moveTo(40,cc.v2(0,0)),
+            cc.moveTo(30,cc.v2(0,0)),
             cc.callFunc(()=>{
                 this.storyComplete();
             })

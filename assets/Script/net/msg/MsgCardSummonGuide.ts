@@ -43,7 +43,7 @@ export default class MsgCardSummonGuide extends MessageBase{
     public resp:SCCardSummonGuide;
 
     constructor(){
-        super(NetConst.CardSummon);
+        super(NetConst.CardSummonGuide);
         // this.isLocal = true;
     }
 

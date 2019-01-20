@@ -21,6 +21,8 @@ export default class NetConst{
 
     //召唤卡牌
     public static CardSummon:number = 21000;
+    //召唤卡牌引导
+    public static CardSummonGuide:number = 21000;
     //卡牌升级
     public static CardUpLv:number = 21001;
     //卡牌升星

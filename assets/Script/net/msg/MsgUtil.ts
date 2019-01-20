@@ -8,6 +8,9 @@ import MsgCardUpLv from "./MsgCardUpLv";
 import MsgCardUpStar from "./MsgCardUpStar";
 import MsgCardDestroy from "./MsgCardDestroy";
 import MsgLineupModify from "./MsgLineupModify";
+import MsgCardSummonGuide from "./MsgCardSummonGuide";
+import MsgCollectRes from "./MsgCollectRes";
+import MsgFightBoss from "./MsgFightBoss";
 /**
  * 太特么坑了，父类中还不能导入子类
  */
@@ -40,6 +43,15 @@ export default class MsgUtil{
             break;
             case NetConst.LineupModify:
                 message = new MsgLineupModify();
+            break;
+            case NetConst.CardSummonGuide:
+                message = new MsgCardSummonGuide();
+            break;
+            case NetConst.CollectPassageRes:
+                message = new MsgCollectRes();
+            break;
+            case NetConst.FightBoss:
+                message = new MsgFightBoss();
             break;
             default:
             message = null;
