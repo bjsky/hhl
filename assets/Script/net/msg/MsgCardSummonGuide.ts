@@ -44,7 +44,7 @@ export default class MsgCardSummonGuide extends MessageBase{
 
     constructor(){
         super(NetConst.CardSummonGuide);
-        // this.isLocal = true;
+        this.isLocal = true;
     }
 
     public static create(stoneCost){

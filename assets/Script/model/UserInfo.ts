@@ -26,6 +26,7 @@ export default class UserInfo  extends InfoBase{
     public initFromServer(data:SUserInfo){
         this.name = data.name;
         this.icon = data.icon;
+        this.gender = data.gender;
         this.exp = data.exp;
         this.level = data.level;
         

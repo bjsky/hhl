@@ -26,7 +26,7 @@ export default class MsgGuideUpdate extends MessageBase{
 
     constructor(){
         super(NetConst.GuideUpdate);
-        // this.isLocal = true;
+        this.isLocal = true;
     }
 
     public static create(guideId:number){

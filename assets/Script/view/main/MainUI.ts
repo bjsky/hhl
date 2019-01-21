@@ -11,6 +11,7 @@ import { RES } from "../../manager/ResourceManager";
 import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 import ResBounceEffect from "../../component/ResBounceEffect";
 import ExpLevelEffect from "../../component/ExpLevelEffect";
+import LoadSprite from "../../component/LoadSprite";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -83,6 +84,9 @@ export default class MainUI extends UIBase {
     @property(ExpLevelEffect)
     explevelEffect:ExpLevelEffect = null;
 
+    @property(LoadSprite)
+    headIcon:LoadSprite = null;
+
 
     onLoad () {
 
@@ -111,6 +115,7 @@ export default class MainUI extends UIBase {
 
     private initTopView(){
         this.lblName.string = COMMON.userInfo.name;
+        this.headIcon.load(COMMON.userInfo.icon);
         // this.lblExp.string = COMMON.userInfo.exp + " / "+COMMON.userInfo.totalExp;
         this.lblGold.string = StringUtil.formatReadableNumber(COMMON.resInfo.gold);
         this.lblDiamond.string = StringUtil.formatReadableNumber(COMMON.resInfo.diamond);

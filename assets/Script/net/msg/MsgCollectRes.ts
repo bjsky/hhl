@@ -34,7 +34,7 @@ export default class MsgCollectRes extends MessageBase{
 
     constructor(){
         super(NetConst.CollectPassageRes);
-        // this.isLocal = true;
+        this.isLocal = true;
     }
 
     public static create(isGuide:boolean){

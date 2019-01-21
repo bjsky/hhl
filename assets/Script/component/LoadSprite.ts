@@ -38,16 +38,31 @@ export default class LoadSprite extends cc.Sprite{
             this.spriteFrame = null;
             return;
         }
+        if(type == null || type == undefined){
+            type = this.resType;
+        }
         this._callback = cb;
         let self = this;
-        if (path.indexOf("http://") >= 0) {
-             cc.loader.load({url: path, type: type},this.loadComplete.bind(this));
+        // console.log("LoadSprite.load: ","url:"+path,",type:"+type);
+        if (path.indexOf("http://") >= 0|| path.indexOf("https://")>=0) {
+             cc.loader.load({url: path, type: type},(err,tex)=>{
+                if(err){
+                    console.log("LoadSprite.load failed: "+ err.message,"url:"+path);
+                }else{
+                    this.spriteFrame = new cc.SpriteFrame(tex, new cc.Rect(0, 0, tex.pixelWidth, tex.pixelHeight))
+                    this._callback && this._callback();
+                }
+             });
         }else if (path.indexOf("resources") >= 0) {
             let __self = this;
             var newPath = this.checkUrlPath(path);
             cc.loader.loadRes(newPath,cc.SpriteFrame,
                 (error: Error, resource: cc.SpriteFrame) => {
-                    __self.spriteFrame = resource;
+                    if(error){
+                        console.log("LoadSprite.load failed:"+ error.message);
+                    }else{
+                        __self.spriteFrame = resource;
+                    }
                     cb && cb();
                 }
             );
@@ -55,20 +70,14 @@ export default class LoadSprite extends cc.Sprite{
             let __self = this;
             cc.loader.loadRes(path,cc.SpriteFrame,
                 (error: Error, resource: cc.SpriteFrame) => {
-                    __self.spriteFrame = resource;
+                    if(error){
+                        console.log("LoadSprite.load failed:"+ error.message);
+                    }else{
+                        __self.spriteFrame = resource;
+                    }
                     cb && cb();
                 }
             );
-        }
-    }
-
-    private loadComplete(err,tex)
-    {
-        if(err){
-            console.log("MIconLoader.load fial: "+ err);
-        }else{
-            this.spriteFrame = new cc.SpriteFrame(tex);
-            this._callback && this._callback();
         }
     }
 

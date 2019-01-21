@@ -51,6 +51,8 @@ export default class FightPanel extends UIBase {
     myLevel: cc.Label = null;
     @property(LoadSprite)
     mySex: LoadSprite = null;
+    @property(LoadSprite)
+    myIcon: LoadSprite = null;
 
     @property(cc.Node)
     playerNode: cc.Node = null;
@@ -62,6 +64,8 @@ export default class FightPanel extends UIBase {
     playerLevel: cc.Label = null;
     @property(LoadSprite)
     playerSex: LoadSprite = null;
+    @property(LoadSprite)
+    playerIcon: LoadSprite = null;
 
     @property(cc.Node)
     bossNode: cc.Node = null;
@@ -197,6 +201,7 @@ export default class FightPanel extends UIBase {
         this.myLevel.string = "Lv."+this._fihgtMine.playerLevel;
         this.myName.string = this._fihgtMine.playerName;
         this.mySex.load(PathUtil.getSexIconUrl(this._fihgtMine.playerSex));
+        this.myIcon.load(this._fihgtMine.playerIcon);
         this.myPower.string = this._fihgtMine.totalPower.toString();
 
         var nodeCard:cc.Node;
@@ -223,6 +228,7 @@ export default class FightPanel extends UIBase {
             this.playerLevel.string = "Lv."+this._fightEnemy.playerLevel;
             this.playerName.string = this._fightEnemy.playerName;
             this.playerSex.load(PathUtil.getSexIconUrl(this._fightEnemy.playerSex));
+            this.playerIcon.load(this._fightEnemy.playerIcon);
             this.playerPower.string = this._fightEnemy.totalPower.toString();
         }
         var nodeCard:cc.Node;
