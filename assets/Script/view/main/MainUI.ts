@@ -6,8 +6,6 @@ import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
 import { ResType } from "../../model/ResInfo";
 import { UI } from "../../manager/UIManager";
-import { AlertBtnType } from "../AlertPanel";
-import { RES } from "../../manager/ResourceManager";
 import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 import ResBounceEffect from "../../component/ResBounceEffect";
 import ExpLevelEffect from "../../component/ExpLevelEffect";
@@ -41,15 +39,8 @@ export default class MainUI extends UIBase {
     nodeActivity: cc.Node = null;
     @property(cc.Node)
     nodeActivityDetail: cc.Node = null;
-    @property(cc.Node)
-    nodeTaskDetail: cc.Node = null;
     @property(cc.Button)
     btnAcitveArrow: cc.Button = null;
-    @property(cc.Button)
-    btnTaskArrow: cc.Button = null;
-    @property(cc.Node)
-    btnTaskArrowF: cc.Node = null;
-    
 
     @property(cc.Label)
     lblName: cc.Label = null;
@@ -70,8 +61,6 @@ export default class MainUI extends UIBase {
 
     @property(cc.Button)
     taskBtn: cc.Button = null;
-    @property(cc.Button)
-    chatBtn: cc.Button = null;
 
     // LIFE-CYCLE CALLBACKS:
     @property(ResBounceEffect)
@@ -181,7 +170,6 @@ export default class MainUI extends UIBase {
 
         this.nodeActivity.on(TouchHandler.TOUCH_CLICK,this.onOpenActivity,this);
         this.btnAcitveArrow.node.on(TouchHandler.TOUCH_CLICK,this.onCloseActivity,this);
-        this.btnTaskArrow.node.on(TouchHandler.TOUCH_CLICK,this.onTaskOpenClose,this)
         this.taskBtn.node.on(cc.Node.EventType.TOUCH_START,this.onTaskBtnTouch,this);
 
         EVENT.on(GameEvent.Res_update_Cost_Complete,this.resUpdateCost,this);
@@ -196,7 +184,6 @@ export default class MainUI extends UIBase {
 
         this.nodeActivity.off(TouchHandler.TOUCH_CLICK,this.onOpenActivity,this);
         this.btnAcitveArrow.node.off(TouchHandler.TOUCH_CLICK,this.onCloseActivity,this)
-        this.btnTaskArrow.node.off(TouchHandler.TOUCH_CLICK,this.onTaskOpenClose,this)
         this.taskBtn.node.off(cc.Node.EventType.TOUCH_START,this.onTaskBtnTouch,this)
 
         EVENT.off(GameEvent.Res_update_Cost_Complete,this.resUpdateCost,this);
@@ -220,21 +207,6 @@ export default class MainUI extends UIBase {
         this.nodeActivity.active = true;
         this.nodeActivity.runAction(cc.fadeIn(0.1));
         this.nodeActivityDetail.runAction(cc.moveBy(0.2,cc.v2(400,0)));
-    }
-
-    private _taskOpen:boolean = true;
-    private onTaskOpenClose(e){
-        if(this._taskOpen){
-            this.nodeTaskDetail.runAction(cc.sequence(cc.moveTo(0.2,cc.v2(-643,-274)),cc.callFunc(()=>{
-                this._taskOpen = false;
-                this.btnTaskArrowF.scaleX = -1;
-            })));
-        }else{
-            this.nodeTaskDetail.runAction(cc.sequence(cc.moveTo(0.2,cc.v2(-350,-274)),cc.callFunc(()=>{
-                this._taskOpen = true;
-                this.btnTaskArrowF.scaleX = 1;
-            })));
-        }
     }
 
     private onTaskBtnTouch(e){

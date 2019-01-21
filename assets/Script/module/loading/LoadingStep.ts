@@ -1,4 +1,4 @@
-import LoadingStepManager from "./LoadingStepManager";
+import LoadingStepManager, { LoadingStepEnum } from "./LoadingStepManager";
 
 
 /**
@@ -12,7 +12,7 @@ export default class LoadingStep{
 
         this.mgr = mgr;
     }
-    public type:number = 0;
+    public type:LoadingStepEnum = 0;
     public progress:number = 0;
 
     private _curProgress:number = 0;
@@ -21,13 +21,16 @@ export default class LoadingStep{
     }
 
     public mgr:LoadingStepManager;
+    public ququeType:LoadingStepEnum = 0;
     //开始步骤
     public startStep(){
+        this.ququeType = this.type;
+        this.mgr.addQueue(this.ququeType,this)
         this.doStep();
     }
 
     public doStep(){
-
+        console.log("step:",this.type,"start:"+this.ququeType+",time:"+new Date().getTime())
     }
 
     public getStep(name){
@@ -43,13 +46,15 @@ export default class LoadingStep{
         this.updateProgress(100);
         var nextStep:LoadingStep = this.getStep(type);
         if(nextStep){
+            nextStep.ququeType = this.ququeType;
+            this.mgr.updateQueue(this.ququeType,this);
             nextStep.doStep();
         }
     }
 
     public endStep(){
         this.updateProgress(100);
-        this.mgr.endLoading();
+        this.mgr.endQueue(this.ququeType);
     }
 
 }

@@ -8,6 +8,7 @@ import { LoadingStepEnum } from "../LoadingStepManager";
 export default class LoadingStepServerConn extends LoadingStep{
 
     public doStep(){
+        super.doStep();
         console.log("LoadingStepServerConn:start");
         NET.connect(GLOBAL.serverUrl,(resp)=>{
             console.log("LoadingStepServerConn:Connected")

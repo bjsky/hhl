@@ -20,7 +20,7 @@ export const ConfigConst = {
 export default class LoadingStepConfig extends LoadingStep{
     private _cfgArr:string[];
     public doStep(){
-
+        super.doStep();
         this._cfgArr = [];
         for(var key in ConfigConst){
             this._cfgArr.push(ConfigConst[key]);
@@ -34,7 +34,10 @@ export default class LoadingStepConfig extends LoadingStep{
             CFG.parseCfg(res,RES.get(res));
         });
         console.log("Config loaded!");
-        
+        var configStep:LoadingStep = this.getStep(LoadingStepEnum.Login);
+        if(configStep){
+            configStep.startStep();
+        }
         this.setNext(LoadingStepEnum.Res);
     }
     private loadConfigProgress(pro:number){

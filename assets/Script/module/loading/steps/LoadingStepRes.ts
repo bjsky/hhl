@@ -23,6 +23,7 @@ export const ResConst = {
     CostTipPanel:"prefabs/costTipPanel",
     FightTip:"prefabs/fightTip",
     FightResult:"prefabs/fightResult",
+    resPanel:"prefabs/resPanel",
 }
 /**
  * 加载配置
@@ -33,6 +34,7 @@ export default class LoadingStepRes extends LoadingStep{
     private _loadedCount:number = 0;
     private _totalCount:number = 0;
     public doStep(){
+        super.doStep();
         this._resArr = [];
         for(var key in ResConst){
             this._resArr.push(ResConst[key]);

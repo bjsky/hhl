@@ -23,6 +23,7 @@ import { AlertBtnType } from "../AlertPanel";
 import StringUtil from "../../utils/StringUtil";
 import CardHead from "../card/CardHead";
 import { CardBigShowType } from "../card/CardBig";
+import ResPanel, { ResPanelType } from "../ResPanel";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -418,7 +419,7 @@ export default class HeroPanel extends UIBase {
         if(!this._nextLvCardCfg)
             return;
         if(COMMON.resInfo.lifeStone< this._upLvCost){
-            UI.showTip("灵石不足");
+            ResPanel.show(ResPanelType.StoneNotEnough);
             return;
         }
         if(COMMON.userInfo.level< this._upLvNeedLv){
@@ -439,7 +440,7 @@ export default class HeroPanel extends UIBase {
         }
         var gold:number = COMMON.resInfo.gold;
         if(gold < this._upStarCost){
-            UI.showTip("金币不足");
+            ResPanel.show(ResPanelType.GoldNotEnough);
             return;
         }
 

@@ -11,6 +11,7 @@ import { LoadingStepEnum } from "../LoadingStepManager";
 export default class LoadingStepServerData extends LoadingStep{
 
     public doStep(){
+        super.doStep();
         CONSTANT.initConstant();
         if(GLOBAL.serverType == ServerType.Client){
             NET.send(MsgLogin.create("",""),(msg:MsgLogin)=>{

@@ -23,6 +23,7 @@ export default class LoadingStepManager{
 
     public steps:any = {};
 
+    public stepQueueMap:any ={};
 
     public getStep(stepName){
         return this.steps[stepName];
@@ -42,6 +43,7 @@ export default class LoadingStepManager{
     }
 
     constructor(){
+        this.stepQueueMap ={};
         this.steps[LoadingStepEnum.Config] = new LoadingStepConfig(LoadingStepEnum.Config,20,this);
         this.steps[LoadingStepEnum.Res] = new LoadingStepRes(LoadingStepEnum.Res,60,this);
         this.steps[LoadingStepEnum.Scene] = new LoadingStepScene(LoadingStepEnum.Scene,5,this);
@@ -59,5 +61,32 @@ export default class LoadingStepManager{
 
     public endLoading(){
         EVENT.emit(GameEvent.LOADING_COMPLETE);
+    }
+
+    public addQueue(type:LoadingStepEnum ,step:LoadingStep){
+        if(this.stepQueueMap[type] == undefined){
+            this.stepQueueMap[type] = step;
+        }
+    }
+    public getQueueCount(){
+        var count:number = 0;
+        for(var key in this.stepQueueMap){
+            count ++;
+        }
+        return count;
+    }
+    public updateQueue(type:LoadingStepEnum,step:LoadingStep){
+        if(this.stepQueueMap[type]!=undefined){
+            this.stepQueueMap[type] = step;
+        }
+    }
+
+    public endQueue(type:LoadingStepEnum){
+        if(this.stepQueueMap[type]!=undefined){
+            delete this.stepQueueMap[type];
+        }
+        if(this.getQueueCount()==0){
+            this.endLoading();
+        }
     }
 }

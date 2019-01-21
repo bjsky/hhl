@@ -10,6 +10,7 @@ import GameEvent from "../../../message/GameEvent";
 export default class LoadingStepLogin extends LoadingStep{
     
     public doStep(){
+        super.doStep();
         if(GLOBAL.serverType == ServerType.Client){
             //客户端直接返回测试数据
             this.setNext(LoadingStepEnum.ServerData);
@@ -30,11 +31,17 @@ export default class LoadingStepLogin extends LoadingStep{
         // this.setNext(LoadingStepEnum.ServerConnect);
         WeiXin.getUserInfo((userInfo)=>{
             if(userInfo==null){
-                EVENT.emit(GameEvent.Show_UserInfo_AuthButton);
+                this._showUserInfoAuthButton = true;
+                // EVENT.emit(GameEvent.Show_UserInfo_AuthButton);
             }else{
                 GLOBAL.initUserInfo(userInfo);
                 this.setNext(LoadingStepEnum.ServerConnect);
             }
         })
+    }
+
+    private _showUserInfoAuthButton:boolean =false;
+    public get showUserInfoAuthButton(){
+        return this._showUserInfoAuthButton;
     }
 }

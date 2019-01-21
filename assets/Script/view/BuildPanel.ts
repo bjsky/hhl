@@ -14,6 +14,7 @@ import { EVENT } from "../message/EventCenter";
 import GameEvent from "../message/GameEvent";
 import StringUtil from "../utils/StringUtil";
 import { GUIDE } from "../manager/GuideManager";
+import ResPanel, { ResPanelType } from "./ResPanel";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -212,7 +213,7 @@ export default class BuildPanel extends UIBase{
         var needGold:number = this._buildInfo.buildLevelCfg.upNeedGold;
         var needLevel:number = this._buildInfo.buildLevelCfg.upNeedPlayerLv;
         if(COMMON.resInfo.gold<needGold){
-            UI.showTip("金币不足!");
+            ResPanel.show(ResPanelType.GoldNotEnough);
             return;
         }
         if(COMMON.userInfo.level<needLevel ){

@@ -20,6 +20,7 @@ import DList, { DListDirection } from "../../component/DList";
 import { CardSimpleShowType } from "../card/CardSmall";
 import { GUIDE } from "../../manager/GuideManager";
 import { CardBigShowType } from "../card/CardBig";
+import ResPanel, { ResPanelType } from "../ResPanel";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -104,7 +105,7 @@ export default class TemplePanel extends UIBase {
 
     private onLifeStoneClick(e){
         if(COMMON.resInfo.lifeStone <=this._stoneSummonCost){
-            UI.showTip("灵石不足!");
+            ResPanel.show(ResPanelType.StoneNotEnough);
             return;
         }
         this.playStoneSummonEffect(()=>{
