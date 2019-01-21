@@ -1,5 +1,5 @@
 import { GAME } from "./GameController";
-import { GLOBAL } from "./GlobalData";
+import { GLOBAL, ServerType } from "./GlobalData";
 
 export class WXInterface{
     public static _inst:WXInterface;
@@ -26,13 +26,20 @@ export class WXInterface{
     }
 
     public createGameClubButton(){
-        var func = window["createGameClubButton"];
-        func()
+        if(GLOBAL.serverType == ServerType.Publish){
+            var func = window["createGameClubButton"];
+            func()
+        }
     }
 
     public getUserInfo(cb){
         var func = window["getUserInfo"];
         func(cb)
+    }
+
+    public shareAppMessage(title,imgUrl,query){
+        var func = window["shareAppMessage"];
+        func(title,imgUrl,query);
     }
 }
 

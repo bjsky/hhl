@@ -8,6 +8,7 @@ import { Card } from "./module/card/CardAssist";
 import PassageInfo from "./model/PassageInfo";
 import { Passage } from "./module/battle/PassageAssist";
 import { Lineup } from "./module/battle/LineupAssist";
+import { Share } from "./module/share/ShareAssist";
 
 export enum DirectionEnum{
     Left = 0,       //左
@@ -82,6 +83,8 @@ export default class CommonData{
         Lineup.initOwnerLineup(data.lineUpOwner);
 
         Passage.initPassageInfo(data.passageInfo);
+
+        Share.initShare(data.todayShareCount);
     }
 
     public updateResInfo(data:SResInfo):SResInfo{

@@ -44,6 +44,8 @@ export class SCLoginData {
     public lineUpOwner:Array<SOwnerLineup> = [];
     //挂机关卡数据
     public passageInfo:SPassageInfo = null;
+    //今日分享次数
+    public todayShareCount:number = 0;
 
     public static parse(obj:any):SCLoginData{
         var data:SCLoginData = new SCLoginData();
@@ -81,6 +83,9 @@ export class SCLoginData {
                 passUncollectGold:0,
                 passUncollectStone:0
             });
+        }
+        if(obj.todayShareCount){
+            data.todayShareCount = obj.todayShareCount;
         }
 
         return data;

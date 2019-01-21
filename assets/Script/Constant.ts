@@ -83,6 +83,14 @@ export default class Constant{
     public getPassIncreaseMaxTime(){
         return Number(this._constantKeyValueMap["produce_maxTime"]);
     }
+    //每日分享次数
+    public getMaxShareCount(){
+        return Number(this._constantKeyValueMap["sharecount_day"]);
+    }
+    //分享获得钻石
+    public getShareGetDiamond(){
+        return Number(this._constantKeyValueMap["shareGetDiamond"]);
+    }
 }
 
 export var CONSTANT:Constant = Constant.getInstance();

@@ -36,13 +36,6 @@ export default class MainUI extends UIBase {
     @property(cc.Node)
     sideRNode: cc.Node = null;
 
-    @property(cc.Node)
-    nodeActivity: cc.Node = null;
-    @property(cc.Node)
-    nodeActivityDetail: cc.Node = null;
-    @property(cc.Button)
-    btnAcitveArrow: cc.Button = null;
-
     @property(cc.Label)
     lblName: cc.Label = null;
     @property(cc.Label)
@@ -76,13 +69,12 @@ export default class MainUI extends UIBase {
 
     @property(LoadSprite)
     headIcon:LoadSprite = null;
-
+    @property(cc.Button)
+    btnShare:cc.Button = null;
 
     onLoad () {
 
         this.initTopView();
-        this.nodeActivityDetail.active = true;
-        this.nodeActivityDetail.setPosition(643,396);
 
         WeiXin.createGameClubButton();
     }
@@ -170,9 +162,7 @@ export default class MainUI extends UIBase {
 
     onEnable(){
         this.lblExp.node.on(cc.Node.EventType.TOUCH_START,this.onLabelExpTouch,this);
-
-        this.nodeActivity.on(TouchHandler.TOUCH_CLICK,this.onOpenActivity,this);
-        this.btnAcitveArrow.node.on(TouchHandler.TOUCH_CLICK,this.onCloseActivity,this);
+        this.btnShare.node.on(TouchHandler.TOUCH_CLICK,this.onShare,this);
         this.taskBtn.node.on(cc.Node.EventType.TOUCH_START,this.onTaskBtnTouch,this);
 
         EVENT.on(GameEvent.Res_update_Cost_Complete,this.resUpdateCost,this);
@@ -184,9 +174,7 @@ export default class MainUI extends UIBase {
 
     onDisable(){
         this.lblExp.node.off(cc.Node.EventType.TOUCH_START,this.onLabelExpTouch,this);
-
-        this.nodeActivity.off(TouchHandler.TOUCH_CLICK,this.onOpenActivity,this);
-        this.btnAcitveArrow.node.off(TouchHandler.TOUCH_CLICK,this.onCloseActivity,this)
+        this.btnShare.node.off(TouchHandler.TOUCH_CLICK,this.onShare,this);
         this.taskBtn.node.off(cc.Node.EventType.TOUCH_START,this.onTaskBtnTouch,this)
 
         EVENT.off(GameEvent.Res_update_Cost_Complete,this.resUpdateCost,this);
@@ -202,17 +190,11 @@ export default class MainUI extends UIBase {
     }
     // update (dt) {}
 
-    private onOpenActivity(e){
-        this.nodeActivity.runAction(cc.sequence(cc.fadeOut(0.1),cc.callFunc(()=>{ this.nodeActivity.active = false})));
-        this.nodeActivityDetail.runAction(cc.moveBy(0.2,cc.v2(-400,0)));
-    }
-    private onCloseActivity(e){
-        this.nodeActivity.active = true;
-        this.nodeActivity.runAction(cc.fadeIn(0.1));
-        this.nodeActivityDetail.runAction(cc.moveBy(0.2,cc.v2(400,0)));
-    }
-
     private onTaskBtnTouch(e){
         // UI.showAlert("功能暂未开放，敬请期待！",null,null,AlertBtnType.OKAndCancel);
+    }
+
+    private onShare(e){
+        UI.createPopUp(ResConst.sharePanel,{});
     }
 }

@@ -9,6 +9,8 @@ import FightInfo, { FightPlayerType } from "../../model/FightInfo";
 import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
 import { GUIDE } from "../../manager/GuideManager";
+import { WeiXin } from "../../wxInterface";
+import { Share } from "../../module/share/ShareAssist";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -67,6 +69,9 @@ export default class FightResultPanel extends PopUpBase {
     detailText:cc.RichText = null;
     @property(cc.ScrollView)
     detailScroll:cc.ScrollView = null;
+
+    @property(cc.Button)
+    btnShare: cc.Button = null;
     // LIFE-CYCLE CALLBACKS:
 
     private _result:FightResult = null;
@@ -92,6 +97,7 @@ export default class FightResultPanel extends PopUpBase {
         this.btnClose.node.on(TouchHandler.TOUCH_CLICK,this.onCloseClick,this);
         this.btnDetail.node.on(cc.Node.EventType.TOUCH_START,this.onShowDetail,this);
         this.btnBack.node.on(cc.Node.EventType.TOUCH_START,this.onBackReward,this);
+        this.btnShare.node.on(TouchHandler.TOUCH_CLICK,this.onShare,this);
         EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
         this.initView();
     }
@@ -101,6 +107,7 @@ export default class FightResultPanel extends PopUpBase {
         this.btnClose.node.off(TouchHandler.TOUCH_CLICK,this.onCloseClick,this);
         this.btnDetail.node.off(cc.Node.EventType.TOUCH_START,this.onShowDetail,this);
         this.btnBack.node.off(cc.Node.EventType.TOUCH_START,this.onBackReward,this);
+        this.btnShare.node.off(TouchHandler.TOUCH_CLICK,this.onShare,this);
         EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
     }
 
@@ -117,6 +124,10 @@ export default class FightResultPanel extends PopUpBase {
     }
     private onCloseClick(e){
         this.closeEndFight(e);
+    }
+
+    private onShare(e){
+        Share.shareAppMessage();
     }
     
     private closeEndFight(e){
@@ -152,6 +163,7 @@ export default class FightResultPanel extends PopUpBase {
             this.fightReward.active = true;
             this.bossFailed.active = false;
             this.groupReward.setGroupData(this._rewards);
+            this.btnShare.node.active = Share.ifShare;
         }
     }
 

@@ -39,5 +39,7 @@ export default class NetConst{
     public static WorldEnemyList:number = 70001;
     //玩家战斗
     public static FightEnemy:number = 70002;
+    //获得奖励
+    public static GetReward:number = 80001;
 }
 

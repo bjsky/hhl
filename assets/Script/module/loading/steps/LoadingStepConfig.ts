@@ -12,7 +12,8 @@ export const ConfigConst = {
     Passage:"config/passage",
     Guide:"config/guide",
     CardSkill:"config/cardSkill",
-    SkillUp:"config/skillUp"
+    SkillUp:"config/skillUp",
+    Store:"config/store",
 }
 /**
  * 加载配置

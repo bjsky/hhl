@@ -10,6 +10,9 @@ import { GUIDE } from "../../manager/GuideManager";
 import { CFG } from "../../manager/ConfigManager";
 import { ConfigConst } from "../../module/loading/steps/LoadingStepConfig";
 import PopUpBase from "../../component/PopUpBase";
+import TouchHandler from "../../component/TouchHandler";
+import { WeiXin } from "../../wxInterface";
+import { Share } from "../../module/share/ShareAssist";
 
 const {ccclass, property} = cc._decorator;
 
@@ -36,6 +39,8 @@ export default class CardBig extends PopUpBase{
     cardLevel: cc.Label = null;
     @property(cc.Label)
     cardPower: cc.Label = null;
+    @property(cc.Button)
+    shareBtn:cc.Button = null;
 
     @property(cc.Node)
     heroNode:cc.Node = null;
@@ -75,6 +80,7 @@ export default class CardBig extends PopUpBase{
 
     onEnable(){
         EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
+        this.shareBtn.node.on(TouchHandler.TOUCH_CLICK,this.onShare,this);
 
         this.initCardView();
     }
@@ -82,8 +88,13 @@ export default class CardBig extends PopUpBase{
 
     onDisable(){
         EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
+        this.shareBtn.node.on(TouchHandler.TOUCH_CLICK,this.onShare,this);
     }
 
+
+    private onShare(e){
+        Share.shareAppMessage();
+    }
     private initCardView(){
         this.node.opacity = 0;
         if(this._type == CardBigShowType.GetCard){
@@ -94,6 +105,8 @@ export default class CardBig extends PopUpBase{
             this.cardSrc.load(PathUtil.getCardImgPath(this._cardInfo.cardInfoCfg.imgPath),null,this.loadCardCb.bind(this));
             this.cardLevel.string = "Lv."+this._cardInfo.level;
             this.cardPower.string = this._cardInfo.carUpCfg.power ;
+            
+            this.shareBtn.node.active = Share.ifShare;
         }else if(this._type == CardBigShowType.ShowCard){
             this.heroNode.active = false;
             var infoCfg = CFG.getCfgDataById(ConfigConst.CardInfo,this._cardId);

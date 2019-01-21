@@ -82,10 +82,31 @@ window.createGameClubButton = function (){
   })
 }
 
+window.shareAppMessage = function(title,image,query){
+  wx.shareAppMessage({
+    title: title,
+    imageUrl: image,
+    query: query,
+  })
+}
+
+let shareCallbackFunc = function(){
+  return {
+    title:"快来玩大家都在玩的洪荒题材小游戏！",
+    imageUrl:"https://www.xh52.top/resShare/share_1.jpg",
+    query:"",
+  }
+}
+
 wx.onLaunch()
 {
   var opt = wx.getLaunchOptionsSync();
   
   window.systemInfo = wx.getSystemInfoSync();
   console.log("[launch]取得设备信息:" + JSON.stringify(window.systemInfo));
+
+  // 设置右上角显示转发
+  wx.showShareMenu();
+  // 注册用户点击右上角转发侦听
+  wx.onShareAppMessage(shareCallbackFunc)
 }

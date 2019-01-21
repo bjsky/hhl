@@ -42,4 +42,6 @@ export default class GameEvent{
     public static Passage_FightBossEnd:string ="Passage_FightBossEnd";
     //阵容修改
     public static Lineup_Changed:string ="Lineup_Changed";
+
+    public static ShareGetReward_Complete:string ="ShareGetReward_Complete";
 }
