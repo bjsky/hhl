@@ -10,6 +10,7 @@ import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 import ResBounceEffect from "../../component/ResBounceEffect";
 import ExpLevelEffect from "../../component/ExpLevelEffect";
 import LoadSprite from "../../component/LoadSprite";
+import { WXInterface, WeiXin } from "../../wxInterface";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -82,6 +83,8 @@ export default class MainUI extends UIBase {
         this.initTopView();
         this.nodeActivityDetail.active = true;
         this.nodeActivityDetail.setPosition(643,396);
+
+        WeiXin.createGameClubButton();
     }
 
     start () {

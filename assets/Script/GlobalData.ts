@@ -17,7 +17,7 @@ export default class GlobalData{
     }
 
 
-    public serverType:number = ServerType.Client;
+    public serverType:number = ServerType.Publish;
 
     public serverUrl:string = "wss://www.xh52.top:8580/websocket";
     // public serverUrl:string = "ws://192.168.0.102:8502/websocket";
@@ -25,6 +25,8 @@ export default class GlobalData{
     public testAccount:string ="test018";
 
     public code:string ="";//微信登录code
+    //是否开通广告流量主
+    public isOpenAdId:boolean = false; 
 
     //登录授权userInfo，未授权为空
     public loginUserInfo:any = null;

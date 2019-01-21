@@ -70,6 +70,17 @@ window.getUserInfo = function (cb){
     }
   });
 }
+window.createGameClubButton = function (){
+  wx.createGameClubButton({
+    icon: 'green',
+  style: {
+    left: 10,
+    top: 120,
+    width: 50,
+    height: 50
+  }
+  })
+}
 
 wx.onLaunch()
 {

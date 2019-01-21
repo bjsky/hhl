@@ -25,6 +25,11 @@ export class WXInterface{
         func(left,top,width,height,cb);
     }
 
+    public createGameClubButton(){
+        var func = window["createGameClubButton"];
+        func()
+    }
+
     public getUserInfo(cb){
         var func = window["getUserInfo"];
         func(cb)

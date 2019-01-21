@@ -5,6 +5,7 @@ import { COMMON } from "../CommonData";
 import StringUtil from "../utils/StringUtil";
 import { UI } from "../manager/UIManager";
 import { ResConst } from "../module/loading/steps/LoadingStepRes";
+import { GLOBAL } from "../GlobalData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -35,6 +36,8 @@ export default class ResPanel extends PopUpBase {
     awardIcon: LoadSprite = null;
     @property(cc.Button)
     videoBtn: cc.Button = null;
+    @property(cc.Node)
+    adView:cc.Node = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -63,6 +66,10 @@ export default class ResPanel extends PopUpBase {
     }
 
     private initView(){
+        if(!GLOBAL.isOpenAdId){
+            this.adView.active = false;
+            this.msg.node.y = 0;
+        }
         if(this._awardType == ResPanelType.GoldRes){
             this.msg.string = "当前金币："+StringUtil.formatReadableNumber(COMMON.resInfo.gold);
         }else if(this._awardType == ResPanelType.StoneRes){
