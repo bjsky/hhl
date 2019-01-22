@@ -144,6 +144,7 @@ export default class FightResultPanel extends PopUpBase {
     private initView(){
         this.victoryNode.active = this._result.victory;
         this.failNode.active = !this._result.victory;
+
         if(this._result.evaluate>0){
             this.sprStar.load(PathUtil.getResultEvalUrl(this._result.evaluate));
         }else{
@@ -192,6 +193,12 @@ export default class FightResultPanel extends PopUpBase {
     protected onShowComplete(){
         super.onShowComplete();
         this._enableGetGuideNode = true;
+        SOUND.stopBgSound();
+        if(this._result.victory){
+            SOUND.playFightWinSound();
+        }else{
+            SOUND.playFightFailSound();
+        }
     }
     ///////////////////
     // 引导

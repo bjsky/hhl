@@ -94,6 +94,18 @@ export default class SoundManager{
     public playGetCardSound(){
         this.playSoundOnce(SoundConst.Card_sound);
     }
+    public playFightWinSound(){
+        this.playSoundOnce(SoundConst.Fight_win_sound);
+    }
+    public playFightFailSound(){
+        this.playSoundOnce(SoundConst.Fight_fail_sound);
+    }
+    public playFighthitSound(){
+        this.playSoundOnce(SoundConst.Fight_hit_sound);
+    }
+    public playFightSkillSound(){
+        this.playSoundOnce(SoundConst.Fight_skill_sound);
+    }
 }
 
 export class SoundConst {
@@ -101,7 +113,10 @@ export class SoundConst {
     public static Btn_sound:string ="sound/dianji";
     public static Bg_sound:string ="sound/bgmusic";
     public static Fight_sound:string ="sound/fightbgm";
-
+    public static Fight_win_sound:string ="sound/fightwin";
+    public static Fight_fail_sound:string ="sound/fightfailed";
+    public static Fight_hit_sound:string ="sound/fighthit";
+    public static Fight_skill_sound:string = "sound/skill";
 }
 
 export var SOUND = SoundManager.getInstance();

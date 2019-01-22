@@ -363,6 +363,7 @@ export default class FightPanel extends UIBase {
                 });
             }break;
             case FightOncePlayState.BeAttackSkill:{
+                SOUND.playFighthitSound();
                 if(this._fightOnce.beAttackSkill!=null){
                     var pos:cc.Vec2 = this._beAttackCard.node.parent.convertToWorldSpaceAR(this._beAttackCard.node.position);
                     Fight.panel.playSkill(pos,this._fightOnce.beAttackSkill.attackObj.skill.skillCfg.skillIcon,()=>{
@@ -407,6 +408,7 @@ export default class FightPanel extends UIBase {
     
     private _skillPool:cc.NodePool = new cc.NodePool();
     public playSkill(pos:cc.Vec2,skillIcon:string,cb:Function){
+        SOUND.playFightSkillSound();
         var skillSpr:LoadSprite;
         var skill:cc.Node = this._skillPool.get();
         if(!skill){
