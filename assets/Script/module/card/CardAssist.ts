@@ -20,6 +20,7 @@ import { AwardTypeEnum } from "../../view/AwardPanel";
 import { SResInfo } from "../../net/msg/MsgLogin";
 import LineupInfo from "../../model/LineupInfo";
 import MsgCardSummonGuide from "../../net/msg/MsgCardSummonGuide";
+import { SOUND } from "../../manager/SoundManager";
 
 export enum CardRaceType{
     All =0,
@@ -212,6 +213,7 @@ export default class CardAssist{
     public upCardStar(uuid,useUUid){
         NET.send(MsgCardUpStar.create(uuid,useUUid),(msg:MsgCardUpStar)=>{
             if(msg && msg.resp){
+                SOUND.playGetCardSound();
                 this.updateCardInfo(msg.resp.cardInfo);
                 var removeUuid = msg.resp.useCardInfo.uuid;
                 this.removeCardByUUid(removeUuid);

@@ -8,6 +8,7 @@ import { COMMON } from "../CommonData";
 import { GUIDE, GuideTypeEnum } from "../manager/GuideManager";
 import { EVENT } from "../message/EventCenter";
 import GameEvent from "../message/GameEvent";
+import { SOUND, SoundConst } from "../manager/SoundManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -64,6 +65,8 @@ export default class CityScene extends SceneBase {
         if(GUIDE.isInGuide){
             GUIDE.startGuide();
         }
+
+        SOUND.playBgSound(SoundConst.Bg_sound);
     }
 
     onEnable(){

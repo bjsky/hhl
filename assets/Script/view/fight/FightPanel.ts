@@ -10,6 +10,7 @@ import CardFight from "./CardFight";
 import FightAction, { BuffAction } from "../../module/fight/FightAction";
 import BuffNode from "./BuffNode";
 import FightOnce from "../../module/fight/FightOnce";
+import { SOUND, SoundConst } from "../../manager/SoundManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -117,6 +118,7 @@ export default class FightPanel extends UIBase {
         var seq =cc.sequence(
             cc.fadeIn(0.6),
             cc.callFunc(()=>{
+                SOUND.playBgSound(SoundConst.Fight_sound);
                 Fight.startFight();
             })
         );

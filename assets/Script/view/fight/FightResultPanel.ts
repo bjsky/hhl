@@ -11,6 +11,7 @@ import GameEvent from "../../message/GameEvent";
 import { GUIDE } from "../../manager/GuideManager";
 import { WeiXin } from "../../wxInterface";
 import { Share } from "../../module/share/ShareAssist";
+import { SOUND, SoundConst } from "../../manager/SoundManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -133,6 +134,7 @@ export default class FightResultPanel extends PopUpBase {
     private closeEndFight(e){
         this.onClose(e);
 
+        SOUND.playBgSound(SoundConst.Bg_sound);
         Fight.endFight();
     }
     start () {
@@ -163,7 +165,7 @@ export default class FightResultPanel extends PopUpBase {
             this.fightReward.active = true;
             this.bossFailed.active = false;
             this.groupReward.setGroupData(this._rewards);
-            this.btnShare.node.active = Share.ifShare;
+            this.btnShare.node.active = Share.shareEnable;
         }
     }
 

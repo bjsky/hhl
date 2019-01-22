@@ -1,3 +1,4 @@
+import { SOUND, SoundConst } from "../manager/SoundManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -22,6 +23,7 @@ export default class ButtonEffect extends cc.Component {
             cc.scaleTo(0.05, 1.1 * this.originalScale)
         );
         this.node.runAction(seq);
+        SOUND.playBtnSound();
     }
 
     private onNodeTouchEnd(evt) {

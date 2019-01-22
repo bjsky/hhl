@@ -13,6 +13,7 @@ import PopUpBase from "../../component/PopUpBase";
 import TouchHandler from "../../component/TouchHandler";
 import { WeiXin } from "../../wxInterface";
 import { Share } from "../../module/share/ShareAssist";
+import { SOUND } from "../../manager/SoundManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -106,7 +107,7 @@ export default class CardBig extends PopUpBase{
             this.cardLevel.string = "Lv."+this._cardInfo.level;
             this.cardPower.string = this._cardInfo.carUpCfg.power ;
             
-            this.shareBtn.node.active = Share.ifShare;
+            this.shareBtn.node.active = Share.shareEnable;
         }else if(this._type == CardBigShowType.ShowCard){
             this.heroNode.active = false;
             var infoCfg = CFG.getCfgDataById(ConfigConst.CardInfo,this._cardId);
@@ -116,6 +117,7 @@ export default class CardBig extends PopUpBase{
 
     private loadCardCb(){
         this.onShow();
+        SOUND.playGetCardSound();
     }
     protected onShowComplete(){
         this.node.on(cc.Node.EventType.TOUCH_START,this.onMaskTouch,this);

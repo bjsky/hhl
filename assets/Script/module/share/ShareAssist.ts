@@ -29,7 +29,7 @@ export default class ShareAssist{
         this.shareGetDiamond = CONSTANT.getShareGetDiamond();
     }
     
-    public get ifShare(){
+    public get shareEnable(){
         return this.todayShareCount <this.maxShareCount;
     }
 
