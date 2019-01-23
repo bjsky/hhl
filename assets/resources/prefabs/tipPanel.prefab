@@ -255,6 +255,7 @@
       "__id__": 1
     },
     "_enabled": true,
+    "maskOpacity": 40,
     "flyX": 0,
     "flyY": 50,
     "during": 0.6,

@@ -48,8 +48,6 @@ export default class MainUI extends UIBase {
     lblDiamond: cc.Label = null;
     @property(cc.Label)
     lblLifeStone: cc.Label = null;
-    @property(cc.Label)
-    lblSoulStone: cc.Label = null;
     @property(cc.ProgressBar)
     progressExp: cc.ProgressBar = null;
 
@@ -104,7 +102,7 @@ export default class MainUI extends UIBase {
         this.lblGold.string = StringUtil.formatReadableNumber(COMMON.resInfo.gold);
         this.lblDiamond.string = StringUtil.formatReadableNumber(COMMON.resInfo.diamond);
         this.lblLifeStone.string = StringUtil.formatReadableNumber(COMMON.resInfo.lifeStone);
-        this.lblSoulStone.string = StringUtil.formatReadableNumber(COMMON.resInfo.soulStone);
+        // this.lblSoulStone.string = StringUtil.formatReadableNumber(COMMON.resInfo.soulStone);
         // this.progressExp.progress = COMMON.userInfo.exp / COMMON.userInfo.totalExp;
         
         // this.labelLv.string = COMMON.userInfo.level.toString();
