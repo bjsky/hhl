@@ -387,7 +387,6 @@ export default class HeroPanel extends UIBase {
             this._cardListData.push({type:CardSimpleShowType.Owner,uuid:item.uuid});
         })
         this.cardsList.direction = DListDirection.Vertical;
-        this.cardsList.row = 1;
         this.cardsList.setListData(this._cardListData);
 
         for(var i:number = 0;i<this._cardListData.length;i++){

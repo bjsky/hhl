@@ -167,9 +167,8 @@ export default class LineUpPopup extends PopUpBase {
         this._currentCardList.forEach((item:CardInfo) =>{
             this._cardListData.push({type:CardSimpleShowType.Owner,uuid:item.uuid});
         })
-        this.cardsList.direction = DListDirection.Vertical;
         // this.cardsList.setDragEnable(true,DListDirection.Vertical);
-        this.cardsList.row = 1;
+        this.cardsList.direction = DListDirection.Vertical;
         this.cardsList.setListData(this._cardListData);
         this.scheduleOnce(()=>{
             this._enableGetGuideNode = true;

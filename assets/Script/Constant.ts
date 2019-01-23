@@ -91,6 +91,14 @@ export default class Constant{
     public getShareGetDiamond(){
         return Number(this._constantKeyValueMap["shareGetDiamond"]);
     }
+    //看视频获得金币
+    public getSeeVideoGold(){
+        return Number(this._constantKeyValueMap["seeVideoAddGold"]);
+    }
+    //看视频获得灵石
+    public getSeeVideoStone(){
+        return Number(this._constantKeyValueMap["seeVideoAddStone"]);
+    }
 }
 
 export var CONSTANT:Constant = Constant.getInstance();

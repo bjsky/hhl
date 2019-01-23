@@ -73,6 +73,10 @@ export default class FightResultPanel extends PopUpBase {
 
     @property(cc.Button)
     btnShare: cc.Button = null;
+    @property(cc.Sprite)
+    spr_fxdzs:cc.Sprite = null;
+    @property(cc.Sprite)
+    spr_fxghy:cc.Sprite = null;
     // LIFE-CYCLE CALLBACKS:
 
     private _result:FightResult = null;
@@ -100,6 +104,7 @@ export default class FightResultPanel extends PopUpBase {
         this.btnBack.node.on(cc.Node.EventType.TOUCH_START,this.onBackReward,this);
         this.btnShare.node.on(TouchHandler.TOUCH_CLICK,this.onShare,this);
         EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
+        EVENT.on(GameEvent.ShareGetReward_Complete,this.checkShareLabel,this);
         this.initView();
     }
     onDisable(){
@@ -110,6 +115,7 @@ export default class FightResultPanel extends PopUpBase {
         this.btnBack.node.off(cc.Node.EventType.TOUCH_START,this.onBackReward,this);
         this.btnShare.node.off(TouchHandler.TOUCH_CLICK,this.onShare,this);
         EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
+        EVENT.off(GameEvent.ShareGetReward_Complete,this.checkShareLabel,this);
     }
 
     private _showDetail:boolean =false;
@@ -129,6 +135,11 @@ export default class FightResultPanel extends PopUpBase {
 
     private onShare(e){
         Share.shareAppMessage();
+        if(Share.shareGetReward){
+            this.scheduleOnce(()=>{
+                Share.getShareReward();
+            },0.1)
+        }
     }
     
     private closeEndFight(e){
@@ -167,7 +178,12 @@ export default class FightResultPanel extends PopUpBase {
             this.bossFailed.active = false;
             this.groupReward.setGroupData(this._rewards);
             this.btnShare.node.active = Share.shareEnable;
+            this.checkShareLabel(null);
         }
+    }
+    private checkShareLabel(e){
+        this.spr_fxdzs.node.active = Share.shareGetReward;
+        this.spr_fxghy.node.active = !Share.shareGetReward;
     }
 
     private showDetail(show:boolean){

@@ -23,7 +23,7 @@ export default class SoundManager{
 
     public playSoundOnce(path:string){
         var self = this;
-        if (this._musicSwitch == false) {
+        if (this._bgMusicSwitch == false) {
             return;
         }
         cc.loader.loadRes(path, cc.AudioClip, function (err, clip) {

@@ -4,6 +4,10 @@ import { SexEnum } from "../CommonData";
 import { BuffType } from "../module/fight/SkillLogic";
 
 export default class PathUtil{
+    public static getSoundIcon(open:boolean):string{
+        return "ui/main/"+(open?"sy_kai":"sy_guan");
+    }
+
     public static getResultRewardTitleUrl(victory:boolean):string{
         return "ui/module/fightResult/"+(victory?"sljl":"sbjl");
     }
@@ -65,19 +69,48 @@ export default class PathUtil{
         var url:string = "";
         switch(type){
             case ResType.gold:
-            url = "ui/Common2/jinbi_icon";
+            url = "ui/Common2/gold";
             break;
             case ResType.diamond:
-            url = "ui/Common/diamond";
+            url = "ui/Common2/diamond";
             break;
             case ResType.lifeStone:
-            url = "ui/Common2/lingshi_icon";
+            url = "ui/Common2/stone";
             break;
             case ResType.soulStone:
-            url = "ui/Common2/hunshi_icon";
+            url = "ui/Common2/stone";
             break;
             case ResType.exp:
-            url = "ui/Common2/jinyan_icon";
+            url = "ui/Common2/stone";
+            break;
+        }
+        return url;
+    }
+
+    public static getResMutiIconUrl(type:ResType){
+        var url:string = "";
+        switch(type){
+            case ResType.gold:
+            url = "ui/Common2/jb_icon";
+            break;
+            case ResType.diamond:
+            url = "ui/Common2/zs_icon";
+            break;
+            case ResType.lifeStone:
+            url = "ui/Common2/ls_icon";
+            break;
+        }
+        return url;
+    }
+
+    public static getResTipNameUrl(type:ResType){
+        var url:string = "";
+        switch(type){
+            case ResType.gold:
+            url = "ui/module/getRes/dqjb";
+            break;
+            case ResType.lifeStone:
+            url = "ui/module/getRes/dqls";
             break;
         }
         return url;

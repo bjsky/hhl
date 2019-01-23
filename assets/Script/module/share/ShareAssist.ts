@@ -8,6 +8,7 @@ import { UI } from "../../manager/UIManager";
 import { ResConst } from "../loading/steps/LoadingStepRes";
 import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
+import { GUIDE } from "../../manager/GuideManager";
 
 export default class ShareAssist{
     private static _instance: ShareAssist = null;
@@ -30,6 +31,10 @@ export default class ShareAssist{
     }
     
     public get shareEnable(){
+        return !GUIDE.isInGuide;
+    }
+
+    public get shareGetReward(){
         return this.todayShareCount <this.maxShareCount;
     }
 
@@ -45,7 +50,7 @@ export default class ShareAssist{
     }
 
     //分享获得奖励
-    public shareGetReward(){
+    public getShareReward(){
         NET.send(MsgGetReward.create(GetRewardType.ShareGetDiamond,this.shareGetDiamond),(msg:MsgGetReward)=>{
             if(msg && msg.resp){
                 COMMON.updateResInfo(msg.resp.resInfo);

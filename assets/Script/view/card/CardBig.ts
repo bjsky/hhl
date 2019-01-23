@@ -46,6 +46,12 @@ export default class CardBig extends PopUpBase{
     @property(cc.Node)
     heroNode:cc.Node = null;
 
+    @property(cc.Sprite)
+    spr_fxdzs:cc.Sprite = null;
+    @property(cc.Sprite)
+    spr_fxghy:cc.Sprite = null;
+    
+
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -81,7 +87,8 @@ export default class CardBig extends PopUpBase{
 
     onEnable(){
         EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
-        this.shareBtn.node.on(TouchHandler.TOUCH_CLICK,this.onShare,this);
+        EVENT.on(GameEvent.ShareGetReward_Complete,this.checkShareLabel,this);
+        this.shareBtn.node.on(cc.Node.EventType.TOUCH_START,this.onShare,this);
 
         this.initCardView();
     }
@@ -89,12 +96,18 @@ export default class CardBig extends PopUpBase{
 
     onDisable(){
         EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
-        this.shareBtn.node.on(TouchHandler.TOUCH_CLICK,this.onShare,this);
+        EVENT.off(GameEvent.ShareGetReward_Complete,this.checkShareLabel,this);
+        this.shareBtn.node.on(cc.Node.EventType.TOUCH_START,this.onShare,this);
     }
 
 
     private onShare(e){
         Share.shareAppMessage();
+        if(Share.shareGetReward){
+            this.scheduleOnce(()=>{
+                Share.getShareReward();
+            },0.1)
+        }
     }
     private initCardView(){
         this.node.opacity = 0;
@@ -108,6 +121,9 @@ export default class CardBig extends PopUpBase{
             this.cardPower.string = this._cardInfo.carUpCfg.power ;
             
             this.shareBtn.node.active = Share.shareEnable;
+            this.checkShareLabel(null);
+
+            SOUND.playGetCardSound();
         }else if(this._type == CardBigShowType.ShowCard){
             this.heroNode.active = false;
             var infoCfg = CFG.getCfgDataById(ConfigConst.CardInfo,this._cardId);
@@ -115,9 +131,13 @@ export default class CardBig extends PopUpBase{
         }
     }
 
+    private checkShareLabel(e){
+        this.spr_fxdzs.node.active = Share.shareGetReward;
+        this.spr_fxghy.node.active = !Share.shareGetReward;
+    }
+
     private loadCardCb(){
         this.onShow();
-        SOUND.playGetCardSound();
     }
     protected onShowComplete(){
         this.node.on(cc.Node.EventType.TOUCH_START,this.onMaskTouch,this);

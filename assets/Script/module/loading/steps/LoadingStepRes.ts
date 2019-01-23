@@ -25,7 +25,8 @@ export const ResConst = {
     FightResult:"prefabs/fightResult",
     resPanel:"prefabs/resPanel",
     sharePanel:"prefabs/sharePanel",
-    singleAwardPanel:"prefabs/singleAwardPanel"
+    singleAwardPanel:"prefabs/singleAwardPanel",
+    ShareItem:"prefabs/shareItem"
 }
 /**
  * 加载配置

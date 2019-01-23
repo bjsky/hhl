@@ -6,6 +6,8 @@ import StringUtil from "../utils/StringUtil";
 import { UI } from "../manager/UIManager";
 import { ResConst } from "../module/loading/steps/LoadingStepRes";
 import { GLOBAL } from "../GlobalData";
+import PathUtil from "../utils/PathUtil";
+import Constant, { CONSTANT } from "../Constant";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -38,16 +40,29 @@ export default class ResPanel extends PopUpBase {
     videoBtn: cc.Button = null;
     @property(cc.Node)
     adView:cc.Node = null;
+    @property(cc.Node)
+    resNode:cc.Node = null;
+    @property(cc.Label)
+    resNum: cc.Label = null;
+    @property(LoadSprite)
+    resTip: LoadSprite = null;
 
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
     private _awardType:ResPanelType = 0;
-    private _awardContent:string = "";
+    private _resType:ResType = 0;
+    private _awardNum:number = 0;
     public setData(data:any){
         super.setData(data);
         this._awardType = data.type;
-
+        if(this._awardType == ResPanelType.GoldRes || this._awardType == ResPanelType.GoldNotEnough){
+            this._resType = ResType.gold;
+            this._awardNum = CONSTANT.getSeeVideoGold();
+        }else if(this._awardType == ResPanelType.StoneRes || this._awardType == ResPanelType.StoneNotEnough){
+            this._resType = ResType.lifeStone;
+            this._awardNum = CONSTANT.getSeeVideoStone();
+        }
     }
 
     onEnable(){
@@ -68,25 +83,40 @@ export default class ResPanel extends PopUpBase {
     private initView(){
         if(!GLOBAL.isOpenAdId){
             this.adView.active = false;
-            this.msg.node.y = 0;
+            this.resNode.y = this.msg.node.y = 0;
+        }else{
+            this.adView.active = true;
+            this.resNode.y = this.msg.node.y = 77;
+            this.initVideoView();
         }
         if(this._awardType == ResPanelType.GoldRes){
-            this.msg.string = "当前金币："+StringUtil.formatReadableNumber(COMMON.resInfo.gold);
+            this.resNode.active = true;
+            this.msg.node.active = false;
+            this.resTip.load(PathUtil.getResTipNameUrl(this._resType));
+            this.resNum.string = StringUtil.formatReadableNumber(COMMON.resInfo.gold);
         }else if(this._awardType == ResPanelType.StoneRes){
-            this.msg.string = "当前灵石："+StringUtil.formatReadableNumber(COMMON.resInfo.lifeStone);
+            this.resNode.active = true;
+            this.msg.node.active = false;
+            this.resTip.load(PathUtil.getResTipNameUrl(this._resType));
+            this.resNum.string = StringUtil.formatReadableNumber(COMMON.resInfo.lifeStone);
         }else if(this._awardType == ResPanelType.GoldNotEnough){
+            this.resNode.active = false;
+            this.msg.node.active = true;
             this.msg.string = "金币不足！";
         }else if(this._awardType == ResPanelType.StoneNotEnough){
+            this.resNode.active = false;
+            this.msg.node.active = true;
             this.msg.string = "灵石不足！";
         }
     }
 
+    private initVideoView(){
+        this.awardIcon.load(PathUtil.getResMutiIconUrl(this._resType));
+        this.award.string = StringUtil.formatReadableNumber(this._awardNum);
+    }
+
     private onVideoSee(){
-        if(this._awardType == ResPanelType.GoldRes || this._awardType == ResPanelType.GoldNotEnough){
-
-        }else if(this._awardType == ResPanelType.StoneRes || this._awardType == ResPanelType.StoneNotEnough){
-
-        }
+        
     }
 
     public static show(type:ResPanelType){

@@ -182,7 +182,6 @@ export default class TemplePanel extends UIBase {
             cardsDataArr.push({type:CardSimpleShowType.Hero,cfg:item});
         })
         this.cardsList.direction = DListDirection.Vertical;
-        this.cardsList.row = 1;
         this.cardsList.setListData(cardsDataArr);
     }
 

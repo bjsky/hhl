@@ -12,7 +12,7 @@ import DListItem from "./DListItem";
 
 const {ccclass, property} = cc._decorator;
 export enum DListDirection{
-    Horizontal=0,
+    Horizontal=1,
     Vertical
 }
 
@@ -31,23 +31,10 @@ export default class DList extends cc.Component {
 
     private _col:number = 1;
     private _row:number = 1;
-    private _direction:number = 0;
+    private _direction:number = 1;
     public enableDrag:boolean = false;
     public enableDragDirection :number = 0;
     private _selectIndex:number = -1;
-    public set col(val){
-        this._col = val;
-    }
-    public get col(){
-        return this._col;
-    }
-
-    public set row(val){
-        this._row = val;
-    }
-    public get row(){
-        return this._row;
-    }
 
     public set direction(val){
         this._direction = val;
@@ -184,20 +171,27 @@ export default class DList extends cc.Component {
         var viewHeight = this.scrollView.node.height;
         var listWidth = viewWidth;
         var listHeight = viewHeight;
+        var itemWidth:number = this.itemRender.data.width;
+        var itemHeight:number = this.itemRender.data.height;
 
-        if(this._direction == DListDirection.Vertical){  //垂直排列
-            var col = Math.ceil( this._listData.length / this._row);
-            listWidth = col *  this.itemRender.data.width;
-            if (listWidth <= viewWidth) {
-                listWidth = viewWidth;
-            }
-        }else if(this._direction == DListDirection.Horizontal){ //水平排列
-            var row = Math.ceil( this._listData.length / this._col);
-            listHeight = row * this.itemRender.data.height;
+        if(this._direction == DListDirection.Horizontal){ //水平排列
+            this._col = Math.floor( viewWidth / itemWidth);
+            this._row= Math.ceil( this._listData.length / this._col);
+            listHeight = this._row * this.itemRender.data.height;
             if (listHeight <= viewHeight) {
                 listHeight = viewHeight;
             }
+        }else if(this._direction == DListDirection.Vertical){  //垂直排列
+            this._row = Math.floor( viewHeight / itemHeight);
+            this._col = Math.ceil( this._listData.length / this._row);
+            listWidth = this._col *  this.itemRender.data.width;
+            if (listWidth <= viewWidth) {
+                listWidth = viewWidth;
+            }
         }
+
+        this.scrollView.vertical = (this._direction == DListDirection.Horizontal);
+        this.scrollView.horizontal = (this._direction != DListDirection.Horizontal);
         this.scrollView.content.setContentSize(listWidth, listHeight);
         if(resetPostion){
             this.scrollView.setContentPosition(cc.v2(0, 0));
@@ -214,17 +208,17 @@ export default class DList extends cc.Component {
             }
             var toPos:cc.Vec2 = new cc.Vec2();
             var item:cc.Node = lsitItem.node;
-            if(this._direction == DListDirection.Vertical){  //垂直排列
+            if(this._direction == DListDirection.Horizontal){ //水平排列
+                let row = Math.floor(lsitItem.index / this._col);
+                let col = lsitItem.index % this._col;
+                toPos.x = col * item.width + item.width * item.anchorX;
+                toPos.y = -row * item.height - item.height * (1 - item.anchorY);
+            }else if(this._direction == DListDirection.Vertical){  //垂直排列
                 let col = Math.floor(lsitItem.index / this._row);
                 let row = lsitItem.index % this._row;
                 toPos.x = col * item.width + item.width * item.anchorX;
                 toPos.y = -row * item.height - item.height * (1 - item.anchorY); 
-            }else if(this._direction == DListDirection.Horizontal){ //水平排列
-                let row = Math.floor(lsitItem.index / this.col);
-                let col = lsitItem.index % this.col;
-                toPos.x = col * item.width + item.width * item.anchorX;
-                toPos.y = -row * item.height - item.height * (1 - item.anchorY);
-            }
+            } 
             // lsitItem.node.opacity = 0;
             // if(this._listData.length>10){
             //     this.scheduleOnce(()=>{

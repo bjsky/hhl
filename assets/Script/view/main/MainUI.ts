@@ -11,6 +11,9 @@ import ResBounceEffect from "../../component/ResBounceEffect";
 import ExpLevelEffect from "../../component/ExpLevelEffect";
 import LoadSprite from "../../component/LoadSprite";
 import { WXInterface, WeiXin } from "../../wxInterface";
+import { SOUND } from "../../manager/SoundManager";
+import PathUtil from "../../utils/PathUtil";
+import ResPanel, { ResPanelType } from "../ResPanel";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -48,11 +51,21 @@ export default class MainUI extends UIBase {
     lblDiamond: cc.Label = null;
     @property(cc.Label)
     lblLifeStone: cc.Label = null;
+    @property(cc.Button)
+    btnAddGold: cc.Button = null;
+    @property(cc.Button)
+    btnAddStone: cc.Button = null;
+    @property(cc.Button)
+    btnDiamondStore: cc.Button = null;
     @property(cc.ProgressBar)
     progressExp: cc.ProgressBar = null;
 
     @property(cc.Button)
     taskBtn: cc.Button = null;
+    @property(cc.Button)
+    soundBtn: cc.Button = null;
+    @property(LoadSprite)
+    soundIcon: LoadSprite = null;
 
     // LIFE-CYCLE CALLBACKS:
     @property(ResBounceEffect)
@@ -102,6 +115,7 @@ export default class MainUI extends UIBase {
         this.lblGold.string = StringUtil.formatReadableNumber(COMMON.resInfo.gold);
         this.lblDiamond.string = StringUtil.formatReadableNumber(COMMON.resInfo.diamond);
         this.lblLifeStone.string = StringUtil.formatReadableNumber(COMMON.resInfo.lifeStone);
+        this.soundIcon.load(PathUtil.getSoundIcon(SOUND.getBgMusicSwitch()));
         // this.lblSoulStone.string = StringUtil.formatReadableNumber(COMMON.resInfo.soulStone);
         // this.progressExp.progress = COMMON.userInfo.exp / COMMON.userInfo.totalExp;
         
@@ -162,6 +176,10 @@ export default class MainUI extends UIBase {
         this.lblExp.node.on(cc.Node.EventType.TOUCH_START,this.onLabelExpTouch,this);
         this.btnShare.node.on(TouchHandler.TOUCH_CLICK,this.onShare,this);
         this.taskBtn.node.on(cc.Node.EventType.TOUCH_START,this.onTaskBtnTouch,this);
+        this.soundBtn.node.on(TouchHandler.TOUCH_CLICK,this.onSoundClick,this);
+        this.btnAddGold.node.on(cc.Node.EventType.TOUCH_START,this.onAddGold,this);
+        this.btnAddStone.node.on(cc.Node.EventType.TOUCH_START,this.onAddStone,this);
+        this.btnDiamondStore.node.on(cc.Node.EventType.TOUCH_START,this.onDiamondStore,this);
 
         EVENT.on(GameEvent.Res_update_Cost_Complete,this.resUpdateCost,this);
         EVENT.on(GameEvent.Show_AwardPanel,this.showAwardPop,this);
@@ -174,6 +192,10 @@ export default class MainUI extends UIBase {
         this.lblExp.node.off(cc.Node.EventType.TOUCH_START,this.onLabelExpTouch,this);
         this.btnShare.node.off(TouchHandler.TOUCH_CLICK,this.onShare,this);
         this.taskBtn.node.off(cc.Node.EventType.TOUCH_START,this.onTaskBtnTouch,this)
+        this.soundBtn.node.off(TouchHandler.TOUCH_CLICK,this.onSoundClick,this);
+        this.btnAddGold.node.off(cc.Node.EventType.TOUCH_START,this.onAddGold,this);
+        this.btnAddStone.node.off(cc.Node.EventType.TOUCH_START,this.onAddStone,this);
+        this.btnDiamondStore.node.off(cc.Node.EventType.TOUCH_START,this.onDiamondStore,this);
 
         EVENT.off(GameEvent.Res_update_Cost_Complete,this.resUpdateCost,this);
         EVENT.off(GameEvent.Show_AwardPanel,this.showAwardPop,this);
@@ -194,5 +216,20 @@ export default class MainUI extends UIBase {
 
     private onShare(e){
         UI.createPopUp(ResConst.sharePanel,{});
+    }
+
+    private onSoundClick(e){
+        SOUND.SetBgMuiscOpen();
+        this.soundIcon.load(PathUtil.getSoundIcon(SOUND.getBgMusicSwitch()));
+    }
+
+    private onAddGold(e){
+        ResPanel.show(ResPanelType.GoldRes);
+    }
+    private onAddStone(e){
+        ResPanel.show(ResPanelType.StoneRes);
+    }
+    private onDiamondStore(e){
+        
     }
 }

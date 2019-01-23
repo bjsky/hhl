@@ -26,7 +26,7 @@ export default class GlobalData{
 
     public code:string ="";//微信登录code
     //是否开通广告流量主
-    public isOpenAdId:boolean = false; 
+    public isOpenAdId:boolean = true; 
 
     //登录授权userInfo，未授权为空
     public loginUserInfo:any = null;

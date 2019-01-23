@@ -1,8 +1,9 @@
-import { WeiXin } from "../../wxInterface";
 import PopUpBase from "../../component/PopUpBase";
 import { Share } from "../../module/share/ShareAssist";
 import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
+import DList, { DListDirection } from "../../component/DList";
+import { ResType } from "../../model/ResInfo";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -21,6 +22,11 @@ export default class SharePanel extends PopUpBase{
 
     @property(cc.Button)
     btnShare: cc.Button = null;
+
+    @property(cc.Button)
+    btnStore: cc.Button = null;
+    @property(DList)
+    listShared: DList = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -43,13 +49,24 @@ export default class SharePanel extends PopUpBase{
         Share.shareAppMessage();
 
         //假定时 
-        this.scheduleOnce(()=>{
-            Share.shareGetReward();
-        },0.1)
+        if(Share.shareGetReward){
+            this.scheduleOnce(()=>{
+                Share.getShareReward();
+            },0.1)
+        }
     }
 
     private initView(){
         this.btnShare.node.active = Share.shareEnable;
+        var shareRewardType:ResType = ResType.diamond;
+        var shareRewardNum:number = Share.shareGetDiamond;
+        var listData:Array<any> = [];
+        for(var i:number = 0;i<Share.maxShareCount;i++){
+            var receive = i<Share.todayShareCount;
+            listData.push({type:shareRewardType,num:shareRewardNum,receive:receive,index:(i+1)});
+        }
+        this.listShared.direction = DListDirection.Vertical;
+        this.listShared.setListData(listData);
     }
 
     private shareComplete(e){
