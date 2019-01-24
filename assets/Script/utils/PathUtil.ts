@@ -4,6 +4,10 @@ import { SexEnum } from "../CommonData";
 import { BuffType } from "../module/fight/SkillLogic";
 
 export default class PathUtil{
+
+    public static getSprFightEnd(enable:boolean){
+        return "ui/module/fight/"+(enable?"tz_tg":"tz_tg_k");
+    }
     public static getSoundIcon(open:boolean):string{
         return "ui/main/"+(open?"sy_kai":"sy_guan");
     }

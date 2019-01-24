@@ -77,6 +77,10 @@ export default class FightPanel extends UIBase {
 
     @property(cc.Button)
     btnEnd: cc.Button = null;
+    @property(cc.Label)
+    lblEnd: cc.Label = null;
+    @property(LoadSprite)
+    sprEnd: LoadSprite = null;
 
     @property(cc.Node)
     nodeEnemy: cc.Node = null;
@@ -120,6 +124,7 @@ export default class FightPanel extends UIBase {
             cc.callFunc(()=>{
                 SOUND.playBgSound(SoundConst.Fight_sound);
                 Fight.startFight();
+                this.startDelayEndEnable();
             })
         );
         this.node.runAction(seq);
@@ -129,6 +134,28 @@ export default class FightPanel extends UIBase {
             this.nodeEnemy.runAction(cc.moveTo(0.3,cc.v2(15,this.nodeEnemy.position.y)).easing(cc.easeInOut(2)));
             this.nodeMine.runAction(cc.moveTo(0.3,cc.v2(15,this.nodeMine.position.y)).easing(cc.easeInOut(2)));
         },0.3)
+    }
+    private _endEnableDelay:number = 5;
+    private _curTime:number = 0;
+    private startDelayEndEnable(){
+        this._curTime = 0;
+        this.schedule(this.delayEndEnable,1);
+    }
+    private resetEndEnable(){
+        this.lblEnd.node.active = true;
+        this.lblEnd.string = this._endEnableDelay.toString();
+        this.sprEnd.load(PathUtil.getSprFightEnd(false));
+    }
+    private delayEndEnable(){
+        this._curTime++;
+        if(this._curTime>=this._endEnableDelay){
+            this.unschedule(this.delayEndEnable);
+            this.lblEnd.node.active = false;
+            this.sprEnd.load(PathUtil.getSprFightEnd(true));
+            this.btnEnd.node.on(cc.Node.EventType.TOUCH_START,this.onEndTouch,this);
+        }else{
+            this.lblEnd.string = Math.round(this._endEnableDelay - this._curTime).toString();
+        }
     }
 
     public hide(cb:Function){
@@ -143,7 +170,6 @@ export default class FightPanel extends UIBase {
     }
 
     onEnable(){
-        this.btnEnd.node.on(cc.Node.EventType.TOUCH_START,this.onEndTouch,this);
         this.initView();
         this.show();
     }
@@ -197,6 +223,7 @@ export default class FightPanel extends UIBase {
     private initView(){
         this.initMyView();
         this.initEnemyView();
+        this.resetEndEnable();
     }
 
     private initMyView(){
