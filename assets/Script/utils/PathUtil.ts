@@ -41,6 +41,9 @@ export default class PathUtil{
     public static getCardGradeImgPath(grade:number):string{
         return "ui/Common/star"+grade;
     }
+    public static getCardFrontImgPath(grade:number):string{
+        return "ui/Common/card_f_"+grade;
+    }
     public static getCardHeadGradeImgPath(grade:number):string{
         return "ui/Common/star"+grade+"_m";
     }

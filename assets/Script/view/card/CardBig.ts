@@ -36,6 +36,8 @@ export default class CardBig extends PopUpBase{
     cardSrc: LoadSprite = null;
     @property(LoadSprite)
     cardStar: LoadSprite = null;
+    @property(LoadSprite)
+    cardFront: LoadSprite = null;
     @property(cc.Label)
     cardLevel: cc.Label = null;
     @property(cc.Label)
@@ -116,6 +118,7 @@ export default class CardBig extends PopUpBase{
             this.cardName.string = this._cardInfo.cardInfoCfg.name;
             this.cardRace.load(PathUtil.getCardRaceImgPath(this._cardInfo.cardInfoCfg.raceId));
             this.cardStar.load(PathUtil.getCardGradeImgPath(this._cardInfo.grade));
+            this.cardFront.load(PathUtil.getCardFrontImgPath(this._cardInfo.grade));
             this.cardSrc.load(PathUtil.getCardImgPath(this._cardInfo.cardInfoCfg.imgPath),null,this.loadCardCb.bind(this));
             this.cardLevel.string = "Lv."+this._cardInfo.level;
             this.cardPower.string = this._cardInfo.carUpCfg.power ;

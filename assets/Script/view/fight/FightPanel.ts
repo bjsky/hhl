@@ -175,7 +175,7 @@ export default class FightPanel extends UIBase {
     }
 
     onDisable(){
-        this.btnEnd.node.on(cc.Node.EventType.TOUCH_START,this.onEndTouch,this);
+        this.btnEnd.node.off(cc.Node.EventType.TOUCH_START,this.onEndTouch,this);
         this.clear();
     }
     

@@ -37,6 +37,8 @@ export default class CardSmall extends DListItem {
     cardSrc: LoadSprite = null;
     @property(LoadSprite)
     cardStar: LoadSprite = null;
+    @property(LoadSprite)
+    cardFront: LoadSprite = null;
     @property(cc.Label)
     cardLevel: cc.Label = null;
     @property(cc.Label)
@@ -61,6 +63,7 @@ export default class CardSmall extends DListItem {
     private _cardUUid:string;
     private _cardInfo:CardInfo;
     private _showType:number = 0;
+    private _showPower:boolean = true;
     private _cardCfg:any;
 
     public setData(data){
@@ -72,6 +75,9 @@ export default class CardSmall extends DListItem {
             
         }else if(this._showType == CardSimpleShowType.Hero){
             this._cardCfg = data.cfg;
+        }
+        if(data["showPower"]!=undefined){
+            this._showPower = data.showPower;
         }
     }
 
@@ -128,7 +134,9 @@ export default class CardSmall extends DListItem {
         }
 
         this.cardStar.load(PathUtil.getCardGradeImgPath(this._cardInfo.grade));
+        this.cardFront.load(PathUtil.getCardFrontImgPath(this._cardInfo.grade));
         this.cardLevel.string = "Lv."+this._cardInfo.level;
+        this.cardPower.node.active = this._showPower;
         this.cardPower.string = this._cardInfo.carUpCfg.power ;
         this.cardRace.load(PathUtil.getCardRaceImgPath(this._cardInfo.cardInfoCfg.raceId));
     }

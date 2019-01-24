@@ -4,6 +4,8 @@ import LoadSprite from "../component/LoadSprite";
 import { ResType } from "../model/ResInfo";
 import { EVENT } from "../message/EventCenter";
 import GameEvent from "../message/GameEvent";
+import { GetRewardType } from "../net/msg/MsgGetReward";
+import PathUtil from "../utils/PathUtil";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -29,12 +31,27 @@ export default class SingleAwardPanel extends PopUpBase {
 
 
     // LIFE-CYCLE CALLBACKS:
-    private _type:ResType = 0;
+    private _type:GetRewardType = 0;
+    private _resType:ResType =0;
     private _num:number = 0;
 
     public setData(data:any){
         super.setData(data);
         this._type = data.type;
+        switch(this._type){
+            case GetRewardType.ShareGetDiamond:
+            this._resType = ResType.diamond;
+            break;
+            case GetRewardType.SeeVideoGetGold:
+            this._resType = ResType.gold;
+            break;
+            case GetRewardType.SeeVideoGetStone:
+            this._resType = ResType.lifeStone;
+            break;
+            default:
+            this._resType = ResType.gold;
+            break;
+        }
         this._num = data.num;
     }
 
@@ -56,6 +73,7 @@ export default class SingleAwardPanel extends PopUpBase {
 
     private initView(){
         this.numLabel.string = "+" + this._num;
+        this.resIcon.load(PathUtil.getResMutiIconUrl(this._resType));
     }
 
     private onReceive(){

@@ -51,6 +51,8 @@ export default class HeroPanel extends UIBase {
     cardImg: LoadSprite = null;
     @property(LoadSprite)
     cardGrade: LoadSprite = null;
+    @property(LoadSprite)
+    cardFront: LoadSprite = null;
     @property(cc.Label)
     labelPower:cc.Label = null;
     @property(cc.Label)
@@ -234,6 +236,7 @@ export default class HeroPanel extends UIBase {
             this.labelPower.string = this._currentCard.carUpCfg.power;
             this.labelLv.string = "Lv."+this._currentCard.level;
             this.cardGrade.load(PathUtil.getCardGradeImgPath(this._currentCard.grade));
+            this.cardFront.load(PathUtil.getCardFrontImgPath(this._currentCard.grade));
             this.initProperty();
             this.initSkill();
             this.initUpStar();
@@ -303,6 +306,7 @@ export default class HeroPanel extends UIBase {
             this.raceSpr.load(PathUtil.getCardRaceImgPath(this._currentCard.cardInfoCfg.raceId));
             this.cardImg.load(PathUtil.getCardImgPath(this._currentCard.cardInfoCfg.imgPath));
             this.cardGrade.load(PathUtil.getCardGradeImgPath(this._currentCard.grade));
+            this.cardFront.load(PathUtil.getCardFrontImgPath(this._currentCard.grade));
             this.labelPower.string = this._currentCard.carUpCfg.power;
             this.initProperty();
             this.initSkill();

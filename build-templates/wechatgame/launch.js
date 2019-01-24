@@ -92,7 +92,7 @@ window.shareAppMessage = function(title,image,query){
 
 let shareCallbackFunc = function(){
   return {
-    title:"快来玩大家都在玩的洪荒题材小游戏！",
+    title:"快来玩大家都在玩的洪荒故事小游戏！",
     imageUrl:"https://www.xh52.top/resShare/share_1.jpg",
     query:"",
   }

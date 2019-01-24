@@ -247,9 +247,9 @@ export default class MsgLogin
 
     public respFromLocal(){
         var ownerCards:Array<any> = [];
-        // for(var i:number = 0;i<1;i++){
-        //     ownerCards.push(MsgCardSummon.randomCardInfo(CardSummonType.LifeStone));
-        // }
+        for(var i:number = 0;i<10;i++){
+            ownerCards.push(MsgCardSummon.randomCardInfo(CardSummonType.LifeStone));
+        }
         // for(i= 0;i<1;i++){
         //     var copy = this.copyCard(ownerCards[0]);
         //     ownerCards.push(copy);

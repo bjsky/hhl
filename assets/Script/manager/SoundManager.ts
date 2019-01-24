@@ -3,8 +3,8 @@ export default class SoundManager{
 
     private _bgVolume:number = 1;
 
-    private _musicSwitch:boolean = true;
-    private _bgMusicSwitch:boolean = true;
+    private _musicSwitch:boolean = false;
+    private _bgMusicSwitch:boolean = false;
 
     private static _instance: SoundManager = null;
     public static getInstance(): SoundManager {
@@ -55,12 +55,13 @@ export default class SoundManager{
     }
 
     private _currentSoundId:number = NaN;
+    private _loadBgSound:boolean = false;
     /**
      * 播放背景音乐
      */
     public playBgSound(soundName:string = SoundConst.Bg_sound)
     {
-        if ( this._bgMusicSwitch == false ) {
+        if ( this._bgMusicSwitch == false || this._loadBgSound) {
             return;
         }
         
@@ -68,7 +69,9 @@ export default class SoundManager{
             cc.audioEngine.stop(this._currentSoundId);
         }
         var self = this;
+        this._loadBgSound = true;
         cc.loader.loadRes(soundName, cc.AudioClip, (err, clip) =>{
+            this._loadBgSound = false;
             this._currentSoundId = cc.audioEngine.play(clip,true,self._bgVolume);
             cc.log("music start:",this._currentSoundId);
         });
@@ -79,6 +82,8 @@ export default class SoundManager{
         if(!isNaN(this._currentSoundId)){
             cc.audioEngine.resume(this._currentSoundId);
             cc.log("music resume:",this._currentSoundId);
+        }else{
+            this.playBgSound(SoundConst.Bg_sound);
         }
     }
 

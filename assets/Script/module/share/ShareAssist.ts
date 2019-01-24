@@ -41,7 +41,7 @@ export default class ShareAssist{
     //分享链接
     public shareAppMessage(){
         if(GLOBAL.serverType == ServerType.Publish){
-            var title:string ="快来玩大家都在玩的洪荒题材小游戏！";
+            var title:string ="快来玩大家都在玩的洪荒故事小游戏！";
             var imgUrl:string ="https://www.xh52.top/resShare/share_1.jpg";
             var query:string ="";
 
