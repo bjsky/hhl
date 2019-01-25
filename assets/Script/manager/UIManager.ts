@@ -23,8 +23,8 @@ export default class UIManager{
 
     //ui层
     public UILayer:cc.Node = null;
-    //战斗层
-    public FightLyaer:cc.Node = null;
+    //拖动层
+    public DragLayer:cc.Node = null;
     //弹窗层级
     public PopupLayer:cc.Node = null;
     //提示层级
@@ -44,7 +44,7 @@ export default class UIManager{
         root.addComponent(NetMessage);
         
         this.UILayer = root.getChildByName("UILayer");
-        this.FightLyaer = root.getChildByName("FightLayer");
+        this.DragLayer = root.getChildByName("DragLayer");
         this.PopupLayer = root.getChildByName("PopupLayer");
         this.TipLayer = root.getChildByName("TipLayer");
         this.PlotLayer = root.getChildByName("PlotLayer");

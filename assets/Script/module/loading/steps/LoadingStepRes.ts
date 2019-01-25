@@ -26,7 +26,8 @@ export const ResConst = {
     resPanel:"prefabs/resPanel",
     sharePanel:"prefabs/sharePanel",
     singleAwardPanel:"prefabs/singleAwardPanel",
-    ShareItem:"prefabs/shareItem"
+    ShareItem:"prefabs/shareItem",
+    CardComposeUI:"prefabs/cardCompose",
 }
 /**
  * 加载配置

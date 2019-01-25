@@ -48,6 +48,7 @@ export default class CardAssist{
         }
         return CardAssist._instance;
     }
+
     //所有卡牌
     public cardsMap:any = {};
 
@@ -153,6 +154,33 @@ export default class CardAssist{
         }
         return cardList;
     }
+    public getOwnerMaxlvCardList():Array<CardInfo>{
+        var card:CardInfo = null;
+        var cardList:Array<CardInfo> = [];
+        var cardIdMaps:any = {};
+        for(var uuid in this.cardsMap){
+            card = this.cardsMap[uuid];
+            if(cardIdMaps[card.cardId] == undefined){
+                cardIdMaps[card.cardId] = [card];
+            }else{
+                cardIdMaps[card.cardId].push(card);
+            }
+            // if(type == 0 ||card.cardInfoCfg.raceId == type){
+            //     cardList.push(card);
+            // }
+        }
+        for(var key in cardIdMaps){
+            var cardArr:CardInfo[] = cardIdMaps[key];
+            cardArr.sort((a:CardInfo,b:CardInfo)=>{
+                return  b.grade - a.grade;
+            })
+            cardList.push(cardArr[0]);
+        }
+        cardList.sort((a:CardInfo,b:CardInfo)=>{
+            return  b.grade - a.grade;
+        })
+        return cardList;
+    }
 
     //按照类型卡牌列表
     public getOwnerCardListMap():any{
@@ -166,6 +194,22 @@ export default class CardAssist{
             map[card.cardInfoCfg.raceId].push(card);
         }
         return map;
+    }
+
+    //获得合成的卡牌
+    public getComposeCardInfos(cardId:number):Array<CardInfo>{
+        var cardList:Array<CardInfo> = [];
+        var card:CardInfo = null;
+        for(var uuid in this.cardsMap){
+            card = this.cardsMap[uuid];
+            if(card.cardId == cardId){
+                cardList.push(card);
+            }
+        }
+        cardList.sort((a:CardInfo,b:CardInfo)=>{
+            return  b.grade - a.grade;
+        })
+        return cardList;
     }
 
     //获取升星同星级卡牌

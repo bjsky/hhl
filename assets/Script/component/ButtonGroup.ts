@@ -22,6 +22,8 @@ export default class ButtonGroup extends cc.Component {
     selectIcon: string = 'ui/Common/hPageSelect';
     @property
     unSelectIcon: string = 'ui/Common/hPageUnselect';
+
+    public labelVisible:boolean =true;
     
     private _updateComponent:boolean = false;
     private _selectIndex:number = 0;
@@ -56,7 +58,7 @@ export default class ButtonGroup extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        
+        this._updateComponent = true;
     }
 
     private updateLabels(){
@@ -82,7 +84,9 @@ export default class ButtonGroup extends cc.Component {
                     }
                 }
             }else{
-                btn.node.active = false;
+                if(this.labelVisible){
+                    btn.node.active = false;
+                }
             }
         }
     }

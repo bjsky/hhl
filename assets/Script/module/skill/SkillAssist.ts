@@ -40,8 +40,7 @@ export default class SkillAssist{
             return "<color=#D35C21>已是最高级技能</color>"
         }else{
             var value:string =(Math.round(info.getSkillNextGradeValue(index)*1000)/10).toString();
-            var nextGrade:number = info.grade+1;
-            return "<color=#D35C21>"+nextGrade+"星：" + value +"%</color>";
+            return "<color=#D35C21>" + value +"%</color>";
         }
     }
 

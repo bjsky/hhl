@@ -68,8 +68,8 @@ export default class PathUtil{
         return "ui/Common2/"+raceImg;
     }
 
-    public static getCardUpstarNeedCard(grade:number):string{
-        return "ui/module/cardUp/lbl_kpxj_"+grade;
+    public static getCardnextGradeCard(grade:number):string{
+        return "ui/module/cardUp/hero_star_"+grade;
     }
 
     public static getResIconUrl(type:ResType):string{

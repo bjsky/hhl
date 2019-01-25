@@ -44,4 +44,6 @@ export default class GameEvent{
     public static Lineup_Changed:string ="Lineup_Changed";
 
     public static ShareGetReward_Complete:string ="ShareGetReward_Complete";
+    //合成升星
+    public static Card_Drop_UpStar:string ="Card_Drop_UpStar";
 }

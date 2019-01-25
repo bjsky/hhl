@@ -61,6 +61,7 @@ export default class CardSmall extends DListItem {
         this.cardSrc.load("");
     }
     private _cardUUid:string;
+    private _cardId:number;
     private _cardInfo:CardInfo;
     private _showType:number = 0;
     private _showPower:boolean = true;
@@ -71,6 +72,7 @@ export default class CardSmall extends DListItem {
         this._showType = data.type;
         if(this._showType == CardSimpleShowType.Owner){
             this._cardUUid = data.uuid;
+            this._cardId = data.cardId;
             this._cardInfo = Card.getCardByUUid(this._cardUUid);
             
         }else if(this._showType == CardSimpleShowType.Hero){

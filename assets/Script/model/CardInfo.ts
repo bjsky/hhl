@@ -1,8 +1,11 @@
 import { SCardInfo } from "../net/msg/MsgCardSummon";
 import { CFG } from "../manager/ConfigManager";
 import { ConfigConst } from "../module/loading/steps/LoadingStepConfig";
+import { Card } from "../module/card/CardAssist";
 
 export default class CardInfo{
+
+    public static MaxGrade:number = 5;
     //卡牌的唯一id:时间戳+6位随机数
     public uuid:string ="";
     //卡牌的id
@@ -65,7 +68,7 @@ export default class CardInfo{
     }
 
     public get isMaxGrade(){
-        return this.grade == 5;
+        return this.grade == CardInfo.MaxGrade;
     }
 
 

@@ -201,7 +201,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "FightLayer",
+    "_name": "PopupLayer",
     "_objFlags": 0,
     "_parent": {
       "__id__": 2
@@ -215,7 +215,7 @@
       }
     ],
     "_prefab": null,
-    "_id": "3el8IwXGFDarUjU+XSq1p9",
+    "_id": "bebyDNzxZG8qAs9fECqqDy",
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
@@ -279,7 +279,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "PopupLayer",
+    "_name": "DragLayer",
     "_objFlags": 0,
     "_parent": {
       "__id__": 2
@@ -293,7 +293,7 @@
       }
     ],
     "_prefab": null,
-    "_id": "bebyDNzxZG8qAs9fECqqDy",
+    "_id": "3el8IwXGFDarUjU+XSq1p9",
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
@@ -988,7 +988,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 71,
+      "width": 67,
       "height": 40
     },
     "_rotationX": 0,
@@ -1079,8 +1079,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 473,
-      "height": 276
+      "width": 456,
+      "height": 274
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -1254,7 +1254,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 345,
+      "width": 341,
       "height": 80
     },
     "_rotationX": 0,
