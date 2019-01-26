@@ -49,6 +49,8 @@ export default class CardSmall extends DListItem {
     cardHeroRace: LoadSprite = null;
     @property(cc.Node)
     cardSelect: cc.Node = null;
+    @property(cc.Node)
+    sprCanCompose: cc.Node = null;
 
 
 
@@ -141,6 +143,8 @@ export default class CardSmall extends DListItem {
         this.cardPower.node.active = this._showPower;
         this.cardPower.string = this._cardInfo.carUpCfg.power ;
         this.cardRace.load(PathUtil.getCardRaceImgPath(this._cardInfo.cardInfoCfg.raceId));
+
+        this.sprCanCompose.active = Card.getCardCanCompose(this._cardId);
     }
 
     protected setSelect(select:boolean){

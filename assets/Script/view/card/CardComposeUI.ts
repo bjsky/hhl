@@ -30,16 +30,17 @@ export default class CardComposeUI extends UIBase {
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
-    public static dragName:string = "CardComposeDrag";
+    public static Card_Compose_Drag:string = "CardComposeDrag";
     start () {
 
     }
     private _info:CardInfo;
-    private _data:CardComposeData;
+    public get info():CardInfo{
+        return this._info;
+    }
     public setData(data:any){
         super.setData(data);
-        this._data = data;
-        this._info = data.info;
+        this._info = data as CardInfo;
     }
 
     onEnable(){
@@ -61,38 +62,27 @@ export default class CardComposeUI extends UIBase {
         this.cardFront.load(PathUtil.getCardFrontImgPath(this._info.grade));
     }
 
-    public updateView(data:CardComposeData,isCompose:boolean){
+    public updateData(data:CardInfo){
         this.setData(data);
         this.initView();
-        if(isCompose){
-            var seq = cc.sequence(
-                cc.scaleTo(0.15,1.3).easing(cc.easeOut(2)),
-                cc.scaleTo(0.15,1).easing(cc.easeIn(2))
-            )
-            this.node.runAction(seq);
-        }
+        var seq = cc.sequence(
+            cc.scaleTo(0.15,1.3).easing(cc.easeOut(2)),
+            cc.scaleTo(0.15,1).easing(cc.easeIn(2))
+        )
+        this.node.runAction(seq);
     }
 
     private onDragStart(e){
-        Drag.startDrag(this.node,this._data, CardComposeUI.dragName);
+        Drag.startDrag(this.node,this._info, CardComposeUI.Card_Compose_Drag);
     }
 
     private onDragDrop(e:CDragEvent){
-        if(Drag.dragName == CardComposeUI.dragName){
-            var data:CardComposeData  = Drag.dragData as CardComposeData;
-            if(data.info!=this._info && data.info.grade == this._info.grade){
-                EVENT.emit(GameEvent.Card_Drop_UpStar,{from:data,to:this._data});
+        if(Drag.dragName == CardComposeUI.Card_Compose_Drag){
+            var info:CardInfo  = Drag.dragData as CardInfo;
+            if(info!=this._info && info.grade == this._info.grade){
+                EVENT.emit(GameEvent.Card_Drop_UpStar,{from:info,to:this._info});
             }
         }
     }
     // update (dt) {}
-}
-
-export class CardComposeData{
-    constructor(info,index){
-        this.info = info;
-        this.index = index;
-    }
-    public info:CardInfo = null;
-    public index:number = 0;
 }

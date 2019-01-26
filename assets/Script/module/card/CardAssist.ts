@@ -224,6 +224,22 @@ export default class CardAssist{
         }
         return null;
     }
+    //该卡牌是否可以合成
+    public getCardCanCompose(cardId:number){
+        var map:any = {};
+        var card:CardInfo = null;
+        for(var uuid in this.cardsMap){
+            card = this.cardsMap[uuid];
+            if(card.cardId == cardId){
+                if(map[card.grade]==undefined){
+                    map[card.grade] = [card];
+                }else{
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     //初始化卡牌
     public initCard(cards:Array<SCardInfo>){

@@ -22,8 +22,8 @@ import StringUtil from "../../utils/StringUtil";
 import CardHead from "../card/CardHead";
 import { CardBigShowType } from "../card/CardBig";
 import ResPanel, { ResPanelType } from "../ResPanel";
-import CardComposeUI, { CardComposeData } from "../card/CardComposeUI";
 import { Drag, CDragEvent } from "../../manager/DragManager";
+import CardComposeUI from "../card/CardComposeUI";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -39,166 +39,6 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class HeroPanel extends UIBase {
-
-
-
-    
-    // @property(cc.Node)
-    // cardNode:cc.Node = null;
-    // @property(cc.Node)
-    // nameNode:cc.Node = null;
-    // @property(cc.Node)
-    // propertyNode:cc.Node = null;
-    
-    // @property(cc.Node)
-    // skillNode:cc.Node = null;
-    // @property(cc.Node)
-    // destroyNode:cc.Node = null;
-
-    
-    
-    // @property(cc.Label)
-    // labelDestoryGet:cc.Label = null;
-    
-    // @property(cc.Button)
-    // btnUpgrade:cc.Button = null;
-    // @property(cc.Button)
-    // btnSkillUpgrade:cc.Button = null;
-    // @property(cc.Button)
-    // btnUpStar:cc.Button = null;
-    // @property(cc.Button)
-    // btnDestroy:cc.Button = null;
-
-    // @property(cc.Label)
-    // labelUpstarCost:cc.Label = null;
-
-    // @property(cc.Node)
-    // upstarCostNode:cc.Node = null;
-    
-
-    
-    // @property(cc.Node)
-    // cardHeadFromNode:cc.Node = null;
-    // @property(cc.Node)
-    // cardHeadToNode:cc.Node = null;
-
-
-
-
-    // private _cardListMap:any = {};
-    // private _groupListDatas:Array<any> =[];
-
-
-    // onLoad () {
-        
-    // }
-
-    // onEnable(){
-    //     this.btnGroup.node.on(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.groupSelectChange,this);
-    //     this.btnUpgrade.node.on(cc.Node.EventType.TOUCH_START,this.upgradeHero,this);
-    //     // this.btnSkillUpgrade.node.on(TouchHandler.TOUCH_CLICK,this.upgradeHeroSkill,this);
-    //     this.btnDestroy.node.on(TouchHandler.TOUCH_CLICK,this.destroyHero,this);
-    //     this.btnUpStar.node.on(TouchHandler.TOUCH_CLICK,this.onCardUpStar,this);
-    //     this.cardImg.node.on(cc.Node.EventType.TOUCH_START,this.showCardBig,this);
-
-    //     EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
-    //     EVENT.on(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
-
-    //     this.initView(true);
-    // }
-
-    // onDisable(){
-    //     this.btnGroup.node.off(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.groupSelectChange,this);
-    //     this.btnUpgrade.node.off(cc.Node.EventType.TOUCH_START,this.upgradeHero,this);
-    //     // this.btnSkillUpgrade.node.off(TouchHandler.TOUCH_CLICK,this.upgradeHeroSkill,this);
-    //     this.btnDestroy.node.off(TouchHandler.TOUCH_CLICK,this.destroyHero,this);
-    //     this.btnUpStar.node.off(TouchHandler.TOUCH_CLICK,this.onCardUpStar,this);
-    //     this.cardImg.node.off(cc.Node.EventType.TOUCH_START,this.showCardBig,this);
-
-    //     EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
-    //     EVENT.off(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
-
-    //     this.cardsList.setListData([]);
-    // }
-    // private showCardBig(e){
-    //     UI.createPopUp(ResConst.cardBig,{type:CardBigShowType.ShowCard, cardId:this._currentCard.cardId})
-    // }
-
-
-    // private groupSelectChange(e){
-    //     var idx = e.detail.index;
-    //     this.listGroupSelected();
-    // }
-
-
-    // private onBuildUpdate(e){
-    //     if(this._currentCard != null){
-    //         this.initProperty();
-    //     }
-    // }
-
-    
-
-    
-
-    
-
-
-
-    
-
-
-    
-
-    // start () {
-
-    // }
-
-    // public upgradeHero(e){
-    //     if(!this._nextLvCardCfg)
-    //         return;
-    //     if(COMMON.resInfo.lifeStone< this._upLvCost){
-    //         ResPanel.show(ResPanelType.StoneNotEnough);
-    //         return;
-    //     }
-    //     if(COMMON.userInfo.level< this._upLvNeedLv){
-    //         UI.showTip("不能超过角色等级");
-    //         return;
-    //     }
-    //     Card.upCardLv(this._currentCard.uuid,this._upLvCost);
-    // }
-
-    
-
-    // public upgradeHeroSkill(e){
-
-    // }
-
-    // public getGuideNode(name:string):cc.Node{
-    //     if(name == "buildPanel_upgradeCard"){
-    //         return this.btnUpgrade.node;
-    //     }else if(name == "buildPanel_upStar"){
-    //         return this.btnUpStar.node;
-    //     }
-    //     else{
-    //         return null;
-    //     }
-    // }
-
-    // private onGuideTouch(e){
-    //     var guideId = e.detail.id;
-    //     var nodeName = e.detail.name;
-    //     if(nodeName == "buildPanel_upgradeCard"){
-    //         this.upgradeHero(null);
-    //         GUIDE.nextGuide(guideId);
-    //     }else if(nodeName == "buildPanel_upStar"){
-    //         this.onCardUpStar(null);
-    //         GUIDE.nextGuide(guideId);
-    //     }
-
-    // }
-    // update (dt) {}
-
     @property(ButtonGroup)
     viewGroup:ButtonGroup = null;
     @property(cc.Node)
@@ -254,6 +94,10 @@ export default class HeroPanel extends UIBase {
     destoryGradeLabel:Array<cc.Label> = [];
     @property(cc.Sprite)
     sprDestory:cc.Sprite = null;
+    //升级
+
+    @property(cc.Button)
+    btnUpgrade:cc.Button = null;
 
     onLoad(){
         this.viewGroup.labelVisible = false;
@@ -261,6 +105,7 @@ export default class HeroPanel extends UIBase {
     onEnable(){
         this.viewGroup.node.on(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.viewGroupSelectChange,this)
         this.cardsList.node.on(DList.ITEM_CLICK,this.onCardClick,this);
+        this.btnUpgrade.node.on(cc.Node.EventType.TOUCH_START,this.upgradeHero,this);
 
         EVENT.on(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
         EVENT.on(GameEvent.Card_Drop_UpStar,this.onCardUpStar,this);
@@ -268,21 +113,30 @@ export default class HeroPanel extends UIBase {
         EVENT.on(GameEvent.Card_update_Complete,this.onCardUpdate,this);
         EVENT.on(GameEvent.Card_Remove,this.onCardRemoved,this);
 
+        // EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
+        EVENT.on(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
+
         Drag.addDragDrop(this.sprDestory.node);
+        this.addCardComposeListener();
         this.sprDestory.node.on(CDragEvent.DRAG_DROP,this.onDestroyCard,this);
-        this.initView(true);
+        this.initView();
     }
 
     onDisable(){
         this.viewGroup.node.off(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.viewGroupSelectChange,this)
         this.cardsList.node.off(DList.ITEM_CLICK,this.onCardClick,this);
+        this.btnUpgrade.node.off(cc.Node.EventType.TOUCH_START,this.upgradeHero,this);
 
         EVENT.off(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
         EVENT.off(GameEvent.Card_Drop_UpStar,this.onCardUpStar,this);
         EVENT.off(GameEvent.Card_update_Complete,this.onCardUpdate,this);
         EVENT.off(GameEvent.Card_Remove,this.onCardRemoved,this);
 
+        // EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
+        EVENT.off(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
+
         Drag.removeDragDrop(this.sprDestory.node);
+        this.removeCardComposeListener();
         this.sprDestory.node.off(CDragEvent.DRAG_DROP,this.onDestroyCard,this);
 
         this.cardsList.setListData([]);
@@ -317,104 +171,56 @@ export default class HeroPanel extends UIBase {
         }
     }
 
-    private onCardUpdate(e){
-        var cardUUid = e.detail.uuid;
-        var type = e.detail.type;
-        // if(cardUUid != this._currentCard.uuid){
-        //     return;
-        // }
-        // this._currentCard = Card.getCardByUUid(cardUUid);
-
-        var card:CardInfo =  Card.getCardByUUid(cardUUid);
-        if(!card){
+    public upgradeHero(e){
+        if(!this._nextLvCardCfg)
+            return;
+        if(COMMON.resInfo.lifeStone< this._upLvCost){
+            ResPanel.show(ResPanelType.StoneNotEnough);
             return;
         }
+        if(COMMON.userInfo.level< this._upLvNeedLv){
+            UI.showTip("不能超过角色等级");
+            return;
+        }
+        Card.upCardLv(this._currentCard.uuid,this._upLvCost);
+    }
+
+    private onCardUpdate(e){
+        var uuid = e.detail.uuid;
+        var type = e.detail.type;
+
         if(type == CardUpType.UpLevel){
-            // this.labelPower.string = this._currentCard.carUpCfg.power;
-            // this.labelLv.string = "Lv."+this._currentCard.level;
-            // this.initProperty();
-            // if(this.cardHeadToNode.childrenCount>0){
-            //     var cardHead :CardHead = this.cardHeadToNode.children[0].getComponent(CardHead);
-            //     if(cardHead){
-            //         var cardUpInfo = CFG.getCfgByKey(ConfigConst.CardUp,"grade",this._currentCard.grade +1 ,"level",this._currentCard.level)[0];
-            //         var nextPower:number = cardUpInfo.power;
-            //         cardHead.updatePower(nextPower);
-            //     }
-            // }
+            this.initCard();
+            this.cardsList.updateIndex(this.cardsList.selectIndex,this.cardsList.selectData);
         }else if(type == CardUpType.UpGrade){
-            // this.labelPower.string = this._currentCard.carUpCfg.power;
-            // this.cardGrade.load(PathUtil.getCardGradeImgPath(this._currentCard.grade));
-            // this.cardFront.load(PathUtil.getCardFrontImgPath(this._currentCard.grade));
-            // this.initGrade();
-            this.updateCardCompose(card,true);
-            
-            this.updateCardListWithCardId(Number(this._currentCard.cardId));
+            this.updateCardCompose(uuid);
+            this.updateCurrentCard(Number(this._currentCard.cardId));
         }
     }
 
     private onCardRemoved(e){
         var uuid = e.detail.uuid;
         var type = e.detail.type;
-        this.removeCardCompose();
-        if(type == CardRemoveType.destroyRemove){  //直接移除
-            this.updateCardListWithCardId(Number(this._currentCard.cardId));
-        }
         
+        this.removeCardCompose(uuid);
+        if(type == CardRemoveType.destroyRemove){  //回收移除
+            this.updateCurrentCard(Number(this._currentCard.cardId));
+        }
+    }
+
+    private onBuildUpdate(e){
+        if(this._currentCard != null){
+            this.initCard();
+        }
     }
 
 
-    private initView(nolist:boolean = false){
+    private initView(){
         this.viewGroup.selectIndex = HeroViewSelect.Uplevel;
-        this.viewGroupSelectChange();
-        // this.initListGroup();
-        this.listGroupSelected(nolist);
-    }
-
-
-    // private initListGroup(){
-    //     this._cardListMap = Card.getOwnerCardListMap();
-    //     var labels:string ="";
-    //     this._groupListDatas = [];
-
-    //     for(var key in CardRaceType){
-    //         if(this._cardListMap[key]!=undefined &&this._cardListMap[key].length>0){
-    //             var label:string = CONSTANT.getRaceNameWithId(Number(key));
-    //             this._groupListDatas.push({raceId:Number(key)})
-    //             labels +=(label)+";";
-    //         }
-    //     }
-    //     labels = labels.substr(0,labels.length-1);
-    //     this.btnGroup.labels = labels;
-    //     this.btnGroup.selectIndex = 0;
-    // }
-
-
-    private listGroupSelected(nolist:boolean = false){
-        // var cardRace = this._groupListDatas[this.btnGroup.selectIndex];
-        // var sortList = Card.getOwnerCardList(cardRace.raceId);
-        // //排序，按星级倒序，等级倒序，id正序
-        // sortList.sort((a:CardInfo,b:CardInfo)=>{
-        //     if(a.grade == b.grade){
-        //         if(a.level == b.level){
-        //             return a.cardId - b.cardId;
-        //         }else{
-        //             return b.level - a.level;
-        //         }
-        //     }else{
-        //         return  b.grade - a.grade;
-        //     }
-        // })
         this._currentCardList = Card.getOwnerMaxlvCardList();
         this._currentCard = this._currentCardList.length>0?this._currentCardList[0]:null;
 
-        if(this._selectViewIndex == HeroViewSelect.Uplevel){
-            this.initCard();
-        }else if(this._selectViewIndex == HeroViewSelect.Compose){
-            this.initCardCompose();
-        }
-        if(!nolist){
-            this.initCardList();
-        }
+        this.viewGroupSelectChange();
     }
 
     // LIFE-CYCLE CALLBACKS:
@@ -504,6 +310,32 @@ export default class HeroPanel extends UIBase {
     /////////////////////////
     //  合成
     ////////////////////////
+    private addCardComposeListener(){
+        this.composeCards.forEach((node:cc.Node) => {
+            Drag.addDragDrop(node);
+            node.on(CDragEvent.DRAG_DROP,this.onDropNode,this);
+        });
+    }
+    private removeCardComposeListener(){
+        this.composeCards.forEach((node:cc.Node) => {
+            Drag.addDragDrop(node);
+            node.on(CDragEvent.DRAG_DROP,this.onDropNode,this);
+        });
+    }
+
+    private onDropNode(e){
+        var node:cc.Node = e.target as cc.Node;
+        if(Drag.dragName== CardComposeUI.Card_Compose_Drag){
+            if(node.childrenCount == 0){
+                var dropIndex = this.composeCards.indexOf(node);
+                if(dropIndex>-1){
+                    var info:CardInfo = Drag.dragData as CardInfo;
+                    this.removeCardCompose(info.uuid);
+                    UI.loadUI(ResConst.CardComposeUI,info,node);
+                }
+            }
+        }
+    }
 
     private _composeCardInfos:Array<CardInfo> = [];
     private initCardCompose(){
@@ -523,61 +355,59 @@ export default class HeroPanel extends UIBase {
             for( i = 0;i<this.composeCards.length;i++){
                 if(this._composeCardInfos.length>i){
                     info = this._composeCardInfos[i];
-                    var data:CardComposeData = new CardComposeData(info,i);
-                    UI.loadUI(ResConst.CardComposeUI,data,this.composeCards[i]);
+                    UI.loadUI(ResConst.CardComposeUI,info,this.composeCards[i]);
+                }
+            }
+        }
+    }
+    private updateCardCompose(uuid){
+        var card:CardInfo = Card.getCardByUUid(uuid);
+        var ui:CardComposeUI = this.getCardComposeWithUUid(uuid);
+        if(ui){
+            ui.updateData(card);
+        }
+    }
+
+    private removeCardCompose(uuid){
+        var ui:CardComposeUI = this.getCardComposeWithUUid(uuid);
+        if(ui){
+            UI.removeUI(ui.node);
+        }
+    }
+
+    private getCardComposeWithUUid(uuid:string):CardComposeUI{
+        for(var i:number = 0;i<this.composeCards.length;i++){
+            if(this.composeCards[i].childrenCount>0){
+                var composeCard:CardComposeUI = this.composeCards[i].children[0].getComponent(CardComposeUI);
+                if(composeCard.info.uuid == uuid){
+                    return composeCard;
                 }
             }
         }
     }
 
-    public updateCardCompose(card:CardInfo,isCompose:boolean){
-        var node:cc.Node = this.composeCards[this._composeToIndex];
-        var data:CardComposeData = new CardComposeData(card,this._composeToIndex);
-        if(node.childrenCount>0){
-            node.children[0].getComponent(CardComposeUI).updateView(data,isCompose)
-        }else{
-            UI.loadUI(ResConst.CardComposeUI,data,this.composeCards[this._composeToIndex]);
-        }
-        this._composeToIndex = -1;
-    }
-
-    public removeCardCompose(){
-        var node:cc.Node = this.composeCards[this._composeFromIndex];
-        if(node.childrenCount>0){
-            UI.removeUI(node.children[0]);
-        }
-        this._composeFromIndex = -1;
-    }
-
-
-    private _composeFromIndex:number = -1;
-    private _composeToIndex:number = -1;
     private onCardUpStar(e){
-        var from:CardComposeData = e.detail.from;
-        this._composeFromIndex = from.index;
-        var to:CardComposeData = e.detail.to;
-        this._composeToIndex = to.index;
-        if(from.info.isMaxGrade){
+        var from:CardInfo = e.detail.from;
+        var to:CardInfo = e.detail.to;
+        if(from.isMaxGrade){
             UI.showTip("已经是最高星级");
             return;
         }
         var gold:number = COMMON.resInfo.gold;
-        var upStarCost = Number(from.info.carUpCfg.needGold);
+        var upStarCost = Number(from.carUpCfg.needGold);
         
         if(gold < upStarCost){
             ResPanel.show(ResPanelType.GoldNotEnough);
             return;
         }
 
-        Card.upCardStar(to.info.uuid,from.info.uuid);
+        Card.upCardStar(to.uuid,from.uuid);
     }
 
 
     public onDestroyCard(e){
-        if(Drag.dragName == CardComposeUI.dragName){
-            var data:CardComposeData  = Drag.dragData as CardComposeData;
-            this._composeFromIndex = data.index;
-            var cardInfo:CardInfo = data.info;
+        if(Drag.dragName == CardComposeUI.Card_Compose_Drag){
+            var cardInfo:CardInfo  = Drag.dragData as CardInfo;
             // if(this._cardListData.length<=1){
             //     UI.showTip("卡牌不能回收");
             //     return;
@@ -593,10 +423,8 @@ export default class HeroPanel extends UIBase {
         
     }
 
-
-
-    //合成或删除后更新列表信息或选中
-    private updateCardListWithCardId(cardId:number):void{
+    //合成或删除后更新当前卡牌
+    private updateCurrentCard(cardId:number):void{
         var index:number =-1;
         for(var i:number = 0;i<this._cardListData.length;i++){
             var data = this._cardListData[i];
@@ -609,17 +437,45 @@ export default class HeroPanel extends UIBase {
         if(cardArr.length>0){
             var card:CardInfo = cardArr[0];
             var newData = {type:CardSimpleShowType.Owner,uuid:card.uuid,cardId:card.cardId};
-            this._cardListData[index] = newData;
-            this.cardsList.updateIndexData(index,newData);
+            this.cardsList.updateIndex(index,newData);
             this._currentCard = card;
         }else{
             this.cardsList.removeIndex(index);
-            this.cardsList.selectIndex = index;
-            this._currentCard = Card.getCardByUUid(this.cardsList.selectData.uuid);
+
+            if(this._cardListData.length > 0){
+                this.cardsList.selectIndex = index;
+                this._currentCard = Card.getCardByUUid(this.cardsList.selectData.uuid);
+            }else{
+                this._currentCard = null;
+            }
             this.initCardCompose();
         }
     }
 
+
+    // public getGuideNode(name:string):cc.Node{
+    //     if(name == "buildPanel_upgradeCard"){
+    //         return this.btnUpgrade.node;
+    //     }else if(name == "buildPanel_upStar"){
+    //         return this.btnUpStar.node;
+    //     }
+    //     else{
+    //         return null;
+    //     }
+    // }
+
+    // private onGuideTouch(e){
+    //     var guideId = e.detail.id;
+    //     var nodeName = e.detail.name;
+    //     if(nodeName == "buildPanel_upgradeCard"){
+    //         this.upgradeHero(null);
+    //         GUIDE.nextGuide(guideId);
+    //     }else if(nodeName == "buildPanel_upStar"){
+    //         this.onCardUpStar(null);
+    //         GUIDE.nextGuide(guideId);
+    //     }
+
+    // }
 }
 
 export enum HeroViewSelect{

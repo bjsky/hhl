@@ -98,17 +98,10 @@ export default class DList extends cc.Component {
         }
     }
     
-
-    public updateIndex(index:number){
+    public updateIndex(index:number,data:any){
         var item:DListItem = null;
         if(index<this._listItemArr.length){
-            item = this._listItemArr[index];
-            item.onUpdate();
-        }
-    }   
-    public updateIndexData(index:number,data:any){
-        var item:DListItem = null;
-        if(index<this._listItemArr.length){
+            this._listData[index] = data;
             item = this._listItemArr[index];
             item.setData(data);
             item.onUpdate();

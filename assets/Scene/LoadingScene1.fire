@@ -988,7 +988,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 67,
+      "width": 71,
       "height": 40
     },
     "_rotationX": 0,
@@ -1254,8 +1254,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 341,
-      "height": 80
+      "width": 627,
+      "height": 64
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -1282,14 +1282,14 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 26,
-    "_fontSize": 26,
-    "_lineHeight": 40,
+    "_actualFontSize": 22,
+    "_fontSize": 22,
+    "_lineHeight": 32,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
-    "_N$string": "适度游戏益脑    沉迷游戏伤身\n合理安排时间    享受健康生活",
+    "_N$string": "抵制不良游戏    拒绝盗版游戏    注意自我保护    谨防受骗上当。\n适度游戏益脑    沉迷游戏伤身    合理安排时间    享受健康生活。",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -1305,9 +1305,9 @@
     "_enabled": true,
     "_color": {
       "__type__": "cc.Color",
-      "r": 114,
-      "g": 64,
-      "b": 1,
+      "r": 77,
+      "g": 23,
+      "b": 8,
       "a": 255
     },
     "_width": 2
