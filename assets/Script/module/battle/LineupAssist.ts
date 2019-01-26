@@ -99,8 +99,11 @@ export default class LineupAssist{
 
     public exchangeLineup(pos1:number,uuid1:string,pos2:number,uuid2:string){
         var str:string = pos1 +";"+uuid1 + "|"+pos2+";"+uuid2;
-        NET.send(MsgLineupModify.create(str),()=>{
-
+        NET.send(MsgLineupModify.create(str),(msg:MsgLineupModify)=>{
+            if(msg && msg.resp){
+                Lineup.initOwnerLineup(msg.resp.lineUpOwner);
+                EVENT.emit(GameEvent.Lineup_Changed);
+            }
         },this)
     }
 

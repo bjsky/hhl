@@ -19,8 +19,6 @@ import { UI } from "../../manager/UIManager";
 import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 import { AlertBtnType } from "../AlertPanel";
 import StringUtil from "../../utils/StringUtil";
-import CardHead from "../card/CardHead";
-import { CardBigShowType } from "../card/CardBig";
 import ResPanel, { ResPanelType } from "../ResPanel";
 import { Drag, CDragEvent } from "../../manager/DragManager";
 import CardComposeUI from "../card/CardComposeUI";

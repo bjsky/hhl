@@ -2466,7 +2466,9 @@
       "__id__": 74
     },
     "_enabled": true,
-    "_spriteFrame": null,
+    "_spriteFrame": {
+      "__uuid__": "60cdd516-c9d4-4c15-991f-97481e7eee25"
+    },
     "_type": 0,
     "_sizeMode": 1,
     "_fillType": 0,
@@ -2784,8 +2786,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 48,
-      "height": 45
+      "width": 43,
+      "height": 40
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -2811,7 +2813,9 @@
       "__id__": 86
     },
     "_enabled": true,
-    "_spriteFrame": null,
+    "_spriteFrame": {
+      "__uuid__": "e1cd4813-8059-42c5-b86e-468f90c2a85e"
+    },
     "_type": 0,
     "_sizeMode": 1,
     "_fillType": 0,

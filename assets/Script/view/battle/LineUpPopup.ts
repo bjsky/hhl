@@ -31,8 +31,8 @@ export default class LineUpPopup extends PopUpBase {
     @property(LineUpUI)
     lineup: LineUpUI = null;
 
-    @property(ButtonGroup)
-    btnGroup:ButtonGroup = null;
+    // @property(ButtonGroup)
+    // btnGroup:ButtonGroup = null;
     @property(DList)
     cardsList:DList = null;
 
@@ -50,18 +50,18 @@ export default class LineUpPopup extends PopUpBase {
 
     onEnable(){
         super.onEnable();
-        this.btnGroup.node.on(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.groupSelectChange,this);
+        // this.btnGroup.node.on(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.groupSelectChange,this);
         this.cardsList.node.on(DList.ITEM_CLICK,this.onCardClick,this);
         this.lineup.node.on(LineUpUI.Remove_lineupCard,this.onRemoveLineupCard,this);
 
         EVENT.on(GameEvent.Lineup_Changed,this.onLineupChange,this);
         EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
-        this.initView(true);
+        this.initView();
     }
 
     onDisable(){
         super.onDisable();
-        this.btnGroup.node.off(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.groupSelectChange,this);
+        // this.btnGroup.node.off(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.groupSelectChange,this);
         this.cardsList.node.off(DList.ITEM_CLICK,this.onCardClick,this);
         this.lineup.node.off(LineUpUI.Remove_lineupCard,this.onRemoveLineupCard,this);
 
@@ -82,10 +82,10 @@ export default class LineUpPopup extends PopUpBase {
 
     }
 
-    private groupSelectChange(e){
-        var idx = e.detail.index;
-        this.listGroupSelected();
-    }
+    // private groupSelectChange(e){
+    //     var idx = e.detail.index;
+    //     this.listGroupSelected();
+    // }
 
     private onCardClick(e){
         var index = e.detail.index;
@@ -116,52 +116,53 @@ export default class LineUpPopup extends PopUpBase {
         this.lineup.selectIndex = this.lineup.getEmptyIndex();
     }
 
-    private initView(nolist:boolean = false){
-        this.initListGroup();
-        this.listGroupSelected(nolist);
+    private initView(){
+        // this.initListGroup();
+        // this.listGroupSelected(nolist);
+        this._currentCardList = Card.getOwnerMaxlvCardList();
         
         this.lineup.initLineup(Lineup.ownerLineupMap);
         this.lineup.selectIndex = this.lineup.getEmptyIndex();
     }
     
 
-    private initListGroup(){
-        this._cardListMap = Card.getOwnerCardListMap();
-        var labels:string ="";
-        this._groupListDatas = [];
+    // private initListGroup(){
+    //     this._cardListMap = Card.getOwnerCardListMap();
+    //     var labels:string ="";
+    //     this._groupListDatas = [];
 
-        for(var key in CardRaceType){
-            if(this._cardListMap[key]!=undefined &&this._cardListMap[key].length>0){
-                var label:string = CONSTANT.getRaceNameWithId(Number(key));
-                this._groupListDatas.push({raceId:Number(key)})
-                labels +=(label)+";";
-            }
-        }
-        labels = labels.substr(0,labels.length-1);
-        this.btnGroup.labels = labels;
-        this.btnGroup.selectIndex = 0;
-    }
-    private listGroupSelected(nolist:boolean = false){
-        var cardRace = this._groupListDatas[this.btnGroup.selectIndex];
-        var sortList = Card.getOwnerCardList(cardRace.raceId);
-        //排序，按星级倒序，等级倒序，id正序
-        sortList.sort((a:CardInfo,b:CardInfo)=>{
-            if(a.grade == b.grade){
-                if(a.level == b.level){
-                    return a.cardId - b.cardId;
-                }else{
-                    return b.level - a.level;
-                }
-            }else{
-                return  b.grade - a.grade;
-            }
-        })
-        this._currentCardList = sortList;
-
-        if(!nolist){
-            this.initCardList();
-        }
-    }
+    //     for(var key in CardRaceType){
+    //         if(this._cardListMap[key]!=undefined &&this._cardListMap[key].length>0){
+    //             var label:string = CONSTANT.getRaceNameWithId(Number(key));
+    //             this._groupListDatas.push({raceId:Number(key)})
+    //             labels +=(label)+";";
+    //         }
+    //     }
+    //     labels = labels.substr(0,labels.length-1);
+    //     this.btnGroup.labels = labels;
+    //     this.btnGroup.selectIndex = 0;
+    // }
+    // private listGroupSelected(nolist:boolean = false){
+        // var cardRace = this._groupListDatas[this.btnGroup.selectIndex];
+        // var sortList = Card.getOwnerCardList(cardRace.raceId);
+        // //排序，按星级倒序，等级倒序，id正序
+        // sortList.sort((a:CardInfo,b:CardInfo)=>{
+        //     if(a.grade == b.grade){
+        //         if(a.level == b.level){
+        //             return a.cardId - b.cardId;
+        //         }else{
+        //             return b.level - a.level;
+        //         }
+        //     }else{
+        //         return  b.grade - a.grade;
+        //     }
+        // })
+        // this._currentCardList = sortList;
+        
+    //     if(!nolist){
+    //         this.initCardList();
+    //     }
+    // }
     private initCardList(){
         this._cardListData = [];
         this._currentCardList.forEach((item:CardInfo) =>{

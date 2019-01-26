@@ -2,6 +2,8 @@ import LineupInfo from "../../model/LineupInfo";
 import { UI } from "../../manager/UIManager";
 import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 import TouchHandler from "../../component/TouchHandler";
+import { Drag, CDragEvent } from "../../manager/DragManager";
+import { Lineup } from "../../module/battle/LineupAssist";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -26,7 +28,7 @@ export default class LineUpUI extends cc.Component {
     @property(cc.Node)
     nodeSelect: cc.Node = null;
 
-
+    public static Drag_Change_Lineup:string ="Drag_Change_Lineup";
     public static Remove_lineupCard:string ="Remove_lineupCard";
     // LIFE-CYCLE CALLBACKS:
     private _edit:boolean = false;
@@ -47,16 +49,20 @@ export default class LineUpUI extends cc.Component {
     onEnable(){
         if(this._edit){
             this.nodeHeadArr.forEach((node:cc.Node)=>{
-                node.on(cc.Node.EventType.TOUCH_START,this.onSelectHeadNode,this);
-                node.on(TouchHandler.TOUCH_CLICK,this.doubleClick,this);
+                node.on(cc.Node.EventType.TOUCH_START,this.onTouchStart,this);
+                node.on(TouchHandler.TOUCH_CLICK,this.onRemoveTouch,this);
+                Drag.addDragDrop(node);
+                node.on(CDragEvent.DRAG_DROP,this.onDragDrop,this);
             })  
         }
     }
     onDisable(){
         if(this._edit){
             this.nodeHeadArr.forEach((node:cc.Node)=>{
-                node.off(cc.Node.EventType.TOUCH_START,this.onSelectHeadNode,this);
-                node.off(TouchHandler.TOUCH_CLICK,this.doubleClick,this);
+                node.off(cc.Node.EventType.TOUCH_START,this.onTouchStart,this);
+                node.off(TouchHandler.TOUCH_CLICK,this.onRemoveTouch,this);
+                Drag.removeDragDrop(node);
+                node.off(CDragEvent.DRAG_DROP,this.onDragDrop,this);
             })  
         }
     }
@@ -95,6 +101,10 @@ export default class LineUpUI extends cc.Component {
         this.labelPower.string = this._totalPower.toString();
     }
 
+    private onTouchStart(e){
+        this.onSelectHeadNode(e);
+        this.onDragStart(e);
+    }
 
     private onSelectHeadNode(e){
         var index = this.nodeHeadArr.indexOf (e.target as cc.Node);
@@ -111,7 +121,7 @@ export default class LineUpUI extends cc.Component {
             return;
         if(this._selectIndex>-1){
             this.nodeSelect.active = true;
-            this.nodeSelect.setPosition(this.nodeHeadArr[this._selectIndex].position);
+            this.nodeSelect.setPosition(this.nodeHeadArr[this._selectIndex].parent.position);
         }else{
             this.nodeSelect.active = false;
         }
@@ -126,9 +136,39 @@ export default class LineUpUI extends cc.Component {
         return -1;
     }
 
-    private doubleClick(e){
+    private onRemoveTouch(e){
         var index = this.nodeHeadArr.indexOf (e.target as cc.Node);
         this.node.emit(LineUpUI.Remove_lineupCard,{pos:index});
+    }
+
+    /////////////////
+    // Drag
+    /////////////////
+
+    private onDragStart(e){
+        var node:cc.Node = e.target as cc.Node;
+        var index:number = this.nodeHeadArr.indexOf(node);
+        if(node.childrenCount>0){
+            var headNode:cc.Node = node.children[0];
+            var data:LineupInfo = this._lineupMap[index];
+            Drag.startDrag(node,data,LineUpUI.Drag_Change_Lineup);
+        }
+    }
+
+    private onDragDrop(e){
+        if(Drag.dragName == LineUpUI.Drag_Change_Lineup){
+            var target:cc.Node = e.target as cc.Node;
+            var dropIndex = this.nodeHeadArr.indexOf(target);
+            var dragData:LineupInfo = Drag.dragData as LineupInfo;
+            if(dragData.pos != dropIndex){
+                var dropData:LineupInfo = this._lineupMap[dropIndex];
+                if(dropData){
+                    Lineup.exchangeLineup(dropIndex,dragData.uuid,dragData.pos,dropData.uuid);
+                }else{
+                    Lineup.exchangeLineup(dropIndex,dragData.uuid,dragData.pos,"");
+                }
+            }
+        }
     }
     // update (dt) {}
 }
