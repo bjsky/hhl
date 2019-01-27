@@ -230,6 +230,6 @@ export default class MainUI extends UIBase {
         ResPanel.show(ResPanelType.StoneRes);
     }
     private onDiamondStore(e){
-        
+        UI.createPopUp(ResConst.StorePanel,{});
     }
 }

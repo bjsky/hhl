@@ -36,7 +36,7 @@ export default class MsgFightBoss extends MessageBase{
 
     constructor(){
         super(NetConst.FightBoss);
-        this.isLocal = true;
+        // this.isLocal = true;
     }
 
     public static create(passId:number){

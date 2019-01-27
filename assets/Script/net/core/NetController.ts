@@ -289,12 +289,13 @@ export class NetController
         EVENT.emit(NET.NET_MESSAGE, {id:NetConst.NET_ConnectTimeOut,data:{}});
     }
 
-    public reConnect(){
+    public reConnect(cb:Function){
         if(this._connectCbObj) //登陆重连
         {
             this.connect(this._ip, this._connectCbObj.cb, this._connectCbObj.this);
         }else{ //断线重连
             this.connect(this._ip, function() {
+                cb && cb();
                 EVENT.emit(NET.RECONNECT_FINISH);
             }, this);
         }

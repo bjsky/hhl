@@ -28,6 +28,8 @@ export const ResConst = {
     singleAwardPanel:"prefabs/singleAwardPanel",
     ShareItem:"prefabs/shareItem",
     CardComposeUI:"prefabs/cardCompose",
+    StorePanel:"prefabs/storePanel",
+    StoreCardItem:"prefabs/storeCardItem"
 }
 /**
  * 加载配置

@@ -14,7 +14,7 @@ export default class NetConst{
     //登录
     public static Login:number = 10001;
     //引导更新
-    public static GuideUpdate:number = 10002;
+    public static GuideUpdate:number = 21081;
 
     //升级建筑
     public static BuildUpdate:number = 21020;
@@ -22,7 +22,7 @@ export default class NetConst{
     //召唤卡牌
     public static CardSummon:number = 21000;
     //召唤卡牌引导
-    public static CardSummonGuide:number = 21000;
+    public static CardSummonGuide:number = 21004;
     //卡牌升级
     public static CardUpLv:number = 21001;
     //卡牌升星
@@ -30,16 +30,18 @@ export default class NetConst{
     //卡牌回收
     public static CardDestroy:number = 21003;
     //挂机领取
-    public static CollectPassageRes:number = 40001;
+    public static CollectPassageRes:number = 21061;
     //修改阵容
     public static LineupModify:number = 21040;
     //挑战boss
-    public static FightBoss:number = 60001;
+    public static FightBoss:number = 21060;
     //世界征战列表
     public static WorldEnemyList:number = 70001;
     //玩家战斗
     public static FightEnemy:number = 70002;
     //获得奖励
     public static GetReward:number = 80001;
+    //钻石购买
+    public static DiamondBuy:number = 80002;
 }
 

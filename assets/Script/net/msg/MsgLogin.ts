@@ -247,9 +247,9 @@ export default class MsgLogin
 
     public respFromLocal(){
         var ownerCards:Array<any> = [];
-        for(var i:number = 0;i<20;i++){
-            ownerCards.push(MsgCardSummon.randomCardInfo(CardSummonType.LifeStone));
-        }
+        // for(var i:number = 0;i<20;i++){
+        //     ownerCards.push(MsgCardSummon.randomCardInfo(CardSummonType.LifeStone));
+        // }
         // for(i= 0;i<1;i++){
         //     var copy = this.copyCard(ownerCards[0]);
         //     ownerCards.push(copy);
@@ -258,7 +258,7 @@ export default class MsgLogin
             serverTime:new Date().getTime(),
             userInfo:{name:"上古战神",icon:"",gender:1,exp:0,level:1},
             resInfo:{gold:100000,diamond:500,lifeStone:20000,soulStone:0},
-            guideInfo:{guideId:-1},
+            guideInfo:{guideId:2},
             buildInfos:[{type:0,level:1,locked:true},
                 {type:1,level:1,locked:true},
                 {type:2,level:1,locked:true},

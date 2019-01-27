@@ -32,7 +32,7 @@ export default class AlertPanel extends PopUpBase {
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
-    private _btnType:AlertBtnType;
+    private _btnType:AlertBtnType = AlertBtnType.OKButton;
     private _content:string;
     private _okCb:Function;
     private _cancelCb:Function;
@@ -42,7 +42,9 @@ export default class AlertPanel extends PopUpBase {
      */
     public setData(data:any) {
         this._content = data.content;
-        this._btnType = data.btnType;
+        if(data.btnType !=undefined){
+            this._btnType = data.btnType;
+        }
         this._okCb = data.okCb;
         this._cancelCb = data.cancelCb;
         if(this._btnType == AlertBtnType.OKButton){

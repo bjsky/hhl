@@ -14,8 +14,8 @@ import PathUtil from "../utils/PathUtil";
 export enum GuideTypeEnum {
     GuideStory = 1,
     GuideTalk = 2,
-    GuideArrow = 3
-
+    GuideArrow = 3,
+    GuideDrag = 4
 }
 
 export enum GuideNpcDir{

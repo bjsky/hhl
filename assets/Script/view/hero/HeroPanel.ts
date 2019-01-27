@@ -37,6 +37,9 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class HeroPanel extends UIBase {
+    @property(cc.Button)
+    btnComposeView:cc.Button = null;
+    
     @property(ButtonGroup)
     viewGroup:ButtonGroup = null;
     @property(cc.Node)
@@ -86,6 +89,8 @@ export default class HeroPanel extends UIBase {
     @property(DList)
     cardsList:DList = null;
 
+    @property(cc.Node)
+    composeGuideNode:cc.Node = null;
     @property([cc.Node])
     composeCards:Array<cc.Node> = [];
     @property([cc.Label])
@@ -111,7 +116,7 @@ export default class HeroPanel extends UIBase {
         EVENT.on(GameEvent.Card_update_Complete,this.onCardUpdate,this);
         EVENT.on(GameEvent.Card_Remove,this.onCardRemoved,this);
 
-        // EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
+        EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
         EVENT.on(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
 
         Drag.addDragDrop(this.sprDestory.node);
@@ -130,7 +135,7 @@ export default class HeroPanel extends UIBase {
         EVENT.off(GameEvent.Card_update_Complete,this.onCardUpdate,this);
         EVENT.off(GameEvent.Card_Remove,this.onCardRemoved,this);
 
-        // EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
+        EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
         EVENT.off(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
 
         Drag.removeDragDrop(this.sprDestory.node);
@@ -451,29 +456,38 @@ export default class HeroPanel extends UIBase {
     }
 
 
-    // public getGuideNode(name:string):cc.Node{
-    //     if(name == "buildPanel_upgradeCard"){
-    //         return this.btnUpgrade.node;
-    //     }else if(name == "buildPanel_upStar"){
-    //         return this.btnUpStar.node;
-    //     }
-    //     else{
-    //         return null;
-    //     }
-    // }
+    public getGuideNode(name:string):cc.Node{
+        if(name == "buildPanel_upgradeCard"){
+            return this.btnUpgrade.node;
+        }else if(name == "buildPanel_upStar"){
+            return this.btnComposeView.node;
+        }else if(name == "buildPanel_compose"){
+            return this.composeGuideNode;
+        }
+        else{
+            return null;
+        }
+    }
 
-    // private onGuideTouch(e){
-    //     var guideId = e.detail.id;
-    //     var nodeName = e.detail.name;
-    //     if(nodeName == "buildPanel_upgradeCard"){
-    //         this.upgradeHero(null);
-    //         GUIDE.nextGuide(guideId);
-    //     }else if(nodeName == "buildPanel_upStar"){
-    //         this.onCardUpStar(null);
-    //         GUIDE.nextGuide(guideId);
-    //     }
+    private onGuideTouch(e){
+        var guideId = e.detail.id;
+        var nodeName = e.detail.name;
+        if(nodeName == "buildPanel_upgradeCard"){
+            this.upgradeHero(null);
+            GUIDE.nextGuide(guideId);
+        }else if(nodeName == "buildPanel_upStar"){
+            this.viewGroup.selectIndex = HeroViewSelect.Compose;
+            this.viewGroupSelectChange();
+            GUIDE.nextGuide(guideId);
+        }else if(nodeName == "buildPanel_compose"){
+            if(this._composeCardInfos.length>1){
+                var e:any = {detail:{from:this._composeCardInfos[1],to:this._composeCardInfos[0]}}
+                this.onCardUpStar(e);
+            }
+            GUIDE.nextGuide(guideId);
+        }
 
-    // }
+    }
 }
 
 export enum HeroViewSelect{

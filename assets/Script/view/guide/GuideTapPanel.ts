@@ -109,7 +109,8 @@ export default class GuideTapPanel extends UIBase {
             }else{
                 this.setDialogShow();
             }
-        }else if(this._guideInfo.type == GuideTypeEnum.GuideArrow){
+        }else if(this._guideInfo.type == GuideTypeEnum.GuideArrow||
+            this._guideInfo.type == GuideTypeEnum.GuideDrag){
             this.arrowNode.active = false;
             this.storyNode.active = this.dialogNode.active = false;
             this._checkNodeTime = 0;
@@ -230,7 +231,7 @@ export default class GuideTapPanel extends UIBase {
         }
     }
 
-    private checkEndShowArrow(node){
+    private checkEndShowArrow(node:cc.Node){
         if(this._guideInfo.nodeName.indexOf("building_")>-1){
             var city:CityScene = SCENE.CurScene as CityScene;
             // var tPos:cc.Vec2 = cc.v2(cc.winSize.width/2,cc.winSize.height/2).sub(node.parent.convertToWorldSpaceAR(node.position));
@@ -240,7 +241,12 @@ export default class GuideTapPanel extends UIBase {
                 this.showArrow(node);
             })
         }else{
-            this.showArrow(node);
+            if(this._guideInfo.type == GuideTypeEnum.GuideArrow)
+            {
+                this.showArrow(node);
+            }else if(this._guideInfo.type == GuideTypeEnum.GuideDrag){
+                this.showDrag(node,node.children[0],node.children[1]);
+            }
         }
     }
 
@@ -282,11 +288,40 @@ export default class GuideTapPanel extends UIBase {
     }
 
     private onArrowClick(){
+
+        this.clickNode.off(cc.Node.EventType.TOUCH_END,this.onArrowClick,this);
+        this.clickNode.off(cc.Node.EventType.TOUCH_CANCEL,this.onArrowClick,this);
         this.clickNode.off(cc.Node.EventType.TOUCH_START,this.onArrowClick,this);
         this.guideArrowNode.stopAllActions();
         this.arrowNode.active = false;
         EVENT.emit(GameEvent.Guide_Touch_Complete,{id:this._guideId,name:this._guideInfo.nodeName});
     }
 
+
+    private showDrag(find:cc.Node,dragNode:cc.Node,dropNode:cc.Node){
+        this.arrowNode.active = true;
+        if(this._guideInfo.arrowDir == GuideArrowDir.ArrowDirLeft){
+            this.guideArrowNode.scaleX = 1;
+        }else if(this._guideInfo.arrowDir == GuideArrowDir.ArrowDirRight){
+            this.guideArrowNode.scaleX = -1;
+        }
+        this.setClickArea(find);
+        var wPos:cc.Vec2 = find.parent.convertToWorldSpaceAR(find.position);
+        GUIDE.updateGuideMaskPosAndSize(wPos,find.getContentSize(),cc.v2(find.anchorX,find.anchorY),51);
+        var posFrom =  this.guideArrowNode.parent.convertToNodeSpaceAR(dragNode.parent.convertToWorldSpaceAR(dragNode.position));
+        var posTo =  this.guideArrowNode.parent.convertToNodeSpaceAR(dropNode.parent.convertToWorldSpaceAR(dropNode.position));
+        this.guideArrowNode.setPosition(posFrom)
+        this.guideArrowNode.runAction(cc.sequence(
+            cc.moveTo(0.8,posTo)
+            ,cc.delayTime(0.2),
+            cc.callFunc(()=>{
+                this.guideArrowNode.setPosition(posFrom)
+            })
+            ).repeatForever());
+        
+       this.clickNode.on(cc.Node.EventType.TOUCH_END,this.onArrowClick,this);
+       this.clickNode.on(cc.Node.EventType.TOUCH_CANCEL,this.onArrowClick,this);
+       
+    }
     // update (dt) {}
 }

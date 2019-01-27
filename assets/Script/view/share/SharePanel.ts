@@ -4,6 +4,8 @@ import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
 import DList, { DListDirection } from "../../component/DList";
 import { ResType } from "../../model/ResInfo";
+import { UI } from "../../manager/UIManager";
+import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -35,6 +37,7 @@ export default class SharePanel extends PopUpBase{
     onEnable(){
         super.onEnable();
         this.btnShare.node.on(cc.Node.EventType.TOUCH_START,this.onShare,this);
+        this.btnStore.node.on(cc.Node.EventType.TOUCH_START,this.onStoreClick,this);
         EVENT.on(GameEvent.ShareGetReward_Complete,this.shareComplete,this);
         this.initView();
     }
@@ -42,6 +45,7 @@ export default class SharePanel extends PopUpBase{
     onDisable(){
         super.onDisable();
         this.btnShare.node.off(cc.Node.EventType.TOUCH_START,this.onShare,this);
+        this.btnStore.node.off(cc.Node.EventType.TOUCH_START,this.onStoreClick,this);
         EVENT.off(GameEvent.ShareGetReward_Complete,this.shareComplete,this);
     }
 
@@ -76,5 +80,8 @@ export default class SharePanel extends PopUpBase{
 
     }
 
+    private onStoreClick(e){
+        UI.createPopUp(ResConst.StorePanel,{});
+    }
     // update (dt) {}
 }

@@ -88,7 +88,7 @@ export default class PathUtil{
             url = "ui/Common2/stone";
             break;
             case ResType.exp:
-            url = "ui/Common2/stone";
+            url = "ui/Common2/exp";
             break;
         }
         return url;
