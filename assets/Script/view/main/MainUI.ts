@@ -144,6 +144,13 @@ export default class MainUI extends UIBase {
                         UI.showTipCustom(ResConst.CostTipPanel,"-"+StringUtil.formatReadableNumber(absVal),this.lblLifeStone.node.parent.convertToWorldSpaceAR(this.lblLifeStone.node.position));
                     }
                 }break;
+                case ResType.diamond:{
+                    this.lblDiamond.string = StringUtil.formatReadableNumber(COMMON.resInfo.diamond);
+                    absVal = Math.abs(obj.value);
+                    if(absVal>0){
+                        UI.showTipCustom(ResConst.CostTipPanel,"-"+StringUtil.formatReadableNumber(absVal),this.lblDiamond.node.parent.convertToWorldSpaceAR(this.lblDiamond.node.position));
+                    }
+                }break;
             }
         })
 

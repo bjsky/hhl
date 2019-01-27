@@ -19,7 +19,8 @@ const {ccclass, property} = cc._decorator;
 
 export enum CardBigShowType{
     GetCard = 1,
-    ShowCard
+    ShowCard,
+    DiamondGetCard ,
 }
 
 @ccclass
@@ -72,7 +73,8 @@ export default class CardBig extends PopUpBase{
 
     public setData(data){
         this._type = data.type;
-        if(this._type == CardBigShowType.GetCard){
+        if(this._type == CardBigShowType.GetCard
+            || this._type == CardBigShowType.DiamondGetCard){
             this._cardUUid = data.cardUUid;
             this._cardInfo = Card.getCardByUUid(this._cardUUid);
 
@@ -113,7 +115,8 @@ export default class CardBig extends PopUpBase{
     }
     private initCardView(){
         this.node.opacity = 0;
-        if(this._type == CardBigShowType.GetCard){
+        if(this._type == CardBigShowType.GetCard
+            ||this._type == CardBigShowType.DiamondGetCard){
             this.heroNode.active = true;
             this.cardName.string = this._cardInfo.cardInfoCfg.name;
             this.cardRace.load(PathUtil.getCardRaceImgPath(this._cardInfo.cardInfoCfg.raceId));
@@ -151,7 +154,8 @@ export default class CardBig extends PopUpBase{
         this.node.off(cc.Node.EventType.TOUCH_START,this.onMaskTouch,this);
         if(this._type == CardBigShowType.GetCard){
             this.rotationOut();
-        }else if(this._type == CardBigShowType.ShowCard){
+        }else if(this._type == CardBigShowType.ShowCard
+            || this._type == CardBigShowType.DiamondGetCard){
             this.onClose(e);
         }
     }

@@ -141,6 +141,11 @@ export default class CardAssist{
         }
         return list;
     }
+    public getCardSealCfgList(){
+        var list:Array<any> = null;
+        list = CFG.getCfgByKey(ConfigConst.CardInfo,"seal","1");
+        return list;
+    }
 
     //拥有的卡牌
     public getOwnerCardList(type:number):Array<CardInfo>{

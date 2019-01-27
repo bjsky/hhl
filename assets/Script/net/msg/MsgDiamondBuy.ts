@@ -2,6 +2,7 @@ import MessageBase from "./MessageBase";
 import { SResInfo } from "./MsgLogin";
 import { SCardInfo } from "./MsgCardSummon";
 import NetConst from "../NetConst";
+import { COMMON } from "../../CommonData";
 
 //钻石购买参数
 export class CSDiamondBuy{
@@ -46,18 +47,19 @@ export default class MsgDiamondBuy extends MessageBase{
     }
 
     public respFromLocal(){
-        // var json:any;
-        // var resInfo:SResInfo = COMMON.resInfo.cloneServerInfo();
-        // var shareCount:number = Share.todayShareCount;
-        // if(this.param.type == GetRewardType.SeeVideoGetGold){
-        //     resInfo.gold += this.param.rewardNum;
-        // }else if(this.param.type == GetRewardType.SeeVideoGetStone){
-        //     resInfo.lifeStone += this.param.rewardNum;
-        // }else if(this.param.type == GetRewardType.ShareGetDiamond){
-        //     resInfo.diamond += this.param.rewardNum;
-        //     shareCount +=1;
-        // }
+        var cardUUid:string = new Date().getTime()+ Number(Math.random()*1000000).toFixed(0);
+        var cardInfo = {
+            uuid:cardUUid,
+            level:1,
+            cardId:this.param.diamondBuyCardId,
+            grade:this.param.diamondBuyCardGrade,
+            skillLevel:1
+        }
+        var retRes:SResInfo = COMMON.resInfo.cloneServerInfo();
+        retRes.diamond -= this.param.diamondCost;
         var json = {
+            resInfo:retRes,
+            newCard:cardInfo
             };
         return this.parse(json);
     }
