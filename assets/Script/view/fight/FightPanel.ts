@@ -11,6 +11,7 @@ import FightAction, { BuffAction } from "../../module/fight/FightAction";
 import BuffNode from "./BuffNode";
 import FightOnce from "../../module/fight/FightOnce";
 import { SOUND, SoundConst } from "../../manager/SoundManager";
+import { GUIDE } from "../../manager/GuideManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -109,7 +110,7 @@ export default class FightPanel extends UIBase {
     }
 
     private reset(){
-        this.btnEnd.node.active = true;
+        this.btnEnd.node.active = !GUIDE.isInGuide;
         this.top.position = cc.v2(0,(this.top.height +10));  //cc.v2((this.top.width +10),0)//
         this.bottom.position = cc.v2(0,(-this.bottom.height-10));//cc.v2((-this.bottom.width-10),0);//
         this.center.position = cc.v2(0,0);

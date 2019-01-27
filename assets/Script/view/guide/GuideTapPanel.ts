@@ -92,6 +92,8 @@ export default class GuideTapPanel extends UIBase {
         this._guideId = this._guideInfo.guideId;
 
         this.unscheduleAllCallbacks();
+        GUIDE.setBlockEnable(true);
+        this.guideArrowNode.stopAllActions();
         if(this._guideInfo.type == GuideTypeEnum.GuideStory){
             this.storyNode.active = true;
             this.dialogNode.active = false;
@@ -289,8 +291,6 @@ export default class GuideTapPanel extends UIBase {
 
     private onArrowClick(){
 
-        this.clickNode.off(cc.Node.EventType.TOUCH_END,this.onArrowClick,this);
-        this.clickNode.off(cc.Node.EventType.TOUCH_CANCEL,this.onArrowClick,this);
         this.clickNode.off(cc.Node.EventType.TOUCH_START,this.onArrowClick,this);
         this.guideArrowNode.stopAllActions();
         this.arrowNode.active = false;
@@ -306,6 +306,7 @@ export default class GuideTapPanel extends UIBase {
             this.guideArrowNode.scaleX = -1;
         }
         this.setClickArea(find);
+        GUIDE.setBlockEnable(false);
         var wPos:cc.Vec2 = find.parent.convertToWorldSpaceAR(find.position);
         GUIDE.updateGuideMaskPosAndSize(wPos,find.getContentSize(),cc.v2(find.anchorX,find.anchorY),51);
         var posFrom =  this.guideArrowNode.parent.convertToNodeSpaceAR(dragNode.parent.convertToWorldSpaceAR(dragNode.position));
@@ -318,10 +319,6 @@ export default class GuideTapPanel extends UIBase {
                 this.guideArrowNode.setPosition(posFrom)
             })
             ).repeatForever());
-        
-       this.clickNode.on(cc.Node.EventType.TOUCH_END,this.onArrowClick,this);
-       this.clickNode.on(cc.Node.EventType.TOUCH_CANCEL,this.onArrowClick,this);
-       
     }
     // update (dt) {}
 }

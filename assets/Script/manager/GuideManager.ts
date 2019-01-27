@@ -181,6 +181,9 @@ export default class GuideManager{
             this._guideColorLayer.opacity = 0;
         }
     }
+    public setBlockEnable(bool:boolean){
+        this._guideBlockLayer.active = bool;
+    }
 }
 
 export var GUIDE = GuideManager.getInstance();

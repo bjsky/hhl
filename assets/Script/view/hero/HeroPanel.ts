@@ -12,7 +12,7 @@ import GameEvent from "../../message/GameEvent";
 import { CFG } from "../../manager/ConfigManager";
 import { ConfigConst } from "../../module/loading/steps/LoadingStepConfig";
 import { Skill } from "../../module/skill/SkillAssist";
-import { GUIDE } from "../../manager/GuideManager";
+import { GUIDE, GuideTypeEnum } from "../../manager/GuideManager";
 import TouchHandler from "../../component/TouchHandler";
 import { COMMON } from "../../CommonData";
 import { UI } from "../../manager/UIManager";
@@ -151,6 +151,9 @@ export default class HeroPanel extends UIBase {
 
     private _selectViewIndex:HeroViewSelect = 0;
     private viewGroupSelectChange(){
+        if(GUIDE.isInGuide && GUIDE.guideInfo.type == GuideTypeEnum.GuideDrag){
+            return;
+        }
         this._selectViewIndex = this.viewGroup.selectIndex;
         this.upLvViewNode.active =(this._selectViewIndex == HeroViewSelect.Uplevel);
         this.composeViewNode.active =(this._selectViewIndex == HeroViewSelect.Compose);
@@ -199,6 +202,10 @@ export default class HeroPanel extends UIBase {
             this.updateCardCompose(uuid);
             this.updateCurrentCard(Number(this._currentCard.cardId));
         }
+        if(GUIDE.isInGuide && GUIDE.guideInfo.nodeName == "buildPanel_compose"){
+            GUIDE.nextGuide(GUIDE.guideInfo.guideId);
+        }
+
     }
 
     private onCardRemoved(e){
@@ -479,14 +486,7 @@ export default class HeroPanel extends UIBase {
             this.viewGroup.selectIndex = HeroViewSelect.Compose;
             this.viewGroupSelectChange();
             GUIDE.nextGuide(guideId);
-        }else if(nodeName == "buildPanel_compose"){
-            if(this._composeCardInfos.length>1){
-                var e:any = {detail:{from:this._composeCardInfos[1],to:this._composeCardInfos[0]}}
-                this.onCardUpStar(e);
-            }
-            GUIDE.nextGuide(guideId);
         }
-
     }
 }
 

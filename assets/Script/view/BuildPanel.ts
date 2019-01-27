@@ -13,7 +13,7 @@ import { BUILD } from "../module/build/BuildAssist";
 import { EVENT } from "../message/EventCenter";
 import GameEvent from "../message/GameEvent";
 import StringUtil from "../utils/StringUtil";
-import { GUIDE } from "../manager/GuideManager";
+import { GUIDE, GuideTypeEnum } from "../manager/GuideManager";
 import ResPanel, { ResPanelType } from "./ResPanel";
 
 // Learn TypeScript:
@@ -137,6 +137,9 @@ export default class BuildPanel extends UIBase{
         this.doClose(cb);
     }
     private onClose(){
+        if(GUIDE.isInGuide && GUIDE.guideInfo.type == GuideTypeEnum.GuideDrag){
+            return;
+        }
         this.doClose();
     }
 
