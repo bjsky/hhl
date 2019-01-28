@@ -34,7 +34,7 @@ export default class MsgDiamondBuy extends MessageBase{
 
     constructor(){
         super(NetConst.DiamondBuy);
-        this.isLocal = true;
+        // this.isLocal = true;
     }
 
     public static create(cost:number,cardId:number,grade:number){

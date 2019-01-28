@@ -3,6 +3,7 @@ import NetConst from "../NetConst";
 import { SResInfo } from "./MsgLogin";
 import { COMMON } from "../../CommonData";
 import { Share } from "../../module/share/ShareAssist";
+import { ResType } from "../../model/ResInfo";
 
 export enum GetRewardType{
     ShareGetDiamond = 1,                  //分享得钻石
@@ -12,9 +13,11 @@ export enum GetRewardType{
 //获得奖励参数
 export class CSGetReward{
     //奖励的类型
-    public type:GetRewardType = 0;
+    public type:ResType = 0;
     //奖励的数量(客户端取到了发给服务器)
     public rewardNum:number = 0;
+    //是否分享
+    public share:boolean = false;
 }
 
 //获得奖励返回
@@ -37,14 +40,25 @@ export default class MsgGetReward extends MessageBase{
 
     constructor(){
         super(NetConst.GetReward);
-        this.isLocal = true;
+        // this.isLocal = true;
     }
 
     public static create(type:GetRewardType,rewardNum:number){
         var msg = new MsgGetReward();
         msg.param = new CSGetReward();
-        msg.param.type = type;
+        var resType:ResType =0;
+        var share = false;
+        if(type == GetRewardType.SeeVideoGetGold){
+            resType = ResType.gold;
+        }else if(type == GetRewardType.SeeVideoGetStone){
+            resType = ResType.lifeStone;
+        }else if(type == GetRewardType.ShareGetDiamond){
+            resType = ResType.diamond;
+            share = true;
+        }
+        msg.param.type = resType;
         msg.param.rewardNum = rewardNum;
+        msg.param.share = share;
         return msg;
     }
 
@@ -52,12 +66,15 @@ export default class MsgGetReward extends MessageBase{
         var json:any;
         var resInfo:SResInfo = COMMON.resInfo.cloneServerInfo();
         var shareCount:number = Share.todayShareCount;
-        if(this.param.type == GetRewardType.SeeVideoGetGold){
+        if(this.param.type == ResType.gold){
             resInfo.gold += this.param.rewardNum;
-        }else if(this.param.type == GetRewardType.SeeVideoGetStone){
+        }else if(this.param.type == ResType.lifeStone){
             resInfo.lifeStone += this.param.rewardNum;
-        }else if(this.param.type == GetRewardType.ShareGetDiamond){
+        }else if(this.param.type == ResType.diamond){
             resInfo.diamond += this.param.rewardNum;
+            
+        }
+        if(this.param.share){
             shareCount +=1;
         }
         json = {resInfo:resInfo,

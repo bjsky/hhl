@@ -3,13 +3,15 @@ import GuideTapPanel from "../view/guide/GuideTapPanel";
 import { ResConst } from "../module/loading/steps/LoadingStepRes";
 import { UI } from "./UIManager";
 import UIBase from "../component/UIBase";
-import MsgGuideUpdate from "../net/msg/MsgGuideUpdate";
+import MsgGuideUpdate, { SCGuideUpdate } from "../net/msg/MsgGuideUpdate";
 import { NET } from "../net/core/NetController";
 import CityScene from "../scene/CityScene";
 import { SCENE } from "./SceneManager";
 import GameEvent from "../message/GameEvent";
 import { EVENT } from "../message/EventCenter";
 import PathUtil from "../utils/PathUtil";
+import { COMMON } from "../CommonData";
+import { SGuideInfo } from "../net/msg/MsgLogin";
 
 export enum GuideTypeEnum {
     GuideStory = 1,
@@ -40,7 +42,7 @@ export default class GuideManager{
     }
 
     //引导数据
-    public guideInfo:GuideInfo = new GuideInfo();
+    public guideInfo:GuideInfo;
 
     private guideTap:GuideTapPanel = null;
 
@@ -52,8 +54,17 @@ export default class GuideManager{
         this._isINGuide = bool;
     }
 
-    public initGuide(data:any){
-        this.guideInfo.initFromServer(data);
+    public initGuide(data:any,newUser:number){
+        if(!this.guideInfo){
+            this.guideInfo = new GuideInfo();
+        }
+        
+        // this.guideInfo.initFromServer(data);
+        if(COMMON.isNewUser){
+            var temp:SGuideInfo = new SGuideInfo();
+            temp.guideId = 1;
+            this.guideInfo.initFromServer(temp);
+        }
         this.initGuideMaskLayer();
     }
 
@@ -76,13 +87,18 @@ export default class GuideManager{
 
     public endStoryGuide(guideId:number){
         this._guideColorLayer.runAction(cc.sequence(cc.fadeOut(0.6),cc.callFunc(()=>{
+            this.guideInfo.updateGuideClient(MsgGuideUpdate.getNextGuide(guideId));
+            var scene:CityScene = SCENE.CurScene as CityScene;
+            if(scene){
+                scene.showMainUI();
+            }
             NET.send(MsgGuideUpdate.create(guideId),(msg:MsgGuideUpdate)=>{
                 if(msg && msg.resp){
-                    GUIDE.guideInfo.updateGuide(msg.resp);
-                    var scene:CityScene = SCENE.CurScene as CityScene;
-                    if(scene){
-                        scene.showMainUI();
-                    }
+                    // GUIDE.guideInfo.updateGuide(msg.resp);
+                    // var scene:CityScene = SCENE.CurScene as CityScene;
+                    // if(scene){
+                    //     scene.showMainUI();
+                    // }
                 }
             },this)
         })));
@@ -90,10 +106,12 @@ export default class GuideManager{
 
 
     public nextGuide(guideId:number){
+        this.guideInfo.updateGuideClient(MsgGuideUpdate.getNextGuide(guideId));
+        this.startGuide();
         NET.send(MsgGuideUpdate.create(guideId),(msg:MsgGuideUpdate)=>{
             if(msg && msg.resp){
-                this.guideInfo.updateGuide(msg.resp);
-                this.startGuide();
+                // this.guideInfo.updateGuide(msg.resp);
+                // this.startGuide();
             }
         },this)
     

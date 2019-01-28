@@ -34,14 +34,15 @@ export default class NetMessage extends cc.Component{
             }                
             break;
             case NetConst.ExceptionCmd:{
-                let msg = e.data.errorCode+","+e.data.errorMsg;
+                let msg = e.detail.data.errorCode+","+e.detail.data.errorMsg;
                 if(CC_DEBUG) {
-                    msg = JSON.stringify(e);
+                    msg = JSON.stringify(e.detail.data);
                 }
                 // altp = AlertPanel.showAlert("",msg);
             }break;
             case NetConst.NET_CLOSE:{
-                this.retryConnect("网络异常","链接已断开，请检查网络状态后重试",NetConst.NET_CLOSE);
+                this.forceReConnect();
+                // this.retryConnect("网络异常","链接已断开，请检查网络状态后重试",NetConst.NET_CLOSE);
             }break;
             case NetConst.NET_ERROR:{
                 this.retryConnect("网络异常","链接错误，请检查网络后重试",NetConst.NET_ERROR);
@@ -52,7 +53,7 @@ export default class NetMessage extends cc.Component{
             }                
             break;
             default:{
-                this.MsgPushParser(msgid,e.data);
+                this.MsgPushParser(msgid,e.detail.data);
             }
             break;
         }
@@ -78,6 +79,13 @@ export default class NetMessage extends cc.Component{
         {
             console.log(src);
         }
+    }
+
+    //强制重练
+    private forceReConnect(){
+        NET.reConnect(()=>{
+            LoadingStepServerData.loginServer();
+        });
     }
 
 }

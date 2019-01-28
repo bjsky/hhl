@@ -29,7 +29,7 @@ export class SCCardSummonGuide{
     public static parse(obj:any):SCCardSummonGuide{
         var data:SCCardSummonGuide = new SCCardSummonGuide();
         data.newCard = SCardInfo.parse(obj.newCard);
-        data.upStarCard = SCardInfo.parse(obj.upStarCard);
+        data.upStarCard = SCardInfo.parse(obj.upstarCard);
         data.retRes = SResInfo.parse(obj.retRes);
         data.userInfo = SUserInfo.parse(obj.userInfo);
         data.stoneSummonNum = obj.stoneSummonNum;
@@ -44,7 +44,7 @@ export default class MsgCardSummonGuide extends MessageBase{
 
     constructor(){
         super(NetConst.CardSummonGuide);
-        this.isLocal = true;
+        // this.isLocal = true;
     }
 
     public static create(stoneCost){

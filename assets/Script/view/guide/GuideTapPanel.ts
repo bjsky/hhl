@@ -227,8 +227,9 @@ export default class GuideTapPanel extends UIBase {
                 }
             }
         }else{
+            GUIDE.endGuide();
             NET.send(MsgGuideUpdate.create(-1),(msg:MsgGuideUpdate)=>{
-                GUIDE.endGuide();
+                // GUIDE.endGuide();
             },this)
         }
     }

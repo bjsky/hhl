@@ -22,6 +22,8 @@ export class CSLoginData {
  */
 export class SCLoginData {
     public accountId:string //账号id
+    //新账户
+    public newUser:number = 0;
     //每天首次登录
     public firstLogin:boolean  = false;
     //服务器时间
@@ -49,6 +51,7 @@ export class SCLoginData {
 
     public static parse(obj:any):SCLoginData{
         var data:SCLoginData = new SCLoginData();
+        data.newUser = obj.newUser;
         data.firstLogin = obj.firstLogin;
         data.serverTime = obj.serverTime;
         data.userInfo = SUserInfo.parse(obj.userInfo);

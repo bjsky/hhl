@@ -25,6 +25,7 @@ export enum SexEnum{
     Male = 1,
     Female,
 }
+
 /**
  *  全局的游戏数据，
  * 
@@ -40,9 +41,13 @@ export default class CommonData{
         
     }
 
+    public get isNewUser():boolean{
+        return this.newUser == 1;
+    }
     public ZERO:cc.Vec2 = cc.v2(0,0);
 
     public isFristLogin:boolean  = false;
+    public newUser:number = 0;
 
     //用户数据
     public userInfo:UserInfo = new UserInfo();
@@ -66,6 +71,7 @@ export default class CommonData{
         this._loginTime = new Date().getTime();
 
         this.isFristLogin = data.firstLogin;
+        this.newUser = data.newUser;
         this._serverTime = data.serverTime;
         this.userInfo.initFromServer(data.userInfo);
         this.resInfo.initFromServer(data.resInfo);
@@ -76,7 +82,7 @@ export default class CommonData{
 
         BUILD.initBuilding(data.buildInfos);
 
-        GUIDE.initGuide(data.guideInfo);
+        GUIDE.initGuide(data.guideInfo,data.newUser);
 
         Card.initCard(data.ownerCards);
 

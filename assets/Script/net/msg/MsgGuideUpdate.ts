@@ -26,7 +26,7 @@ export default class MsgGuideUpdate extends MessageBase{
 
     constructor(){
         super(NetConst.GuideUpdate);
-        this.isLocal = true;
+        // this.isLocal = true;
     }
 
     public static create(guideId:number){
@@ -49,6 +49,10 @@ export default class MsgGuideUpdate extends MessageBase{
         return this.parse(json);
     }
 
+    public static getNextGuide(guideId:number):number{
+        var info:any = CFG.getCfgDataById(ConfigConst.Guide, guideId);
+        return info?info.nextId:-1;
+    }
     private parse(obj:any):MessageBase{
         this.resp = SCGuideUpdate.parse(obj);
         return this;

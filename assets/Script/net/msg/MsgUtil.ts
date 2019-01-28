@@ -11,6 +11,8 @@ import MsgLineupModify from "./MsgLineupModify";
 import MsgCardSummonGuide from "./MsgCardSummonGuide";
 import MsgCollectRes from "./MsgCollectRes";
 import MsgFightBoss from "./MsgFightBoss";
+import MsgGetReward from "./MsgGetReward";
+import MsgDiamondBuy from "./MsgDiamondBuy";
 /**
  * 太特么坑了，父类中还不能导入子类
  */
@@ -52,6 +54,12 @@ export default class MsgUtil{
             break;
             case NetConst.FightBoss:
                 message = new MsgFightBoss();
+            break;
+            case NetConst.GetReward:
+                message = new MsgGetReward();
+            break;
+            case NetConst.DiamondBuy:
+                message = new MsgDiamondBuy();
             break;
             default:
             message = null;

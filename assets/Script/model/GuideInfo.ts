@@ -101,5 +101,11 @@ export default class GuideInfo extends InfoBase{
 
         this.setGuideInfo();
     }
+
+    public updateGuideClient(guideId:number){
+        this.guideId = guideId;
+
+        this.setGuideInfo();
+    }
     
 }

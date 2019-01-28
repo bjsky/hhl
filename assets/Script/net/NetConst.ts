@@ -35,13 +35,14 @@ export default class NetConst{
     public static LineupModify:number = 21040;
     //挑战boss
     public static FightBoss:number = 21060;
+    //获得奖励
+    public static GetReward:number = 21091;
+    //钻石购买
+    public static DiamondBuy:number = 21101;
+    
     //世界征战列表
     public static WorldEnemyList:number = 70001;
     //玩家战斗
     public static FightEnemy:number = 70002;
-    //获得奖励
-    public static GetReward:number = 80001;
-    //钻石购买
-    public static DiamondBuy:number = 80002;
 }
 
