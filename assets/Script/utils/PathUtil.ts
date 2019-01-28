@@ -69,7 +69,7 @@ export default class PathUtil{
     }
 
     public static getCardnextGradeCard(grade:number):string{
-        return "ui/module/cardUp/hero_star_"+grade;
+        return "ui/module/cardUp/hero_hc"+grade+"xkp";
     }
 
     public static getResIconUrl(type:ResType):string{

@@ -33,8 +33,6 @@ export default class CardDescrip extends PopUpBase {
     cardSkillName: cc.Label = null;
     @property(cc.Label)
     cardSkillType: cc.Label = null;
-    @property(cc.Label)
-    cardSkillChar: cc.Label = null;
     @property(cc.RichText)
     cardSkillDesc: cc.RichText = null;
     @property(cc.Label)
@@ -80,7 +78,6 @@ export default class CardDescrip extends PopUpBase {
         this.cardRace.load(PathUtil.getCardRaceImgPath(this._cardCfg.raceId));
         this.cardSkillDesc.string = "          "+Skill.getSkillHelDescHtml(this._cardSkillCfg);
         this.cardSkillType.string = this._cardSkillCfg.cardType;
-        this.cardSkillChar.string = this._cardSkillCfg.skillchar;
         if(this._cardCfg.summoner != ""){
             this.summoner.active = true;
             this.lblSummoner.string = "召唤师："+this._cardCfg.summoner;

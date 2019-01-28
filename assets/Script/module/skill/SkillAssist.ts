@@ -15,18 +15,19 @@ export default class SkillAssist{
 
     public getSkillHelDescHtml(skillCfg:any):string{
         var skillDesc:string = skillCfg.skillDesc;
-        var value:string =(Number(skillCfg.value)*100).toString();
-        var addValue:string = (Number(skillCfg.addValue)*100).toString();
-        var valueStr = "（<color=#29b92f>"+value+"</color>+英雄星级*<color=#29b92f>"+addValue+"</color>）";
+        var value:string =(Number(skillCfg.value)*100).toString()+"%";
+        var addValue:string = (Number(skillCfg.addValue)*100).toString()+"%";
+        var valueStr = "<color=#29b92f>"+value+"</color>(+英雄星级*<color=#29b92f>"+addValue+"</color>)";
         return "<color=#D35C21>" + skillDesc.replace("#",valueStr)+"</color>";
     }
 
-    public getCardSkillDescHtml(info:CardInfo,index:number = 0):string{
+    public getCardSkillDescHtml(info:CardInfo,index:number = 0,colorstr:string = ""):string{
         var cfg:any = info.cardSkillCfg[index];
         var skillDesc:string = cfg.skillDesc;
         var value:string =(Math.round(info.getSkillValue(index)*1000)/10).toString();
         console.log(value);
-        var valueStr = "<color=#29b92f>"+value+"</color>";
+
+        var valueStr = "<color=#29b92f>"+value+"%</color>";
         return "<color=#D35C21>" + skillDesc.replace("#",valueStr)+"</color>";
     }
 
@@ -39,8 +40,10 @@ export default class SkillAssist{
         if(info.isMaxGrade){
             return "<color=#D35C21>已是最高级技能</color>"
         }else{
-            var value:string =(Math.round(info.getSkillNextGradeValue(index)*1000)/10).toString();
-            return "<color=#D35C21>" + value +"%</color>";
+            var value:number = Math.round((info.cardSkillCfg[0].addValue)*1000)/10;
+            var valueStr:string = "<color=#29b92f>"+value+"%</color>";
+            var desc:string =info.cardSkillCfg[0].addDesc;
+            return "<color=#D35C21>" + desc.replace("#",valueStr) +"</color>";
         }
     }
 

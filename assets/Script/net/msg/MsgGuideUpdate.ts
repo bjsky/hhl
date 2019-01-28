@@ -7,7 +7,7 @@ import { ConfigConst } from "../../module/loading/steps/LoadingStepConfig";
  * 更新引导id
  */
 export class CSGuideUpdate{
-    public currentGuideId:number = 0;
+    public guideId:number = 0;
 }
 
 export class SCGuideUpdate{
@@ -32,12 +32,12 @@ export default class MsgGuideUpdate extends MessageBase{
     public static create(guideId:number){
         var msg = new MsgGuideUpdate();
         msg.param = new CSGuideUpdate();
-        msg.param.currentGuideId = guideId;
+        msg.param.guideId = guideId;
         return msg;
     }
 
     public respFromLocal(){
-        var info:any = CFG.getCfgDataById(ConfigConst.Guide, this.param.currentGuideId);
+        var info:any = CFG.getCfgDataById(ConfigConst.Guide, this.param.guideId);
         var json:any;
         if(info){
             json = {nextGuideId:info.nextId
