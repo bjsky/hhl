@@ -3,8 +3,8 @@ export default class SoundManager{
 
     private _bgVolume:number = 1;
 
-    private _musicSwitch:boolean = false;
-    private _bgMusicSwitch:boolean = false;
+    private _musicSwitch:boolean = true;
+    private _bgMusicSwitch:boolean = true;
 
     private static _instance: SoundManager = null;
     public static getInstance(): SoundManager {
