@@ -187,6 +187,7 @@ export default class MainUI extends UIBase {
         this.btnAddGold.node.on(cc.Node.EventType.TOUCH_START,this.onAddGold,this);
         this.btnAddStone.node.on(cc.Node.EventType.TOUCH_START,this.onAddStone,this);
         this.btnDiamondStore.node.on(cc.Node.EventType.TOUCH_START,this.onDiamondStore,this);
+        this.headIcon.node.on(cc.Node.EventType.TOUCH_START,this.onHeadTouch,this);
 
         EVENT.on(GameEvent.Res_update_Cost_Complete,this.resUpdateCost,this);
         EVENT.on(GameEvent.Show_AwardPanel,this.showAwardPop,this);
@@ -203,6 +204,7 @@ export default class MainUI extends UIBase {
         this.btnAddGold.node.off(cc.Node.EventType.TOUCH_START,this.onAddGold,this);
         this.btnAddStone.node.off(cc.Node.EventType.TOUCH_START,this.onAddStone,this);
         this.btnDiamondStore.node.off(cc.Node.EventType.TOUCH_START,this.onDiamondStore,this);
+        this.headIcon.node.off(cc.Node.EventType.TOUCH_START,this.onHeadTouch,this);
 
         EVENT.off(GameEvent.Res_update_Cost_Complete,this.resUpdateCost,this);
         EVENT.off(GameEvent.Show_AwardPanel,this.showAwardPop,this);
@@ -216,6 +218,11 @@ export default class MainUI extends UIBase {
         this.lblExp.node.runAction(this._showLabelExp?cc.fadeIn(0.15):cc.fadeOut(0.15));
     }
     // update (dt) {}
+    private onHeadTouch(e){
+        var accountStr:string = "用户ID:";
+        accountStr += COMMON.accountId;
+        UI.showAlert(accountStr);
+    }
 
     private onTaskBtnTouch(e){
         // UI.showAlert("功能暂未开放，敬请期待！",null,null,AlertBtnType.OKAndCancel);

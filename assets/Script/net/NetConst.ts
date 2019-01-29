@@ -11,6 +11,9 @@ export default class NetConst{
     public static NET_Connected:string = "0";
     public static NET_Connecting:string = "1";
 
+    
+    /**心跳 */
+    public static Heart:number = 10101;
     //登录
     public static Login:number = 10001;
     //引导更新

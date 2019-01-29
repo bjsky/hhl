@@ -49,6 +49,7 @@ export default class CommonData{
     public isFristLogin:boolean  = false;
     public newUser:number = 0;
 
+    public accountId:string ="";
     //用户数据
     public userInfo:UserInfo = new UserInfo();
     //资源数据
@@ -70,6 +71,7 @@ export default class CommonData{
     public initFromServer(data:SCLoginData){
         this._loginTime = new Date().getTime();
 
+        this.accountId = data.accountId;
         this.isFristLogin = data.firstLogin;
         this.newUser = data.newUser;
         this._serverTime = data.serverTime;

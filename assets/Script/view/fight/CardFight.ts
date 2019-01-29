@@ -243,10 +243,10 @@ export default class CardFight extends  UIBase {
 
     public beAttack(attackPower:number,hasSkill:boolean,cb:Function){
         var tipStr:string = ""
-        if(this._loseLife+attackPower>this._totalLife){
-            attackPower = this._totalLife - this._loseLife;
-            // tipStr = "阵亡";
-        }
+        // if(this._loseLife+attackPower>this._totalLife){
+        //     attackPower = this._totalLife - this._loseLife;
+        //     // tipStr = "阵亡";
+        // }
         tipStr = "-"+attackPower.toFixed(0);
         this._loseLife += attackPower;
         this.numEffLife.setValue(this.curLife);

@@ -13,6 +13,7 @@ import MsgCollectRes from "./MsgCollectRes";
 import MsgFightBoss from "./MsgFightBoss";
 import MsgGetReward from "./MsgGetReward";
 import MsgDiamondBuy from "./MsgDiamondBuy";
+import MsgHeartBeat from "./MsgHeartBeat";
 /**
  * 太特么坑了，父类中还不能导入子类
  */
@@ -60,6 +61,9 @@ export default class MsgUtil{
             break;
             case NetConst.DiamondBuy:
                 message = new MsgDiamondBuy();
+            break;
+            case NetConst.Heart:
+                message = new MsgHeartBeat();
             break;
             default:
             message = null;

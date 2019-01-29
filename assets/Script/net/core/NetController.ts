@@ -5,6 +5,7 @@ import NetMessage from "../NetMessage";
 import MessageBase from "../msg/MessageBase";
 import { GLOBAL, ServerType } from "../../GlobalData";
 import MsgUtil from "../msg/MsgUtil";
+import MsgHeartBeat from "../msg/MsgHeartBeat";
 
 export class NetController
 {
@@ -129,6 +130,7 @@ export class NetController
         this._seqId = 0;
         EVENT.emit(NET.NET_MESSAGE, {id:NetConst.NET_Connected,data:{}});
 
+        this.startHeartbeat();
         // for(let key in this._msgDict) {
         //     if(this._msgDict[key].id == NetConst.Login)
         //     {
@@ -346,28 +348,31 @@ export class NetController
      * @param msgId 心跳消息号
      * @param time  心跳间隔 默认15s
      */
-    // public startHeartbeat(msgId:any,time:number = 15000) {
-    //     this._timeOutTime = time;
-    //     if(isNaN(this._timeOutId))
-    //     {
-    //         let self = this;
+    public startHeartbeat(time:number = 15000) {
+        this._timeOutTime = time;
+        if(isNaN(this._timeOutId))
+        {
+            let self = this;
 
-    //         this._timeOutId = setInterval(()=>{
-    //             self._timeOutNum++;
-    //             if(self._timeOutNum>1)
-    //             {
-    //                 console.log("心跳超时次数：",self._timeOutNum);
-    //                 this.dispose();
-    //             }else
-    //             {
-    //                 self.send(msgId,null,()=>{
-    //                     self._timeOutNum = 0;
-    //                 },self);
-    //             }
+            this._timeOutId = setInterval(()=>{
+                self._timeOutNum++;
+                if(self._timeOutNum>1)
+                {
+                    console.log("心跳超时次数：",self._timeOutNum);
+                    this.dispose();
+                    
+                    self._timeOutNum = undefined;
+                    EVENT.emit(NET.NET_MESSAGE, {id:NetConst.NET_CLOSE,data:{}});
+                }else
+                {
+                    self.send(MsgHeartBeat.create(),(msg:MsgHeartBeat)=>{
+                        self._timeOutNum = 0;
+                    },self);
+                }
                
-    //         },time)
-    //     }
-    // }
+            },time)
+        }
+    }
 }
 
 export var NET = NetController.getInst();

@@ -51,6 +51,7 @@ export class SCLoginData {
 
     public static parse(obj:any):SCLoginData{
         var data:SCLoginData = new SCLoginData();
+        data.accountId = obj.accountId;
         data.newUser = obj.newUser;
         data.firstLogin = obj.firstLogin;
         data.serverTime = obj.serverTime;

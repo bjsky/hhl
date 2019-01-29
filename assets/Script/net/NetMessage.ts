@@ -41,8 +41,8 @@ export default class NetMessage extends cc.Component{
                 // altp = AlertPanel.showAlert("",msg);
             }break;
             case NetConst.NET_CLOSE:{
-                this.forceReConnect();
-                // this.retryConnect("网络异常","链接已断开，请检查网络状态后重试",NetConst.NET_CLOSE);
+                // this.forceReConnect();
+                this.retryConnect("网络异常","链接已断开，请检查网络状态后重试",NetConst.NET_CLOSE);
             }break;
             case NetConst.NET_ERROR:{
                 this.retryConnect("网络异常","链接错误，请检查网络后重试",NetConst.NET_ERROR);
