@@ -53,6 +53,10 @@ export default class CardFight extends  UIBase {
     cardLiftProgress:cc.ProgressBar = null;
     @property(LoadSprite)
     cardSpr: LoadSprite = null;
+    @property(LoadSprite)
+    cardFront: LoadSprite = null;
+    @property(LoadSprite)
+    cardRace: LoadSprite = null;
 
     @property(NumberEffect)
     numEffPower:NumberEffect = null;
@@ -63,9 +67,10 @@ export default class CardFight extends  UIBase {
     // LIFE-CYCLE CALLBACKS:
 
     
-    // onLoad () {
-    //     this._oldPos = this.node.position;
-    // }
+    onLoad () {
+        // this._oldPos = this.node.position;
+        this.node.opacity = 0;
+    }
     private _lineupData:LineupInfo = null;
     private _cardInfoCfg:any = null;
 
@@ -84,7 +89,8 @@ export default class CardFight extends  UIBase {
         this._lineupData = data.data as LineupInfo;
         if(this._lineupData){
             this._cardInfoCfg = CFG.getCfgDataById(ConfigConst.CardInfo,this._lineupData.cardId);
-            this._curPower = this._totalLife = Number(this._lineupData.power);
+            this._curPower = Number(this._lineupData.power);
+            this._totalLife = Number(this._lineupData.life);
             this._loseLife = 0;
         }else{
             this._cardInfoCfg = null;
@@ -127,7 +133,8 @@ export default class CardFight extends  UIBase {
     }
 
     private initView(){
-        this.node.opacity = 255;
+        this.node.opacity = 0;
+        this.node.scale = 1.2;
         this.node.position = cc.v2(0,0);
         if(this._cardInfoCfg==null){
             // this.noCardNode.active = true;
@@ -146,8 +153,18 @@ export default class CardFight extends  UIBase {
             this.numEffLife.setValue(this.curLife,false);
             this.cardLiftProgress.progress = this.getLiftPro();
             var headUrl = this._cardInfoCfg.simgPath;
-            this.cardSpr.load(PathUtil.getCardImgPath(headUrl));
+            this.cardSpr.load(PathUtil.getCardImgPath(headUrl),null,this.loadComplete.bind(this));
+            this.cardFront.load(PathUtil.getCardFrontImgPath(this._lineupData.grade));
+            this.cardRace.load(PathUtil.getCardRaceImgPath(this._lineupData.raceId));
         }
+    }
+
+    private loadComplete(){
+        var seq = cc.spawn(
+            cc.scaleTo(0.15,1).easing(cc.easeOut(2)),
+            cc.fadeIn(0.15)
+        )
+        this.node.runAction(seq);
     }
 
     private hideSomeView(){
@@ -224,25 +241,41 @@ export default class CardFight extends  UIBase {
         })
     }
 
-    public beAttack(attackPower:number){
+    public beAttack(attackPower:number,hasSkill:boolean,cb:Function){
         var tipStr:string = ""
         if(this._loseLife+attackPower>this._totalLife){
             attackPower = this._totalLife - this._loseLife;
-            tipStr = "阵亡";
-        }else {
-            tipStr = "-"+attackPower;
+            // tipStr = "阵亡";
         }
+        tipStr = "-"+attackPower.toFixed(0);
         this._loseLife += attackPower;
         this.numEffLife.setValue(this.curLife);
         this.cardLiftProgress.progress = this.getLiftPro();
         var pos = this.cardLife.node.parent.convertToWorldSpaceAR(this.cardLife.node.position);
+        if(hasSkill){
+            this.showBeAttackTip(tipStr,pos);
+        }else{
+            this.cardNode.scale = 1;
+            var beAttackAct = cc.sequence(
+                cc.scaleTo(0.09,0.9),
+                cc.scaleTo(0.06,1),
+                cc.callFunc(()=>{
+                    this.showBeAttackTip(tipStr,pos);
+                })
+            )
+            this.cardNode.runAction(beAttackAct);
+        }
+
+        cb && cb();
+    }
+    private showBeAttackTip(tipStr:string,pos:cc.Vec2){
         UI.showTipCustom(ResConst.FightTip,{type:FightTipType.BeAttack,str:tipStr},pos,()=>{
             if(this.curLife<=0){
                 if(this.isValid){
-                    this.node.runAction(cc.fadeOut(0.3));
+                    this.node.runAction(cc.fadeOut(0.15));
                 }
             }
-        })
+        });
     }
 
     public onReturnBlood(returnblood:number,cb:Function){
@@ -311,18 +344,18 @@ export default class CardFight extends  UIBase {
     private _oldPos:cc.Vec2 = null;
     private _fromPos:cc.Vec2 = null;
     private _toPos:cc.Vec2 = null;
-    public showFight(beAttack:CardFight,hasShake:boolean,isMyTeam:boolean,cb:Function){
+    public showFight(beAttack:CardFight,hasAllShake:boolean,isMyTeam:boolean,cb:Function){
         this._oldParent = this.node.parent;
         this._oldPos = this.node.position;
         this._fromPos = this.node.parent.convertToWorldSpaceAR(this._oldPos);
         this._toPos = beAttack.node.parent.convertToWorldSpaceAR(beAttack.node.position);
         if(isMyTeam){
-            this._toPos.y -= this.node.height/3;
+            this._toPos.y -= this.node.height*2/3;
         }else {
-            this._toPos.y += this.node.height/3;
+            this._toPos.y += this.node.height*2/3;
         }
         this.hideSomeView();
-        Fight.panel.showCardFight(this.node,this._fromPos,this._toPos,true,hasShake,()=>{
+        Fight.panel.showCardFight(this.node,this._fromPos,this._toPos,true,hasAllShake,()=>{
             cb && cb();
         })
     }

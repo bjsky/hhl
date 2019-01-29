@@ -164,7 +164,7 @@ export default class CardBig extends PopUpBase{
         var toPos = this.node.convertToNodeSpaceAR(this._cardToPos);
         var fPos = this.node.position;
         var centerPos = cc.v2(fPos.x + (toPos.x - fPos.x) * 0.1, fPos.y - (toPos.y - fPos.y) * 0.7);
-        
+        this.shareBtn.node.active = false;
         var getAct = cc.sequence(
             cc.spawn(
                 cc.bezierTo(0.4,[fPos,centerPos,toPos]),

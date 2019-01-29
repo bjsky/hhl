@@ -42,7 +42,7 @@ export default class BuffNode extends UIBase {
     private _toPos:cc.Vec2 = null;
     private _flyCb:Function = null;
     private _index:number = 0;
-    private _flyDelay:number = 0.15;
+    private _flyDelay:number = 0.1;
     public showFly(index:number,formPos:cc.Vec2,toPos:cc.Vec2,cb:Function){
         this._index = index;
         this._fromPos = formPos;
@@ -67,7 +67,7 @@ export default class BuffNode extends UIBase {
     private playShowFly(){
         this.node.position = this._fromPos;
         var seq =cc.sequence(cc.delayTime(this._index * this._flyDelay),
-            cc.moveTo(0.6,this._toPos).easing(cc.easeInOut(2)),
+            cc.moveTo(0.5,this._toPos).easing(cc.easeInOut(2)),
             cc.callFunc(()=>{
                 UI.removeUI(this.node);
                 this._flyCb && this._flyCb();

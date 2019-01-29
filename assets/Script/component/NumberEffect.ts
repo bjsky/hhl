@@ -30,7 +30,7 @@ export default class NumberEffect extends cc.Component{
 
     private _isUpdating:boolean = false;
     private _speed:number =1;
-    private _aspeed:number =50;
+    private _aspeed:number =20;
     private _toValue:number;
 
     update (dt) {

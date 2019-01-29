@@ -19,6 +19,8 @@ export default class LineupInfo{
     public level:number = 0;
     //战斗力
     public power:number = 0;
+    //生命
+    public life:number = 0;
     //头像
     public headUrl:string ="";
     //卡牌名
@@ -35,6 +37,7 @@ export default class LineupInfo{
         if(card){
             this.cardId = card.cardId;
             this.power = card.carUpCfg.power;
+            this.life = card.carUpCfg.body;
             this.grade = card.carUpCfg.grade;
             this.level = card.carUpCfg.level;
             this.headUrl = card.cardInfoCfg.head;
@@ -48,6 +51,7 @@ export default class LineupInfo{
         if(card){
             this.cardId = card.cardId;
             this.power = card.carUpCfg.power;
+            this.life = card.carUpCfg.body;
             this.grade = card.carUpCfg.grade;
             this.level = card.carUpCfg.level;
             this.headUrl = card.cardInfoCfg.head;
@@ -63,6 +67,7 @@ export default class LineupInfo{
         this.level = level;
         var upCfg = CFG.getCfgByKey(ConfigConst.CardUp,"grade",this.grade,"level",this.level);
         this.power = Number(upCfg[0].power);
+        this.life = Number(upCfg[0].body);
         var cardCfg = CFG.getCfgDataById(ConfigConst.CardInfo,cardId);
         this.headUrl = cardCfg.head;
         this.cardName = cardCfg.name;

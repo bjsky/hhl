@@ -385,9 +385,10 @@
       "__id__": 1
     },
     "_enabled": true,
+    "maskOpacity": 40,
     "flyX": 0,
     "flyY": 30,
-    "during": 0.6,
+    "during": 0.4,
     "label": {
       "__id__": 6
     },

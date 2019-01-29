@@ -114,14 +114,27 @@ export default class FightPanel extends UIBase {
         this.top.position = cc.v2(0,(this.top.height +10));  //cc.v2((this.top.width +10),0)//
         this.bottom.position = cc.v2(0,(-this.bottom.height-10));//cc.v2((-this.bottom.width-10),0);//
         this.center.position = cc.v2(0,0);
-        this.nodeEnemy.position = cc.v2(15+cc.winSize.width,this.nodeEnemy.position.y);
-        this.nodeMine.position = cc.v2(15-cc.winSize.width,this.nodeMine.position.y);
+        var nodeCard:cc.Node;
+        for(var i:number = 0;i<this.nodeMyCards.length;i++){
+            nodeCard = this.nodeMyCards[i];
+            if(nodeCard.childrenCount>0){
+                UI.removeUI(nodeCard.children[0]);
+            }
+        }
+        for(var i:number = 0;i<this.nodeEnemyCards.length;i++){
+            nodeCard = this.nodeEnemyCards[i];
+            if(nodeCard.childrenCount>0){
+                UI.removeUI(nodeCard.children[0]);
+            }
+        }
+        // this.nodeEnemy.position = cc.v2(15+cc.winSize.width,this.nodeEnemy.position.y);
+        // this.nodeMine.position = cc.v2(15-cc.winSize.width,this.nodeMine.position.y);
     }
 
     private show(){
         this.reset();
         var seq =cc.sequence(
-            cc.fadeIn(0.6),
+            cc.fadeIn(0.3),
             cc.callFunc(()=>{
                 SOUND.playBgSound(SoundConst.Fight_sound);
                 Fight.startFight();
@@ -130,11 +143,13 @@ export default class FightPanel extends UIBase {
         );
         this.node.runAction(seq);
         this.scheduleOnce(()=>{
-            this.top.runAction(cc.moveTo(0.2,cc.v2(0,0)));
-            this.bottom.runAction(cc.moveTo(0.2,cc.v2(0,0)));
-            this.nodeEnemy.runAction(cc.moveTo(0.3,cc.v2(15,this.nodeEnemy.position.y)).easing(cc.easeInOut(2)));
-            this.nodeMine.runAction(cc.moveTo(0.3,cc.v2(15,this.nodeMine.position.y)).easing(cc.easeInOut(2)));
-        },0.3)
+            this.top.runAction(cc.moveTo(0.15,cc.v2(0,0)).easing(cc.easeOut(2)));
+            this.bottom.runAction(cc.moveTo(0.15,cc.v2(0,0)).easing(cc.easeOut(2)));
+
+            this.initView();
+            // this.nodeEnemy.runAction(cc.moveTo(0.3,cc.v2(15,this.nodeEnemy.position.y)).easing(cc.easeInOut(2)));
+            // this.nodeMine.runAction(cc.moveTo(0.3,cc.v2(15,this.nodeMine.position.y)).easing(cc.easeInOut(2)));
+        },0.15)
     }
     private _endEnableDelay:number = 5;
     private _curTime:number = 0;
@@ -171,7 +186,6 @@ export default class FightPanel extends UIBase {
     }
 
     onEnable(){
-        this.initView();
         this.show();
     }
 
@@ -288,7 +302,7 @@ export default class FightPanel extends UIBase {
     //    ACTIONS 
     //////////////////////
     private _result:FightResult;
-    private _delayAction = 0.6;
+    private _delayAction = 0.3;
     private _myReadyActions:Array<CardAcitonObject> = [];
     private _enemyReadyActions:Array<CardAcitonObject> =[];
     private _fightOnceActions:Array<FightOnce> = [];
@@ -382,11 +396,11 @@ export default class FightPanel extends UIBase {
                 }
             }break;
             case FightOncePlayState.Fight:{
-                var hasShake:boolean = false;
+                var hasAllShake:boolean = false;
                 if(this._fightOnce.attackSkill!=null && this._fightOnce.beAttackSkill==null){
-                    hasShake = true;
+                    hasAllShake = true;
                 }
-                this._attackCard.showFight(this._beAttackCard,hasShake,this._fightOnce.attackObj.isMyTeam,()=>{
+                this._attackCard.showFight(this._beAttackCard,hasAllShake,this._fightOnce.attackObj.isMyTeam,()=>{
                     this.playFightOnce();
                 });
             }break;
@@ -395,12 +409,14 @@ export default class FightPanel extends UIBase {
                 if(this._fightOnce.beAttackSkill!=null){
                     var pos:cc.Vec2 = this._beAttackCard.node.parent.convertToWorldSpaceAR(this._beAttackCard.node.position);
                     Fight.panel.playSkill(pos,this._fightOnce.beAttackSkill.attackObj.skill.skillCfg.skillIcon,()=>{
-                        this._beAttackCard.beAttack(this._fightOnce.attack.attackPower);
-                        this.playFightOnce();
+                        this._beAttackCard.beAttack(this._fightOnce.attack.attackPower,true,()=>{
+                            this.playFightOnce();
+                        });
                     });
                 }else{
-                    this._beAttackCard.beAttack(this._fightOnce.attack.attackPower);
-                    this.playFightOnce();
+                    this._beAttackCard.beAttack(this._fightOnce.attack.attackPower,false,()=>{
+                        this.playFightOnce();
+                    });
                 }
             }break;
             case FightOncePlayState.FightBack:{
@@ -448,13 +464,14 @@ export default class FightPanel extends UIBase {
         skill.parent = this.skillNode;
         skill.setPosition(this.skillNode.convertToNodeSpaceAR(pos));
         skillSpr.load(PathUtil.getSkillNameUrl(skillIcon),null,()=>{
-            skillSpr.node.scale = 0.6;
+            skillSpr.node.scale = 0.8;
+            skillSpr.node.opacity = 255;
             var skillSeq = cc.sequence(
-                cc.spawn(
-                    cc.fadeIn(0.3).easing(cc.easeOut(2)),
-                    cc.scaleTo(0.3,1).easing(cc.easeBackOut()),
-                ),
-                cc.delayTime(0.5),
+                // cc.spawn(
+                    cc.scaleTo(0.15,1.1).easing(cc.easeBackOut()),
+                // ),
+                cc.delayTime(0.3),
+                cc.fadeOut(0.15).easing(cc.easeOut(2)),
                 cc.callFunc(()=>{
                     skillSpr.load("");
                     skillSpr.node.stopAllActions();
@@ -471,11 +488,12 @@ export default class FightPanel extends UIBase {
         var toPos = this.fightNode.parent.convertToNodeSpaceAR(toPos);
         cardNode.parent = this.fightNode;
         cardNode.setPosition(fromPos)
-        var move;
+        var move;5
         if(forward){
-            move = cc.moveTo(0.7,toPos).easing(cc.easeBackIn());
-        }else{
-            move = cc.moveTo(0.5,toPos).easing(cc.easeOut(2))
+            move = cc.moveTo(0.5,toPos).easing(cc.easeBackIn());
+        }
+        else{
+            move = cc.moveTo(0.3,toPos).easing(cc.easeOut(2))
         }
         var seq = cc.sequence(
             move,

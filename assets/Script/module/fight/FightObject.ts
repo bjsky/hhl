@@ -68,7 +68,8 @@ export default class FightObject{
     constructor(lineup:LineupInfo,isMyTeam:boolean){
         this.lineup = lineup;
         this.isMyTeam = isMyTeam;
-        this.originalToalLife = this.originalPower = Number(lineup.power);
+        this.originalPower = Number(lineup.power);
+        this.originalToalLife = Number(lineup.life);
         this.loseLife = 0;
         this.skill = new SkillInfo(this.lineup.cardId,this.lineup.grade);
     }
@@ -101,7 +102,7 @@ export default class FightObject{
             if(beAttack.skillObj.skillProperty == SkillProperty.Dodge){
                 attackPower = 0;
             }else if(beAttack.skillObj.skillProperty == SkillProperty.Absorb){
-                attackPower = Number(Number(attackPower*beAttack.skillObj.skillValue).toFixed(0));
+                attackPower = attackPower*(1-beAttack.skillObj.skillValue);
             }
         }
 

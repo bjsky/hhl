@@ -435,7 +435,7 @@ export default class HeroPanel extends UIBase {
             //     return;
             // }
             if(cardInfo.grade>=3){
-                UI.showAlert("当前为"+this._currentCard.grade+"星卡牌，确定回收？",()=>{
+                UI.showAlert("当前为"+cardInfo.grade+"星卡牌，确定回收？",()=>{
                     Card.destroyCard(cardInfo.uuid);
                 },null,AlertBtnType.OKAndCancel);
             }else{
