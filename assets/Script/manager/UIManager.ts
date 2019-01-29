@@ -23,6 +23,8 @@ export default class UIManager{
 
     //ui层
     public UILayer:cc.Node = null;
+    //建筑面板层
+    public PanelLayer:cc.Node = null;
     //拖动层
     public DragLayer:cc.Node = null;
     //弹窗层级
@@ -44,6 +46,7 @@ export default class UIManager{
         root.addComponent(NetMessage);
         
         this.UILayer = root.getChildByName("UILayer");
+        this.PanelLayer = root.getChildByName("PanelLayer");
         this.DragLayer = root.getChildByName("DragLayer");
         this.PopupLayer = root.getChildByName("PopupLayer");
         this.TipLayer = root.getChildByName("TipLayer");
@@ -106,6 +109,7 @@ export default class UIManager{
     ///////////////////////
     private _popups:Array<UIBase> = [];
     private _mask:cc.Node = null;
+    private _panelMask:cc.Node = null;
     private _curPopup:UIBase = null;
 
     private initMaskLayer() {
@@ -128,6 +132,22 @@ export default class UIManager{
         this._mask.parent = this.PopupLayer;
         this._mask.active = false;
         this._mask.on(cc.Node.EventType.TOUCH_START,this.onMaskClick,this);
+
+        this._panelMask = new cc.Node();
+        this._panelMask.setAnchorPoint(0.5, 0.5);
+        this._panelMask.addComponent(cc.BlockInputEvents);
+        let panelSpr = this._panelMask.addComponent(cc.Sprite);
+        cc.loader.loadRes(PathUtil.getMaskBgUrl(),cc.SpriteFrame,(error: Error, spr: cc.SpriteFrame) => {
+            panelSpr.spriteFrame = spr;
+        })
+        //sp.spriteFrame = new cc.SpriteFrame('res/raw-internal/image/default_sprite_splash.png');
+        panelSpr.sizeMode = cc.Sprite.SizeMode.CUSTOM;
+        this._panelMask.opacity = 0;
+        this._panelMask.color = cc.color(0, 0, 0);
+        this._panelMask.zIndex = 0;
+        this._panelMask.setContentSize(cc.winSize.width, cc.winSize.height);
+        this._panelMask.parent = this.PanelLayer;
+        this._panelMask.active = false;
     }
 
     private onMaskClick(e){
@@ -151,6 +171,27 @@ export default class UIManager{
         });
     }
 
+    public loadPanel(res:string,data:any,createComplete?:Function){
+        this.loadUI(res,data,this.PanelLayer,(ui:UIBase)=>{
+            if(ui){
+                this._panelMask.active = true;
+                // this.checkMaskLayer();
+                createComplete && createComplete(ui);
+            }
+        });
+    }
+
+    public removePanel(node:cc.Node){
+        node.parent = null;
+        this._panelMask.active = false;
+    }
+
+    public showPanelLayer(){
+        this.PanelLayer.active = true;
+    }
+    public hidePanelLayer(){
+        this.PanelLayer.active = false;
+    }
     public closePopUp(node:cc.Node){
         var ui:UIBase = node.getComponent(UIBase);
         if(ui){

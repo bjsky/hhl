@@ -3899,7 +3899,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "maskOpacity": 204,
+    "maskOpacity": 200,
     "closeBtn": null,
     "victoryNode": {
       "__id__": 2

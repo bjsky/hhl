@@ -142,13 +142,13 @@ export default class CityScene extends SceneBase {
             UI.showAlert("功能暂未开放，敬请期待！",null,null,AlertBtnType.OKAndCancel);
             break;
             case BuildType.Temple:
-            UI.createPopUp(ResConst.BuildPanel,{buildType:BuildType.Temple});
+            UI.loadPanel(ResConst.BuildPanel,{buildType:BuildType.Temple});
             break;
             case BuildType.Hero:
-            UI.createPopUp(ResConst.BuildPanel,{buildType:BuildType.Hero});
+            UI.loadPanel(ResConst.BuildPanel,{buildType:BuildType.Hero});
             break;
             case BuildType.Battle:
-            UI.createPopUp(ResConst.BuildPanel,{buildType:BuildType.Battle});
+            UI.loadPanel(ResConst.BuildPanel,{buildType:BuildType.Battle});
             break;
         }
     }

@@ -49,8 +49,6 @@ export default class BuildPanel extends UIBase{
     @property(cc.Node)
     panelNodeload: cc.Node = null;
     @property(cc.Node)
-    leftNode: cc.Node = null;
-    @property(cc.Node)
     buildIcon: cc.Node = null;
     @property(cc.Label)
     buildName: cc.Label = null;
@@ -109,11 +107,7 @@ export default class BuildPanel extends UIBase{
 
     private loadComplete(ui:UIBase){
         this._buildUI = ui;
-        this.doShow(()=>{
-            // this.buildName.node.runAction(cc.fadeIn(0.1));
-            var scene:CityScene = SCENE.CurScene as CityScene;
-            scene.activeBuild = this;
-        });
+        this.doShow();
     }
 
     onEnable(){
@@ -149,7 +143,7 @@ export default class BuildPanel extends UIBase{
                 UI.removeUI(this._buildUI.node);
                 this._buildUI = null;
             }
-            UI.closePopUp(this.node);
+            UI.removePanel(this.node);
             var scene:CityScene = SCENE.CurScene as CityScene;
             scene.activeBuild = null;
             cb && cb();
@@ -160,6 +154,8 @@ export default class BuildPanel extends UIBase{
         
     }
 
+    private _moveNextFrame:boolean = false;
+    private _moveNextFrame2:boolean = false;
     private doShow(cb?:Function){
         
         this.topNode.runAction(cc.moveTo(0.3,cc.v2(0,0)).easing(cc.easeOut(2)));
@@ -170,15 +166,7 @@ export default class BuildPanel extends UIBase{
                     EVENT.emit(GameEvent.Panel_Show_Effect_Complete)
                 })
             ) )
-        
-        var scene:CityScene = SCENE.CurScene as CityScene;
-        if(scene){
-            var builidng:cc.Node = scene.getBuilding(this._buildType);
-            var fPos:cc.Vec2 = builidng.parent.convertToWorldSpaceAR(builidng.position);
-            var tPos:cc.Vec2 = this.buildIcon.parent.convertToWorldSpaceAR(this.buildIcon.position);
-            
-            scene.moveCamToPos(fPos,tPos,0.3,1,cb);
-        }
+        this._moveNextFrame = true;
     }
 
     private doHide(noAction:boolean =false,cb?:Function){
@@ -257,5 +245,26 @@ export default class BuildPanel extends UIBase{
 
     }
 
-    // update (dt) {}
+    update (dt) {
+        //真你妈蛋疼，为了跟系统的winget不冲突
+        if(this._moveNextFrame){
+            this._moveNextFrame = false;
+            this._moveNextFrame2 = true;
+        }else{
+            if(this._moveNextFrame2){
+                this._moveNextFrame2 = false;
+                var scene:CityScene = SCENE.CurScene as CityScene;
+                if(scene){
+                    var builidng:cc.Node = scene.getBuilding(this._buildType);
+                    var fPos:cc.Vec2 = builidng.parent.convertToWorldSpaceAR(builidng.position);
+                    var tPos:cc.Vec2 = this.buildIcon.parent.convertToWorldSpaceAR(this.buildIcon.position);
+                    console.log("panelmovetoPos:",tPos);
+                    scene.moveCamToPos(fPos,tPos,0.3,1,()=>{
+                        // this.buildName.node.runAction(cc.fadeIn(0.1));
+                        scene.activeBuild = this;
+                    });
+                }
+            }
+        }
+    }
 }

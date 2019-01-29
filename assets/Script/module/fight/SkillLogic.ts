@@ -181,7 +181,7 @@ export default class SkillLogic{
                 if(hasAction){
                     action = new SkillAction(attack);
                     action.skillProperty = SkillProperty.PowerAttachLife;
-                    action.skillValue = 0.5;
+                    action.skillValue = 0.2;
                 }
             }break;
             // case 8: //长生不老

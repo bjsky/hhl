@@ -136,6 +136,8 @@ export default class FightPanel extends UIBase {
         var seq =cc.sequence(
             cc.fadeIn(0.3),
             cc.callFunc(()=>{
+                UI.hidePanelLayer();
+        
                 SOUND.playBgSound(SoundConst.Fight_sound);
                 Fight.startFight();
                 this.startDelayEndEnable();
@@ -175,6 +177,7 @@ export default class FightPanel extends UIBase {
     }
 
     public hide(cb:Function){
+        UI.showPanelLayer();
         var seq =cc.sequence(
             cc.fadeOut(0.5),
             cc.callFunc(()=>{

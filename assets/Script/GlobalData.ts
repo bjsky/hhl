@@ -17,12 +17,12 @@ export default class GlobalData{
     }
 
 
-    public serverType:number = ServerType.Debug;
+    public serverType:number = ServerType.Publish;
 
     public serverUrl:string = "wss://www.xh52.top:8580/websocket";
     // public serverUrl:string = "ws://192.168.0.102:8502/websocket";
 
-    public testAccount:string ="test036";
+    public testAccount:string ="test037";
 
     public code:string ="";//微信登录code
     //是否开通广告流量主
