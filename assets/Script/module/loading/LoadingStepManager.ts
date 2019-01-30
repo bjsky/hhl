@@ -59,6 +59,18 @@ export default class LoadingStepManager{
         }
     }
 
+    private _isRelogin:boolean = false;
+    public get isRelogin(){
+        return this._isRelogin;
+    }
+    public startReLogin(){
+        this._isRelogin = true;
+        var configStep:LoadingStep = this.getStep(LoadingStepEnum.Login);
+        if(configStep){
+            configStep.startStep();
+        }
+    }
+
     public endLoading(){
         EVENT.emit(GameEvent.LOADING_COMPLETE);
     }
@@ -86,7 +98,12 @@ export default class LoadingStepManager{
             delete this.stepQueueMap[type];
         }
         if(this.getQueueCount()==0){
-            this.endLoading();
+            if(this.isRelogin){
+                this._isRelogin = false;
+                console.log("relogin success!");
+            }else{
+                this.endLoading();
+            }
         }
     }
 }

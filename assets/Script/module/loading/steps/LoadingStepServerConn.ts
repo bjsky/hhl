@@ -10,9 +10,15 @@ export default class LoadingStepServerConn extends LoadingStep{
     public doStep(){
         super.doStep();
         console.log("LoadingStepServerConn:start");
-        NET.connect(GLOBAL.serverUrl,(resp)=>{
-            console.log("LoadingStepServerConn:Connected")
-            this.setNext(LoadingStepEnum.ServerData);
-        },this)
+        if(this.mgr.isRelogin){
+            NET.reConnect(()=>{
+                this.setNext(LoadingStepEnum.ServerData);
+            })
+        }else{
+            NET.connect(GLOBAL.serverUrl,(resp)=>{
+                console.log("LoadingStepServerConn:Connected")
+                this.setNext(LoadingStepEnum.ServerData);
+            },this)
+        }
     }
 }

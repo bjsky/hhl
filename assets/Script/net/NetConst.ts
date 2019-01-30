@@ -13,7 +13,7 @@ export default class NetConst{
 
     
     /**心跳 */
-    public static Heart:number = 10101;
+    public static Heart:number = 108;
     //登录
     public static Login:number = 10001;
     //引导更新

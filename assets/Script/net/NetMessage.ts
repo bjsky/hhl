@@ -3,6 +3,7 @@ import { NET } from "./core/NetController";
 import { EVENT } from "../message/EventCenter";
 import { UI } from "../manager/UIManager";
 import LoadingStepServerData from "../module/loading/steps/LoadingStepServerData";
+import { GAME } from "../GameController";
 
 export default class NetMessage extends cc.Component{
 
@@ -71,21 +72,12 @@ export default class NetMessage extends cc.Component{
     {
         console.log("Retry Connect:",",type:",src);
         UI.showNetAlert(tittle,content,()=>{
-            NET.reConnect(()=>{
-                LoadingStepServerData.loginServer();
-            });
+            GAME.reLogin();
         });
         if(CC_DEBUG)
         {
             console.log(src);
         }
-    }
-
-    //强制重练
-    private forceReConnect(){
-        NET.reConnect(()=>{
-            LoadingStepServerData.loginServer();
-        });
     }
 
 }

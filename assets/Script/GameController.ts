@@ -37,6 +37,10 @@ export default class GameController{
             loginStep.setNext(LoadingStepEnum.ServerConnect);
         }
     }
+    //断线重来
+    public reLogin(){
+        this.loadingStepMgr.startReLogin();
+    }
 }
 
 export var GAME = GameController.getInstance();

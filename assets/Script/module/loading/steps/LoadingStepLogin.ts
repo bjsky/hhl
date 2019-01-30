@@ -31,8 +31,12 @@ export default class LoadingStepLogin extends LoadingStep{
         // this.setNext(LoadingStepEnum.ServerConnect);
         WeiXin.getUserInfo((userInfo)=>{
             if(userInfo==null){
-                this._showUserInfoAuthButton = true;
-                // EVENT.emit(GameEvent.Show_UserInfo_AuthButton);
+                if(!this.mgr.isRelogin){
+                    this._showUserInfoAuthButton = true;
+                    // EVENT.emit(GameEvent.Show_UserInfo_AuthButton);
+                }else{
+                    console.log("relogin getUserInfo failed!");
+                }
             }else{
                 GLOBAL.initUserInfo(userInfo);
                 this.setNext(LoadingStepEnum.ServerConnect);

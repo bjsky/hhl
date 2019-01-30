@@ -125,6 +125,8 @@ export default class BuildPanel extends UIBase{
 
         EVENT.off(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
         EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
+        
+        this.clear();
     }
 
     public closeUI(cb:Function){
@@ -136,13 +138,15 @@ export default class BuildPanel extends UIBase{
         }
         this.doClose();
     }
+    private clear(){
+        if(this._buildUI!=null){
+            UI.removeUI(this._buildUI.node);
+            this._buildUI = null;
+        }
+    }
 
     private doClose(cb?:Function){
         this.doHide(false,()=>{
-            if(this._buildUI!=null){
-                UI.removeUI(this._buildUI.node);
-                this._buildUI = null;
-            }
             UI.removePanel(this.node);
             var scene:CityScene = SCENE.CurScene as CityScene;
             scene.activeBuild = null;
