@@ -83,7 +83,7 @@ export default class LineUpUI extends cc.Component {
             }
             var lineup:LineupInfo = this._lineupMap[i];
             if(lineup!=null){
-                var upStarObj = {head:lineup.headUrl,grade:lineup.grade,power:lineup.power}
+                var upStarObj = {lineup:lineup}
                 UI.loadUI(ResConst.CardHead,upStarObj,node);
             }
         }

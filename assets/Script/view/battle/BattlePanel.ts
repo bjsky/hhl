@@ -75,6 +75,11 @@ export default class BattlePanel extends UIBase {
     bossStone:cc.Label = null;
     @property(cc.Label)
     bossExp:cc.Label = null;
+
+    @property(cc.Label)
+    bossFinished:cc.Label = null;
+    @property(cc.Node)
+    bossNode:cc.Node = null;
     
     // onLoad () {}
 
@@ -229,6 +234,7 @@ export default class BattlePanel extends UIBase {
 
     private _bossFightInfo:FightInfo = null;;
     private initLineupBoss(){
+        this.bossFinished.node.active = false;
         this._bossFightInfo = Passage.getBossFightInfo();
         this.lineUpBoss.initLineup(this._bossFightInfo.lineup);
         this.bossGold.string = StringUtil.formatReadableNumber(Passage.passageInfo.passageCfg.firstGold);

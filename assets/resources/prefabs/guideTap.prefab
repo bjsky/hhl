@@ -1752,8 +1752,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 197,
-      "y": -593
+      "x": 251,
+      "y": -633
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1778,7 +1778,7 @@
     "_N$file": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
-    "_N$string": "点击任意位置继续",
+    "_N$string": "点击任意位置跳过",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",

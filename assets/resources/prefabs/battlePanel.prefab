@@ -30,14 +30,14 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 232
+        "__id__": 235
       },
       {
-        "__id__": 233
+        "__id__": 236
       }
     ],
     "_prefab": {
-      "__id__": 234
+      "__id__": 237
     },
     "_id": "",
     "_opacity": 255,
@@ -902,7 +902,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 79,
+      "width": 75,
       "height": 40
     },
     "_rotationX": 0,
@@ -1104,7 +1104,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 79,
+      "width": 75,
       "height": 40
     },
     "_rotationX": 0,
@@ -2533,7 +2533,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 79,
+      "width": 75,
       "height": 40
     },
     "_rotationX": 0,
@@ -2880,7 +2880,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 79,
+      "width": 75,
       "height": 40
     },
     "_rotationX": 0,
@@ -3681,13 +3681,16 @@
       },
       {
         "__id__": 163
+      },
+      {
+        "__id__": 231
       }
     ],
     "_tag": -1,
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 231
+      "__id__": 234
     },
     "_id": "",
     "_opacity": 255,
@@ -5685,7 +5688,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 79,
+      "width": 75,
       "height": 40
     },
     "_rotationX": 0,
@@ -5887,7 +5890,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 79,
+      "width": 75,
       "height": 40
     },
     "_rotationX": 0,
@@ -6089,7 +6092,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 79,
+      "width": 75,
       "height": 40
     },
     "_rotationX": 0,
@@ -7042,6 +7045,93 @@
     "sync": false
   },
   {
+    "__type__": "cc.Node",
+    "_name": "label",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 121
+    },
+    "_children": [],
+    "_tag": -1,
+    "_active": false,
+    "_components": [
+      {
+        "__id__": 232
+      }
+    ],
+    "_prefab": {
+      "__id__": 233
+    },
+    "_id": "",
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 157,
+      "g": 83,
+      "b": 47,
+      "a": 255
+    },
+    "_cascadeOpacityEnabled": true,
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 211,
+      "height": 40
+    },
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_scaleX": 1,
+    "_scaleY": 1,
+    "_position": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": -288
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_localZOrder": 0,
+    "_globalZOrder": 0,
+    "_opacityModifyRGB": false,
+    "groupIndex": 0
+  },
+  {
+    "__type__": "cc.Label",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 231
+    },
+    "_enabled": true,
+    "_useOriginalSize": false,
+    "_actualFontSize": 26,
+    "_fontSize": 26,
+    "_lineHeight": 40,
+    "_enableWrapText": true,
+    "_N$file": null,
+    "_isSystemFontUsed": true,
+    "_spacingX": 0,
+    "_N$string": "已挑战完所有boss",
+    "_N$horizontalAlign": 1,
+    "_N$verticalAlign": 1,
+    "_N$fontFamily": "Arial",
+    "_N$overflow": 0
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 1
+    },
+    "asset": {
+      "__uuid__": "07b19b34-fd6b-41f7-9047-98e96bbc44ec"
+    },
+    "fileId": "fdUZHgxvBF/JM1evEeycVd",
+    "sync": false
+  },
+  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
@@ -7114,6 +7204,12 @@
     },
     "bossExp": {
       "__id__": 182
+    },
+    "bossFinished": {
+      "__id__": 232
+    },
+    "bossNode": {
+      "__id__": 163
     }
   },
   {

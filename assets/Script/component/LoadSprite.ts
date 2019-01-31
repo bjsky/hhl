@@ -61,7 +61,9 @@ export default class LoadSprite extends cc.Sprite{
                     if(error){
                         console.log("LoadSprite.load failed:"+ error.message);
                     }else{
-                        __self.spriteFrame = resource;
+                        if(__self.isValid){
+                            __self.spriteFrame = resource;
+                        }
                     }
                     cb && cb();
                 }
@@ -73,7 +75,9 @@ export default class LoadSprite extends cc.Sprite{
                     if(error){
                         console.log("LoadSprite.load failed:"+ error.message);
                     }else{
-                        __self.spriteFrame = resource;
+                        if(__self .isValid){
+                            __self.spriteFrame = resource;
+                        }
                     }
                     cb && cb();
                 }

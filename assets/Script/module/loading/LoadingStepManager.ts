@@ -44,9 +44,9 @@ export default class LoadingStepManager{
 
     constructor(){
         this.stepQueueMap ={};
-        this.steps[LoadingStepEnum.Config] = new LoadingStepConfig(LoadingStepEnum.Config,20,this);
+        this.steps[LoadingStepEnum.Config] = new LoadingStepConfig(LoadingStepEnum.Config,10,this);
         this.steps[LoadingStepEnum.Res] = new LoadingStepRes(LoadingStepEnum.Res,60,this);
-        this.steps[LoadingStepEnum.Scene] = new LoadingStepScene(LoadingStepEnum.Scene,5,this);
+        this.steps[LoadingStepEnum.Scene] = new LoadingStepScene(LoadingStepEnum.Scene,15,this);
         this.steps[LoadingStepEnum.Login] = new LoadingStepLogin(LoadingStepEnum.Login,5,this);
         this.steps[LoadingStepEnum.ServerConnect] = new LoadingStepServerConn(LoadingStepEnum.ServerConnect,5,this);
         this.steps[LoadingStepEnum.ServerData] = new LoadingStepServerData(LoadingStepEnum.ServerData,5,this);

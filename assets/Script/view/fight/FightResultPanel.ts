@@ -166,7 +166,7 @@ export default class FightResultPanel extends PopUpBase {
         this.nameEnemy.string = this._fightEnemy.playerName;
         this.headEnemy.load(this._fightEnemy.playerIcon);
 
-        this.detailText.string = this._result.getHtmlDesc();
+        // this.detailText.string = this._result.getHtmlDesc();
 
         this.sprReceive.load(PathUtil.getResultRewardTitleUrl(this._result.victory));
         if(!this._result.victory && this._fightEnemy.playerType == FightPlayerType.Boss){ //挑战boss失败

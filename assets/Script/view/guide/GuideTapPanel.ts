@@ -140,6 +140,9 @@ export default class GuideTapPanel extends UIBase {
     }
 
     private showStory(){
+        this.clickLabel.node.active = true;
+
+        this.clickNode.on(cc.Node.EventType.TOUCH_START,this.onStoryClick,this);
         // this.storyTextani.addTypewriterAni(this._guideInfo.content,this.storyComplete.bind(this),"#FFFFFF");
         this.storyImg.setPosition(cc.v2(0,-cc.winSize.height+300));
         var act = cc.sequence(
@@ -152,13 +155,22 @@ export default class GuideTapPanel extends UIBase {
     }
 
     private storyComplete(){
-        this.scheduleOnce(this.onStoryClick.bind(this),5);
+        this.scheduleOnce(this.endStory.bind(this),5);
         this.storyImg.stopAllActions();
-        this.clickNode.on(cc.Node.EventType.TOUCH_START,this.onStoryClick,this);
-        this.clickLabel.node.active = true;
     }
 
     private onStoryClick(e){
+        if(!this._isEndStory){
+            this._isEndStory = true;
+            this.storyImg.position = cc.v2(0,0);
+            this.storyComplete();
+        }else{
+            this._isEndStory = false;
+            this.endStory();
+        }
+    }
+    private _isEndStory:boolean = false;
+    private endStory(){
         this.clickNode.off(cc.Node.EventType.TOUCH_START,this.onStoryClick,this);
         this.storyText.unscheduleAllCallbacks();
         this.storyTextani.removeTypewriterAni();
@@ -168,7 +180,6 @@ export default class GuideTapPanel extends UIBase {
         }else{
             GUIDE.nextGuide(this._guideId);
         }
-        
     }
 
     private setDialogShow(){

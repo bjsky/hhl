@@ -40,8 +40,13 @@ export default class ExpLevelEffect extends cc.Component {
         this._initLevelExp = Number(levelExp);
         this._initLevel = Number(level);
 
-        this.expLabel.string = (this._initExp.toFixed(0)) + " / "+ (this._initLevelExp.toFixed(0));
-        this.expProgress.progress = this._initExp / this._initLevelExp;
+        if(this._initLevelExp == -1){
+            this.expLabel.string = this._initExp.toFixed(0);
+            this.expProgress.progress = 0;
+        }else{
+            this.expLabel.string = (this._initExp.toFixed(0)) + " / "+ (this._initLevelExp.toFixed(0));
+            this.expProgress.progress = this._initExp / this._initLevelExp;
+        }
         this.levelLabel.string = this._initLevel.toString();
     }
 

@@ -1,6 +1,8 @@
 import UIBase from "../../component/UIBase";
 import LoadSprite from "../../component/LoadSprite";
 import PathUtil from "../../utils/PathUtil";
+import LineupInfo from "../../model/LineupInfo";
+import { Lineup } from "../../module/battle/LineupAssist";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -23,6 +25,10 @@ export default class CardHead extends UIBase {
     head: LoadSprite = null;
     @property(LoadSprite)
     star: LoadSprite = null;
+    @property(cc.Label)
+    lblName: cc.Label = null;
+    @property(LoadSprite)
+    sprRace: LoadSprite = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -32,15 +38,11 @@ export default class CardHead extends UIBase {
         this.head.load("");
     }
 
-    private _head:string = "";
-    private _grade:number = 0;
-    private _power:number = 0;
+    private _lineup:LineupInfo = null
 
     public setData(data:any){
         super.setData(data);
-        this._head = data.head;
-        this._grade = data.grade;
-        this._power = data.power;
+        this._lineup = data.lineup as LineupInfo;
     }
 
     start () {
@@ -48,15 +50,18 @@ export default class CardHead extends UIBase {
     }
 
     onEnable(){
-        this.power.string = this._power.toString();
-        this.star.load(PathUtil.getCardHeadGradeImgPath(this._grade));
-        this.head.load(PathUtil.getCardHeadUrl(this._head));
+        this.power.string = this._lineup.power.toString();
+        this.star.load(PathUtil.getCardHeadGradeImgPath(this._lineup.grade));
+        this.head.load(PathUtil.getCardHeadUrl(this._lineup.headUrl));
+        this.lblName.string = this._lineup.cardName;
+        this.sprRace.load(PathUtil.getCardRaceImgPath(this._lineup.raceId));
+
     }
 
-    public updatePower(power){
-        this._power = power;
-        this.power.string = this._power.toString();
-    }
+    // public updatePower(power){
+    //     this._power = power;
+    //     this.power.string = this._power.toString();
+    // }
 
     onDisable(){
         this.power.string ="";

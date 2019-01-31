@@ -21,12 +21,16 @@ export default class SoundManager{
         this.playSoundOnce(SoundConst.Btn_sound);
     }
 
+    
+    private _loadSound:boolean = false;
     public playSoundOnce(path:string){
         var self = this;
-        if (this._bgMusicSwitch == false) {
+        if (this._bgMusicSwitch == false || this._loadSound) {
             return;
         }
-        cc.loader.loadRes(path, cc.AudioClip, function (err, clip) {
+        this._loadSound = true;
+        cc.loader.loadRes(path, cc.AudioClip, (err, clip)=>{
+            this._loadSound = false;
             cc.audioEngine.play(clip,false,self._bgVolume);
         });
     }
