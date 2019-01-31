@@ -4,6 +4,7 @@ import { SCENE, SceneConst } from "../../manager/SceneManager";
 import { WeiXin } from "../../wxInterface";
 import { GLOBAL, ServerType } from "../../GlobalData";
 import { GAME } from "../../GameController";
+import { COMMON } from "../../CommonData";
 
 
 // Learn TypeScript:
@@ -31,6 +32,8 @@ export default class LoadingView extends cc.Component {
     version: cc.Label = null;
     @property(cc.Button)
     btnEnterGame: cc.Button = null;
+    @property(cc.Node)
+    nodeLoading: cc.Node = null;
 
 
 
@@ -38,6 +41,7 @@ export default class LoadingView extends cc.Component {
         EVENT.on(GameEvent.LOADING_PROGRESS,this.onLoadingProgress,this);
         EVENT.on(GameEvent.LOADING_COMPLETE,this.onLoadingComplete,this);
         EVENT.on(GameEvent.Show_UserInfo_AuthButton,this.showUserInfoButton,this);
+        this.initView();
     }
 
     onDisable(){
@@ -64,6 +68,11 @@ export default class LoadingView extends cc.Component {
         },0.1)
     }
 
+    private initView(){
+        this.version.string = "v"+GLOBAL.version;
+        this.nodeLoading.active = true;
+    }
+
     private showUserInfoButton(e){
         this.btnEnterGame.node.active = true;
         var btnNode = this.btnEnterGame.node;
@@ -81,6 +90,7 @@ export default class LoadingView extends cc.Component {
             GLOBAL.initUserInfo(userInfo);
             GAME.resumeLogin();
         });
+        this.nodeLoading.active = false;
     }
     start () {
 
