@@ -145,19 +145,19 @@ export default class TemplePanel extends UIBase {
         EVENT.emit(GameEvent.Goto_build_panel,{type:BuildType.Hero});
     }
     private initView(){
-        // var freeNum:number = CONSTANT.getStoneFreeSummonNum();
-        // if(COMMON.stoneSummonNum < freeNum){
-        //     this.stoneSummonFree.node.active = true;
-        //     this.stoneSummonFree.string = "第"+(COMMON.stoneSummonNum +1)+"次免费";
-        //     this.stoneCost.active = false;
-        //     this._stoneSummonCost = 0;
-        // }else{
+        var freeNum:number = CONSTANT.getStoneFreeSummonNum();
+        if(COMMON.stoneSummonNum < freeNum){
+            this.stoneSummonFree.node.active = true;
+            this.stoneSummonFree.string = "第"+(COMMON.stoneSummonNum +1)+"次免费";
+            this.stoneCost.active = false;
+            this._stoneSummonCost = 0;
+        }else{
             this.stoneCost.active = true;
             this.stoneSummonFree.node.active = false;
-            this._stoneSummonCost = BUILD.getSummonStoneCostBuffed(0);  //COMMON.stoneSummonNum-freeNum
+            this._stoneSummonCost = BUILD.getSummonStoneCostBuffed();  //COMMON.stoneSummonNum-freeNum
             this.summonNeedLifeStone.string = StringUtil.formatReadableNumber(this._stoneSummonCost);
         
-        // }
+        }
         this.videoLeftTime.string = "剩余："+ (CONSTANT.getVideoFreeSummonNum() - COMMON.videoSummonNum);
     }
 

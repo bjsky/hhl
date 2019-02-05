@@ -35,7 +35,9 @@ export class SCCardSummon{
         data.newCard = SCardInfo.parse(obj.newCard);
         data.retRes = SResInfo.parse(obj.retRes);
         data.userInfo = SUserInfo.parse(obj.userInfo);
-        data.stoneSummonNum = obj.stoneSummonNum;
+        if(obj["stoneSummonNum"]!=undefined){
+            data.stoneSummonNum = obj.stoneSummonNum;
+        }
         data.videoSummonNum = obj.videoSummonNum;
         return data;
     }

@@ -1,7 +1,8 @@
 
 export default class SoundManager{
 
-    private _bgVolume:number = 1;
+    private _bgVolume:number = 0.8;
+    private _volume:number = 1;
 
     private _musicSwitch:boolean = true;
     private _bgMusicSwitch:boolean = true;
@@ -31,7 +32,7 @@ export default class SoundManager{
         this._loadSound = true;
         cc.loader.loadRes(path, cc.AudioClip, (err, clip)=>{
             this._loadSound = false;
-            cc.audioEngine.play(clip,false,self._bgVolume);
+            cc.audioEngine.play(clip,false,self._volume);
         });
     }
 
@@ -107,7 +108,7 @@ export default class SoundManager{
         this.playSoundOnce(SoundConst.Fight_win_sound);
     }
     public playFightFailSound(){
-        this.playSoundOnce(SoundConst.Fight_fail_sound);
+        this.playSoundOnce(SoundConst.Fight_lose_sound);
     }
     public playFighthitSound(){
         this.playSoundOnce(SoundConst.Fight_hit_sound);
@@ -123,7 +124,7 @@ export class SoundConst {
     public static Bg_sound:string ="sound/bgmusic";
     public static Fight_sound:string ="sound/fightbgm";
     public static Fight_win_sound:string ="sound/fightwin";
-    public static Fight_fail_sound:string ="sound/fightfailed";
+    public static Fight_lose_sound:string ="sound/fightlose";
     public static Fight_hit_sound:string ="sound/fighthit";
     public static Fight_skill_sound:string = "sound/skill";
 }

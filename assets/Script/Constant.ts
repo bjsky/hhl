@@ -1,6 +1,7 @@
 import { BuildType } from "./view/BuildPanel";
 import { CFG } from "./manager/ConfigManager";
 import { ConfigConst } from "./module/loading/steps/LoadingStepConfig";
+import { COMMON } from "./CommonData";
 
 export default class Constant{
     public static _inst:Constant;
@@ -28,16 +29,19 @@ export default class Constant{
     }
 
     //获得当前抽取卡片消耗的灵石
-    public getSummonStoneCost(unfreeIndex:number):number{
-        // var stoneSummonCost:Array<any> = this._constantKeyValueMap["store_summon_use"].split(";");
-        // var cost:string =""
-        // if(unfreeIndex <= stoneSummonCost.length-1){
-        //     cost = stoneSummonCost[unfreeIndex];
-        // }else{
-        //     cost = stoneSummonCost[stoneSummonCost.length-1];
-        // }
-        // return Number(cost);
-        return this._constantKeyValueMap["store_summon_use"].split(";")[0];
+    public getSummonStoneCost():number{
+        var stoneSummonCost:number = this._constantKeyValueMap["store_summon_use"].split(";")[0];
+        var unfreetime = COMMON.stoneSummonNum - this.getStoneFreeSummonNum();
+        if(unfreetime<0){
+            return 0;
+        }else{
+            var cost = stoneSummonCost * Math.pow(this.getSummonStoneCostAdd(),unfreetime);
+            return Number(cost.toFixed(0));
+        }
+    }
+
+    public getSummonStoneCostAdd():number{
+        return this._constantKeyValueMap["store_summon_costAdd"];
     }
 
     //灵石抽取获得的经验
@@ -47,7 +51,7 @@ export default class Constant{
 
     //灵石免费次数
     public getStoneFreeSummonNum():number{
-        return this._constantKeyValueMap["stone_free_summon_num"];
+        return Number(this._constantKeyValueMap["stone_free_summon_num"]);
     }
     //视频免费抽卡次数
     public getVideoFreeSummonNum():number{
