@@ -96,6 +96,9 @@ export default class BuildPanel extends UIBase{
             case BuildType.Hero:
             res = ResConst.HeroPanel;
             break;
+            case BuildType.Castle:
+            res = ResConst.CastlePanel;
+            break;
             default:
             res = ResConst.TemplePanel;
             break;

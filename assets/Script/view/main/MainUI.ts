@@ -63,6 +63,8 @@ export default class MainUI extends UIBase {
     @property(cc.Button)
     taskBtn: cc.Button = null;
     @property(cc.Button)
+    rankBtn: cc.Button = null;
+    @property(cc.Button)
     soundBtn: cc.Button = null;
     @property(LoadSprite)
     soundIcon: LoadSprite = null;
@@ -82,6 +84,8 @@ export default class MainUI extends UIBase {
     headIcon:LoadSprite = null;
     @property(cc.Button)
     btnShare:cc.Button = null;
+    @property(cc.Button)
+    btnSevenDay:cc.Button = null;
 
     onLoad () {
 
@@ -181,8 +185,10 @@ export default class MainUI extends UIBase {
 
     onEnable(){
         this.lblExp.node.on(cc.Node.EventType.TOUCH_START,this.onLabelExpTouch,this);
-        this.btnShare.node.on(TouchHandler.TOUCH_CLICK,this.onShare,this);
+        this.btnShare.node.on(cc.Node.EventType.TOUCH_START,this.onShare,this);
+        this.btnSevenDay.node.on(cc.Node.EventType.TOUCH_START,this.onSevenDayBtnTouch,this);
         this.taskBtn.node.on(cc.Node.EventType.TOUCH_START,this.onTaskBtnTouch,this);
+        this.rankBtn.node.on(cc.Node.EventType.TOUCH_START,this.onRankBtnTouch,this);
         this.soundBtn.node.on(TouchHandler.TOUCH_CLICK,this.onSoundClick,this);
         this.btnAddGold.node.on(cc.Node.EventType.TOUCH_START,this.onAddGold,this);
         this.btnAddStone.node.on(cc.Node.EventType.TOUCH_START,this.onAddStone,this);
@@ -198,8 +204,10 @@ export default class MainUI extends UIBase {
 
     onDisable(){
         this.lblExp.node.off(cc.Node.EventType.TOUCH_START,this.onLabelExpTouch,this);
-        this.btnShare.node.off(TouchHandler.TOUCH_CLICK,this.onShare,this);
+        this.btnShare.node.off(cc.Node.EventType.TOUCH_START,this.onShare,this);
+        this.btnSevenDay.node.off(cc.Node.EventType.TOUCH_START,this.onSevenDayBtnTouch,this);
         this.taskBtn.node.off(cc.Node.EventType.TOUCH_START,this.onTaskBtnTouch,this)
+        this.rankBtn.node.off(cc.Node.EventType.TOUCH_START,this.onRankBtnTouch,this);
         this.soundBtn.node.off(TouchHandler.TOUCH_CLICK,this.onSoundClick,this);
         this.btnAddGold.node.off(cc.Node.EventType.TOUCH_START,this.onAddGold,this);
         this.btnAddStone.node.off(cc.Node.EventType.TOUCH_START,this.onAddStone,this);
@@ -226,6 +234,15 @@ export default class MainUI extends UIBase {
 
     private onTaskBtnTouch(e){
         // UI.showAlert("功能暂未开放，敬请期待！",null,null,AlertBtnType.OKAndCancel);
+        UI.createPopUp(ResConst.TaskPanel,{});
+    }
+
+    private onSevenDayBtnTouch(e){
+        UI.createPopUp(ResConst.SevenDayPanel,{});
+    }
+
+    private onRankBtnTouch(e){
+        UI.createPopUp(ResConst.RankPanel,{});
     }
 
     private onShare(e){

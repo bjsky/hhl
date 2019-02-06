@@ -139,7 +139,8 @@ export default class CityScene extends SceneBase {
     private openBuildUI(type:BuildType){
         switch(type){
             case BuildType.Castle:
-            UI.showAlert("功能暂未开放，敬请期待！",null,null,AlertBtnType.OKAndCancel);
+            // UI.showAlert("功能暂未开放，敬请期待！",null,null,AlertBtnType.OKAndCancel);
+            UI.loadPanel(ResConst.BuildPanel,{buildType:BuildType.Castle})
             break;
             case BuildType.Temple:
             UI.loadPanel(ResConst.BuildPanel,{buildType:BuildType.Temple});

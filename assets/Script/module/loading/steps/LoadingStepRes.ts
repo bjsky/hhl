@@ -6,6 +6,7 @@ export const ResConst = {
     AlertPanel:"prefabs/alertPanel",
     TipPanel:"prefabs/tipPanel",
     BuildPanel:"prefabs/buildPanel",
+    CastlePanel:"prefabs/castlePanel",
     cardSmall:"prefabs/cardSmall",
     cardBig:"prefabs/cardBig",
     cardDescrip:"prefabs/cardDescrip",
@@ -29,7 +30,11 @@ export const ResConst = {
     ShareItem:"prefabs/shareItem",
     CardComposeUI:"prefabs/cardCompose",
     StorePanel:"prefabs/storePanel",
-    StoreCardItem:"prefabs/storeCardItem"
+    StoreCardItem:"prefabs/storeCardItem",
+    RankPanel:"prefabs/rankPanel",
+    SevenDayPanel:"prefabs/sevendayPanel",
+    TaskPanel:"prefabs/taskPanel",
+    FighterDetailPanel:"prefabs/fighterDetail"
 }
 /**
  * 加载配置
