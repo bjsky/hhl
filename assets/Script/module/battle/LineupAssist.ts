@@ -6,6 +6,9 @@ import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
 import FightInfo, { FightPlayerType } from "../../model/FightInfo";
 import { COMMON } from "../../CommonData";
+import { SEnemyLineup } from "../../net/msg/MsgGetEnemyList";
+import CardInfo from "../../model/CardInfo";
+import { Card } from "../card/CardAssist";
 
 export default class LineupAssist{
 
@@ -64,6 +67,23 @@ export default class LineupAssist{
         return this._ownerSLineup.slice();
     }
 
+    //复制一份服务器敌人阵型数据
+    public cloneServerEnemeyLineup():Array<SEnemyLineup>{
+        var lineups:Array<SEnemyLineup> = [];
+        var lineup:LineupInfo;
+        var slineup:SEnemyLineup = null;
+        for(var key in this.ownerLineupMap){
+            lineup = this.ownerLineupMap[key];
+            slineup = new SEnemyLineup();
+            slineup.pos = Number(key);
+            slineup.cardId = lineup.cardId;
+            slineup.grade = lineup.grade;
+            slineup.level = lineup.level;
+            lineups.push(slineup);
+        }
+        return lineups;
+    }
+
     public getOwnerFightInfo():FightInfo{
         var info:FightInfo = new FightInfo();
         info.playerType = FightPlayerType.Mine;
@@ -89,7 +109,14 @@ export default class LineupAssist{
 
     public changeLineUp(pos:number,uuid:string){
         var str:string = pos +";"+uuid;
-        NET.send(MsgLineupModify.create(str),(msg:MsgLineupModify)=>{
+        var power = this.ownerLineupPower;
+        if(uuid==""){
+            power -= (this.ownerLineupMap[pos] as LineupInfo).power;
+        }else{
+            var card:CardInfo = Card.getCardByUUid(uuid);
+            power += card.carUpCfg.power;
+        }
+        NET.send(MsgLineupModify.create(str,power),(msg:MsgLineupModify)=>{
             if(msg && msg.resp){
                 Lineup.initOwnerLineup(msg.resp.lineUpOwner);
                 EVENT.emit(GameEvent.Lineup_Changed);
@@ -99,7 +126,7 @@ export default class LineupAssist{
 
     public exchangeLineup(pos1:number,uuid1:string,pos2:number,uuid2:string){
         var str:string = pos1 +";"+uuid1 + "|"+pos2+";"+uuid2;
-        NET.send(MsgLineupModify.create(str),(msg:MsgLineupModify)=>{
+        NET.send(MsgLineupModify.create(str,this.ownerLineupPower),(msg:MsgLineupModify)=>{
             if(msg && msg.resp){
                 Lineup.initOwnerLineup(msg.resp.lineUpOwner);
                 EVENT.emit(GameEvent.Lineup_Changed);

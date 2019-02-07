@@ -14,6 +14,13 @@ import MsgFightBoss from "./MsgFightBoss";
 import MsgGetReward from "./MsgGetReward";
 import MsgDiamondBuy from "./MsgDiamondBuy";
 import MsgHeartBeat from "./MsgHeartBeat";
+import MsgGetEnemyList from "./MsgGetEnemyList";
+import MsgGetPersonalEnemy from "./MsgGetPersonalEnemy";
+import MsgFightEnemy from "./MsgFightEnemy";
+import MsgFightRobot from "./MsgFightRobot";
+import MsgFightRevenge from "./MsgFightRevenge";
+import MsgPushBeRab from "./MsgPushBeRab";
+import MsgGetRankList from "./MsgGetRankList";
 /**
  * 太特么坑了，父类中还不能导入子类
  */
@@ -64,6 +71,27 @@ export default class MsgUtil{
             break;
             case NetConst.Heart:
                 message = new MsgHeartBeat();
+            break;
+            case NetConst.GetEnemyList:
+                message = new MsgGetEnemyList();
+            break;
+            case NetConst.GetPersonalEnemy:
+                message = new MsgGetPersonalEnemy();
+            break;
+            case NetConst.FightEnemy:
+                message = new MsgFightEnemy();
+            break;
+            case NetConst.FightRobot:
+                message = new MsgFightRobot();
+            break;
+            case NetConst.FightRevenge:
+                message = new MsgFightRevenge();
+            break;
+            case NetConst.PushBeRab:
+                message = new MsgPushBeRab();
+            break;
+            case NetConst.GetRankList:
+                message = new MsgGetRankList();
             break;
             default:
             message = null;

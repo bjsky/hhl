@@ -17,11 +17,12 @@
     {"id":"16","key":"produce_maxTime","name":"挂机最长积累时间","param1":"14400"},
     {"id":"17","key":"sharecount_day","name":"每日分享次数","param1":"5"},
     {"id":"18","key":"shareGetDiamond","name":"每次分享获得钻石","param1":"200"},
-    {"id":"19","key":"actionPower_init","name":"行动力初始值","param1":"20"},
-    {"id":"20","key":"actionPower_max","name":"行动力最大值","param1":"20"},
+    {"id":"19","key":"actionPower_init","name":"行动力初始值","param1":"10"},
+    {"id":"20","key":"actionPower_max","name":"行动力最大值","param1":"10"},
     {"id":"21","key":"actionPower_per","name":"行动力每点恢复时间","param1":"1200"},
     {"id":"22","key":"scout_use","name":"侦查消耗金币","param1":"2000"},
-    {"id":"23","key":"canAttackTimeout","name":"被攻击保护时间","param1":"600"},
-    {"id":"24","key":"lifeStone_morale","name":"灵石鼓舞士气","param1":""},
-    {"id":"25","key":"morale_init","name":"士气初始值","param1":"100"}
+    {"id":"23","key":"rank_list_count","name":"排行榜显示个数","param1":"30"},
+    {"id":"24","key":"canAttackTimeout","name":"被攻击保护时间","param1":"600"},
+    {"id":"25","key":"lifeStone_morale","name":"灵石鼓舞士气","param1":""},
+    {"id":"26","key":"morale_init","name":"士气初始值","param1":"100"}
     ]

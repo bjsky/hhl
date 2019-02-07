@@ -43,9 +43,19 @@ export default class NetConst{
     //钻石购买
     public static DiamondBuy:number = 21101;
     
-    //世界征战列表
-    public static WorldEnemyList:number = 70001;
-    //玩家战斗
+    //获得仇人数据
+    public static GetPersonalEnemy:number = 70001;
+    //玩家打玩家
     public static FightEnemy:number = 70002;
+    //玩家打机器人
+    public static FightRobot:number = 70004;
+    //玩家复仇
+    public static FightRevenge:number = 70005;
+    //获得敌人数据
+    public static GetEnemyList:number = 70003;
+    //推送被抢夺
+    public static PushBeRab:number = 70006;
+    //排行榜数据
+    public static GetRankList:number = 80001;
 }
 

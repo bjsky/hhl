@@ -9,6 +9,7 @@ import PassageInfo from "./model/PassageInfo";
 import { Passage } from "./module/battle/PassageAssist";
 import { Lineup } from "./module/battle/LineupAssist";
 import { Share } from "./module/share/ShareAssist";
+import { Battle } from "./module/battle/BattleAssist";
 
 export enum DirectionEnum{
     Left = 0,       //左
@@ -93,6 +94,8 @@ export default class CommonData{
         Passage.initPassageInfo(data.passageInfo);
 
         Share.initShare(data.todayShareCount);
+
+        Battle.initBattle(data.battleInfo);
     }
 
     public updateResInfo(data:SResInfo):SResInfo{

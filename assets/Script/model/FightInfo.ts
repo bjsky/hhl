@@ -1,5 +1,3 @@
-import { enemyTypeEnum } from "../net/msg/MsgWorldEnemyList";
-
 export enum FightPlayerType{
     Enemy = 1,  //敌人:包括其他玩家和机器人
     Boss,   //挑战boss

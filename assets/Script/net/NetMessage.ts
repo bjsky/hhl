@@ -65,6 +65,7 @@ export default class NetMessage extends cc.Component{
         console.log("推通消息处理：",id,JSON.stringify(data));
         switch(id)
         {
+            
         }
 
     }

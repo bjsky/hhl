@@ -1,8 +1,8 @@
 
 import NetConst from "../NetConst";
 import MessageBase from "./MessageBase";
-import MsgCardSummon, { SCardInfo, CardSummonType } from "./MsgCardSummon";
-import { GLOBAL, ServerType } from "../../GlobalData";
+import { SRabRecord } from "./MsgGetEnemyList";
+import { SCardInfo } from "./MsgCardSummon";
 
 /**
  * 登录客户端数据
@@ -48,6 +48,9 @@ export class SCLoginData {
     public passageInfo:SPassageInfo = null;
     //今日分享次数
     public todayShareCount:number = 0;
+    //战场数据 
+    public battleInfo:SBattleInfo = null;
+
 
     public static parse(obj:any):SCLoginData{
         var data:SCLoginData = new SCLoginData();
@@ -90,6 +93,9 @@ export class SCLoginData {
         }
         if(obj.todayShareCount){
             data.todayShareCount = obj.todayShareCount;
+        }
+        if(obj.battleInfo){
+            data.battleInfo = SBattleInfo.parse(obj.battleInfo);
         }
 
         return data;
@@ -222,6 +228,33 @@ export class SOwnerLineup{
     }
 }
 
+export class SBattleInfo{
+    //行动点
+    public actionPoint:number = 0;
+    //行动点恢复开始时间
+    public apStartTime:number = 0;
+    //复仇开始时间
+    public revengeStartTime:number = 0;
+    //红名点
+    public redPoint:number = 0;
+    //自己的抢卡记录
+    public rabRecord:Array<SRabRecord> = [];
+
+    public static parse(obj:any):SBattleInfo{
+        var info:SBattleInfo = new SBattleInfo();
+        info.actionPoint = obj.actionPoint;
+        info.apStartTime = obj.apStartTime;
+        info.revengeStartTime = obj.revengeStartTime;
+        info.redPoint = obj.redPoint;
+
+        info.rabRecord = [];
+        obj.rabRecord.forEach((record:any) => {
+            info.rabRecord.push(SRabRecord.parse(record));
+        })
+        return info;
+    }
+}
+
 export default class MsgLogin
  extends MessageBase {
     public param:CSLoginData;
@@ -277,6 +310,13 @@ export default class MsgLogin
                 passUncollectExp:0,
                 passUncollectGold:0,
                 passUncollectStone:0
+            },
+            battleInfo:{
+                actionPoint:10,
+                apStartTime:0,
+                revengeStartTime:0,
+                redPoint:0,
+                rabRecord:[]
             }
         };
         return this.parse(json);

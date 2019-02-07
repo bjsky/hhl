@@ -9,6 +9,8 @@ import { Lineup } from "../../module/battle/LineupAssist";
 export class CSLineupModify{
     //修改阵容参数 位置；uuid｜位置；uuid
     public lineupStr:string ="";  //pos;uuid|pos;uuid
+    //阵容战力
+    public totalPower:number = 0;
 }
 
 export class SCLineupModify{
@@ -36,10 +38,11 @@ export default class MsgLineupModify extends MessageBase{
         // this.isLocal = true;
     }
 
-    public static create(str:string){
+    public static create(str:string,power:number){
         var msg = new MsgLineupModify();
         msg.param = new CSLineupModify();
         msg.param.lineupStr = str;
+        msg.param.totalPower = power;
         return msg;
     }
 
