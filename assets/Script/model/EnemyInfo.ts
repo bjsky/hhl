@@ -35,8 +35,8 @@ export default class EnemyInfo {
     public enemyLineup:Array<LineupInfo> =[];
     //敌人总战力
     public enemyTotalPower:number = 0;
-    //敌人红名点
-    public enemyRedPoint:number = 0;
+    //敌人积分
+    public enemyScore:number = 0;
     //敌人抢卡纪录
     public enemyRabRecord:Array<RabRecord> = [];
 }

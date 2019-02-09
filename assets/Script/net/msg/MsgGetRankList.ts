@@ -5,7 +5,7 @@ import NetConst from "../NetConst";
 export enum GetRankListType{
     Level = 1,  //等级榜
     Power,      //阵容战力
-    RedPoint ,  //红名榜
+    Score ,  //积分榜
 }
 export class CSGetRankList{
     //排行榜的类型
@@ -15,7 +15,7 @@ export class CSGetRankList{
 export class SCGetRankList{
     //我的位置
     public myOrder:number = 0;
-    //玩家列表(按照等级、战力、或红名点排序)
+    //玩家列表(按照等级、战力、或积分排序)
     public rankList:Array<SRankInfo> = [];
 
     public static parse(obj:any){
@@ -40,8 +40,8 @@ export class SRankInfo{
     public playerIcon:string = "";
     //阵容战力
     public playerPower:number = 0;
-    //红名点
-    public playerRedPoint:number = 0;
+    //积分
+    public playerScore:number = 0;
 
     public static parse(obj:any):SRankInfo{
         var info:SRankInfo = new SRankInfo();
@@ -50,7 +50,7 @@ export class SRankInfo{
         info.playerSex = obj.playerSex;
         info.playerIcon = obj.playerIcon;
         info.playerPower = obj.playerPower;
-        info.playerRedPoint = obj.playerRedPoint;
+        info.playerScore = obj.playerScore;
         return info;
     }
 }

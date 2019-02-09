@@ -11,18 +11,18 @@ export class SCPushBeRab{
     public rabEnemyName:string ="";
     //丢失卡牌
     public loseCard:SCardInfo=null;
-    //最新仇人列表
-    public personalEnmeyList:Array<SEnemyInfo> = [];
+    // 最新仇人列表
+    // public personalEnmeyList:Array<SEnemyInfo> = [];
 
     public static parse(obj:any):SCPushBeRab{
         var info:SCPushBeRab = new SCPushBeRab();
         info.rabTime = obj.rabTime;
         info.rabEnemyName = obj.rabEnemyName;
         info.loseCard = SCardInfo.parse(obj.loseCard);
-        info.personalEnmeyList = [];
-        obj.personalEnmeyList.forEach((enemyInfo:any) => {
-            info.personalEnmeyList.push(SEnemyInfo.parse(enemyInfo));
-        });
+        // info.personalEnmeyList = [];
+        // obj.personalEnmeyList.forEach((enemyInfo:any) => {
+        //     info.personalEnmeyList.push(SEnemyInfo.parse(enemyInfo));
+        // });
         return info;
     }
 }

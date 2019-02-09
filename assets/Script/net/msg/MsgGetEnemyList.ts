@@ -47,12 +47,10 @@ export class SEnemyInfo{
     public enemyLineup:Array<SEnemyLineup> =[];
     //敌人阵容战力
     public enemyPower:number = 0;
-    //敌人红名点
-    public enemyRedPoint:number = 0;
+    //敌人积分
+    public enemyScore:number = 0;
     //敌人抢卡纪录
     public enemyRabRecord:Array<SRabRecord> = [];
-    //是否已攻击,刷新列表默认为false
-    public isAttacked:boolean = false;
 
     public static parse(obj:any):SEnemyInfo{
         var info:SEnemyInfo = new SEnemyInfo();
@@ -66,12 +64,11 @@ export class SEnemyInfo{
             info.enemyLineup.push(SEnemyLineup.parse(enemyLineup));
         });
         info.enemyPower = obj.enemyPower;
-        info.enemyRedPoint = obj.enemyRedPoint;
+        info.enemyScore = obj.enemyScore;
         info.enemyRabRecord = [];
         obj.enemyRabRecord.forEach((rabRecord:any) => {
             info.enemyRabRecord.push(SRabRecord.parse(rabRecord));
         });
-        info.isAttacked = obj.isAttacked;
 
         return info;
     }
@@ -159,9 +156,8 @@ export default class MsgGetEnemyList extends MessageBase{
         info.enemyLineup = Lineup.cloneServerEnemeyLineup();
         info.enemyPower = Lineup.ownerLineupPower;
         var sBattle:SBattleInfo = Battle.battleInfo.cloneServerInfo();
-        info.enemyRedPoint = sBattle.redPoint;
+        info.enemyScore = sBattle.score;
         info.enemyRabRecord = sBattle.rabRecord;
-        info.isAttacked = false;
         return info;
     }
 

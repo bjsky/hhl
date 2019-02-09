@@ -19,15 +19,15 @@ export default class BattleInfo{
     public apStartTime:number = 0;
     //复仇开始时间
     public revengeStartTime:number = 0;
-    //红名点
-    public redPoint:number = 0;
+    //积分
+    public score:number = 0;
     //自己的抢卡历史
     public records:Array<RabRecord> = [];
 
     public initFromServer(info:SBattleInfo){
         this.actionPoint = info.actionPoint;
         this.apStartTime = info.apStartTime;
-        this.redPoint = info.redPoint;
+        this.score = info.score;
         this.revengeStartTime = info.revengeStartTime;
         this.records = [];
         info.rabRecord.forEach((sRecord:SRabRecord) => {
@@ -44,7 +44,7 @@ export default class BattleInfo{
         var info:SBattleInfo = new SBattleInfo();
         info.actionPoint = this.actionPoint;
         info.apStartTime = this.apStartTime;
-        info.redPoint = this.redPoint;
+        info.score = this.score;
         info.rabRecord = [];
         this.records.forEach((record:RabRecord) => {
             var sRecord:SRabRecord = new SRabRecord();

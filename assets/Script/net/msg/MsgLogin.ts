@@ -3,6 +3,7 @@ import NetConst from "../NetConst";
 import MessageBase from "./MessageBase";
 import { SRabRecord } from "./MsgGetEnemyList";
 import { SCardInfo } from "./MsgCardSummon";
+import { SCPushBeRab } from "./MsgPushBeRab";
 
 /**
  * 登录客户端数据
@@ -235,8 +236,8 @@ export class SBattleInfo{
     public apStartTime:number = 0;
     //复仇开始时间
     public revengeStartTime:number = 0;
-    //红名点
-    public redPoint:number = 0;
+    //积分
+    public score:number = 0;
     //自己的抢卡记录
     public rabRecord:Array<SRabRecord> = [];
 
@@ -245,7 +246,7 @@ export class SBattleInfo{
         info.actionPoint = obj.actionPoint;
         info.apStartTime = obj.apStartTime;
         info.revengeStartTime = obj.revengeStartTime;
-        info.redPoint = obj.redPoint;
+        info.score = obj.score;
 
         info.rabRecord = [];
         obj.rabRecord.forEach((record:any) => {

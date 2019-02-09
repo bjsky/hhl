@@ -2,6 +2,7 @@ import PopUpBase from "../../component/PopUpBase";
 import DList, { DListDirection } from "../../component/DList";
 import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
+import ButtonGroup from "../../component/ButtonGroup";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -20,6 +21,8 @@ export default class RankPanel extends PopUpBase{
 
     @property(DList)
     rankList: DList = null;
+    @property(ButtonGroup)
+    btnGroup:ButtonGroup = null;
 
     @property
     text: string = 'hello';
@@ -40,6 +43,11 @@ export default class RankPanel extends PopUpBase{
 
     private initView(){
 
+        this.initListGroup();
+    }
+    private initListGroup(){
+        this.btnGroup.labels = "等级榜;战力榜;积分榜"
+        this.btnGroup.selectIndex = 0;
     }
 
     private initRankList(){

@@ -5,16 +5,24 @@ import NetConst from "../NetConst";
 import { COMMON } from "../../CommonData";
 import { Battle } from "../../module/battle/BattleAssist";
 import { SRabRecord } from "./MsgGetEnemyList";
+
+export enum FightEnemyType{
+    Enemy = 1,  //敌人，消耗行动力，设置行动力开始时间
+    Robot,      //机器人，enemyUid为空，不抢卡
+    Revenge,       //仇人复仇，不消耗行动力，设置复仇开始时间
+}
 export class CSFightEnemy{
+    //战斗类型
+    public enemyType:FightEnemyType = 0;
     //敌人uid
     public enemyUid:string ="";
     //战斗结束增加经验，前端算好
     public addExp:number = 0;
     //战斗结束增加钻石，前段算好
     public addDiamond:number = 0;
-    //增加的红名点，前端算好
-    public addRedPoint:number = 0;
-    //消耗行动力
+    //增加的积分，前端算好
+    public addScore:number = 0;
+    //消耗行动力,行动力减少，重设行动力开始时间
     public costActionPoint:number = 0;
     //是否抢卡
     public isGetCard:boolean = false;
@@ -31,7 +39,7 @@ export class SCFightEnemy{
     public resInfo:SResInfo;
     //战斗完成后的等级经验信息
     public userInfo:SUserInfo;
-    //战斗完成后的战场信息（行动力减少，重置行动力开始时间），红名增加，抢卡增加抢夺纪录
+    //战斗完成后的战场信息（行动力，行动力开始时间或者复仇开始时间），积分，如果抢卡增加抢夺纪录
     public battleInfo:SBattleInfo;
     //战斗完成后获得的卡牌(如果没有为null,获得卡牌就是更改敌人卡牌的归属，并且等级重置为1级，同时推送给丢失卡牌的玩家)
     public addCard:SCardInfo = null;
@@ -61,16 +69,17 @@ export default class MsgFightEnemy extends MessageBase{
     }
 
     //攻击敌人
-    public static createFightEnemy(uid:string
-        ,addExp:number,addDiamond:number,addRedPoint:number
-        ,isGetCard:boolean,rate:string){
+    public static createFightEnemy(type:FightEnemyType,uid:string
+        ,addExp:number,addDiamond:number,addScore:number
+        ,costActionPoint:number,isGetCard:boolean,rate:string){
         var msg = new MsgFightEnemy();
         msg.param = new CSFightEnemy();
+        msg.param.enemyType = type;
         msg.param.enemyUid = uid;
         msg.param.addExp = addExp;
         msg.param.addDiamond = addDiamond;
-        msg.param.addRedPoint = addRedPoint;
-        msg.param.costActionPoint = 1;
+        msg.param.addScore = addScore;
+        msg.param.costActionPoint = costActionPoint;
         msg.param.isGetCard = isGetCard;
         msg.param.getCardRate = rate;
         return msg;
@@ -83,8 +92,10 @@ export default class MsgFightEnemy extends MessageBase{
         var userInfo = COMMON.userInfo.cloneAddExpServerInfo(this.param.addExp);
         var battleInfo = Battle.battleInfo.cloneServerInfo();
         battleInfo.actionPoint -= this.param.costActionPoint;
-        battleInfo.apStartTime = new Date().getTime();
-        battleInfo.redPoint += this.param.addRedPoint;
+        battleInfo.score += this.param.addScore;
+        if(this.param.enemyType==FightEnemyType.Revenge){
+            battleInfo.revengeStartTime = new Date().getTime();
+        }
         var addCard:SCardInfo = null;
         var record:SRabRecord = null;
         if(this.param.isGetCard){

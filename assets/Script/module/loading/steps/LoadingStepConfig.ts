@@ -14,6 +14,7 @@ export const ConfigConst = {
     CardSkill:"config/cardSkill",
     SkillUp:"config/skillUp",
     Store:"config/store",
+    Score:"config/score"
 }
 /**
  * 加载配置

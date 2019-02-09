@@ -17,8 +17,6 @@ import MsgHeartBeat from "./MsgHeartBeat";
 import MsgGetEnemyList from "./MsgGetEnemyList";
 import MsgGetPersonalEnemy from "./MsgGetPersonalEnemy";
 import MsgFightEnemy from "./MsgFightEnemy";
-import MsgFightRobot from "./MsgFightRobot";
-import MsgFightRevenge from "./MsgFightRevenge";
 import MsgPushBeRab from "./MsgPushBeRab";
 import MsgGetRankList from "./MsgGetRankList";
 /**
@@ -80,12 +78,6 @@ export default class MsgUtil{
             break;
             case NetConst.FightEnemy:
                 message = new MsgFightEnemy();
-            break;
-            case NetConst.FightRobot:
-                message = new MsgFightRobot();
-            break;
-            case NetConst.FightRevenge:
-                message = new MsgFightRevenge();
             break;
             case NetConst.PushBeRab:
                 message = new MsgPushBeRab();
