@@ -14,7 +14,7 @@ export const ResConst = {
     HeroPanel:"prefabs/heroPanel",
     BattlePanel:"prefabs/battlePanel",
     LineUpPopup:"prefabs/lineUpPopup",
-    CardRaceHelp:"prefabs/cardRaceHelp",
+    BattleHelp:"prefabs/battleHelp",
     GuideTap:"prefabs/guideTap",
     CardHead:"prefabs/cardHead",
     AwardPanel:"prefabs/awardPanel",

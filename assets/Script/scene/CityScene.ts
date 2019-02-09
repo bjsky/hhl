@@ -9,6 +9,7 @@ import { GUIDE, GuideTypeEnum } from "../manager/GuideManager";
 import { EVENT } from "../message/EventCenter";
 import GameEvent from "../message/GameEvent";
 import { SOUND, SoundConst } from "../manager/SoundManager";
+import { Battle } from "../module/battle/BattleAssist";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -122,7 +123,11 @@ export default class CityScene extends SceneBase {
     }
     private onCastleTouch(e){
         // UI.showTip("你妈逼哦");
-        this.openBuildUI(BuildType.Castle);
+        if(Battle.battleDataInited){
+            this.openBuildUI(BuildType.Castle);
+        }else{
+            UI.showTip("战场数据初始化中，请稍候点击");
+        }
         // UI.createPopUp(ResConst.BuildPanel,{buildType:BuildType.Castle});
     }
     private onTempleTouch(e){

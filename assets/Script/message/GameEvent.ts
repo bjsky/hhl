@@ -46,4 +46,7 @@ export default class GameEvent{
     public static ShareGetReward_Complete:string ="ShareGetReward_Complete";
     //合成升星
     public static Card_Drop_UpStar:string ="Card_Drop_UpStar";
+
+    //侦查完成
+    public static Battle_scout_Complete:string ="Battle_scout_Complete";
 }

@@ -4,6 +4,9 @@ import { SResInfo, SBattleInfo } from "./MsgLogin";
 import { COMMON } from "../../CommonData";
 import { Lineup } from "../../module/battle/LineupAssist";
 import { Battle } from "../../module/battle/BattleAssist";
+import LineupInfo from "../../model/LineupInfo";
+import MsgCardSummon from "./MsgCardSummon";
+import { Card } from "../../module/card/CardAssist";
 
 export class CSGetEnemyList{
     //最小等级
@@ -153,8 +156,18 @@ export default class MsgGetEnemyList extends MessageBase{
         info.enemyLevel = COMMON.userInfo.level;
         info.enemySex = COMMON.userInfo.gender;
         info.enemyIcon = COMMON.userInfo.icon;
-        info.enemyLineup = Lineup.cloneServerEnemeyLineup();
-        info.enemyPower = Lineup.ownerLineupPower;
+        info.enemyLineup = [];
+        var lineups:Array<SEnemyLineup> = [];
+        var slineup:SEnemyLineup = null;
+        for(var i:number = 0;i<5;i++){
+            slineup = new SEnemyLineup();
+            slineup.pos = i;
+            slineup.cardId = Card.getSummonCardId();
+            slineup.grade = 1;
+            slineup.level = 1;
+            lineups.push(slineup);
+        }
+        info.enemyLineup = lineups;
         var sBattle:SBattleInfo = Battle.battleInfo.cloneServerInfo();
         info.enemyScore = sBattle.score;
         info.enemyRabRecord = sBattle.rabRecord;

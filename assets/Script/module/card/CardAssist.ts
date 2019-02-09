@@ -1,5 +1,4 @@
 import { CONSTANT } from "../../Constant";
-import NunmberUtil from "../../utils/NumberUtil";
 import { CFG } from "../../manager/ConfigManager";
 import { ConfigConst } from "../loading/steps/LoadingStepConfig";
 import { NET } from "../../net/core/NetController";
@@ -21,6 +20,7 @@ import { SResInfo } from "../../net/msg/MsgLogin";
 import LineupInfo from "../../model/LineupInfo";
 import MsgCardSummonGuide from "../../net/msg/MsgCardSummonGuide";
 import { SOUND } from "../../manager/SoundManager";
+import NumberUtil from "../../utils/NumberUtil";
 
 export enum CardRaceType{
     All =0,
@@ -57,14 +57,14 @@ export default class CardAssist{
      */
     public getStoneSummonGuide(){
         var stomeSummonWeight:string[] = CONSTANT.getStoneSummonWeightArr();
-        return Number(NunmberUtil.getRandomFromWeightArr(stomeSummonWeight));
+        return Number(NumberUtil.getRandomFromWeightArr(stomeSummonWeight));
     }
     /**
      * 获取视频抽取取得的品级
      */
     public getVideoSummonGuide(){
         var videoSummonWeight:string[] = CONSTANT.getVideoSummonWeightArr();
-        return Number(NunmberUtil.getRandomFromWeightArr(videoSummonWeight));
+        return Number(NumberUtil.getRandomFromWeightArr(videoSummonWeight));
     }
     /**
      * 获取抽奖获得的卡牌类型
@@ -75,7 +75,7 @@ export default class CardAssist{
         usedCards.forEach((card)=>{
             weightArr.push(card.id + ";1");
         })
-        return Number(NunmberUtil.getRandomFromWeightArr(weightArr));
+        return Number(NumberUtil.getRandomFromWeightArr(weightArr));
     }
 
     public getUsedCardsConfig():Array<any>{

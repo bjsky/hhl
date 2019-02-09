@@ -25,7 +25,7 @@ export default class MsgGetPersonalEnemy extends MessageBase{
         this.isLocal = true;
     }
 
-    public static create(lvMin:number,lvMax:number){
+    public static create(){
         var msg = new MsgGetPersonalEnemy();
         msg.param = {};
         return msg;

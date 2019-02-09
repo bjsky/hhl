@@ -1,4 +1,4 @@
-export default class NunmberUtil{
+export default class NumberUtil{
 
     /**
      * 获得权重随机数

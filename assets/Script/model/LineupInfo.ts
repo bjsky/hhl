@@ -3,6 +3,7 @@ import { Card } from "../module/card/CardAssist";
 import { CFG } from "../manager/ConfigManager";
 import { ConfigConst } from "../module/loading/steps/LoadingStepConfig";
 import { SOwnerLineup } from "../net/msg/MsgLogin";
+import { SEnemyLineup } from "../net/msg/MsgGetEnemyList";
 
 export default class LineupInfo{
     //是否自己的卡牌
@@ -72,5 +73,24 @@ export default class LineupInfo{
         this.headUrl = cardCfg.head;
         this.cardName = cardCfg.name;
         this.raceId = Number(cardCfg.raceId);
+    }
+
+    //敌人阵容
+    public initEnmey(lineup:SEnemyLineup){
+        this.pos = lineup.pos;
+        this.cardId = lineup.cardId;
+        this.grade = lineup.grade;
+        this.level = lineup.level;
+        var upCfg = CFG.getCfgByKey(ConfigConst.CardUp,"grade",this.grade,"level",this.level);
+        this.power = Number(upCfg[0].power);
+        this.life = Number(upCfg[0].body);
+        var cardCfg = CFG.getCfgDataById(ConfigConst.CardInfo,this.cardId);
+        this.headUrl = cardCfg.head;
+        this.cardName = cardCfg.name;
+        this.raceId = Number(cardCfg.raceId);
+    }
+    //机器人
+    public initRobot(index:number,cardId:number,grade:number,level:number){
+        this.initBoss(index,cardId,grade,level);
     }
 }

@@ -103,6 +103,37 @@ export default class Constant{
     public getSeeVideoStone(){
         return Number(this._constantKeyValueMap["seeVideoAddStone"]);
     }
+    //////////////
+    // 战场
+    ////////////
+    //敌人等级范围
+    public getEnemyListLevelArea():number{
+        return Number(this._constantKeyValueMap["enmeyLevelArea"]);
+    }
+    //机器人战力范围
+    public getRobotPowerArea():number{
+        return Number(this._constantKeyValueMap["robotPowerarea"]);
+    }
+    //行动力初始值
+    public getActionPointInitNum():number{
+        return Number(this._constantKeyValueMap["actionPoint_init"]);
+    }
+    //行动力最大值
+    public getActionPointMax():number{
+        return Number(this._constantKeyValueMap["actionPoint_max"]);
+    }
+    //行动力恢复时间
+    public getActionPointPerTime():number{
+        return Number(this._constantKeyValueMap["actionPoint_perTime"]);
+    }
+    //复仇恢复时间
+    public getRevengeTime():number{
+        return Number(this._constantKeyValueMap["revenge_time"]);
+    }
+    //侦查消耗金币
+    public getScoutCost():number{
+        return Number(this._constantKeyValueMap["scout_cost"]);
+    }
 }
 
 export var CONSTANT:Constant = Constant.getInstance();

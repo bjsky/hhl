@@ -138,7 +138,6 @@ export default class TemplePanel extends UIBase {
         this.initListWithType(this.btnGroup.selectIndex);
     }
     private onHelpClick(e){
-        UI.createPopUp(ResConst.CardRaceHelp,{});
     }
 
     private onGotoHeroFast(e){

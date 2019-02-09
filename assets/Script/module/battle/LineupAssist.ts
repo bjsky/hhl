@@ -67,23 +67,6 @@ export default class LineupAssist{
         return this._ownerSLineup.slice();
     }
 
-    //复制一份服务器敌人阵型数据
-    public cloneServerEnemeyLineup():Array<SEnemyLineup>{
-        var lineups:Array<SEnemyLineup> = [];
-        var lineup:LineupInfo;
-        var slineup:SEnemyLineup = null;
-        for(var key in this.ownerLineupMap){
-            lineup = this.ownerLineupMap[key];
-            slineup = new SEnemyLineup();
-            slineup.pos = Number(key);
-            slineup.cardId = lineup.cardId;
-            slineup.grade = lineup.grade;
-            slineup.level = lineup.level;
-            lineups.push(slineup);
-        }
-        return lineups;
-    }
-
     public getOwnerFightInfo():FightInfo{
         var info:FightInfo = new FightInfo();
         info.playerType = FightPlayerType.Mine;

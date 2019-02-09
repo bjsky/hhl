@@ -1,5 +1,7 @@
 import { SBattleInfo } from "../net/msg/MsgLogin";
 import { SRabRecord } from "../net/msg/MsgGetEnemyList";
+import { CONSTANT } from "../Constant";
+import { COMMON } from "../CommonData";
 
 export class RabRecord{
     //时间;毫秒
@@ -10,6 +12,13 @@ export class RabRecord{
     public cardGrade:number = 0;
     //获得卡牌id
     public cardId:number =0;
+
+    public initFormServer(sRecord:SRabRecord){
+        this.time = sRecord.time;
+        this.beRabName = sRecord.beRabName;
+        this.cardGrade = sRecord.cardGrade;
+        this.cardId = sRecord.cardId;
+    }
 }
 export default class BattleInfo{
 
@@ -23,6 +32,36 @@ export default class BattleInfo{
     public score:number = 0;
     //自己的抢卡历史
     public records:Array<RabRecord> = [];
+    
+    //总行动力
+    public totalAP:number = 0;
+    //行动力恢复时间
+    public apReturnTime:number = 0;
+    //复仇恢复时间
+    public revengeReturnTime:number = 0;
+
+    //行动力百分比
+    public get apPro(){
+        var pro = this.actionPoint/this.totalAP;
+        return (pro>1)?1:(pro<0?0:pro);
+    }
+    //复仇时间
+    public get revengeTime():number{
+        if(this.revengeStartTime<=0){
+            return 0;
+        }else{
+            var time = COMMON.getServerTime() - (this.revengeStartTime+this.revengeReturnTime);
+            if(time>0){
+                return time;
+            }else{
+                return 0;
+            }
+        }
+    }
+    public get revengeTimePro(){
+        var pro = this.revengeTime/this.revengeReturnTime;
+        return (pro>1)?1:(pro<0?0:pro);
+    }
 
     public initFromServer(info:SBattleInfo){
         this.actionPoint = info.actionPoint;
@@ -32,12 +71,13 @@ export default class BattleInfo{
         this.records = [];
         info.rabRecord.forEach((sRecord:SRabRecord) => {
             var record:RabRecord = new RabRecord();
-            record.time = sRecord.time;
-            record.beRabName = sRecord.beRabName;
-            record.cardGrade = sRecord.cardGrade;
-            record.cardId = sRecord.cardId;
+            record.initFormServer(sRecord);
             this.records.push(record);
         });
+
+        this.totalAP = CONSTANT.getActionPointMax();
+        this.apReturnTime = CONSTANT.getActionPointPerTime();
+        this.revengeReturnTime = CONSTANT.getRevengeTime();
     }
 
     public cloneServerInfo():SBattleInfo{

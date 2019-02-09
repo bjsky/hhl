@@ -238,7 +238,8 @@ export default class MainUI extends UIBase {
     }
 
     private onSevenDayBtnTouch(e){
-        UI.createPopUp(ResConst.SevenDayPanel,{});
+        // UI.createPopUp(ResConst.SevenDayPanel,{});
+        UI.createPopUp(ResConst.StorePanel,{});
     }
 
     private onRankBtnTouch(e){

@@ -316,7 +316,7 @@ export default class MsgLogin
                 actionPoint:10,
                 apStartTime:0,
                 revengeStartTime:0,
-                redPoint:0,
+                score:0,
                 rabRecord:[]
             }
         };

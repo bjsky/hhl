@@ -1,7 +1,21 @@
-import { SBattleInfo } from "../../net/msg/MsgLogin";
+import { SBattleInfo, SResInfo } from "../../net/msg/MsgLogin";
 import BattleInfo from "../../model/BattleInfo";
-import EnemyInfo from "../../model/EnemyInfo";
-import { SEnemyInfo } from "../../net/msg/MsgGetEnemyList";
+import EnemyInfo, { EnemyTypeEnum } from "../../model/EnemyInfo";
+import MsgGetEnemyList, { SEnemyInfo } from "../../net/msg/MsgGetEnemyList";
+import { NET } from "../../net/core/NetController";
+import { CONSTANT } from "../../Constant";
+import { COMMON } from "../../CommonData";
+import MsgGetPersonalEnemy from "../../net/msg/MsgGetPersonalEnemy";
+import { FightEnemyType } from "../../net/msg/MsgFightEnemy";
+import { CFG } from "../../manager/ConfigManager";
+import { ConfigConst } from "../loading/steps/LoadingStepConfig";
+import { Lineup } from "./LineupAssist";
+import BuildInfo from "../../model/BuildInfo";
+import { BUILD } from "../build/BuildAssist";
+import { BuildType } from "../../view/BuildPanel";
+import { EVENT } from "../../message/EventCenter";
+import GameEvent from "../../message/GameEvent";
+import { ResType } from "../../model/ResInfo";
 
 export default class BattleAssist{
 
@@ -15,21 +29,203 @@ export default class BattleAssist{
 
     private _battleInfo:BattleInfo = new BattleInfo();
     private _enemyList:Array<EnemyInfo> = [];
+    private _enemyListComplete:boolean =false;
     private _personalEnemeyList:Array<EnemyInfo> = [];
+    private _personalEnemyListComplete:boolean =false;
     public get battleInfo():BattleInfo{
         return this._battleInfo;
+    }
+    public get enemyList():Array<EnemyInfo>{
+        return this._enemyList;
+    }
+    public get personalEnemyList():Array<EnemyInfo>{
+        return this._personalEnemeyList;
     }
 
     public initBattle(info:SBattleInfo){
         this._battleInfo.initFromServer(info);
+        this.initEnemyList();
+        this.initPersonalEnemyList();
+        this.initScoreCfg();
     }
 
-    public initEnemyList(enemyList:Array<SEnemyInfo>){
-
+    public initEnemyList(){
+        var levelArea:number = CONSTANT.getEnemyListLevelArea();
+        var levelMin = COMMON.userInfo.level - levelArea;
+        if(levelMin<2) levelMin = 2;
+        var levelMax = COMMON.userInfo.level + levelArea;
+        if(levelMax>30) levelMax = 30;
+        NET.send(MsgGetEnemyList.create(levelMin,levelMax,0),(msg:MsgGetEnemyList)=>{
+            if(msg && msg.resp){
+                this._enemyList = this.createEnemyList(msg.resp.enmeyList,false);
+                this._enemyListComplete = true;
+            }
+        },this)
     }
 
-    public initPersonalEnemyList(personalEnemyList:Array<SEnemyInfo>){
-        
+    public initPersonalEnemyList(){
+        NET.send(MsgGetPersonalEnemy.create(),(msg:MsgGetPersonalEnemy)=>{
+            if(msg && msg.resp){
+                this._personalEnemeyList = this.createEnemyList(msg.resp.personalEnmeyList,true);
+                this._personalEnemyListComplete = true;
+            }
+        },this)
+    }
+
+    //战场数据初始化完成
+    public get battleDataInited():boolean{
+        return this._enemyListComplete && this._personalEnemyListComplete;
+    }
+
+    private createEnemyList(sList:Array<SEnemyInfo>,isPersonal:boolean):Array<EnemyInfo>{
+        var enemyArr:Array<EnemyInfo> = [];
+        var info:EnemyInfo = null;
+        sList.forEach((sInfo:SEnemyInfo)=>{
+            info = new EnemyInfo();
+            info.initEnemy(sInfo);
+            enemyArr.push(info);
+        })
+        if(!isPersonal && enemyArr.length<5){       //补机器人
+            var passIds:number[] = this.getRobotPassageIds();
+            var count:number = 5- enemyArr.length;
+            while(count>0){
+                count--;
+                info = new EnemyInfo();
+                var passId:number = (passIds.length>0?passIds[Math.floor(Math.random()*passIds.length)]:1);
+                info.initRobot(passId);
+                enemyArr.push(info);
+            }
+        }
+        return enemyArr;
+    }
+
+    private getRobotPassageIds():number[]{
+        var powArea:number = CONSTANT.getRobotPowerArea();
+        var powerMin:number = Lineup.ownerLineupPower - powArea;
+        var powerMax:number = Lineup.ownerLineupPower + powArea;
+        var ids:number[] = [];
+        var passageCfgs:any = CFG.getCfgGroup(ConfigConst.Passage);
+        var passageCfg:any;
+        for(var key in passageCfgs){
+            passageCfg = passageCfgs[key];
+            var needPower = Number(passageCfg.needPower);
+            if(needPower<=powerMax && needPower>= powerMin){
+                ids.push(Number(passageCfg.id));
+            }
+        }
+        return ids;
+    }
+
+    //侦查敌人完成
+    public scoutEnemyList(cost:number){
+        var levelArea:number = CONSTANT.getEnemyListLevelArea();
+        var levelMin = COMMON.userInfo.level - levelArea;
+        if(levelMin<2) levelMin = 2;
+        var levelMax = COMMON.userInfo.level + levelArea;
+        if(levelMax>30) levelMax = 30;
+        NET.send(MsgGetEnemyList.create(levelMin,levelMax,cost),(msg:MsgGetEnemyList)=>{
+            if(msg && msg.resp){
+                var cost:SResInfo = COMMON.updateResInfo(msg.resp.resInfo);
+                this._enemyList = this.createEnemyList(msg.resp.enmeyList,false);
+                // 建筑升级完成
+                EVENT.emit(GameEvent.Battle_scout_Complete);
+                EVENT.emit(GameEvent.Res_update_Cost_Complete,{types:[{type:ResType.gold,value:cost.gold}]});
+            }
+        },this)
+    }
+    ////////////////////
+    //  积分
+    ////////////////////
+    private _scoreTypeCfgMap:any = {}
+    private _scoreTypeCfg:any = null;
+    public get scoreTypeCfgMap(){
+        return this._scoreTypeCfgMap;
+    }
+    private initScoreCfg(){
+        var scoreMap:any = CFG.getCfgGroup(ConfigConst.Score);
+        var scoreCfg:any = null;
+        for(var key in scoreMap){
+            scoreCfg = scoreMap[key];
+            if(this._scoreTypeCfgMap[scoreCfg.scoreType]==undefined){
+                this._scoreTypeCfgMap[scoreCfg.scoreType] = {type:scoreCfg,subs:[scoreCfg]};
+            }else{
+                this._scoreTypeCfgMap[scoreCfg.scoreType].subs.push(scoreCfg);
+            }
+        }
+        this._scoreTypeCfg = this.getScoreTypeCfg();
+    }
+
+    private getScoreTypeCfg(){
+        var scoreTypeCfg:any = null;
+        for(var key in this._scoreTypeCfgMap){
+            var typeObj:any = this._scoreTypeCfgMap[key].type;
+            var scoreMin:number = Number(typeObj.scoreMin);
+            var scoreMax:number = Number(typeObj.scoreMax);
+            if(scoreMax==0){
+                if(this._battleInfo.score>=scoreMin){
+                    scoreTypeCfg = typeObj;
+                    break;
+                }
+            }if(scoreMin==0){
+                if(this._battleInfo.score<scoreMax){
+                    scoreTypeCfg = typeObj;
+                    break;
+                }
+            }else{
+                if(this._battleInfo.score>=scoreMin && this._battleInfo.score<scoreMax){
+                    scoreTypeCfg = typeObj;
+                    break;
+                }
+            }
+        }
+        return scoreTypeCfg;
+    }
+
+    public getFightScoreCfg(enemyScore:number){
+        var enemyScoreCompare = enemyScore - this._battleInfo.score;
+        var fightScoreArr = CFG.getCfgByKey(ConfigConst.Score,"scoreType",this._scoreTypeCfg.scoreType);
+        var retCfg:any = null;
+        for(var i:number=0;i<fightScoreArr.length;i++){
+            var scorecfg = fightScoreArr[i];
+            var scoreMin:number = Number(scorecfg.scoreSubMin);
+            var scoreMax:number = Number(scorecfg.scoreSubMax);
+            if(scoreMax==0){
+                if(enemyScoreCompare>=scoreMin){
+                    retCfg = scorecfg;
+                    break;
+                }
+            }if(scoreMin==0){
+                if(enemyScoreCompare<scoreMax){
+                    retCfg = scorecfg;
+                    break;
+                }
+            }else{
+                if(enemyScoreCompare>=scoreMin && enemyScoreCompare<scoreMax){
+                    retCfg = scorecfg;
+                    break;
+                }
+            }
+        }
+        return retCfg;
+    }
+
+    public getAddExpBuffed(){
+        var build:BuildInfo = BUILD.getBuildInfo(BuildType.Castle);
+        var value = Number(this._scoreTypeCfg.getExp);
+        if(build){
+            var buffedValue = Number(build.buildLevelCfg.addValue);
+            value *= (1 + buffedValue)
+        }
+        return value;
+    }
+    public getAddDiamondBuffed(){
+        var build:BuildInfo = BUILD.getBuildInfo(BuildType.Castle);
+        var value = Number(this._scoreTypeCfg.getDiamond);
+        if(build){
+            var buffedValue = Number(build.buildLevelCfg.addValue);
+            value *= (1 + buffedValue)
+        }
+        return value;
     }
 }
 
