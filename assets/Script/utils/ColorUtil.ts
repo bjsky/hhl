@@ -20,4 +20,19 @@ export default class ColorUtil{
         }
         return color;
     }
+    public static getGradeColorHex(grade:number):string{
+        if(grade == 1){
+            return "#2DBE04";
+        }else if(grade == 2){
+            return "#346BF7";
+        }else if(grade == 3){
+            return "#D70AF3";
+        }else if(grade == 4){
+            return "#F78823";
+        }else if(grade == 5){
+            return "#E61120";
+        }else {
+            return "#2DBE04";
+        }
+    }
 }

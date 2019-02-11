@@ -1,59 +1,57 @@
 import MessageBase from "./MessageBase";
-import { SResInfo, SUserInfo, SBattleInfo } from "./MsgLogin";
+import { SResInfo, SUserInfo, SBattleInfo, SFightRecord } from "./MsgLogin";
 import MsgCardSummon, { SCardInfo, CardSummonType } from "./MsgCardSummon";
 import NetConst from "../NetConst";
 import { COMMON } from "../../CommonData";
 import { Battle } from "../../module/battle/BattleAssist";
-import { SRabRecord } from "./MsgGetEnemyList";
 
-export enum FightEnemyType{
-    Enemy = 1,  //敌人，消耗行动力，设置行动力开始时间
-    Robot,      //机器人，enemyUid为空，不抢卡
-    Revenge,       //仇人复仇，不消耗行动力，设置复仇开始时间
-}
+//战斗会保存战斗纪录，并且推送给对应的敌人，为了数据库性能，建议一个玩家最多保存30条纪录
 export class CSFightEnemy{
-    //战斗类型
-    public enemyType:FightEnemyType = 0;
-    //敌人uid
+    //敌人uid，可能为空，为空不抢卡，不推送结果
     public enemyUid:string ="";
+    //敌人名字
+    public enemyName:string ="";
     //战斗结束增加经验，前端算好
     public addExp:number = 0;
     //战斗结束增加钻石，前段算好
     public addDiamond:number = 0;
-    //增加的积分，前端算好
+    //增加的积分，前端算好，自己增加，敌人减少（小于0取0）
     public addScore:number = 0;
-    //消耗行动力,行动力减少，重设行动力开始时间
+    //消耗行动力，减少行动力，可能为0，复仇不消耗行动力
     public costActionPoint:number = 0;
+    //是否复仇，设置复仇开始时间
+    public isRevenge:boolean = false;
     //是否抢卡
-    public isGetCard:boolean = false;
-    //抢卡时的概率，抢卡会保存纪录，概率跟抽卡概率格式一样，前端给，如，1;66|2;24|3;8|4;2|5;0.4
-    public getCardRate:string = "";
+    public isRabCard:boolean = false;
+    //抢卡时的概率，概率跟抽卡概率格式一样，前端给，如，1;66|2;24|3;8|4;2|5;0.4，抢卡时更改卡牌的归属，等级重置为1级
+    public rabCardRate:string = "";
 }
-
+//战斗结束返回增加的经验，资源，战场信息，获得卡牌（如果有）
 export class SCFightEnemy{
-    //敌人uid
+    //敌人uid，取参数的
     public enemyUid:string ="";
+    //敌人名字，取参数的
+    public enemyName:string ="";
     //战斗完成增加的经验
     public addExp:number = 0;
     //战斗完成后的res信息
     public resInfo:SResInfo;
     //战斗完成后的等级经验信息
     public userInfo:SUserInfo;
-    //战斗完成后的战场信息（行动力，行动力开始时间或者复仇开始时间），积分，如果抢卡增加抢夺纪录
+    //战斗完成后的战场信息（行动力，行动力开始时间或者复仇开始时间），积分
     public battleInfo:SBattleInfo;
-    //战斗完成后获得的卡牌(如果没有为null,获得卡牌就是更改敌人卡牌的归属，并且等级重置为1级，同时推送给丢失卡牌的玩家)
-    public addCard:SCardInfo = null;
+    //战斗纪录
+    public fightRecord:SFightRecord = null;
 
     public static parse(obj:any):SCFightEnemy{
         var info:SCFightEnemy = new SCFightEnemy();
         info.enemyUid = obj.enemyUid;
+        info.enemyName = obj.enemyName;
         info.addExp =obj.addExp;
         info.resInfo = SResInfo.parse(obj.resInfo);
         info.userInfo = SUserInfo.parse(obj.userInfo);
         info.battleInfo = SBattleInfo.parse(obj.battleInfo);
-        if(obj.addCard!=undefined && obj.addCard!=null){
-            info.addCard = SCardInfo.parse(obj.addCard);
-        }
+        info.fightRecord = SFightRecord.parse(obj.fightRecord);
         return info;
     }
 }
@@ -69,19 +67,20 @@ export default class MsgFightEnemy extends MessageBase{
     }
 
     //攻击敌人
-    public static createFightEnemy(type:FightEnemyType,uid:string
+    public static createFightEnemy(uid:string,uname:string
         ,addExp:number,addDiamond:number,addScore:number
-        ,costActionPoint:number,isGetCard:boolean,rate:string){
+        ,costActionPoint:number,isRevenge:boolean,isRabCard:boolean,rate:string){
         var msg = new MsgFightEnemy();
         msg.param = new CSFightEnemy();
-        msg.param.enemyType = type;
         msg.param.enemyUid = uid;
+        msg.param.enemyName = uname;
         msg.param.addExp = addExp;
         msg.param.addDiamond = addDiamond;
         msg.param.addScore = addScore;
         msg.param.costActionPoint = costActionPoint;
-        msg.param.isGetCard = isGetCard;
-        msg.param.getCardRate = rate;
+        msg.param.isRevenge = isRevenge;
+        msg.param.isRabCard = isRabCard;
+        msg.param.rabCardRate = rate;
         return msg;
     }
 
@@ -93,19 +92,25 @@ export default class MsgFightEnemy extends MessageBase{
         var battleInfo = Battle.battleInfo.cloneServerInfo();
         battleInfo.actionPoint -= this.param.costActionPoint;
         battleInfo.score += this.param.addScore;
-        if(this.param.enemyType==FightEnemyType.Revenge){
+        if(this.param.isRevenge){
             battleInfo.revengeStartTime = new Date().getTime();
         }
         var addCard:SCardInfo = null;
-        var record:SRabRecord = null;
-        if(this.param.isGetCard){
+        var record:SFightRecord = new SFightRecord();
+        record.time = new Date().getTime();
+        record.fightUid = COMMON.accountId;
+        record.fightName = COMMON.userInfo.name;
+        record.befightUid =this.param.enemyUid;
+        record.befightName = this.param.enemyName;
+        record.score = this.param.addScore;
+        if(this.param.isRabCard){
             addCard = MsgCardSummon.randomCardInfo(CardSummonType.LifeStone);
-            record = new SRabRecord();
-            record.beRabName = "路人甲";
-            record.cardGrade = addCard.grade;
-            record.cardId = addCard.cardId;
-            record.time = new Date().getTime();
-            battleInfo.rabRecord.push(record);
+            record.isRabCard = true;
+            record.rabCardUuid = addCard.uuid;
+            record.rabCardId = addCard.cardId;
+            record.rabCardGrade = addCard.grade;
+        }else{
+            record.isRabCard = false;
         }
 
         json ={
@@ -114,7 +119,7 @@ export default class MsgFightEnemy extends MessageBase{
             resInfo:resInfo,
             userInfo:userInfo,
             battleInfo:battleInfo,
-            addCard:addCard
+            fightRecord:record
         }
         return this.parse(json);
     }

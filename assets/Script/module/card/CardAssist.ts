@@ -127,6 +127,12 @@ export default class CardAssist{
     public getCardByUUid(uuid:string){
         return this.cardsMap[uuid];
     }
+
+    public getCardUUidRandom(){
+        var list:Array<CardInfo> = this.getOwnerCardList(0);
+        var rd = Math.floor(Math.random()* list.length);
+        return list[rd].uuid;
+    }
     //移除一张卡牌
     private removeCardByUUid(uuid:string){
         delete this.cardsMap[uuid];

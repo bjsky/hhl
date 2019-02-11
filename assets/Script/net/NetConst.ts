@@ -49,8 +49,10 @@ export default class NetConst{
     public static FightEnemy:number = 70002;
     //获得敌人数据
     public static GetEnemyList:number = 70003;
-    //推送被抢夺
-    public static PushBeRab:number = 70006;
+    //推送战斗记录
+    public static PushFightRecord:number = 70006;
+    //获取玩家uid的战斗纪录
+    public static GetFightRecordList:number = 70007;
     //排行榜数据
     public static GetRankList:number = 80001;
 }

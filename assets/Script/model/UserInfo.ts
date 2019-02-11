@@ -7,8 +7,6 @@ import { ConfigConst } from "../module/loading/steps/LoadingStepConfig";
  * 用户数据
  */
 export default class UserInfo  extends InfoBase{
-    //uid
-    public uid:string ="";
     //用户名
     public name:string = "";
     //头像url

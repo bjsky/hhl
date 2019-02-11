@@ -1,16 +1,14 @@
 import LineupInfo from "./LineupInfo";
-import { RabRecord } from "./BattleInfo";
-import { SEnemyInfo, SEnemyLineup, SRabRecord } from "../net/msg/MsgGetEnemyList";
+import { SEnemyInfo, SEnemyLineup} from "../net/msg/MsgGetEnemyList";
 import StringUtil from "../utils/StringUtil";
 import { COMMON } from "../CommonData";
-import { CONSTANT } from "../Constant";
-import { Lineup } from "../module/battle/LineupAssist";
 import { CFG } from "../manager/ConfigManager";
 import { ConfigConst } from "../module/loading/steps/LoadingStepConfig";
 
 export enum EnemyTypeEnum{
-    Player = 1, //玩家
+    Enemy = 1, //玩家
     Robit,      //机器人
+    PersonlEnemy //仇人
 }
 export default class EnemyInfo {
     //敌人类型
@@ -26,40 +24,32 @@ export default class EnemyInfo {
     //敌人头像
     public enemyIcon:string = "";
     //敌人阵容
-    public enemyLineup:Array<LineupInfo> =[];
+    public enemyLineupMap:any = {}
     //敌人总战力
     public enemyTotalPower:number = 0;
     //敌人积分
     public enemyScore:number = 0;
-    //敌人抢卡纪录
-    public enemyRabRecord:Array<RabRecord> = [];
     //是否已攻击
     public isAttacked:boolean =false;
 
-    public initEnemy(sInfo:SEnemyInfo){
-        this.enemyType = EnemyTypeEnum.Player;
+    public initEnemy(sInfo:SEnemyInfo,isPersonal:boolean){
+        this.enemyType = isPersonal?EnemyTypeEnum.PersonlEnemy: EnemyTypeEnum.Enemy;
         this.enemyUid = sInfo.enemyUid;
         this.enemyName = sInfo.enemyName;
         this.enemyLevel = sInfo.enemyLevel;
         this.enemySex = sInfo.enemySex;
         this.enemyIcon = sInfo.enemyIcon;
-        this.enemyLineup = [];
+        this.enemyLineupMap = {};
         var lineup:LineupInfo = null;
         var totalPower:number = 0;
         sInfo.enemyLineup.forEach((sLineup:SEnemyLineup)=>{
             lineup = new LineupInfo();
             lineup.initEnmey(sLineup);
-            this.enemyLineup.push(lineup);
+            this.enemyLineupMap[lineup.pos] = lineup;
             totalPower+= lineup.power;
         })
         this.enemyTotalPower = totalPower;
         this.enemyScore = sInfo.enemyScore;
-        this.enemyRabRecord = [];
-        sInfo.enemyRabRecord.forEach((sRecord:SRabRecord) => {
-            var record:RabRecord = new RabRecord();
-            record.initFormServer(sRecord);
-            this.enemyRabRecord.push(record);
-        });
         this.isAttacked = false;
     }
 
@@ -76,7 +66,7 @@ export default class EnemyInfo {
 
         //阵容 
         var passCfg:any = CFG.getCfgDataById(ConfigConst.Passage,passageId);
-        this.enemyLineup = [];
+        this.enemyLineupMap = {};
         var lineupPower:number = 0;
         var lineupIds:string = passCfg.amyHero;
         var lineupGradeLevel:string = passCfg.amyHeroGradeLv;
@@ -89,14 +79,13 @@ export default class EnemyInfo {
                 lineup = new LineupInfo();
                 gradelv = gradeLvs[i];
                 lineup.initRobot(i,Number(ids[i]),Number(gradelv.split(";")[0]),Number(gradelv.split(";")[1]));
-                this.enemyLineup.push(lineup);
+                this.enemyLineupMap[lineup.pos] = lineup;
                 lineupPower += Number(lineup.power);
             }
         }
         this.enemyTotalPower = lineupPower;
         
         this.enemyScore = 0;
-        this.enemyRabRecord =[];
     }
 
 }

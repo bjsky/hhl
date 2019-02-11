@@ -6,6 +6,9 @@ import TouchHandler from "../../component/TouchHandler";
 import EnemyInfo from "../../model/EnemyInfo";
 import PathUtil from "../../utils/PathUtil";
 import { Battle } from "../../module/battle/BattleAssist";
+import { NET } from "../../net/core/NetController";
+import MsgGetFightRecordList from "../../net/msg/MsgGetFightRecordList";
+import { FightRecord } from "../../model/BattleInfo";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -57,7 +60,12 @@ export default class FightItemUI extends DListItem{
     }
 
     private onHeadTouch(e){
-        UI.createPopUp(ResConst.FighterDetailPanel,{});
+        NET.send(MsgGetFightRecordList.create(this._enemyInfo.enemyUid),(msg:MsgGetFightRecordList)=>{
+            if(msg && msg.resp){
+                var records:Array<FightRecord> = Battle.updateFightRecords(this._enemyInfo.enemyUid,msg.resp.records);
+                UI.createPopUp(ResConst.FighterDetailPanel,{info:this._enemyInfo,records:records});
+            }
+        },this)
     }
     private onAttackTouch(e){
 
@@ -71,6 +79,7 @@ export default class FightItemUI extends DListItem{
         this.lblScore.string = this._enemyInfo.enemyScore.toString();
         this.lblName.string = this._enemyInfo.enemyName;
         this.lblPower.string = this._enemyInfo.enemyTotalPower.toString();
+        this.sprHead.load(this._enemyInfo.enemyIcon);
         this.sprSex.load(PathUtil.getSexIconUrl(this._enemyInfo.enemySex));
         if(this._enemyInfo.isAttacked){
             this.btnAttack.node.active = false;

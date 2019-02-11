@@ -2,11 +2,12 @@ import MessageBase from "./MessageBase";
 import NetConst from "../NetConst";
 import { SResInfo, SBattleInfo } from "./MsgLogin";
 import { COMMON } from "../../CommonData";
-import { Lineup } from "../../module/battle/LineupAssist";
 import { Battle } from "../../module/battle/BattleAssist";
-import LineupInfo from "../../model/LineupInfo";
-import MsgCardSummon from "./MsgCardSummon";
 import { Card } from "../../module/card/CardAssist";
+import CardInfo from "../../model/CardInfo";
+import { Lineup } from "../../module/battle/LineupAssist";
+import LineupInfo from "../../model/LineupInfo";
+import { DemoFightRecordUtils } from "./MsgGetFightRecordList";
 
 export class CSGetEnemyList{
     //最小等级
@@ -52,8 +53,6 @@ export class SEnemyInfo{
     public enemyPower:number = 0;
     //敌人积分
     public enemyScore:number = 0;
-    //敌人抢卡纪录
-    public enemyRabRecord:Array<SRabRecord> = [];
 
     public static parse(obj:any):SEnemyInfo{
         var info:SEnemyInfo = new SEnemyInfo();
@@ -68,10 +67,6 @@ export class SEnemyInfo{
         });
         info.enemyPower = obj.enemyPower;
         info.enemyScore = obj.enemyScore;
-        info.enemyRabRecord = [];
-        obj.enemyRabRecord.forEach((rabRecord:any) => {
-            info.enemyRabRecord.push(SRabRecord.parse(rabRecord));
-        });
 
         return info;
     }
@@ -94,26 +89,6 @@ export class SEnemyLineup{
         info.cardId = obj.cardId;
         info.grade = obj.grade;
         info.level = obj.level;
-        return info;
-    }
-}
-
-export class SRabRecord{
-    //时间;毫秒
-    public time:number = 0;
-    //被抢卡的角色名称
-    public beRabName:string =""
-    //获得卡牌品级
-    public cardGrade:number = 0;
-    //获得卡牌id
-    public cardId:number =0;
-
-    public static parse(obj:any):SRabRecord{
-        var info:SRabRecord = new SRabRecord();
-        info.time = obj.time;
-        info.cardId = obj.cardId;
-        info.cardGrade = obj.cardGrade;
-        info.beRabName = obj.beRabName;
         return info;
     }
 }
@@ -151,7 +126,7 @@ export default class MsgGetEnemyList extends MessageBase{
 
     public static getEnemyInfo():SEnemyInfo{
         var info:SEnemyInfo = new SEnemyInfo();
-        info.enemyUid = COMMON.userInfo.uid;
+        info.enemyUid = COMMON.accountId;
         info.enemyName = COMMON.userInfo.name;
         info.enemyLevel = COMMON.userInfo.level;
         info.enemySex = COMMON.userInfo.gender;
@@ -159,18 +134,22 @@ export default class MsgGetEnemyList extends MessageBase{
         info.enemyLineup = [];
         var lineups:Array<SEnemyLineup> = [];
         var slineup:SEnemyLineup = null;
-        for(var i:number = 0;i<5;i++){
+        var lineup:LineupInfo = null;
+        var card:CardInfo = null;
+        for(var key in Lineup.ownerLineupMap){
+            lineup = Lineup.ownerLineupMap[key];
+            card = Card.getCardByUUid(lineup.uuid);
             slineup = new SEnemyLineup();
-            slineup.pos = i;
-            slineup.cardId = Card.getSummonCardId();
-            slineup.grade = 1;
-            slineup.level = 1;
+            slineup.pos = lineup.pos;
+            slineup.cardId = card.cardId;
+            slineup.grade = card.carUpCfg.grade;
+            slineup.level = card.carUpCfg.level;
             lineups.push(slineup);
         }
         info.enemyLineup = lineups;
         var sBattle:SBattleInfo = Battle.battleInfo.cloneServerInfo();
         info.enemyScore = sBattle.score;
-        info.enemyRabRecord = sBattle.rabRecord;
+        DemoFightRecordUtils.initPlayerFightRecord(info.enemyUid,info.enemyName);
         return info;
     }
 

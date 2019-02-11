@@ -5204,6 +5204,9 @@
     "btnRefresh": {
       "__id__": 113
     },
+    "btnRecords": {
+      "__id__": 133
+    },
     "enemyList": {
       "__id__": 106
     },

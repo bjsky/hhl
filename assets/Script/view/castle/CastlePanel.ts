@@ -12,6 +12,8 @@ import StringUtil from "../../utils/StringUtil";
 import { CONSTANT } from "../../Constant";
 import { COMMON } from "../../CommonData";
 import ResPanel, { ResPanelType } from "../ResPanel";
+import { NET } from "../../net/core/NetController";
+import MsgGetFightRecordList from "../../net/msg/MsgGetFightRecordList";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -56,6 +58,8 @@ export default class CastlePanel extends UIBase {
     lblRefreshCost:cc.Label =null;
     @property(cc.Button)
     btnRefresh:cc.Button =null;
+    @property(cc.Button)
+    btnRecords:cc.Button =null;
 
     @property(DList)
     enemyList: DList= null;
@@ -75,10 +79,12 @@ export default class CastlePanel extends UIBase {
         this.changeLineUp.node.on(TouchHandler.TOUCH_CLICK,this.showLineup,this);
         this.helpButton.node.on(cc.Node.EventType.TOUCH_START,this.onHelpClick,this);
         this.btnRefresh.node.on(TouchHandler.TOUCH_CLICK,this.onRefreshClick,this);
+        this.btnRecords.node.on(cc.Node.EventType.TOUCH_START,this.onRecordsClick,this);
 
         EVENT.on(GameEvent.Lineup_Changed,this.onLineupChange,this);
         EVENT.on(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
         EVENT.on(GameEvent.Battle_scout_Complete,this.battleScoutComplete,this);
+        EVENT.on(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
 
         this.initView();
     }
@@ -87,13 +93,23 @@ export default class CastlePanel extends UIBase {
         this.changeLineUp.node.off(TouchHandler.TOUCH_CLICK,this.showLineup,this);
         this.helpButton.node.off(cc.Node.EventType.TOUCH_START,this.onHelpClick,this);
         this.btnRefresh.node.off(TouchHandler.TOUCH_CLICK,this.onRefreshClick,this);
+        this.btnRecords.node.off(cc.Node.EventType.TOUCH_START,this.onRecordsClick,this);
 
         EVENT.off(GameEvent.Lineup_Changed,this.onLineupChange,this);
         EVENT.off(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
         EVENT.off(GameEvent.Battle_scout_Complete,this.battleScoutComplete,this);
+        EVENT.off(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
 
         this.enemyList.setListData([]);
         this.personalEnemyList.setListData([]);
+    }
+
+    private onRecordsClick(e){
+        NET.send(MsgGetFightRecordList.create(COMMON.accountId),(msg:MsgGetFightRecordList)=>{
+            if(msg && msg.resp){
+                
+            }
+        },this)
     }
 
     private onHelpClick(e){
@@ -109,6 +125,9 @@ export default class CastlePanel extends UIBase {
 
     private battleScoutComplete(e){
         this.initEnemyList();
+    }
+    private onBuildUpdate(e){
+        this.initBattleData();
     }
 
     private _scoutCost:number = 0;
@@ -154,7 +173,7 @@ export default class CastlePanel extends UIBase {
     private initEnemyList(){
         this.enemyList.setListData(Battle.enemyList);
     }
-
+    
     private initPersonalEnemyList(){
         this.personalEnemyList.setListData(Battle.personalEnemyList);
     }

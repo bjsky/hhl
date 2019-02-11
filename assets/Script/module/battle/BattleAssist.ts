@@ -1,12 +1,11 @@
-import { SBattleInfo, SResInfo } from "../../net/msg/MsgLogin";
-import BattleInfo from "../../model/BattleInfo";
+import { SBattleInfo, SResInfo, SFightRecord } from "../../net/msg/MsgLogin";
+import BattleInfo, { FightRecord } from "../../model/BattleInfo";
 import EnemyInfo, { EnemyTypeEnum } from "../../model/EnemyInfo";
 import MsgGetEnemyList, { SEnemyInfo } from "../../net/msg/MsgGetEnemyList";
 import { NET } from "../../net/core/NetController";
 import { CONSTANT } from "../../Constant";
 import { COMMON } from "../../CommonData";
 import MsgGetPersonalEnemy from "../../net/msg/MsgGetPersonalEnemy";
-import { FightEnemyType } from "../../net/msg/MsgFightEnemy";
 import { CFG } from "../../manager/ConfigManager";
 import { ConfigConst } from "../loading/steps/LoadingStepConfig";
 import { Lineup } from "./LineupAssist";
@@ -82,7 +81,7 @@ export default class BattleAssist{
         var info:EnemyInfo = null;
         sList.forEach((sInfo:SEnemyInfo)=>{
             info = new EnemyInfo();
-            info.initEnemy(sInfo);
+            info.initEnemy(sInfo,isPersonal);
             enemyArr.push(info);
         })
         if(!isPersonal && enemyArr.length<5){       //补机器人
@@ -115,6 +114,25 @@ export default class BattleAssist{
         }
         return ids;
     }
+
+    // public getEnemyInfoByUid(uid:string):EnemyInfo{
+    //     var info:EnemyInfo = null;
+    //     for(var i:number = 0;i<this._enemyList.length;i++){
+    //         if(this._enemyList[i].enemyUid == uid){
+    //             info = this._enemyList[i];
+    //             break;
+    //         }
+    //     }
+    //     if(info==null){
+    //         for(var i:number = 0;i<this._personalEnemeyList.length;i++){
+    //             if(this._personalEnemeyList[i].enemyUid == uid){
+    //                 info = this._personalEnemeyList[i];
+    //                 break;
+    //             }
+    //         }
+    //     }
+    //     return info;
+    // }
 
     //侦查敌人完成
     public scoutEnemyList(cost:number){
@@ -226,6 +244,20 @@ export default class BattleAssist{
             value *= (1 + buffedValue)
         }
         return value;
+    }
+
+
+    private _fightRecordsMap:any = {};
+    public updateFightRecords(uid:string,sRecords:Array<SFightRecord>):Array<FightRecord>{
+        var records:Array<FightRecord> = [];
+        var record:FightRecord = null;
+        sRecords.forEach((sRecord:SFightRecord)=>{
+            record = new FightRecord();
+            record.initFromServer(sRecord);
+            records.push(record);
+        })
+        this._fightRecordsMap[uid] = records;
+        return records;
     }
 }
 

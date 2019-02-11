@@ -1,9 +1,8 @@
 
 import NetConst from "../NetConst";
 import MessageBase from "./MessageBase";
-import { SRabRecord } from "./MsgGetEnemyList";
-import { SCardInfo } from "./MsgCardSummon";
-import { SCPushBeRab } from "./MsgPushBeRab";
+import MsgCardSummon, { SCardInfo, CardSummonType } from "./MsgCardSummon";
+import StringUtil from "../../utils/StringUtil";
 
 /**
  * 登录客户端数据
@@ -51,6 +50,8 @@ export class SCLoginData {
     public todayShareCount:number = 0;
     //战场数据 
     public battleInfo:SBattleInfo = null;
+    //离线攻击记录
+    public outlineFightRecord:Array<SFightRecord> = []
 
 
     public static parse(obj:any):SCLoginData{
@@ -97,6 +98,12 @@ export class SCLoginData {
         }
         if(obj.battleInfo){
             data.battleInfo = SBattleInfo.parse(obj.battleInfo);
+        }
+        data.outlineFightRecord = [];
+        if(obj.outlineFightRecord){
+            obj.outlineFightRecord.forEach((record:any) => {
+                data.outlineFightRecord.push(SFightRecord.parse(record));
+            });
         }
 
         return data;
@@ -238,8 +245,6 @@ export class SBattleInfo{
     public revengeStartTime:number = 0;
     //积分
     public score:number = 0;
-    //自己的抢卡记录
-    public rabRecord:Array<SRabRecord> = [];
 
     public static parse(obj:any):SBattleInfo{
         var info:SBattleInfo = new SBattleInfo();
@@ -247,11 +252,44 @@ export class SBattleInfo{
         info.apStartTime = obj.apStartTime;
         info.revengeStartTime = obj.revengeStartTime;
         info.score = obj.score;
+        return info;
+    }
+}
+//攻击纪录（包括攻击别人和别人攻击自己的）
+export class SFightRecord{
+    //时间;毫秒
+    public time:number = 0;
+    //攻击者uid
+    public fightUid:string = ""
+    //攻击者名字
+    public fightName:string ="";
+    //被攻击者uid
+    public befightUid:string = ""
+    //被攻击者名字
+    public befightName:string = ""
+    //积分变动
+    public score:number =0;
+    //是否抢夺卡牌
+    public isRabCard:boolean = false;
+    //抢夺卡牌uuid
+    public rabCardUuid:string = "";
+    //抢夺卡牌id
+    public rabCardId:number = 0;
+    //抢夺卡牌品级
+    public rabCardGrade:number = 0;
 
-        info.rabRecord = [];
-        obj.rabRecord.forEach((record:any) => {
-            info.rabRecord.push(SRabRecord.parse(record));
-        })
+    public static parse(obj:any):SFightRecord{
+        var info:SFightRecord = new SFightRecord();
+        info.time = obj.time;
+        info.fightUid = obj.fightUid;
+        info.fightName = obj.fightName;
+        info.befightUid = obj.befightUid;
+        info.befightName = obj.befightName;
+        info.score = obj.score;
+        info.isRabCard = obj.isRabCard;
+        info.rabCardUuid = obj.rabCardUuid;
+        info.rabCardId = obj.rabCardId;
+        info.rabCardGrade = obj.rabCardGrade;
         return info;
     }
 }
@@ -285,14 +323,15 @@ export default class MsgLogin
 
     public respFromLocal(){
         var ownerCards:Array<any> = [];
-        // for(var i:number = 0;i<20;i++){
-        //     ownerCards.push(MsgCardSummon.randomCardInfo(CardSummonType.LifeStone));
-        // }
+        for(var i:number = 0;i<5;i++){
+            ownerCards.push(MsgCardSummon.randomCardInfo(CardSummonType.LifeStone));
+        }
         // for(i= 0;i<1;i++){
         //     var copy = this.copyCard(ownerCards[0]);
         //     ownerCards.push(copy);
         // }
         var json:any = {firstLogin:true,
+            accountId:StringUtil.getUUidClient(),
             serverTime:new Date().getTime(),
             userInfo:{name:"上古战神",icon:"",gender:1,exp:0,level:1},
             resInfo:{gold:50000,diamond:500,lifeStone:50000,soulStone:0},
@@ -316,9 +355,9 @@ export default class MsgLogin
                 actionPoint:10,
                 apStartTime:0,
                 revengeStartTime:0,
-                score:0,
-                rabRecord:[]
-            }
+                score:0
+            },
+            outlineFightRecord:[]
         };
         return this.parse(json);
     }
