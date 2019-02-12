@@ -2,6 +2,10 @@ import MessageBase from "./MessageBase";
 import NetConst from "../NetConst";
 import MsgGetEnemyList, { SEnemyInfo } from "./MsgGetEnemyList";
 
+export class CSGetPersonalEnemy{
+    ////最多显示个数
+    public listMaxCount:number = 5;
+}
 export class SCGetPersonalEnemy{
     //仇人列表
     public personalEnmeyList:Array<SEnemyInfo> = [];
@@ -17,7 +21,7 @@ export class SCGetPersonalEnemy{
 }
 //获得仇人列表（抢过自己卡的）
 export default class MsgGetPersonalEnemy extends MessageBase{
-    public param:any;
+    public param:CSGetPersonalEnemy;
     public resp:SCGetPersonalEnemy;
 
     constructor(){
@@ -25,9 +29,10 @@ export default class MsgGetPersonalEnemy extends MessageBase{
         this.isLocal = true;
     }
 
-    public static create(){
+    public static create(count:number =5){
         var msg = new MsgGetPersonalEnemy();
-        msg.param = {};
+        msg.param = new CSGetPersonalEnemy();
+        msg.param.listMaxCount = count;
         return msg;
     }
     public respFromLocal(){

@@ -4,6 +4,7 @@ import { COMMON } from "../CommonData";
 import ColorUtil from "../utils/ColorUtil";
 import { CFG } from "../manager/ConfigManager";
 import { ConfigConst } from "../module/loading/steps/LoadingStepConfig";
+import StringUtil from "../utils/StringUtil";
 
 export class FightRecord{
     //时间;毫秒
@@ -40,8 +41,9 @@ export class FightRecord{
         this.rabCardGrade = info.rabCardGrade;
     }
 
-    public getDescHtml():string{
-        var timeStr:string = "1小时前";
+    public getDescHtml(mine:boolean):string{
+        var time = Math.floor((COMMON.getServerTime() - this.time)/1000);
+        var timeStr:string = StringUtil.formatReadableTime(time,true)+ "前";
         var fightName:string = this.fightName;
         var beFightName:string =this.befightName;
         var score:string =this.score.toString();
@@ -54,17 +56,27 @@ export class FightRecord{
             var cardColor:string = ColorUtil.getGradeColorHex(this.rabCardGrade);
         }
         var str = "";
-        if(isFight){
-            str ="<color=#F0F03A>["+timeStr+"]</c> 你攻击<color=#1A60DD>"+beFightName+"</c>获得胜利，"+
-            "积分<color=#D50336>＋"+score+"</c>";
-            if(isRab){
-                str+="<br />你抢夺了对方的"+cardGrade+"卡牌：<color="+cardColor+">"+cardName+"</c>"
+        if(mine){
+            if(isFight){
+                str ="<color=#D35C21>["+timeStr+"]</c> 你攻击<color=#1A60DD>"+beFightName+"</c>获得胜利，"+
+                "积分<color=#D50336>＋"+score+"</c>";
+                if(isRab){
+                    str+="<br />你抢夺了对方的"+cardGrade+"卡牌：<color="+cardColor+">"+cardName+"</c>"
+                }
+            }else{
+                str ="<color=#D35C21>["+timeStr+"]</c> <color=#1A60DD>"+fightName+"</c>攻击你获得胜利，"+
+                "你的积分<color=#D50336>－"+score+"</c>";
+                if(isRab){
+                    str+="<br />你被抢夺了"+cardGrade+"卡牌：<color="+cardColor+">"+cardName+"</c>"
+                }
             }
-        }else{
-            str ="<color=#F0F03A>["+timeStr+"]</c> <color=#1A60DD>"+fightName+"</c>攻击你获得胜利，"+
-            "你的积分<color=#D50336>－"+score+"</c>";
-            if(isRab){
-                str+="<br />你被抢夺了"+cardGrade+"卡牌：<color="+cardColor+">"+cardName+"</c>"
+        }else {
+            if(isFight){
+                str ="<color=#D35C21>["+timeStr+"]</c> 攻击<color=#1A60DD>"+beFightName+"</c>获得胜利，"+
+                "积分<color=#D50336>＋"+score+"</c>";
+                if(isRab){
+                    str+="<br />抢夺了对方的"+cardGrade+"卡牌：<color="+cardColor+">"+cardName+"</c>"
+                }
             }
         }
         return str;
@@ -98,7 +110,7 @@ export default class BattleInfo{
         if(this.revengeStartTime<=0){
             return 0;
         }else{
-            var time = COMMON.getServerTime() - (this.revengeStartTime+this.revengeReturnTime);
+            var time = (this.revengeStartTime+this.revengeReturnTime)-COMMON.getServerTime();
             if(time>0){
                 return time;
             }else{

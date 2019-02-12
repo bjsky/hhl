@@ -963,7 +963,15 @@
     "sprHead": {
       "__id__": 7
     },
-    "text": "hello"
+    "lblName": {
+      "__id__": 23
+    },
+    "sprSex": {
+      "__id__": 26
+    },
+    "lblTime": {
+      "__id__": 29
+    }
   },
   {
     "__type__": "cc.PrefabInfo",

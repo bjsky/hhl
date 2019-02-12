@@ -34,7 +34,9 @@ export const ResConst = {
     RankPanel:"prefabs/rankPanel",
     SevenDayPanel:"prefabs/sevendayPanel",
     TaskPanel:"prefabs/taskPanel",
-    FighterDetailPanel:"prefabs/fighterDetail"
+    FighterDetailPanel:"prefabs/fighterDetail",
+    FightRecordPanel:"prefabs/fightRecordPanel",
+    BeFightPanel:"prefabs/beFightPanel"
 }
 /**
  * 加载配置

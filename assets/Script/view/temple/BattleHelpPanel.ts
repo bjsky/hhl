@@ -31,6 +31,6 @@ export default class battleHelpPanel extends PopUpBase {
             "，经验：<color=#29b92f>"+cfg.getExp+"</c>，钻石：<color=#29b92f>"+cfg.getDiamond+"</c><br />")
         }
         
-        this.richScore.string = "<color=#D42834>" +scoreText+"</c>";
+        this.richScore.string = "<color=#7D3F3F>" +scoreText+"</c>";
     }
 }

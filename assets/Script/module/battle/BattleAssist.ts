@@ -15,6 +15,9 @@ import { BuildType } from "../../view/BuildPanel";
 import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
 import { ResType } from "../../model/ResInfo";
+import { GLOBAL, ServerType } from "../../GlobalData";
+import StringUtil from "../../utils/StringUtil";
+import DemoFightRecord from "../../utils/DemoFightRecord";
 
 export default class BattleAssist{
 
@@ -248,6 +251,7 @@ export default class BattleAssist{
 
 
     private _fightRecordsMap:any = {};
+    public outlineRecords:FightRecord[] = [];
     public updateFightRecords(uid:string,sRecords:Array<SFightRecord>):Array<FightRecord>{
         var records:Array<FightRecord> = [];
         var record:FightRecord = null;
@@ -258,6 +262,25 @@ export default class BattleAssist{
         })
         this._fightRecordsMap[uid] = records;
         return records;
+    }
+
+    public initOutlineFightRecords(sRecords:SFightRecord[]){
+        var record:FightRecord = null;
+        this.outlineRecords = [];
+        if(GLOBAL.serverType == ServerType.Client){
+            DemoFightRecord.initDemo();
+            DemoFightRecord.demo1.forEach((sRecord:SFightRecord)=>{
+                record = new FightRecord();
+                record.initFromServer(sRecord);
+                this.outlineRecords.push(record);
+            })
+        }else{
+            sRecords.forEach((sRecord:SFightRecord)=>{
+                record = new FightRecord();
+                record.initFromServer(sRecord);
+                this.outlineRecords.push(record);
+            })
+        }
     }
 }
 

@@ -96,6 +96,81 @@ export default class StringUtil{
         return source;
     }
     /**
+     * 多余1天的显示**天**小时**分， 多余一小时的显示**小时**分，少于一小时的显示**分**秒 
+     * 时分秒不为0的显示
+     * @param time 
+     */
+    public static formatReadableTime(time: number,short:boolean = false): string {
+        var str: string = "";
+        var _minite: number;
+        var day: number = 0;
+        var hour: number = 0;
+        var minite: number = 0;
+        var second: number = 0;
+
+        second = Math.floor(time % 60);
+        _minite = Math.floor((time - second) / 60);
+        minite = Math.floor(_minite % 60);
+        hour = Math.floor((_minite - minite) / 60);
+        day = Math.floor(hour / 24);
+
+        if (second < 10) {
+            var secondString: String;
+            secondString = "0" + second.toString();
+        }
+        else {
+            secondString = second.toString();
+        }
+        if (minite < 10) {
+            var miniteString: String;
+            miniteString = "0" + minite.toString();
+        }
+        else {
+            miniteString = minite.toString();
+        }
+        if (hour % 24 < 10) {
+            var hourString: String;
+            hourString = "0" + (hour % 24).toString();
+        }
+        else {
+            hourString = (hour % 24).toString();
+        }
+        if (hour >= 24) {
+            if(short){
+                str = day.toString() + "天";
+            }else{
+                str = day.toString() + "天"
+                    + (hour!=0?(hourString + "小时"):"")
+                    + (minite!=0?(miniteString + "分"):"")
+                    + (second!=0?(secondString + "秒"):"");
+            }
+        }
+        else {
+            if (hour > 0) {
+                if(short){
+                    str = hour.toString() + "小时";
+                }else{
+                    str = hourString + "小时"
+                        + (minite!=0?(miniteString + "分"):"")
+                        + (second!=0?(secondString + "秒"):"");
+                }
+            }
+            else {
+                if(minite>0){
+                    if(short){
+                        str = minite.toString() + "分钟";
+                    }else{
+                        str = miniteString + "分"
+                            + (second!=0?(secondString + "秒"):"");
+                    }
+                }else{
+                    str = second.toString() + "秒";
+                }
+            }
+        }
+        return str;
+    }
+    /**
      * 格式化字符串 xxxx ==> x,xxx
      * @param num 
      * 

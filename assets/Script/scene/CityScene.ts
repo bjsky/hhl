@@ -1,7 +1,6 @@
 import SceneBase from "./SceneBase";
 import { UI } from "../manager/UIManager";
 import { ResConst } from "../module/loading/steps/LoadingStepRes";
-import AlertPanel, { AlertBtnType } from "../view/AlertPanel";
 import BuildPanel, { BuildType } from "../view/BuildPanel";
 import TouchHandler from "../component/TouchHandler";
 import { COMMON } from "../CommonData";
@@ -10,6 +9,7 @@ import { EVENT } from "../message/EventCenter";
 import GameEvent from "../message/GameEvent";
 import { SOUND, SoundConst } from "../manager/SoundManager";
 import { Battle } from "../module/battle/BattleAssist";
+import { BeFightPanelType } from "../view/castle/BeFightPanel";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -66,7 +66,13 @@ export default class CityScene extends SceneBase {
         if(GUIDE.isInGuide){
             GUIDE.startGuide();
         }
+        this.onEnterGame();
+    }
 
+    private onEnterGame(){
+        if(Battle.outlineRecords.length >0 && !GUIDE.isInGuide){
+            UI.createPopUp(ResConst.BeFightPanel,{type:BeFightPanelType.Outline,records:Battle.outlineRecords});
+        }
         SOUND.playBgSound(SoundConst.Bg_sound);
     }
 

@@ -1,10 +1,11 @@
 import PopUpBase from "../../component/PopUpBase";
 import LoadSprite from "../../component/LoadSprite";
 import LineUpUI from "../battle/LineUpUI";
-import EnemyInfo from "../../model/EnemyInfo";
+import EnemyInfo, { EnemyTypeEnum } from "../../model/EnemyInfo";
 import { SFightRecord } from "../../net/msg/MsgLogin";
 import { FightRecord } from "../../model/BattleInfo";
 import PathUtil from "../../utils/PathUtil";
+import { Battle } from "../../module/battle/BattleAssist";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -42,11 +43,13 @@ export default class FightDeailPanel extends PopUpBase {
     textRecords: cc.RichText = null;
 
     // onLoad () {}
+    private _type:EnemyTypeEnum = 0;
     private _enemyInfo:EnemyInfo =  null;
     private _records:Array<FightRecord> = []
     public setData(data:any){
         super.setData(data);    
         this._enemyInfo = data.info;
+        this._type = this._enemyInfo.enemyType;
         this._records = data.records;
     }
 
@@ -68,12 +71,22 @@ export default class FightDeailPanel extends PopUpBase {
         this.sprSex.load(PathUtil.getSexIconUrl(this._enemyInfo.enemySex));
         this.sprHead.load(this._enemyInfo.enemyIcon);
         this.initRecordStr();
+        if(this._type == EnemyTypeEnum.Enemy){
+            this.btnRevenge.node.active =false;
+            this.btnAttack.node.active = !this._enemyInfo.isAttacked;
+        }else if(this._type == EnemyTypeEnum.PersonlEnemy){
+            this.btnAttack.node.active  = false;
+            this.btnRevenge.node.active = (Battle.battleInfo.revengeTime<=0);
+        }
     }
 
     private initRecordStr(){
         var str:string ="";
         this._records.forEach((record:FightRecord)=>{
-            str +=(record.getDescHtml()+"<br />");
+            var htmlStr = record.getDescHtml(false);
+            if(htmlStr!=""){
+                str +=(htmlStr+"<br />");
+            }
         })
         str = "<color=#7D3F3F>"+str+"</color>"
         this.textRecords.string = str;

@@ -9,6 +9,11 @@ import { Battle } from "../../module/battle/BattleAssist";
 import { NET } from "../../net/core/NetController";
 import MsgGetFightRecordList from "../../net/msg/MsgGetFightRecordList";
 import { FightRecord } from "../../model/BattleInfo";
+import { BeFightPanelType } from "./BeFightPanel";
+import StringUtil from "../../utils/StringUtil";
+import { COMMON } from "../../CommonData";
+import { Card } from "../../module/card/CardAssist";
+import DemoFightRecord from "../../utils/DemoFightRecord";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -68,7 +73,8 @@ export default class FightItemUI extends DListItem{
         },this)
     }
     private onAttackTouch(e){
-
+        var record = DemoFightRecord.createBeRabFightRecord();
+        UI.createPopUp(ResConst.BeFightPanel,{type:BeFightPanelType.BeFight,records:[record]});
     }
     start () {
 

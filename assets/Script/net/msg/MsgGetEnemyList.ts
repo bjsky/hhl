@@ -7,7 +7,6 @@ import { Card } from "../../module/card/CardAssist";
 import CardInfo from "../../model/CardInfo";
 import { Lineup } from "../../module/battle/LineupAssist";
 import LineupInfo from "../../model/LineupInfo";
-import { DemoFightRecordUtils } from "./MsgGetFightRecordList";
 
 export class CSGetEnemyList{
     //最小等级
@@ -16,6 +15,8 @@ export class CSGetEnemyList{
     public levelMax:number = 0;
     //刷新消耗金币
     public goldCost:number = 0;
+    //最多显示个数
+    public listMaxCount:number = 5;
 
 }
 
@@ -104,12 +105,13 @@ export default class MsgGetEnemyList extends MessageBase{
         this.isLocal = true;
     }
 
-    public static create(lvMin:number,lvMax:number,cost:number){
+    public static create(lvMin:number,lvMax:number,cost:number,count:number =5){
         var msg = new MsgGetEnemyList();
         msg.param = new CSGetEnemyList();
         msg.param.levelMin = lvMin;
         msg.param.levelMax = lvMax;
         msg.param.goldCost = cost;
+        msg.param.listMaxCount = count;
         return msg;
     }
     public respFromLocal(){
@@ -149,7 +151,6 @@ export default class MsgGetEnemyList extends MessageBase{
         info.enemyLineup = lineups;
         var sBattle:SBattleInfo = Battle.battleInfo.cloneServerInfo();
         info.enemyScore = sBattle.score;
-        DemoFightRecordUtils.initPlayerFightRecord(info.enemyUid,info.enemyName);
         return info;
     }
 

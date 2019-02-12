@@ -10,6 +10,7 @@ import { Passage } from "./module/battle/PassageAssist";
 import { Lineup } from "./module/battle/LineupAssist";
 import { Share } from "./module/share/ShareAssist";
 import { Battle } from "./module/battle/BattleAssist";
+import { FightRecord } from "./model/BattleInfo";
 
 export enum DirectionEnum{
     Left = 0,       //左
@@ -96,6 +97,8 @@ export default class CommonData{
         Share.initShare(data.todayShareCount);
 
         Battle.initBattle(data.battleInfo);
+
+        Battle.initOutlineFightRecords(data.outlineFightRecord);
     }
 
     public updateResInfo(data:SResInfo):SResInfo{

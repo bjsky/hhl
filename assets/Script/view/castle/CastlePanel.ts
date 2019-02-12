@@ -14,6 +14,7 @@ import { COMMON } from "../../CommonData";
 import ResPanel, { ResPanelType } from "../ResPanel";
 import { NET } from "../../net/core/NetController";
 import MsgGetFightRecordList from "../../net/msg/MsgGetFightRecordList";
+import { FightRecord } from "../../model/BattleInfo";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -107,7 +108,8 @@ export default class CastlePanel extends UIBase {
     private onRecordsClick(e){
         NET.send(MsgGetFightRecordList.create(COMMON.accountId),(msg:MsgGetFightRecordList)=>{
             if(msg && msg.resp){
-                
+                var records:Array<FightRecord> = Battle.updateFightRecords(COMMON.accountId,msg.resp.records);
+                UI.createPopUp(ResConst.FightRecordPanel,{records:records});
             }
         },this)
     }

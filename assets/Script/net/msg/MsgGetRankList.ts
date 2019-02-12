@@ -10,6 +10,8 @@ export enum GetRankListType{
 export class CSGetRankList{
     //排行榜的类型
     public type:GetRankListType = 0;
+    ////最多显示个数
+    public listMaxCount:number = 30;
 }
 
 export class SCGetRankList{
@@ -65,10 +67,11 @@ export default class MsgGetRankList extends MessageBase{
         this.isLocal = true;
     }
 
-    public static create(type:GetRankListType){
+    public static create(type:GetRankListType,count:number =30){
         var msg = new MsgGetRankList();
         msg.param = new CSGetRankList();
         msg.param.type = type;
+        msg.param.listMaxCount = count;
         return msg;
     }
 
