@@ -4,6 +4,8 @@ import MsgCardSummon, { SCardInfo, CardSummonType } from "./MsgCardSummon";
 import NetConst from "../NetConst";
 import { COMMON } from "../../CommonData";
 import { Battle } from "../../module/battle/BattleAssist";
+import CardInfo from "../../model/CardInfo";
+import { Card } from "../../module/card/CardAssist";
 
 //战斗会保存战斗纪录，并且推送给对应的敌人，为了数据库性能，建议一个玩家最多保存30条纪录
 export class CSFightEnemy{
@@ -30,8 +32,6 @@ export class CSFightEnemy{
 export class SCFightEnemy{
     //敌人uid，取参数的
     public enemyUid:string ="";
-    //敌人名字，取参数的
-    public enemyName:string ="";
     //战斗完成增加的经验
     public addExp:number = 0;
     //战斗完成后的res信息
@@ -40,18 +40,19 @@ export class SCFightEnemy{
     public userInfo:SUserInfo;
     //战斗完成后的战场信息（行动力，行动力开始时间或者复仇开始时间），积分
     public battleInfo:SBattleInfo;
-    //战斗纪录
-    public fightRecord:SFightRecord = null;
+    //获得的卡牌,如果有的话，没有为null
+    public addCard:SCardInfo = null;
 
     public static parse(obj:any):SCFightEnemy{
         var info:SCFightEnemy = new SCFightEnemy();
         info.enemyUid = obj.enemyUid;
-        info.enemyName = obj.enemyName;
         info.addExp =obj.addExp;
         info.resInfo = SResInfo.parse(obj.resInfo);
         info.userInfo = SUserInfo.parse(obj.userInfo);
         info.battleInfo = SBattleInfo.parse(obj.battleInfo);
-        info.fightRecord = SFightRecord.parse(obj.fightRecord);
+        if(obj.addCard!=undefined && obj.addCard!=null){
+            info.addCard = SCardInfo.parse(obj.addCard);
+        }
         return info;
     }
 }
@@ -67,7 +68,7 @@ export default class MsgFightEnemy extends MessageBase{
     }
 
     //攻击敌人
-    public static createFightEnemy(uid:string,uname:string
+    public static create(uid:string,uname:string
         ,addExp:number,addDiamond:number,addScore:number
         ,costActionPoint:number,isRevenge:boolean,isRabCard:boolean,rate:string){
         var msg = new MsgFightEnemy();
@@ -96,21 +97,8 @@ export default class MsgFightEnemy extends MessageBase{
             battleInfo.revengeStartTime = new Date().getTime();
         }
         var addCard:SCardInfo = null;
-        var record:SFightRecord = new SFightRecord();
-        record.time = new Date().getTime();
-        record.fightUid = COMMON.accountId;
-        record.fightName = COMMON.userInfo.name;
-        record.befightUid =this.param.enemyUid;
-        record.befightName = this.param.enemyName;
-        record.score = this.param.addScore;
         if(this.param.isRabCard){
             addCard = MsgCardSummon.randomCardInfo(CardSummonType.LifeStone);
-            record.isRabCard = true;
-            record.rabCardUuid = addCard.uuid;
-            record.rabCardId = addCard.cardId;
-            record.rabCardGrade = addCard.grade;
-        }else{
-            record.isRabCard = false;
         }
 
         json ={
@@ -119,7 +107,7 @@ export default class MsgFightEnemy extends MessageBase{
             resInfo:resInfo,
             userInfo:userInfo,
             battleInfo:battleInfo,
-            fightRecord:record
+            addCard:addCard
         }
         return this.parse(json);
     }

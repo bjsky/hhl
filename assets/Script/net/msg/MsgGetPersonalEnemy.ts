@@ -6,15 +6,28 @@ export class CSGetPersonalEnemy{
     ////最多显示个数
     public listMaxCount:number = 5;
 }
+export class SPersonalEnemyInfo{
+    //最近抢夺时间
+    public lastRabTime:number = 0;
+    //敌人信息
+    public enmeyInfo:SEnemyInfo = null;
+
+    public static parse(obj:any):SPersonalEnemyInfo{
+        var info:SPersonalEnemyInfo = new SPersonalEnemyInfo();
+        info.lastRabTime = obj.lastRabTime;
+        info.enmeyInfo = SEnemyInfo.parse(obj.enemyInfo);
+        return info;
+    }
+}
 export class SCGetPersonalEnemy{
     //仇人列表
-    public personalEnmeyList:Array<SEnemyInfo> = [];
+    public personalEnmeyList:Array<SPersonalEnemyInfo> = [];
 
     public static parse(obj:any):SCGetPersonalEnemy{
         var data:SCGetPersonalEnemy =new SCGetPersonalEnemy();
         data.personalEnmeyList = [];
         obj.personalEnmeyList.forEach((enemyInfo:any) => {
-            data.personalEnmeyList.push(SEnemyInfo.parse(enemyInfo));
+            data.personalEnmeyList.push(SPersonalEnemyInfo.parse(enemyInfo));
         });
         return data;
     }
@@ -38,7 +51,8 @@ export default class MsgGetPersonalEnemy extends MessageBase{
     public respFromLocal(){
         var json:any ={
             personalEnmeyList:[
-                MsgGetEnemyList.getEnemyInfo()
+                {lastRabTime:new Date().getTime(),
+                enemyInfo:MsgGetEnemyList.getEnemyInfo()}
             ]
         };
         return this.parse(json);

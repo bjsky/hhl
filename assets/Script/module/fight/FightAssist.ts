@@ -9,6 +9,10 @@ import SkillLogic from "./SkillLogic";
 import FightOnce from "./FightOnce";
 import { Passage } from "../battle/PassageAssist";
 import ResInfo, { ResType } from "../../model/ResInfo";
+import { Battle } from "../battle/BattleAssist";
+import EnemyInfo from "../../model/EnemyInfo";
+import { SCardInfo } from "../../net/msg/MsgCardSummon";
+import CardInfo from "../../model/CardInfo";
 
 export default class FightAssist{
     private static _instance: FightAssist = null;
@@ -41,13 +45,17 @@ export default class FightAssist{
         return this._isFighting;
     }
 
+    private _param:any = null;
 
-    public showFight(infoMine:FightInfo,infoEnemy:FightInfo){
+    public showFight(infoMine:FightInfo,infoEnemy:FightInfo,param?:any){
         if(this._isFighting)
             return;
         this._infoMine = infoMine;
         this._infoEnemy = infoEnemy;
         this._isFighting = true;
+        if(param!=undefined){
+            this._param = param;
+        }
         
         UI.createPopUp(ResConst.FightPanel,{mine:infoMine,enemy:infoEnemy},(ui:UIBase)=>{
             this._fightPanel = ui as FightPanel;
@@ -92,6 +100,30 @@ export default class FightAssist{
             }
         }else if(this._infoEnemy.playerType == FightPlayerType.Enemy){  //征战成功
 
+            var enemy:EnemyInfo = this._param as EnemyInfo;
+            enemy.isAttacked = true;
+            if(this._result.victory){//挑战玩家成功
+                Battle.fightEnemeySuccess(enemy,this._result.evaluate,
+                    (addExp:number,addDiamond:number,addScore:number,cardInfo:CardInfo)=>{
+                    UI.createPopUp(ResConst.FightResult,
+                        {
+                            result:this._result,
+                            fightMine:this._infoMine,
+                            fightEnemy:this._infoEnemy,
+                            addScore:addScore,
+                            addCard:cardInfo,
+                            rewards:[
+                            {type:ResType.exp,value:addExp},
+                            {type:ResType.diamond,value:addDiamond}
+                        ]});
+                })
+            }else{
+                UI.createPopUp(ResConst.FightResult,
+                    {result:this._result,
+                        fightMine:this._infoMine,
+                        fightEnemy:this._infoEnemy,
+                        rewards:[]});
+            }
         }
     }
 

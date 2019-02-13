@@ -105,12 +105,12 @@ export default class BattleInfo{
         var pro = this.actionPoint/this.totalAP;
         return (pro>1)?1:(pro<0?0:pro);
     }
-    //复仇时间
+    //复仇时间(毫秒)
     public get revengeTime():number{
         if(this.revengeStartTime<=0){
             return 0;
         }else{
-            var time = (this.revengeStartTime+this.revengeReturnTime)-COMMON.getServerTime();
+            var time = (this.revengeStartTime+this.revengeReturnTime*1000)-COMMON.getServerTime();
             if(time>0){
                 return time;
             }else{
@@ -119,7 +119,7 @@ export default class BattleInfo{
         }
     }
     public get revengeTimePro(){
-        var pro = this.revengeTime/this.revengeReturnTime;
+        var pro = this.revengeTime/(this.revengeReturnTime*1000);
         return (pro>1)?1:(pro<0?0:pro);
     }
 
@@ -139,6 +139,7 @@ export default class BattleInfo{
         info.actionPoint = this.actionPoint;
         info.apStartTime = this.apStartTime;
         info.score = this.score;
+        info.revengeStartTime = this.revengeStartTime;
         return info;
     }
 }

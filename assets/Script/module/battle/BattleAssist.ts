@@ -1,11 +1,11 @@
 import { SBattleInfo, SResInfo, SFightRecord } from "../../net/msg/MsgLogin";
 import BattleInfo, { FightRecord } from "../../model/BattleInfo";
-import EnemyInfo, { EnemyTypeEnum } from "../../model/EnemyInfo";
+import { EnemyTypeEnum } from "../../model/EnemyInfo";
 import MsgGetEnemyList, { SEnemyInfo } from "../../net/msg/MsgGetEnemyList";
 import { NET } from "../../net/core/NetController";
 import { CONSTANT } from "../../Constant";
 import { COMMON } from "../../CommonData";
-import MsgGetPersonalEnemy from "../../net/msg/MsgGetPersonalEnemy";
+import MsgGetPersonalEnemy, { SPersonalEnemyInfo } from "../../net/msg/MsgGetPersonalEnemy";
 import { CFG } from "../../manager/ConfigManager";
 import { ConfigConst } from "../loading/steps/LoadingStepConfig";
 import { Lineup } from "./LineupAssist";
@@ -16,8 +16,11 @@ import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
 import { ResType } from "../../model/ResInfo";
 import { GLOBAL, ServerType } from "../../GlobalData";
-import StringUtil from "../../utils/StringUtil";
 import DemoFightRecord from "../../utils/DemoFightRecord";
+import EnemyInfo from "../../model/EnemyInfo";
+import MsgFightEnemy from "../../net/msg/MsgFightEnemy";
+import CardInfo from "../../model/CardInfo";
+import { Card } from "../card/CardAssist";
 
 export default class BattleAssist{
 
@@ -51,6 +54,11 @@ export default class BattleAssist{
         this.initScoreCfg();
     }
 
+    public updateBattleInfo(info:SBattleInfo){
+        this._battleInfo.initFromServer(info);
+        this.initScoreCfg();
+    }
+
     public initEnemyList(){
         var levelArea:number = CONSTANT.getEnemyListLevelArea();
         var levelMin = COMMON.userInfo.level - levelArea;
@@ -59,7 +67,7 @@ export default class BattleAssist{
         if(levelMax>30) levelMax = 30;
         NET.send(MsgGetEnemyList.create(levelMin,levelMax,0),(msg:MsgGetEnemyList)=>{
             if(msg && msg.resp){
-                this._enemyList = this.createEnemyList(msg.resp.enmeyList,false);
+                this._enemyList = this.createEnemyList(msg.resp.enmeyList);
                 this._enemyListComplete = true;
             }
         },this)
@@ -68,7 +76,7 @@ export default class BattleAssist{
     public initPersonalEnemyList(){
         NET.send(MsgGetPersonalEnemy.create(),(msg:MsgGetPersonalEnemy)=>{
             if(msg && msg.resp){
-                this._personalEnemeyList = this.createEnemyList(msg.resp.personalEnmeyList,true);
+                this._personalEnemeyList = this.createPersonalEnemyList(msg.resp.personalEnmeyList);
                 this._personalEnemyListComplete = true;
             }
         },this)
@@ -79,15 +87,15 @@ export default class BattleAssist{
         return this._enemyListComplete && this._personalEnemyListComplete;
     }
 
-    private createEnemyList(sList:Array<SEnemyInfo>,isPersonal:boolean):Array<EnemyInfo>{
+    private createEnemyList(sList:Array<SEnemyInfo>):Array<EnemyInfo>{
         var enemyArr:Array<EnemyInfo> = [];
         var info:EnemyInfo = null;
         sList.forEach((sInfo:SEnemyInfo)=>{
             info = new EnemyInfo();
-            info.initEnemy(sInfo,isPersonal);
+            info.initEnemy(sInfo,EnemyTypeEnum.Enemy);
             enemyArr.push(info);
         })
-        if(!isPersonal && enemyArr.length<5){       //补机器人
+        if(enemyArr.length<5){       //补机器人
             var passIds:number[] = this.getRobotPassageIds();
             var count:number = 5- enemyArr.length;
             while(count>0){
@@ -98,6 +106,17 @@ export default class BattleAssist{
                 enemyArr.push(info);
             }
         }
+        return enemyArr;
+    }
+
+    private createPersonalEnemyList(sList:Array<SPersonalEnemyInfo>):Array<EnemyInfo>{
+        var enemyArr:Array<EnemyInfo> = [];
+        var info:EnemyInfo = null;
+        sList.forEach((sInfo:SPersonalEnemyInfo)=>{
+            info = new EnemyInfo();
+            info.initEnemy(sInfo.enmeyInfo,EnemyTypeEnum.PersonlEnemy,sInfo.lastRabTime);
+            enemyArr.push(info);
+        })
         return enemyArr;
     }
 
@@ -147,10 +166,46 @@ export default class BattleAssist{
         NET.send(MsgGetEnemyList.create(levelMin,levelMax,cost),(msg:MsgGetEnemyList)=>{
             if(msg && msg.resp){
                 var cost:SResInfo = COMMON.updateResInfo(msg.resp.resInfo);
-                this._enemyList = this.createEnemyList(msg.resp.enmeyList,false);
+                this._enemyList = this.createEnemyList(msg.resp.enmeyList);
                 // 建筑升级完成
                 EVENT.emit(GameEvent.Battle_scout_Complete);
                 EVENT.emit(GameEvent.Res_update_Cost_Complete,{types:[{type:ResType.gold,value:cost.gold}]});
+            }
+        },this)
+    }
+    //挑战敌人成功
+    public fightEnemeySuccess(enemyInfo:EnemyInfo,evaluate:number,cb:Function){
+        //挑战配置
+        var fightScoreCfg :any= this.getFightScoreCfg(enemyInfo.enemyScore)
+        var addExp:number = this.getAddExpBuffed();
+        var addDiamond:number = this.getAddDiamondBuffed();
+        var addScore = evaluate;
+        var costActionPoint = 1;
+        var isRevenge = (enemyInfo.enemyType == EnemyTypeEnum.PersonlEnemy);
+        var getCardRate = Number(fightScoreCfg.getCardRate);
+        if(isRevenge){  //复仇双倍
+            getCardRate *=2;
+            costActionPoint = 0;
+        }
+        var isRabCard:boolean = (Math.random()<getCardRate);
+        var rate ="";
+        if(isRabCard){  
+            rate = fightScoreCfg.getCardRateStr;
+        }
+
+        NET.send(MsgFightEnemy.create(enemyInfo.enemyUid,enemyInfo.enemyName,
+            addExp,addDiamond,addScore,costActionPoint,isRevenge,isRabCard,rate),(msg:MsgFightEnemy)=>{
+            if(msg && msg.resp){
+                COMMON.updateUserInfo(msg.resp.userInfo);  //更新用户数据
+                COMMON.updateResInfo(msg.resp.resInfo); //更新资源数据
+                Battle.updateBattleInfo(msg.resp.battleInfo); //更新战场数据
+                EVENT.emit(GameEvent.FightEnemey_Success,{info:enemyInfo});
+                var cardInfo:CardInfo = null;
+                if(msg.resp.addCard!=null){
+                    Card.addNewCard(msg.resp.addCard);
+                    cardInfo = Card.getCardByUUid(msg.resp.addCard.uuid);
+                }
+                cb && cb(addExp,addDiamond,addScore,cardInfo);
             }
         },this)
     }

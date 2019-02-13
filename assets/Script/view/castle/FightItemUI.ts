@@ -9,11 +9,9 @@ import { Battle } from "../../module/battle/BattleAssist";
 import { NET } from "../../net/core/NetController";
 import MsgGetFightRecordList from "../../net/msg/MsgGetFightRecordList";
 import { FightRecord } from "../../model/BattleInfo";
-import { BeFightPanelType } from "./BeFightPanel";
-import StringUtil from "../../utils/StringUtil";
-import { COMMON } from "../../CommonData";
-import { Card } from "../../module/card/CardAssist";
-import DemoFightRecord from "../../utils/DemoFightRecord";
+import FightInfo from "../../model/FightInfo";
+import { Lineup } from "../../module/battle/LineupAssist";
+import { Fight } from "../../module/fight/FightAssist";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -45,6 +43,8 @@ export default class FightItemUI extends DListItem{
     sprSex: LoadSprite = null;
     @property(cc.Button)
     btnAttack: cc.Button = null;
+    @property(cc.Label)
+    lblAttacked: cc.Label = null;
 
     private _enemyInfo:EnemyInfo = null;
     // LIFE-CYCLE CALLBACKS:
@@ -73,8 +73,19 @@ export default class FightItemUI extends DListItem{
         },this)
     }
     private onAttackTouch(e){
-        var record = DemoFightRecord.createBeRabFightRecord();
-        UI.createPopUp(ResConst.BeFightPanel,{type:BeFightPanelType.BeFight,records:[record]});
+        // var record = DemoFightRecord.createBeRabFightRecord();
+        // UI.createPopUp(ResConst.BeFightPanel,{type:BeFightPanelType.BeFight,records:[record]});
+        if(Battle.battleInfo.actionPoint<=0){
+            UI.showTip("行动力力不足，请过会再来");
+            return;
+        }
+        var foMine:FightInfo = Lineup.getOwnerFightInfo();
+        if(foMine.totalPower == 0){
+            UI.showAlert("请先上阵英雄");
+            return;
+        }
+        var foEnemey:FightInfo = this._enemyInfo.getFightInfo();
+        Fight.showFight(foMine,foEnemey,this._enemyInfo);
     }
     start () {
 
@@ -87,11 +98,9 @@ export default class FightItemUI extends DListItem{
         this.lblPower.string = this._enemyInfo.enemyTotalPower.toString();
         this.sprHead.load(this._enemyInfo.enemyIcon);
         this.sprSex.load(PathUtil.getSexIconUrl(this._enemyInfo.enemySex));
-        if(this._enemyInfo.isAttacked){
-            this.btnAttack.node.active = false;
-        }else{
-            this.btnAttack.node.active = true;
-        }
+        this.btnAttack.node.active = !this._enemyInfo.isAttacked;
+        this.lblAttacked.node.active = this._enemyInfo.isAttacked;
+
         this._fightScoreCfg= Battle.getFightScoreCfg(this._enemyInfo.enemyScore);
         this.lblRabDesc.string = this._fightScoreCfg.getCardDesc;
     }

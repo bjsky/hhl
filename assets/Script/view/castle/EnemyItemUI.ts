@@ -54,36 +54,22 @@ export default class EnmeyItemUI extends DListItem{
     }
 
     private onHeadTouch(e){
-        if(this._netComplete){
-            UI.createPopUp(ResConst.FighterDetailPanel,{info:this._enemyInfo,records:this._fightRecords});
-        }
+        NET.send(MsgGetFightRecordList.create(this._enemyInfo.enemyUid),(msg:MsgGetFightRecordList)=>{
+            if(msg && msg.resp){
+                var records = Battle.updateFightRecords(this._enemyInfo.enemyUid,msg.resp.records);
+                UI.createPopUp(ResConst.FighterDetailPanel,{info:this._enemyInfo,records:records});
+            }
+        },this);
     }
 
-    private _netComplete:boolean = false;
-    private _fightRecords:Array<FightRecord> =null;
     private initView(){
         this.lblName.string = this._enemyInfo.enemyName;
         this.sprHead.load(this._enemyInfo.enemyIcon);
         this.sprSex.load(PathUtil.getSexIconUrl(this._enemyInfo.enemySex));
-        NET.send(MsgGetFightRecordList.create(this._enemyInfo.enemyUid),(msg:MsgGetFightRecordList)=>{
-            if(msg && msg.resp){
-                this._fightRecords= Battle.updateFightRecords(this._enemyInfo.enemyUid,msg.resp.records);
-                this._netComplete = true;
-                var time = this.getEnemyFightTime();
-                time = Math.floor((COMMON.getServerTime() - time)/1000);
-                var timeStr:string = StringUtil.formatReadableTime(time,true)+ "前";
-                this.lblTime.string = timeStr;
-            }
-        },this)
-    }
-
-    private getEnemyFightTime():number{
-        for(var i:number = 0;i<this._fightRecords.length;i++){
-            if(this._fightRecords[i].befightUId == COMMON.accountId){
-                return this._fightRecords[i].time;
-            }
-        }
-        return 0;
+        var time = this._enemyInfo.enemyLastRabTime;
+        time = Math.floor((COMMON.getServerTime() - time)/1000);
+        var timeStr:string = StringUtil.formatReadableTime(time,true)+ "前";
+        this.lblTime.string = timeStr;
     }
     start () {
 

@@ -255,7 +255,7 @@ export class SBattleInfo{
         return info;
     }
 }
-//攻击纪录（包括攻击别人和别人攻击自己的）
+//攻击纪录
 export class SFightRecord{
     //时间;毫秒
     public time:number = 0;
@@ -355,7 +355,7 @@ export default class MsgLogin
                 actionPoint:10,
                 apStartTime:0,
                 revengeStartTime:0,
-                score:0
+                score:49
             },
             outlineFightRecord:[]
         };

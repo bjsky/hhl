@@ -23,7 +23,7 @@ export class SCGetFightRecordList{
         return info;
     }
 }
-//获取uid的攻击纪录（攻击和被攻击的）
+//获取uid的攻击纪录
 export default class MsgGetFightRecordList extends MessageBase{
     public param:CSGetFightRecordList;
     public resp:SCGetFightRecordList;

@@ -4,6 +4,7 @@ import StringUtil from "../utils/StringUtil";
 import { COMMON } from "../CommonData";
 import { CFG } from "../manager/ConfigManager";
 import { ConfigConst } from "../module/loading/steps/LoadingStepConfig";
+import FightInfo, { FightPlayerType } from "./FightInfo";
 
 export enum EnemyTypeEnum{
     Enemy = 1, //玩家
@@ -13,6 +14,8 @@ export enum EnemyTypeEnum{
 export default class EnemyInfo {
     //敌人类型
     public enemyType:EnemyTypeEnum = 0;
+    //最后抢夺时间
+    public enemyLastRabTime:number = 0;
     //敌人uid
     public enemyUid:string = "";
     //敌人姓名
@@ -32,8 +35,9 @@ export default class EnemyInfo {
     //是否已攻击
     public isAttacked:boolean =false;
 
-    public initEnemy(sInfo:SEnemyInfo,isPersonal:boolean){
-        this.enemyType = isPersonal?EnemyTypeEnum.PersonlEnemy: EnemyTypeEnum.Enemy;
+    public initEnemy(sInfo:SEnemyInfo,type:EnemyTypeEnum,enemyLastRabTime:number = 0){
+        this.enemyType = type;
+        this.enemyLastRabTime = enemyLastRabTime;
         this.enemyUid = sInfo.enemyUid;
         this.enemyName = sInfo.enemyName;
         this.enemyLevel = sInfo.enemyLevel;
@@ -51,6 +55,20 @@ export default class EnemyInfo {
         this.enemyTotalPower = totalPower;
         this.enemyScore = sInfo.enemyScore;
         this.isAttacked = false;
+    }
+
+    public getFightInfo():FightInfo{
+        var info:FightInfo = new FightInfo();
+        info.playerType = FightPlayerType.Enemy;
+        info.playerUid = this.enemyUid;
+        info.lineup = this.enemyLineupMap;
+        info.totalPower = this.enemyTotalPower;
+        info.playerName = this.enemyName;
+        info.playerLevel = this.enemyLevel;
+        info.playerSex = this.enemySex;
+        info.playerIcon  = this.enemyIcon;
+
+        return info;
     }
 
     public static NameConsts =['划船不用桨',"一刀屠万狗","爱过人渣","一表人渣","女神收割机",

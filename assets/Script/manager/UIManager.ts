@@ -163,8 +163,9 @@ export default class UIManager{
                 this._popups.push(ui);
                 this._curPopup = ui;
                 ui.node.zIndex = this._popups.length * 2;
+                this._mask.zIndex = this._popups.length > 0?this._popups[this._popups.length -1].node.zIndex-1:0;
                 this._mask.opacity = ui.maskOpacity;
-                console.log("createPopup,node index:"+ui.node.zIndex)
+                console.log("createPopup,node index:"+ui.node.zIndex,"mask index:"+this._mask.zIndex)
                 // this.checkMaskLayer();
                 createComplete && createComplete(ui);
             }
@@ -198,6 +199,9 @@ export default class UIManager{
             var index:number = this._popups.indexOf(ui);
             if(index>-1){
                 this._popups.splice(index, 1);
+                for(var i:number = index;i<this._popups.length;i++){
+                    this._popups[i].node.zIndex-=2;
+                }
             }
             if(this._popups.length > 0){
                 this._mask.active = true;

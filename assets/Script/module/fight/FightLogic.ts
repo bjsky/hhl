@@ -129,7 +129,14 @@ export default class FightLogic extends cc.EventTarget{
             this._isMyTeamfight = !this._isMyTeamfight;
             this.attckOnce();
         }else{
-            this.endFight(this._isMyTeamfight,0);
+            var evaluate:number = 0;
+            this._fightTeamMine.fightObjArr.forEach((fo:FightObject)=>{
+                if(!fo.isDead){
+                    evaluate++;
+                }
+            });
+            evaluate = (evaluate>3 ? 3:evaluate);
+            this.endFight(this._isMyTeamfight,evaluate);
         }
     }
 

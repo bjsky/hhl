@@ -18,9 +18,10 @@ import { SOUND } from "../../manager/SoundManager";
 const {ccclass, property} = cc._decorator;
 
 export enum CardBigShowType{
-    GetCard = 1,
+    GetCard = 1,  
     ShowCard,
     DiamondGetCard ,
+    RabGetCard
 }
 
 @ccclass
@@ -74,7 +75,8 @@ export default class CardBig extends PopUpBase{
     public setData(data){
         this._type = data.type;
         if(this._type == CardBigShowType.GetCard
-            || this._type == CardBigShowType.DiamondGetCard){
+            || this._type == CardBigShowType.DiamondGetCard
+            || this._type == CardBigShowType.RabGetCard){
             this._cardUUid = data.cardUUid;
             this._cardInfo = Card.getCardByUUid(this._cardUUid);
 
@@ -116,7 +118,8 @@ export default class CardBig extends PopUpBase{
     private initCardView(){
         this.node.opacity = 0;
         if(this._type == CardBigShowType.GetCard
-            ||this._type == CardBigShowType.DiamondGetCard){
+            ||this._type == CardBigShowType.DiamondGetCard
+            || this._type == CardBigShowType.RabGetCard){
             this.heroNode.active = true;
             this.cardName.string = this._cardInfo.cardInfoCfg.name;
             this.cardRace.load(PathUtil.getCardRaceImgPath(this._cardInfo.cardInfoCfg.raceId));
@@ -155,8 +158,12 @@ export default class CardBig extends PopUpBase{
         if(this._type == CardBigShowType.GetCard){
             this.rotationOut();
         }else if(this._type == CardBigShowType.ShowCard
-            || this._type == CardBigShowType.DiamondGetCard){
+            || this._type == CardBigShowType.DiamondGetCard
+            ){
             this.onClose(e);
+        }else if(this._type == CardBigShowType.RabGetCard){
+            this.onClose(e);
+            EVENT.emit(GameEvent.Card_RabGet_Close);
         }
     }
 

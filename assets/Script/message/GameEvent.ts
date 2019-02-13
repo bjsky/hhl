@@ -49,4 +49,8 @@ export default class GameEvent{
 
     //侦查完成
     public static Battle_scout_Complete:string ="Battle_scout_Complete";
+    //进攻完成
+    public static FightEnemey_Success:string ="FightEnemey_Success";
+    //抢夺卡牌显示完成
+    public static Card_RabGet_Close:string ="Card_RabGet_Close";
 }
