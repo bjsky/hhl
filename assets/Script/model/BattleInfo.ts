@@ -5,6 +5,7 @@ import ColorUtil from "../utils/ColorUtil";
 import { CFG } from "../manager/ConfigManager";
 import { ConfigConst } from "../module/loading/steps/LoadingStepConfig";
 import StringUtil from "../utils/StringUtil";
+import { SCPushRabCard } from "../net/msg/MsgPushRabCard";
 
 export class FightRecord{
     //时间;毫秒
@@ -39,6 +40,18 @@ export class FightRecord{
         this.rabCardUuid = info.rabCardUuid;
         this.rabCardId = info.rabCardId;
         this.rabCardGrade = info.rabCardGrade;
+    }
+    public initFromRab(info:SCPushRabCard){
+        this.time = info.time;
+        this.fightUId = info.rabEnemyUid;
+        this.fightName = info.rabEnemeyName;
+        this.befightUId = COMMON.accountId;
+        this.befightName = COMMON.userInfo.name;
+        this.score = info.score;
+        this.isRabCard = true;
+        this.rabCardUuid = info.rabCard.uuid;
+        this.rabCardId = info.rabCard.cardId;
+        this.rabCardGrade = info.rabCard.grade;
     }
 
     public getDescHtml(mine:boolean):string{

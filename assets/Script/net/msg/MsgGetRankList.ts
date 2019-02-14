@@ -35,7 +35,7 @@ export class SRankInfo{
     //姓名
     public playerName:string = "";
     //等级
-    public playerLevel:Number = 1;
+    public playerLevel:number = 1;
     //性别
     public playerSex:number = 1;
     //头像
@@ -76,7 +76,21 @@ export default class MsgGetRankList extends MessageBase{
     }
 
     public respFromLocal(){
-        var json:any= {};
+        var tempList:SRankInfo[] = [];
+        for(var i:number = 0;i<this.param.listMaxCount;i++){
+            var sInfo:SRankInfo = new SRankInfo();
+            sInfo.playerName = "随机"+Math.floor(Math.random()*this.param.listMaxCount);
+            sInfo.playerLevel = i+1;
+            sInfo.playerIcon= "";
+            sInfo.playerSex = 1;
+            sInfo.playerPower = Math.floor(Math.random()*88888)+10000;
+            sInfo.playerScore = Math.floor(Math.random()*100);
+            tempList.push(sInfo);
+        }
+        var json:any= {
+            myOrder:5,
+            rankList:tempList
+        };
         return this.parse(json);
     }
 

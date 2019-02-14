@@ -37,6 +37,7 @@ export enum CardUpType{
 export enum CardRemoveType{
     upStarRemove = 0,//升星移除
     destroyRemove,//回收移除
+    RabRemove //抢夺移除
 }
 
 export default class CardAssist{
@@ -134,7 +135,7 @@ export default class CardAssist{
         return list[rd].uuid;
     }
     //移除一张卡牌
-    private removeCardByUUid(uuid:string){
+    public removeCardByUUid(uuid:string){
         delete this.cardsMap[uuid];
     }
 

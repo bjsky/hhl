@@ -88,6 +88,8 @@ export default class CastlePanel extends UIBase {
         EVENT.on(GameEvent.Battle_scout_Complete,this.battleScoutComplete,this);
         EVENT.on(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
         EVENT.on(GameEvent.FightEnemey_Success,this.onFightEnemySuccess,this);
+        EVENT.on(GameEvent.Battle_Info_Change,this.onBattleInfoChange,this);
+        
 
         this.initView();
     }
@@ -103,6 +105,7 @@ export default class CastlePanel extends UIBase {
         EVENT.off(GameEvent.Battle_scout_Complete,this.battleScoutComplete,this);
         EVENT.off(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
         EVENT.off(GameEvent.FightEnemey_Success,this.onFightEnemySuccess,this);
+        EVENT.off(GameEvent.Battle_Info_Change,this.onBattleInfoChange,this);
 
         this.enemyList.setListData([]);
         this.personalEnemyList.setListData([]);
@@ -130,6 +133,9 @@ export default class CastlePanel extends UIBase {
 
     private battleScoutComplete(e){
         this.initEnemyList();
+    }
+    private onBattleInfoChange(e){
+        this.initBattleData();
     }
     private onFightEnemySuccess(e){
         var enemyInfo:EnemyInfo = e.detail.info as EnemyInfo;

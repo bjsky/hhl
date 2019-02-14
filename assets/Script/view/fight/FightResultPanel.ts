@@ -101,6 +101,11 @@ export default class FightResultPanel extends PopUpBase {
             this._addCard = data.addCard;
         }
     }
+
+    private resetData(){
+        this._addScore = 0;
+        this._addCard = null;
+    }
     onLoad(){
     }
 
@@ -120,6 +125,7 @@ export default class FightResultPanel extends PopUpBase {
         this.btnShare.node.off(TouchHandler.TOUCH_CLICK,this.onShare,this);
         EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
         EVENT.off(GameEvent.ShareGetReward_Complete,this.checkShareLabel,this);
+        this.resetData();
     }
 
     private onReceiveClick(e){
@@ -186,7 +192,7 @@ export default class FightResultPanel extends PopUpBase {
             this.enemyNode.active = false;
         }
 
-        if(!this._result.victory && this._fightEnemy.playerType == FightPlayerType.Boss){ //挑战boss失败
+        if(!this._result.victory){ //失败
             this.groupReward.setGroupData([]);
             this.fightReward.active = false;
             this.fightFailed.active = true;

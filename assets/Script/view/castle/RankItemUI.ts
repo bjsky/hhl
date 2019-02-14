@@ -1,6 +1,7 @@
 import DListItem from "../../component/DListItem";
 import LoadSprite from "../../component/LoadSprite";
 import PathUtil from "../../utils/PathUtil";
+import { RankInfo } from "./RankPanel";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -21,18 +22,27 @@ export default class RankItemUI extends DListItem {
     sprRank: LoadSprite = null;
     @property(cc.Label)
     labelRank: cc.Label = null;
-
+    @property(cc.Label)
+    lblScore: cc.Label = null;
+    @property(cc.Label)
+    lblName: cc.Label = null;
+    @property(cc.Label)
+    lblPower: cc.Label = null;
+    @property(LoadSprite)
+    sprSex: LoadSprite = null;
+    @property(LoadSprite)
+    sprHead: LoadSprite = null;
+    @property(cc.Label)
+    lblLevel: cc.Label = null;
 
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
 
-    private _index:number = 0;
+    private _info:RankInfo;
     public setData(data:any){
-
         super.setData(data);
-        this._index = data.index;
-
+        this._info = data as RankInfo;
     }
     start () {
 
@@ -40,22 +50,28 @@ export default class RankItemUI extends DListItem {
 
     onEnable(){
         super.onEnable();
-       this.initView();
+        this.initView();
     }
     onDisable(){
         super.onDisable();
     }
 
     private initView(){
-        if(this._index<=2){
+        if(this.index<=2){
             this.labelRank.node.active = false;
             this.sprRank.node.active = true;
-            this.sprRank.load(PathUtil.getRankImgUrl(this._index+1));
+            this.sprRank.load(PathUtil.getRankImgUrl(this.index+1));
         }else{
             this.labelRank.node.active = true;
             this.sprRank.node.active = false;
-            this.labelRank.string = String(this._index+1);
+            this.labelRank.string = String(this.index+1);
         }
+        this.lblScore.string = this._info.playerScore.toString();
+        this.lblName.string = this._info.playerName;
+        this.lblPower.string = this._info.playerPower.toString();
+        this.sprHead.load(this._info.playerIcon);
+        this.sprSex.load(PathUtil.getSexIconUrl(this._info.playerSex));
+        this.lblLevel.string = this._info.playerLevel.toString();
     }
     // update (dt) {}
 }

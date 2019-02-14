@@ -1,9 +1,6 @@
 import { SFightRecord } from "../net/msg/MsgLogin";
 import { COMMON } from "../CommonData";
 import StringUtil from "./StringUtil";
-import { Card } from "../module/card/CardAssist";
-import CardInfo from "../model/CardInfo";
-
 export default class DemoFightRecord{
     public static initDemo(){
         var uid:string = COMMON.accountId;
@@ -32,15 +29,6 @@ export default class DemoFightRecord{
         record.rabCardUuid = uuid;
         record.rabCardId = cardId;
         record.rabCardGrade = grade;
-        return record;
-    }
-
-    public static createBeRabFightRecord():SFightRecord{
-        var loseCardUUid:string = Card.getCardUUidRandom();
-        var loseCardInfo:CardInfo = Card.getCardByUUid(loseCardUUid);
-        var record:SFightRecord = this.createFightRecord(new Date().getTime(),
-        StringUtil.getUUidClient(),"假想敌",COMMON.accountId,COMMON.userInfo.name,3,true,
-        loseCardUUid,loseCardInfo.cardId,loseCardInfo.grade);
         return record;
     }
 }

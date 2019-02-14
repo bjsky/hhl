@@ -53,4 +53,6 @@ export default class GameEvent{
     public static FightEnemey_Success:string ="FightEnemey_Success";
     //抢夺卡牌显示完成
     public static Card_RabGet_Close:string ="Card_RabGet_Close";
+    //战斗数据变化
+    public static Battle_Info_Change:string = "Battle_Info_Change";
 }

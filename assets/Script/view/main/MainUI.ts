@@ -14,6 +14,8 @@ import { WXInterface, WeiXin } from "../../wxInterface";
 import { SOUND } from "../../manager/SoundManager";
 import PathUtil from "../../utils/PathUtil";
 import ResPanel, { ResPanelType } from "../ResPanel";
+import { NET } from "../../net/core/NetController";
+import MsgGetRankList from "../../net/msg/MsgGetRankList";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

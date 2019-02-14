@@ -9,8 +9,8 @@ import { Battle } from "../../module/battle/BattleAssist";
 import { NET } from "../../net/core/NetController";
 import MsgGetFightRecordList from "../../net/msg/MsgGetFightRecordList";
 import { FightRecord } from "../../model/BattleInfo";
-import FightInfo from "../../model/FightInfo";
 import { Lineup } from "../../module/battle/LineupAssist";
+import FightInfo from "../../model/FightInfo";
 import { Fight } from "../../module/fight/FightAssist";
 
 // Learn TypeScript:
@@ -73,8 +73,7 @@ export default class FightItemUI extends DListItem{
         },this)
     }
     private onAttackTouch(e){
-        // var record = DemoFightRecord.createBeRabFightRecord();
-        // UI.createPopUp(ResConst.BeFightPanel,{type:BeFightPanelType.BeFight,records:[record]});
+        // Battle.testPushRabCard();
         if(Battle.battleInfo.actionPoint<=0){
             UI.showTip("行动力力不足，请过会再来");
             return;

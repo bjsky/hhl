@@ -77,7 +77,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 598,
+      "width": 618,
       "height": 100
     },
     "_rotationX": 0,
@@ -131,7 +131,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 596,
+      "width": 614,
       "height": 94
     },
     "_rotationX": 0,
@@ -1535,6 +1535,24 @@
     },
     "labelRank": {
       "__id__": 6
+    },
+    "lblScore": {
+      "__id__": 43
+    },
+    "lblName": {
+      "__id__": 12
+    },
+    "lblPower": {
+      "__id__": 18
+    },
+    "sprSex": {
+      "__id__": 40
+    },
+    "sprHead": {
+      "__id__": 33
+    },
+    "lblLevel": {
+      "__id__": 22
     }
   },
   {

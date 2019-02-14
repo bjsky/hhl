@@ -20,7 +20,11 @@ import DemoFightRecord from "../../utils/DemoFightRecord";
 import EnemyInfo from "../../model/EnemyInfo";
 import MsgFightEnemy from "../../net/msg/MsgFightEnemy";
 import CardInfo from "../../model/CardInfo";
-import { Card } from "../card/CardAssist";
+import { Card, CardRemoveType } from "../card/CardAssist";
+import MsgPushRabCard from "../../net/msg/MsgPushRabCard";
+import { UI } from "../../manager/UIManager";
+import { ResConst } from "../loading/steps/LoadingStepRes";
+import { BeFightPanelType } from "../../view/castle/BeFightPanel";
 
 export default class BattleAssist{
 
@@ -206,6 +210,21 @@ export default class BattleAssist{
                     cardInfo = Card.getCardByUUid(msg.resp.addCard.uuid);
                 }
                 cb && cb(addExp,addDiamond,addScore,cardInfo);
+            }
+        },this)
+    }
+
+    public testPushRabCard(){
+        NET.send(MsgPushRabCard.create(),(msg:MsgPushRabCard)=>{
+            if(msg && msg.resp){
+                var record = new FightRecord();
+                record.initFromRab(msg.resp);
+                UI.createPopUp(ResConst.BeFightPanel,{type:BeFightPanelType.BeFight,records:[record]});
+                this.battleInfo.score -= msg.resp.score;
+                EVENT.emit(GameEvent.Battle_Info_Change);
+                //移除卡牌
+                Card.removeCardByUUid(record.rabCardUuid);
+                EVENT.emit(GameEvent.Card_Remove,{uuid:record.rabCardUuid,type:CardRemoveType.RabRemove});
             }
         },this)
     }
