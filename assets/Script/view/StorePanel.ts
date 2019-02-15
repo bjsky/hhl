@@ -78,7 +78,7 @@ export default class StorePanel extends PopUpBase {
         cardsArr.forEach(item =>{
             cardsDataArr.push({cfg:item,grade:this._currentGrade,cost:this._costMap[this._currentGrade]});
         })
-        this.cardsList.direction = DListDirection.Vertical;
+        this.cardsList.direction = DListDirection.Horizontal;
         this.cardsList.setListData(cardsDataArr);
     }
 

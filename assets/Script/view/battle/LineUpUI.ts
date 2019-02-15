@@ -72,7 +72,6 @@ export default class LineUpUI extends cc.Component {
         return this._totalPower;
     }
 
-
     public initLineup(map:any){
         this._lineupMap = map;
         for(var i:number = 0;i<5;i++){
@@ -83,7 +82,7 @@ export default class LineUpUI extends cc.Component {
             }
             var lineup:LineupInfo = this._lineupMap[i];
             if(lineup!=null){
-                var upStarObj = {lineup:lineup}
+                var upStarObj = {lineup:lineup,edit:this._edit}
                 UI.loadUI(ResConst.CardHead,upStarObj,node);
             }
         }

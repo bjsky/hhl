@@ -489,25 +489,30 @@ export default class FightPanel extends UIBase {
     public showCardFight(cardNode:cc.Node,fromPos:cc.Vec2,toPos:cc.Vec2,forward:boolean,shake:boolean,cb:Function){
         var fromPos = this.fightNode.parent.convertToNodeSpaceAR(fromPos);
         var toPos = this.fightNode.parent.convertToNodeSpaceAR(toPos);
+        var dis:number = fromPos.sub(toPos).mag();
+        var time:number = 0;
         cardNode.parent = this.fightNode;
         cardNode.setPosition(fromPos)
         var move;5
         if(forward){
-            move = cc.moveTo(0.5,toPos).easing(cc.easeBackIn());
+            time = 0.3+Number((15*dis/800).toFixed(0))/100;
+            move = cc.moveTo(time,toPos).easing(cc.easeBackIn());
         }
         else{
-            move = cc.moveTo(0.3,toPos).easing(cc.easeOut(2))
+            time = 0.2+Number((10*dis/800).toFixed(0))/100;
+            move = cc.moveTo(time,toPos).easing(cc.easeOut(2))
         }
+        console.log("fly:",time);
         var seq = cc.sequence(
             move,
             cc.callFunc(()=>{
+                var pos:cc.Vec2 = toPos.sub(fromPos).div(20);
                 if(shake){
-                    var pos:cc.Vec2 = toPos.sub(fromPos).div(20);
                     this.center.setPosition(pos);
                     var shakeAni = cc.moveTo(0.3,cc.v2(0,0)).easing(cc.easeBounceOut());
                     this.center.runAction(shakeAni);
                 }
-                cb && cb();
+                cb && cb(pos);
             })
         )
         cardNode.runAction(seq);

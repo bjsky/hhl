@@ -2,7 +2,8 @@ import UIBase from "../../component/UIBase";
 import LoadSprite from "../../component/LoadSprite";
 import PathUtil from "../../utils/PathUtil";
 import LineupInfo from "../../model/LineupInfo";
-import { Lineup } from "../../module/battle/LineupAssist";
+import { UI } from "../../manager/UIManager";
+import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -19,16 +20,10 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class CardHead extends UIBase {
 
-    @property(cc.Label)
-    power: cc.Label = null;
     @property(LoadSprite)
     head: LoadSprite = null;
     @property(LoadSprite)
     star: LoadSprite = null;
-    @property(cc.Label)
-    lblName: cc.Label = null;
-    @property(LoadSprite)
-    sprRace: LoadSprite = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -39,10 +34,11 @@ export default class CardHead extends UIBase {
     }
 
     private _lineup:LineupInfo = null
-
+    private _edit:boolean = false;
     public setData(data:any){
         super.setData(data);
         this._lineup = data.lineup as LineupInfo;
+        this._edit = data.edit;
     }
 
     start () {
@@ -50,12 +46,13 @@ export default class CardHead extends UIBase {
     }
 
     onEnable(){
-        this.power.string = this._lineup.power.toString();
+        if(!this._edit){
+            this.node.on(cc.Node.EventType.TOUCH_START,this.onTipShow,this);
+            this.node.on(cc.Node.EventType.TOUCH_END,this.onTipHide,this);
+            this.node.on(cc.Node.EventType.TOUCH_CANCEL,this.onTipHide,this);
+        }
         this.star.load(PathUtil.getCardHeadGradeImgPath(this._lineup.grade));
         this.head.load(PathUtil.getCardHeadUrl(this._lineup.headUrl));
-        this.lblName.string = this._lineup.cardName;
-        this.sprRace.load(PathUtil.getCardRaceImgPath(this._lineup.raceId));
-
     }
 
     // public updatePower(power){
@@ -64,11 +61,22 @@ export default class CardHead extends UIBase {
     // }
 
     onDisable(){
-        this.power.string ="";
+        if(!this._edit){
+            this.node.off(cc.Node.EventType.TOUCH_START,this.onTipShow,this);
+            this.node.off(cc.Node.EventType.TOUCH_END,this.onTipHide,this);
+            this.node.off(cc.Node.EventType.TOUCH_CANCEL,this.onTipHide,this);
+        }
+
         this.star.load("");
         this.head.load("");
     }
 
+    private onTipShow(e){
+        UI.showDetailTip(ResConst.CardHeadTip,{lineup:this._lineup,target:this.node});
+    }
+    private onTipHide(e){
+        UI.hideDetailTip();
+    }
 
     // update (dt) {}
 }

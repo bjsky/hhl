@@ -241,6 +241,11 @@ export default class CardFight extends  UIBase {
         })
     }
 
+
+    private _beFightPos:cc.Vec2 = null;
+    public setBeFight(shakePos:cc.Vec2){
+        this._beFightPos = shakePos//.div(1.5);
+    }
     public beAttack(attackPower:number,hasSkill:boolean,cb:Function){
         var tipStr:string = ""
         // if(this._loseLife+attackPower>this._totalLife){
@@ -255,20 +260,29 @@ export default class CardFight extends  UIBase {
         if(hasSkill){
             this.showBeAttackTip(tipStr,pos);
         }else{
-            this.cardNode.scale = 1;
-            var beAttackAct = cc.sequence(
-                cc.scaleTo(0.09,0.9),
-                cc.scaleTo(0.06,1),
-                cc.callFunc(()=>{
+            // this.cardNode.scale = 1;
+            // var beAttackAct = cc.sequence(
+            //     cc.scaleTo(0.09,0.9),
+            //     cc.scaleTo(0.06,1),
+            //     cc.callFunc(()=>{
+            //         this.showBeAttackTip(tipStr,pos);
+            //     })
+            // )
+            // this.cardNode.runAction(beAttackAct);
+
+            this.node.setPosition(this._beFightPos);
+            var shakeAni = cc.sequence(
+                cc.moveTo(0.26,cc.v2(0,0)).easing(cc.easeBounceOut())
+                ,cc.callFunc(()=>{
                     this.showBeAttackTip(tipStr,pos);
-                })
-            )
-            this.cardNode.runAction(beAttackAct);
+                }));
+            this.node.runAction(shakeAni);
         }
 
         cb && cb();
     }
     private showBeAttackTip(tipStr:string,pos:cc.Vec2){
+        pos = pos.add(cc.v2(0,15));
         UI.showTipCustom(ResConst.FightTip,{type:FightTipType.BeAttack,str:tipStr},pos,()=>{
             if(this.curLife<=0){
                 if(this.isValid){
@@ -288,6 +302,7 @@ export default class CardFight extends  UIBase {
         this.numEffLife.setValue(this.curLife);
         this.cardLiftProgress.progress = this.getLiftPro();
         var pos = this.cardLife.node.parent.convertToWorldSpaceAR(this.cardLife.node.position);
+        pos = pos.add(cc.v2(0,15));
         UI.showTipCustom(ResConst.FightTip,{type:FightTipType.ReturnBlood,str:tipStr},pos,()=>{
             if(this.isValid){
                 cb && cb();
@@ -355,7 +370,8 @@ export default class CardFight extends  UIBase {
             this._toPos.y += this.node.height*2/3;
         }
         this.hideSomeView();
-        Fight.panel.showCardFight(this.node,this._fromPos,this._toPos,true,hasAllShake,()=>{
+        Fight.panel.showCardFight(this.node,this._fromPos,this._toPos,true,hasAllShake,(shakePos:cc.Vec2)=>{
+            beAttack.setBeFight(shakePos);
             cb && cb();
         })
     }

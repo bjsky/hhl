@@ -263,6 +263,23 @@ export default class UIManager{
         this.loadUI(tipRes,{data:data,pos:pos,complete:complete},this.TipLayer);
     }
 
+    //有且只有一个
+    private _detailTipNode:cc.Node = null;
+    public showDetailTip(res:string,data:any){
+        if(this._detailTipNode!=null){
+            return;
+        }
+        this.loadUI(res,data,this.TipLayer,(ui:UIBase)=>{
+            this._detailTipNode = ui.node;
+        });
+    }
+    public hideDetailTip(){
+        if(this._detailTipNode !=null){
+            this.removeUI(this._detailTipNode);
+            this._detailTipNode = null;
+        }
+    }
+
     public showAlert(content:string,okCallback?:Function,cancelCallback?:Function,btnType:number = AlertBtnType.OKButton){
         var data = {content:content,okCb:okCallback,cancelCb:cancelCallback,btnType:btnType};
         this.createPopUp(ResConst.AlertPanel,data);

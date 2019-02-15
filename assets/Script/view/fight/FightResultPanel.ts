@@ -147,6 +147,7 @@ export default class FightResultPanel extends PopUpBase {
     }
 
     private onShare(e){
+        this.btnShare.node.active = false;
         Share.shareAppMessage();
         if(Share.shareGetReward){
             this.scheduleOnce(()=>{
@@ -170,6 +171,7 @@ export default class FightResultPanel extends PopUpBase {
     }
 
     private initView(){
+        this.btnShare.node.active = true;
         this.victoryNode.active = this._result.victory;
         this.failNode.active = !this._result.victory;
 

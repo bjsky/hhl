@@ -107,7 +107,9 @@ export default class CardBig extends PopUpBase{
     }
 
 
-    private onShare(e){
+    private onShare(e:cc.Event){
+        e.stopPropagation();
+        this.shareBtn.node.active = false;
         Share.shareAppMessage();
         if(Share.shareGetReward){
             this.scheduleOnce(()=>{
@@ -116,6 +118,7 @@ export default class CardBig extends PopUpBase{
         }
     }
     private initCardView(){
+        this.shareBtn.node.active = true;
         this.node.opacity = 0;
         if(this._type == CardBigShowType.GetCard
             ||this._type == CardBigShowType.DiamondGetCard

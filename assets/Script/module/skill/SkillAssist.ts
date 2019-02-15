@@ -30,6 +30,15 @@ export default class SkillAssist{
         var valueStr = "<color=#29b92f>"+value+"%</color>";
         return "<color=#D35C21>" + skillDesc.replace("#",valueStr)+"</color>";
     }
+    public getLineupCardSkillDescHtml(skillCfg:any,grade:number){
+        var skillDesc:string = skillCfg.skillDesc;
+        var val=Number(skillCfg.value) + (Number(grade)-1) * Number(skillCfg.addValue);
+        var value:string =(Math.round(val*1000)/10).toString();
+        console.log(value);
+
+        var valueStr = "<color=#29b92f>"+value+"%</color>";
+        return "<color=#FA7F42>" + skillDesc.replace("#",valueStr)+"</color>";
+    }
 
     public getCardSkillAddDescHtml(info:CardInfo,index:number = 0):string{
         var cfg:any = info.cardSkillCfg[index];
