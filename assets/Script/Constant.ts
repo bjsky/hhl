@@ -30,14 +30,14 @@ export default class Constant{
 
     //获得当前抽取卡片消耗的灵石
     public getSummonStoneCost():number{
-        var stoneSummonCost:number = this._constantKeyValueMap["store_summon_use"].split(";")[0];
-        var unfreetime = COMMON.stoneSummonNum - this.getStoneFreeSummonNum();
-        if(unfreetime<0){
-            return 0;
-        }else{
-            var cost = stoneSummonCost * Math.pow(this.getSummonStoneCostAdd(),unfreetime);
-            return Number(cost.toFixed(0));
-        }
+        var stoneSummonCost:number = Number(this._constantKeyValueMap["store_summon_use"].split(";")[0]);
+        // var unfreetime = COMMON.stoneSummonNum - this.getStoneFreeSummonNum();
+        // if(unfreetime<0){
+        //     return 0;
+        // }else{
+        //     var cost = stoneSummonCost * Math.pow(this.getSummonStoneCostAdd(),unfreetime);
+            return Number(stoneSummonCost.toFixed(0));
+        // }
     }
 
     public getSummonStoneCostAdd():number{
