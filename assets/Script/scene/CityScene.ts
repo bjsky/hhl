@@ -268,6 +268,8 @@ export default class CityScene extends SceneBase {
             build = this.buildHero;
         }else if(nodeName == "building_battle"){
             build = this.buildBattle;
+        }else if(nodeName == "building_castle"){
+            build = this.buildCastle;
         }
         return build;
     }
@@ -282,6 +284,9 @@ export default class CityScene extends SceneBase {
             GUIDE.nextGuide(guideId);
         }else if(nodeName == "building_battle"){
             this.openBuildUI(BuildType.Battle);
+            GUIDE.nextGuide(guideId);
+        }else if(nodeName == "building_castle"){
+            this.openBuildUI(BuildType.Castle);
             GUIDE.nextGuide(guideId);
         }
     }

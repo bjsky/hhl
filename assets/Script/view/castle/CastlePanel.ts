@@ -16,6 +16,9 @@ import { NET } from "../../net/core/NetController";
 import MsgGetFightRecordList from "../../net/msg/MsgGetFightRecordList";
 import { FightRecord } from "../../model/BattleInfo";
 import EnemyInfo from "../../model/EnemyInfo";
+import { GUIDE } from "../../manager/GuideManager";
+import DListItem from "../../component/DListItem";
+import FightItemUI from "./FightItemUI";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -89,6 +92,7 @@ export default class CastlePanel extends UIBase {
         EVENT.on(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
         EVENT.on(GameEvent.FightEnemey_Success,this.onFightEnemySuccess,this);
         EVENT.on(GameEvent.Battle_Info_Change,this.onBattleInfoChange,this);
+        EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
         
 
         this.initView();
@@ -106,6 +110,7 @@ export default class CastlePanel extends UIBase {
         EVENT.off(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
         EVENT.off(GameEvent.FightEnemey_Success,this.onFightEnemySuccess,this);
         EVENT.off(GameEvent.Battle_Info_Change,this.onBattleInfoChange,this);
+        EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
 
         this.enemyList.setListData([]);
         this.personalEnemyList.setListData([]);
@@ -198,7 +203,16 @@ export default class CastlePanel extends UIBase {
     
 
     private initEnemyList(){
-        this.enemyList.setListData(Battle.enemyList);
+        var enemyList:EnemyInfo[] = Battle.enemyList.slice();
+        if(GUIDE.isInGuide){
+            var guideEnemy:EnemyInfo = new EnemyInfo();
+            guideEnemy.initGuide();
+            enemyList.unshift(guideEnemy);
+        }
+        this.enemyList.setListData(enemyList);
+        this.scheduleOnce(()=>{
+            this._enableGetGuideNode = true;
+        },0.3)
     }
     
     private initPersonalEnemyList(){
@@ -208,5 +222,38 @@ export default class CastlePanel extends UIBase {
 
     }
 
+    ///////////////////
+    // 引导
+    ///////////////////
+    private _enableGetGuideNode:boolean =false;
+    private _guideItem:FightItemUI = null;
+    public getGuideNode(name:string):cc.Node{
+        if(name == "buildPanel_fightEnemy"){
+            if(this._enableGetGuideNode){
+                this._guideItem = this.enemyList.getItemAt(0) as FightItemUI;
+                if(this._guideItem){
+                    return this._guideItem.getGuideNode(name);
+                }else{
+                    return null;
+                }
+            }else{
+                return null;
+            }
+        }
+        else{
+            return null;
+        }
+    }
+
+    private onGuideTouch(e){
+        var guideId = e.detail.id;
+        var nodeName = e.detail.name;
+        if(nodeName == "buildPanel_fightEnemy"){
+            if(this._guideItem){
+                this._guideItem.onAttackGuide();
+            }
+            GUIDE.nextGuide(guideId);
+        }
+    }
     // update (dt) {}
 }

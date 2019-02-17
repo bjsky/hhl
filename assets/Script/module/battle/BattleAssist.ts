@@ -178,27 +178,36 @@ export default class BattleAssist{
         },this)
     }
     //挑战敌人成功
-    public fightEnemeySuccess(enemyInfo:EnemyInfo,evaluate:number,cb:Function){
-        //挑战配置
-        var fightScoreCfg :any= this.getFightScoreCfg(enemyInfo.enemyScore)
-        var addExp:number = this.getAddExpBuffed();
-        var addDiamond:number = this.getAddDiamondBuffed();
-        var addScore = evaluate;
-        var costActionPoint = 1;
-        var isRevenge = (enemyInfo.enemyType == EnemyTypeEnum.PersonlEnemy);
-        var getCardRate = Number(fightScoreCfg.getCardRate);
-        if(isRevenge){  //复仇双倍
-            getCardRate *=2;
-            costActionPoint = 0;
-        }
-        var isRabCard:boolean = (Math.random()<getCardRate);
-        var rate ="";
-        if(isRabCard){  
-            rate = fightScoreCfg.getCardRateStr;
+    public fightEnemeySuccess(enemyInfo:EnemyInfo,victory:boolean,evaluate:number,isGuide:boolean,cb:Function){
+        if(victory){
+            //挑战配置
+            var fightScoreCfg :any= this.getFightScoreCfg(enemyInfo.enemyScore)
+            var addExp:number = this.getAddExpBuffed();
+            var addDiamond:number = this.getAddDiamondBuffed();
+            var addScore = evaluate;
+            var costActionPoint = 1;
+            var isRevenge = (enemyInfo.enemyType == EnemyTypeEnum.PersonlEnemy);
+            var getCardRate = Number(fightScoreCfg.getCardRate);
+            if(isRevenge){  //复仇双倍
+                getCardRate *=2;
+                costActionPoint = 0;
+            }
+            var isRabCard:boolean = (Math.random()<getCardRate);
+            var rate ="";
+            if(isRabCard){  
+                rate = fightScoreCfg.getCardRateStr;
+            }
+        }else{
+            addExp = 0;
+            addDiamond =0;
+            addScore = 0;
+            costActionPoint =1;
+            isRevenge = false;
+            isRabCard = false;
         }
 
         NET.send(MsgFightEnemy.create(enemyInfo.enemyUid,enemyInfo.enemyName,
-            addExp,addDiamond,addScore,costActionPoint,isRevenge,isRabCard,rate),(msg:MsgFightEnemy)=>{
+            addExp,addDiamond,addScore,costActionPoint,isRevenge,isRabCard,rate,isGuide),(msg:MsgFightEnemy)=>{
             if(msg && msg.resp){
                 COMMON.updateUserInfo(msg.resp.userInfo);  //更新用户数据
                 COMMON.updateResInfo(msg.resp.resInfo); //更新资源数据

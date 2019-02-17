@@ -6,19 +6,6 @@ export class CSGetPersonalEnemy{
     ////最多显示个数
     public listMaxCount:number = 5;
 }
-export class SPersonalEnemyInfo{
-    //最近抢夺时间
-    public lastRabTime:number = 0;
-    //敌人信息
-    public enmeyInfo:SEnemyInfo = null;
-
-    public static parse(obj:any):SPersonalEnemyInfo{
-        var info:SPersonalEnemyInfo = new SPersonalEnemyInfo();
-        info.lastRabTime = obj.lastRabTime;
-        info.enmeyInfo = SEnemyInfo.parse(obj.enemyInfo);
-        return info;
-    }
-}
 export class SCGetPersonalEnemy{
     //仇人列表
     public personalEnmeyList:Array<SPersonalEnemyInfo> = [];
@@ -30,6 +17,20 @@ export class SCGetPersonalEnemy{
             data.personalEnmeyList.push(SPersonalEnemyInfo.parse(enemyInfo));
         });
         return data;
+    }
+}
+
+export class SPersonalEnemyInfo{
+    //最近抢夺时间
+    public lastRabTime:number = 0;
+    //敌人信息
+    public enmeyInfo:SEnemyInfo = null;
+
+    public static parse(obj:any):SPersonalEnemyInfo{
+        var info:SPersonalEnemyInfo = new SPersonalEnemyInfo();
+        info.lastRabTime = obj.lastRabTime;
+        info.enmeyInfo = SEnemyInfo.parse(obj.enemyInfo);
+        return info;
     }
 }
 //获得仇人列表（抢过自己卡的）

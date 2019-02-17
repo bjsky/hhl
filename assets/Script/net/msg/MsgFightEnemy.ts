@@ -1,11 +1,10 @@
 import MessageBase from "./MessageBase";
-import { SResInfo, SUserInfo, SBattleInfo, SFightRecord } from "./MsgLogin";
+import MsgLogin, { SResInfo, SUserInfo, SBattleInfo, SFightRecord } from "./MsgLogin";
 import MsgCardSummon, { SCardInfo, CardSummonType } from "./MsgCardSummon";
 import NetConst from "../NetConst";
 import { COMMON } from "../../CommonData";
 import { Battle } from "../../module/battle/BattleAssist";
-import CardInfo from "../../model/CardInfo";
-import { Card } from "../../module/card/CardAssist";
+import MsgCardSummonGuide from "./MsgCardSummonGuide";
 
 //战斗会保存战斗纪录，并且推送给对应的敌人，为了数据库性能，建议一个玩家最多保存30条纪录
 export class CSFightEnemy{
@@ -27,6 +26,8 @@ export class CSFightEnemy{
     public isRabCard:boolean = false;
     //抢卡时的概率，概率跟抽卡概率格式一样，前端给，如，1;66|2;24|3;8|4;2|5;0.4，抢卡时更改卡牌的归属，等级重置为1级
     public rabCardRate:string = "";
+    //是否引导中，引导中固定获得一张3星卡牌，敌人不是玩家，所有不抢卡，相当于抽卡
+    public isGuide:boolean = false;
 }
 //战斗结束返回增加的经验，资源，战场信息，获得卡牌（如果有）
 export class SCFightEnemy{
@@ -70,7 +71,7 @@ export default class MsgFightEnemy extends MessageBase{
     //攻击敌人
     public static create(uid:string,uname:string
         ,addExp:number,addDiamond:number,addScore:number
-        ,costActionPoint:number,isRevenge:boolean,isRabCard:boolean,rate:string){
+        ,costActionPoint:number,isRevenge:boolean,isRabCard:boolean,rate:string,isGuide:boolean){
         var msg = new MsgFightEnemy();
         msg.param = new CSFightEnemy();
         msg.param.enemyUid = uid;
@@ -82,6 +83,7 @@ export default class MsgFightEnemy extends MessageBase{
         msg.param.isRevenge = isRevenge;
         msg.param.isRabCard = isRabCard;
         msg.param.rabCardRate = rate;
+        msg.param.isGuide = isGuide;
         return msg;
     }
 
@@ -99,6 +101,10 @@ export default class MsgFightEnemy extends MessageBase{
         var addCard:SCardInfo = null;
         if(this.param.isRabCard){
             addCard = MsgCardSummon.randomCardInfo(CardSummonType.LifeStone);
+        }
+
+        if(this.param.isGuide){
+            addCard = MsgCardSummonGuide.randomCardInfo(3);
         }
 
         json ={

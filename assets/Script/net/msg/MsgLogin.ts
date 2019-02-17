@@ -323,15 +323,16 @@ export default class MsgLogin
 
     public respFromLocal(){
         var ownerCards:Array<any> = [];
-        for(var i:number = 0;i<5;i++){
-            ownerCards.push(MsgCardSummon.randomCardInfo(CardSummonType.LifeStone));
-        }
+        // for(var i:number = 0;i<5;i++){
+        //     ownerCards.push(MsgCardSummon.randomCardInfo(CardSummonType.LifeStone));
+        // }
         // for(i= 0;i<1;i++){
         //     var copy = this.copyCard(ownerCards[0]);
         //     ownerCards.push(copy);
         // }
         var json:any = {firstLogin:true,
             accountId:StringUtil.getUUidClient(),
+            newUser:1,
             serverTime:new Date().getTime(),
             userInfo:{name:"上古战神",icon:"",gender:1,exp:0,level:1},
             resInfo:{gold:50000,diamond:500,lifeStone:50000,soulStone:0},

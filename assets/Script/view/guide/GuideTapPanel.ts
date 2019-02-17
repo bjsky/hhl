@@ -112,7 +112,9 @@ export default class GuideTapPanel extends UIBase {
                 this.setDialogShow();
             }
         }else if(this._guideInfo.type == GuideTypeEnum.GuideArrow||
-            this._guideInfo.type == GuideTypeEnum.GuideDrag){
+            this._guideInfo.type == GuideTypeEnum.GuideDrag ||
+            this._guideInfo.type == GuideTypeEnum.GuideNodeTalk
+            ){
             this.arrowNode.active = false;
             this.storyNode.active = this.dialogNode.active = false;
             this._checkNodeTime = 0;
@@ -260,6 +262,8 @@ export default class GuideTapPanel extends UIBase {
                 this.showArrow(node);
             }else if(this._guideInfo.type == GuideTypeEnum.GuideDrag){
                 this.showDrag(node,node.children[0],node.children[1]);
+            }else if(this._guideInfo.type == GuideTypeEnum.GuideNodeTalk){
+                this.setDialogShow();
             }
         }
     }

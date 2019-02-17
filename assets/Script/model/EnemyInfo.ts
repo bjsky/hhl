@@ -9,7 +9,8 @@ import FightInfo, { FightPlayerType } from "./FightInfo";
 export enum EnemyTypeEnum{
     Enemy = 1, //玩家
     Robit,      //机器人
-    PersonlEnemy //仇人
+    PersonlEnemy, //仇人
+    Guide,         //引导
 }
 export default class EnemyInfo {
     //敌人类型
@@ -106,4 +107,8 @@ export default class EnemyInfo {
         this.enemyScore = 0;
     }
 
+    public initGuide(){
+        this.initRobot(1);
+        this.enemyType = EnemyTypeEnum.Guide;
+    }
 }

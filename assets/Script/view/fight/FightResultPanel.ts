@@ -233,6 +233,8 @@ export default class FightResultPanel extends PopUpBase {
             }else{
                 return this.btnClose.node;
             }
+        }else if(name == "popup_result"){
+            return this.node;
         }
         else{
             return null;

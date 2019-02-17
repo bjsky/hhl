@@ -65,7 +65,7 @@ export default class MsgCardSummonGuide extends MessageBase{
         var userInfo = COMMON.userInfo.cloneAddExpServerInfo(getExp); //card.summonGetExp
         var json:any ={
             newCard:cardInfo,
-            upStarCard:upStarCard,
+            upstarCard:upStarCard,
             retRes:retRes,
             userInfo:userInfo,
             stoneSummonNum:COMMON.stoneSummonNum+1,
@@ -74,14 +74,14 @@ export default class MsgCardSummonGuide extends MessageBase{
         return this.parse(json);
     }
 
-    public static randomCardInfo(){
+    public static randomCardInfo(grade:number =2){
         var cardUUid:string = new Date().getTime()+ Number(Math.random()*1000000).toFixed(0);
         var cardId = Card.getSummonCardId();
         var cardInfo = {
             uuid:cardUUid,
             level:1,
             cardId:cardId,
-            grade:2,
+            grade:grade,
             skillLevel:1
         }
         return cardInfo;

@@ -17,7 +17,8 @@ export enum GuideTypeEnum {
     GuideStory = 1,
     GuideTalk = 2,
     GuideArrow = 3,
-    GuideDrag = 4
+    GuideDrag = 4,
+    GuideNodeTalk = 5,
 }
 
 export enum GuideNpcDir{

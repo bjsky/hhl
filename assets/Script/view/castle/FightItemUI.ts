@@ -86,6 +86,12 @@ export default class FightItemUI extends DListItem{
         var foEnemey:FightInfo = this._enemyInfo.getFightInfo();
         Fight.showFight(foMine,foEnemey,this._enemyInfo);
     }
+
+    public onAttackGuide(){
+        var foMine:FightInfo = Lineup.getOwnerFightInfo();
+        var foEnemey:FightInfo = this._enemyInfo.getFightInfo();
+        Fight.showFight(foMine,foEnemey,this._enemyInfo);
+    }
     start () {
 
     }
@@ -104,5 +110,12 @@ export default class FightItemUI extends DListItem{
         this.lblRabDesc.string = this._fightScoreCfg.getCardDesc;
     }
 
+    public getGuideNode(name:string):cc.Node{
+        if(name == "buildPanel_fightEnemy"){
+            return this.btnAttack.node;
+        }else{
+            return null;
+        }
+    }
     // update (dt) {}
 }
