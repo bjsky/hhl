@@ -44,16 +44,16 @@ export default class NetConst{
     public static DiamondBuy:number = 21101;
     
     //获得仇人数据
-    public static GetPersonalEnemy:number = 70001;
+    public static GetPersonalEnemy:number = 21122;
     //玩家打玩家
-    public static FightEnemy:number = 70002;
+    public static FightEnemy:number = 21124;
     //获得敌人数据
-    public static GetEnemyList:number = 70003;
+    public static GetEnemyList:number = 21121;
     //推送抢夺卡牌
-    public static PushRabCard:number = 70006;
+    public static PushRabCard:number = 21125;
     //获取玩家uid的战斗纪录
-    public static GetFightRecordList:number = 70007;
+    public static GetFightRecordList:number = 21123;
     //排行榜数据
-    public static GetRankList:number = 80001;
+    public static GetRankList:number = 20081;
 }
 

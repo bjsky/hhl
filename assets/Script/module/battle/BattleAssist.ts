@@ -110,7 +110,23 @@ export default class BattleAssist{
                 enemyArr.push(info);
             }
         }
+        this.addTestEnemy(enemyArr);
         return enemyArr;
+    }
+
+    private addTestEnemy(arr:EnemyInfo[]){
+        var test:EnemyInfo = new EnemyInfo();
+        test.enemyType = EnemyTypeEnum.Enemy;
+        test.enemyUid = "test005";
+        test.enemyName = "default";
+        test.enemyLevel = 3;
+        test.enemySex = 1;
+        test.enemyIcon = "default";
+        test.enemyLineupMap = {};
+        test.enemyTotalPower = 0;
+        test.enemyScore = 0;
+        test.isAttacked = false;
+        arr.push(test);
     }
 
     private createPersonalEnemyList(sList:Array<SPersonalEnemyInfo>):Array<EnemyInfo>{
@@ -202,8 +218,12 @@ export default class BattleAssist{
             addDiamond =0;
             addScore = 0;
             costActionPoint =1;
-            isRevenge = false;
+            isRevenge = (enemyInfo.enemyType == EnemyTypeEnum.PersonlEnemy);
+            if(isRevenge){
+                costActionPoint = 0;
+            }
             isRabCard = false;
+            rate ="";
         }
 
         NET.send(MsgFightEnemy.create(enemyInfo.enemyUid,enemyInfo.enemyName,

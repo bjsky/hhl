@@ -31,8 +31,8 @@ export class CSFightEnemy{
 }
 //战斗结束返回增加的经验，资源，战场信息，获得卡牌（如果有）
 export class SCFightEnemy{
-    //敌人uid，取参数的
-    public enemyUid:string ="";
+    // //敌人uid，取参数的
+    // public enemyUid:string ="";
     //战斗完成增加的经验
     public addExp:number = 0;
     //战斗完成后的res信息
@@ -46,7 +46,7 @@ export class SCFightEnemy{
 
     public static parse(obj:any):SCFightEnemy{
         var info:SCFightEnemy = new SCFightEnemy();
-        info.enemyUid = obj.enemyUid;
+        // info.enemyUid = obj.enemyUid;
         info.addExp =obj.addExp;
         info.resInfo = SResInfo.parse(obj.resInfo);
         info.userInfo = SUserInfo.parse(obj.userInfo);
@@ -65,7 +65,7 @@ export default class MsgFightEnemy extends MessageBase{
 
     constructor(){
         super(NetConst.FightEnemy);
-        this.isLocal = true;
+        // this.isLocal = true;
     }
 
     //攻击敌人

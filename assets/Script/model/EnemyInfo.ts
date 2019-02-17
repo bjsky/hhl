@@ -48,10 +48,12 @@ export default class EnemyInfo {
         var lineup:LineupInfo = null;
         var totalPower:number = 0;
         sInfo.enemyLineup.forEach((sLineup:SEnemyLineup)=>{
-            lineup = new LineupInfo();
-            lineup.initEnmey(sLineup);
-            this.enemyLineupMap[lineup.pos] = lineup;
-            totalPower+= lineup.power;
+            if(sLineup.level!=0){
+                lineup = new LineupInfo();
+                lineup.initEnmey(sLineup);
+                this.enemyLineupMap[lineup.pos] = lineup;
+                totalPower+= lineup.power;
+            }
         })
         this.enemyTotalPower = totalPower;
         this.enemyScore = sInfo.enemyScore;

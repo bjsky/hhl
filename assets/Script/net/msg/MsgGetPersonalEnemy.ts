@@ -29,7 +29,7 @@ export class SPersonalEnemyInfo{
     public static parse(obj:any):SPersonalEnemyInfo{
         var info:SPersonalEnemyInfo = new SPersonalEnemyInfo();
         info.lastRabTime = obj.lastRabTime;
-        info.enmeyInfo = SEnemyInfo.parse(obj.enemyInfo);
+        info.enmeyInfo = SEnemyInfo.parse(obj.enmeyInfo);
         return info;
     }
 }
@@ -40,7 +40,7 @@ export default class MsgGetPersonalEnemy extends MessageBase{
 
     constructor(){
         super(NetConst.GetPersonalEnemy);
-        this.isLocal = true;
+        // this.isLocal = true;
     }
 
     public static create(count:number =5){
@@ -53,7 +53,7 @@ export default class MsgGetPersonalEnemy extends MessageBase{
         var json:any ={
             personalEnmeyList:[
                 {lastRabTime:new Date().getTime(),
-                enemyInfo:MsgGetEnemyList.getEnemyInfo()}
+                    enmeyInfo:MsgGetEnemyList.getEnemyInfo()}
             ]
         };
         return this.parse(json);

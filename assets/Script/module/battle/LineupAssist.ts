@@ -97,7 +97,7 @@ export default class LineupAssist{
             power -= (this.ownerLineupMap[pos] as LineupInfo).power;
         }else{
             var card:CardInfo = Card.getCardByUUid(uuid);
-            power += card.carUpCfg.power;
+            power += Number(card.carUpCfg.power);
         }
         NET.send(MsgLineupModify.create(str,power),(msg:MsgLineupModify)=>{
             if(msg && msg.resp){

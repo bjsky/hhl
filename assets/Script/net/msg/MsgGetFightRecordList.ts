@@ -30,10 +30,10 @@ export default class MsgGetFightRecordList extends MessageBase{
 
     constructor(){
         super(NetConst.GetFightRecordList);
-        this.isLocal = true;
+        // this.isLocal = true;
     }
 
-    public static create(uid:string,count:number =10){
+    public static create(uid:string,count:number =30){
         var msg = new MsgGetFightRecordList();
         msg.param = new CSGetFightRecordList();
         msg.param.uid = uid;

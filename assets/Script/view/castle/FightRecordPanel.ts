@@ -1,5 +1,6 @@
 import PopUpBase from "../../component/PopUpBase";
 import { FightRecord } from "../../model/BattleInfo";
+import { COMMON } from "../../CommonData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -40,12 +41,12 @@ export default class FightRecordPanel extends PopUpBase {
     private initRecordStr(){
         var str:string ="";
         this._records.forEach((record:FightRecord)=>{
-            var htmlStr = record.getDescHtml(true);
+            var htmlStr = record.getDescHtml(COMMON.accountId);
             if(htmlStr!=""){
                 str +=(htmlStr+"<br />");
             }
         })
-        str = "<color=#7D3F3F>"+str+"</color>"
+        // str = "<color=#7D3F3F>"+str+"</color>"
         this.textRecords.string = str;
     }
     // update (dt) {}

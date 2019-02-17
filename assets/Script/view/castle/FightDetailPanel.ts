@@ -91,7 +91,7 @@ export default class FightDeailPanel extends PopUpBase {
     private initRecordStr(){
         var str:string ="";
         this._records.forEach((record:FightRecord)=>{
-            var htmlStr = record.getDescHtml(false);
+            var htmlStr = record.getDescHtml(this._enemyInfo.enemyUid);
             if(htmlStr!=""){
                 str +=(htmlStr+"<br />");
             }

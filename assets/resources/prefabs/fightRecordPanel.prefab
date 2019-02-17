@@ -744,9 +744,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 248,
-      "g": 109,
-      "b": 0,
+      "r": 125,
+      "g": 103,
+      "b": 63,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -784,7 +784,7 @@
       "__id__": 21
     },
     "_enabled": true,
-    "_N$string": "<color=#7D3F3F><color=#D35C21>[1小时前]</c> 你攻击<color=#1A60DD>大智若愚</c>获得胜利，积分<color=#D50336>＋3</c><br />你抢夺了对方的3星卡牌：<color=#29b92f>夸父</c><br /></color>",
+    "_N$string": "<color=#7d7d3f><color=#D35C21>[1小时前]</c> 你攻击<color=#1A60DD>大智若愚</c>获得胜利，积分<color=#D50336>＋3</c><br />你抢夺了对方的3星卡牌：<color=#29b92f>夸父</c><br /></color>",
     "_N$horizontalAlign": 0,
     "_N$fontSize": 24,
     "_N$font": null,

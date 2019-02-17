@@ -37,7 +37,7 @@ export class FightRecord{
         this.befightName = info.befightName;
         this.score = info.score;
         this.isRabCard = info.isRabCard;
-        this.rabCardUuid = info.rabCardUuid;
+        this.rabCardUuid = info.uuid;
         this.rabCardId = info.rabCardId;
         this.rabCardGrade = info.rabCardGrade;
     }
@@ -54,13 +54,13 @@ export class FightRecord{
         this.rabCardGrade = info.rabCard.grade;
     }
 
-    public getDescHtml(mine:boolean):string{
+    public getDescHtml(fighterUid:string):string{
         var time = Math.floor((COMMON.getServerTime() - this.time)/1000);
         var timeStr:string = StringUtil.formatReadableTime(time,true)+ "前";
         var fightName:string = this.fightName;
         var beFightName:string =this.befightName;
         var score:string =this.score.toString();
-        var isFight:boolean = (this.fightUId == COMMON.accountId);
+        var isFight:boolean = (this.fightUId == fighterUid);
         var isRab:boolean = this.isRabCard;
         if(isRab){
             var cardGrade:string = this.rabCardGrade+"星";
@@ -69,28 +69,23 @@ export class FightRecord{
             var cardColor:string = ColorUtil.getGradeColorHex(this.rabCardGrade);
         }
         var str = "";
-        if(mine){
-            if(isFight){
-                str ="<color=#D35C21>["+timeStr+"]</c> 你攻击<color=#1A60DD>"+beFightName+"</c>获得胜利，"+
-                "积分<color=#D50336>＋"+score+"</c>";
-                if(isRab){
-                    str+="<br />你抢夺了对方的"+cardGrade+"卡牌：<color="+cardColor+">"+cardName+"</c>"
-                }
-            }else{
-                str ="<color=#D35C21>["+timeStr+"]</c> <color=#1A60DD>"+fightName+"</c>攻击你获得胜利，"+
-                "你的积分<color=#D50336>－"+score+"</c>";
-                if(isRab){
-                    str+="<br />你被抢夺了"+cardGrade+"卡牌：<color="+cardColor+">"+cardName+"</c>"
-                }
+        if(score == "0"){
+            return str;
+        }
+        if(isFight){
+            str ="<color=#D35C21>["+timeStr+"]</c> 攻击<color=#1A60DD>"+beFightName+"</c>获得胜利，"+
+            "积分<color=#D50336>＋"+score+"</c>";
+            if(isRab){
+                str+="<br />抢夺了对方的"+cardGrade+"卡牌：<color="+cardColor+">"+cardName+"</c>"
             }
-        }else {
-            if(isFight){
-                str ="<color=#D35C21>["+timeStr+"]</c> 攻击<color=#1A60DD>"+beFightName+"</c>获得胜利，"+
-                "积分<color=#D50336>＋"+score+"</c>";
-                if(isRab){
-                    str+="<br />抢夺了对方的"+cardGrade+"卡牌：<color="+cardColor+">"+cardName+"</c>"
-                }
+            str = ("<color=#7d7d3f>"+str+"</c>");
+        }else{
+            str ="<color=#D35C21>["+timeStr+"]</c> 被<color=#1A60DD>"+fightName+"</c>攻击，"+
+            "积分<color=#D50336>－"+score+"</c>";
+            if(isRab){
+                str+="<br />被抢夺了"+cardGrade+"卡牌：<color="+cardColor+">"+cardName+"</c>"
             }
+            str = ("<color=#7D3F3F>"+str+"</c>");
         }
         return str;
     }

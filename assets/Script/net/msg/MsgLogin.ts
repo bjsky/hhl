@@ -272,7 +272,7 @@ export class SFightRecord{
     //是否抢夺卡牌
     public isRabCard:boolean = false;
     //抢夺卡牌uuid
-    public rabCardUuid:string = "";
+    public uuid:string = "";
     //抢夺卡牌id
     public rabCardId:number = 0;
     //抢夺卡牌品级
@@ -287,7 +287,7 @@ export class SFightRecord{
         info.befightName = obj.befightName;
         info.score = obj.score;
         info.isRabCard = obj.isRabCard;
-        info.rabCardUuid = obj.rabCardUuid;
+        info.uuid = obj.uuid;
         info.rabCardId = obj.rabCardId;
         info.rabCardGrade = obj.rabCardGrade;
         return info;
@@ -332,7 +332,7 @@ export default class MsgLogin
         // }
         var json:any = {firstLogin:true,
             accountId:StringUtil.getUUidClient(),
-            newUser:1,
+            newUser:0,
             serverTime:new Date().getTime(),
             userInfo:{name:"上古战神",icon:"",gender:1,exp:0,level:1},
             resInfo:{gold:50000,diamond:500,lifeStone:50000,soulStone:0},

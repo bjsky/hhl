@@ -66,11 +66,11 @@ export default class RankPanel extends PopUpBase{
         var curRankType:GetRankListType = curIndex+1;
         NET.send(MsgGetRankList.create(curRankType,30),(msg:MsgGetRankList) =>{
             if(msg && msg.resp){
-                this._myOrder = msg.resp.myOrder;
+                this._myOrder = msg.resp.you.rank;
                 this.myOrder.string = this._myOrder.toString();
         
                 this._ranklistData = [];
-                var tempList:SRankInfo[] = msg.resp.rankList;
+                var tempList:SRankInfo[] = msg.resp.top;
                 var info:RankInfo;
                 for(var i:number =0;i<tempList.length;i++){
                     info = new RankInfo();

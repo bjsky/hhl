@@ -19,6 +19,7 @@ import MsgGetPersonalEnemy from "./MsgGetPersonalEnemy";
 import MsgFightEnemy from "./MsgFightEnemy";
 import MsgGetRankList from "./MsgGetRankList";
 import MsgPushRabCard from "./MsgPushRabCard";
+import MsgGetFightRecordList from "./MsgGetFightRecordList";
 /**
  * 太特么坑了，父类中还不能导入子类
  */
@@ -84,6 +85,9 @@ export default class MsgUtil{
             break;
             case NetConst.GetRankList:
                 message = new MsgGetRankList();
+            break;
+            case NetConst.GetFightRecordList:
+                message = new MsgGetFightRecordList();
             break;
             default:
             message = null;

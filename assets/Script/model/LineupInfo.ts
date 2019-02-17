@@ -82,6 +82,9 @@ export default class LineupInfo{
         this.grade = lineup.grade;
         this.level = lineup.level;
         var upCfg = CFG.getCfgByKey(ConfigConst.CardUp,"grade",this.grade,"level",this.level);
+        if(upCfg[0]==undefined){
+            console.log("upcfg null")
+        }
         this.power = Number(upCfg[0].power);
         this.life = Number(upCfg[0].body);
         var cardCfg = CFG.getCfgDataById(ConfigConst.CardInfo,this.cardId);

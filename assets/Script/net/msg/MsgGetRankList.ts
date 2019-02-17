@@ -16,16 +16,16 @@ export class CSGetRankList{
 
 export class SCGetRankList{
     //我的位置
-    public myOrder:number = 0;
+    public you:SRankInfo = null;
     //玩家列表(按照等级、战力、或积分排序)
-    public rankList:Array<SRankInfo> = [];
+    public top:Array<SRankInfo> = [];
 
     public static parse(obj:any){
         var info:SCGetRankList = new SCGetRankList();
-        info.myOrder = obj.myOrder;
-        info.rankList =[];
-        obj.rankList.forEach((rank:any) => {
-            info.rankList.push(SRankInfo.parse(rank));
+        info.you = SRankInfo.parse(obj.you);
+        info.top =[];
+        obj.top.forEach((rank:any) => {
+            info.top.push(SRankInfo.parse(rank));
         });
         return info;
     }
@@ -44,6 +44,8 @@ export class SRankInfo{
     public playerPower:number = 0;
     //积分
     public playerScore:number = 0;
+    //排名
+    public rank:number = 0;
 
     public static parse(obj:any):SRankInfo{
         var info:SRankInfo = new SRankInfo();
@@ -53,6 +55,7 @@ export class SRankInfo{
         info.playerIcon = obj.playerIcon;
         info.playerPower = obj.playerPower;
         info.playerScore = obj.playerScore;
+        info.rank = obj.rank;
         return info;
     }
 }
@@ -64,7 +67,7 @@ export default class MsgGetRankList extends MessageBase{
 
     constructor(){
         super(NetConst.GetRankList);
-        this.isLocal = true;
+        // this.isLocal = true;
     }
 
     public static create(type:GetRankListType,count:number =30){

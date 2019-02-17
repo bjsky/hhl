@@ -102,7 +102,7 @@ export default class MsgGetEnemyList extends MessageBase{
 
     constructor(){
         super(NetConst.GetEnemyList);
-        this.isLocal = true;
+        // this.isLocal = true;
     }
 
     public static create(lvMin:number,lvMax:number,cost:number,count:number =5){
