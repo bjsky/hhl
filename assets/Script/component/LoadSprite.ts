@@ -17,6 +17,8 @@ export default class LoadSprite extends cc.Sprite{
     public url:string ="";
     @property
     public resType:"jpg"|"png" ="png";
+    @property(cc.SpriteFrame)
+    public defaultSpr:cc.SpriteFrame = null;
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
@@ -48,6 +50,7 @@ export default class LoadSprite extends cc.Sprite{
              cc.loader.load({url: path, type: type},(err,tex)=>{
                 if(err){
                     console.log("LoadSprite.load failed: "+ err.message,"url:"+path);
+                    this.spriteFrame = this.defaultSpr;
                 }else{
                     this.spriteFrame = new cc.SpriteFrame(tex, new cc.Rect(0, 0, tex.pixelWidth, tex.pixelHeight))
                     this._callback && this._callback();
@@ -60,6 +63,7 @@ export default class LoadSprite extends cc.Sprite{
                 (error: Error, resource: cc.SpriteFrame) => {
                     if(error){
                         console.log("LoadSprite.load failed:"+ error.message);
+                        this.spriteFrame = this.defaultSpr;
                     }else{
                         if(__self.isValid){
                             __self.spriteFrame = resource;
@@ -74,6 +78,7 @@ export default class LoadSprite extends cc.Sprite{
                 (error: Error, resource: cc.SpriteFrame) => {
                     if(error){
                         console.log("LoadSprite.load failed:"+ error.message);
+                        this.spriteFrame = this.defaultSpr;
                     }else{
                         if(__self .isValid){
                             __self.spriteFrame = resource;

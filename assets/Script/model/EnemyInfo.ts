@@ -83,7 +83,7 @@ export default class EnemyInfo {
         this.enemyName = EnemyInfo.NameConsts[Math.floor(Math.random()*EnemyInfo.NameConsts.length)];
         this.enemyLevel = COMMON.userInfo.level;
         this.enemySex = 1;
-        this.enemyIcon ="";
+        this.enemyIcon ="default";
 
         //阵容 
         var passCfg:any = CFG.getCfgDataById(ConfigConst.Passage,passageId);

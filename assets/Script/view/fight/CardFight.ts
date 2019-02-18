@@ -246,7 +246,7 @@ export default class CardFight extends  UIBase {
     public setBeFight(shakePos:cc.Vec2){
         this._beFightPos = shakePos//.div(1.5);
     }
-    public beAttack(attackPower:number,hasSkill:boolean,cb:Function){
+    public beAttack(attackPower:number,beAttackAni:boolean,cb:Function){
         var tipStr:string = ""
         // if(this._loseLife+attackPower>this._totalLife){
         //     attackPower = this._totalLife - this._loseLife;
@@ -257,7 +257,7 @@ export default class CardFight extends  UIBase {
         this.numEffLife.setValue(this.curLife);
         this.cardLiftProgress.progress = this.getLiftPro();
         var pos = this.cardLife.node.parent.convertToWorldSpaceAR(this.cardLife.node.position);
-        if(hasSkill){
+        if(!beAttackAni){
             this.showBeAttackTip(tipStr,pos);
         }else{
             // this.cardNode.scale = 1;
@@ -270,13 +270,21 @@ export default class CardFight extends  UIBase {
             // )
             // this.cardNode.runAction(beAttackAct);
 
-            this.node.setPosition(this._beFightPos);
-            var shakeAni = cc.sequence(
-                cc.moveTo(0.26,cc.v2(0,0)).easing(cc.easeBounceOut())
-                ,cc.callFunc(()=>{
+            var ani = cc.sequence(
+                // cc.delayTime(0.1),
+                cc.moveTo(0.03,this._beFightPos),
+                cc.moveTo(0.1,cc.v2(0,0)),
+                cc.callFunc(()=>{
                     this.showBeAttackTip(tipStr,pos);
-                }));
-            this.node.runAction(shakeAni);
+                })
+            )
+            // this.node.setPosition(this._beFightPos);
+            // var shakeAni = cc.sequence(
+            //     cc.moveTo(0.26,cc.v2(0,0)).easing(cc.easeBounceOut())
+            //     ,cc.callFunc(()=>{
+            //         this.showBeAttackTip(tipStr,pos);
+            //     }));
+            this.node.runAction(ani);
         }
 
         cb && cb();

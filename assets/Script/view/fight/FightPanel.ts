@@ -38,6 +38,8 @@ export default class FightPanel extends UIBase {
     buffNode:cc.Node = null;
     @property(cc.Node)
     fightNode:cc.Node = null;
+    @property(cc.Node)
+    fightBGR:cc.Node = null;
 
     @property(cc.Node)
     skillNode:cc.Node = null;
@@ -127,6 +129,7 @@ export default class FightPanel extends UIBase {
                 UI.removeUI(nodeCard.children[0]);
             }
         }
+        this.fightBGR.rotation = 0;
         // this.nodeEnemy.position = cc.v2(15+cc.winSize.width,this.nodeEnemy.position.y);
         // this.nodeMine.position = cc.v2(15-cc.winSize.width,this.nodeMine.position.y);
     }
@@ -299,6 +302,7 @@ export default class FightPanel extends UIBase {
     }
 
     public endResult(){
+        this.fightBGR.stopAllActions();
         this._reslutEndCb && this._reslutEndCb();
     }
     /////////////////////// 
@@ -337,6 +341,7 @@ export default class FightPanel extends UIBase {
         }
         this._fightOnceActions = this._result.fights.slice();
         this.playDelaySequence();
+        this.fightBGR.runAction(cc.rotateBy(1,15).repeatForever());
     }
     private stopSequence(){
         this.unschedule(this.playSequence);
@@ -409,15 +414,19 @@ export default class FightPanel extends UIBase {
             }break;
             case FightOncePlayState.BeAttackSkill:{
                 SOUND.playFighthitSound();
+                if(this._fightOnce.attackSkill!=null && this._fightOnce.beAttackSkill==null){
+                    hasAllShake = true;
+                }
                 if(this._fightOnce.beAttackSkill!=null){
                     var pos:cc.Vec2 = this._beAttackCard.node.parent.convertToWorldSpaceAR(this._beAttackCard.node.position);
                     Fight.panel.playSkill(pos,this._fightOnce.beAttackSkill.attackObj.skill.skillCfg.skillIcon,()=>{
-                        this._beAttackCard.beAttack(this._fightOnce.attack.attackPower,true,()=>{
+                        this._beAttackCard.beAttack(this._fightOnce.attack.attackPower,false,()=>{
                             this.playFightOnce();
                         });
                     });
                 }else{
-                    this._beAttackCard.beAttack(this._fightOnce.attack.attackPower,false,()=>{
+
+                    this._beAttackCard.beAttack(this._fightOnce.attack.attackPower,!hasAllShake,()=>{
                         this.playFightOnce();
                     });
                 }
@@ -506,12 +515,13 @@ export default class FightPanel extends UIBase {
         var seq = cc.sequence(
             move,
             cc.callFunc(()=>{
-                var pos:cc.Vec2 = toPos.sub(fromPos).div(20);
+                var pos:cc.Vec2 = toPos.sub(fromPos).div(10);
                 if(shake){
                     this.center.setPosition(pos);
                     var shakeAni = cc.moveTo(0.3,cc.v2(0,0)).easing(cc.easeBounceOut());
                     this.center.runAction(shakeAni);
                 }
+                pos = pos.div(2);
                 cb && cb(pos);
             })
         )

@@ -88,6 +88,8 @@ export default class MainUI extends UIBase {
     btnShare:cc.Button = null;
     @property(cc.Button)
     btnSevenDay:cc.Button = null;
+    @property(cc.Button)
+    btnStore:cc.Button = null;
 
     onLoad () {
 
@@ -188,7 +190,7 @@ export default class MainUI extends UIBase {
     onEnable(){
         this.lblExp.node.on(cc.Node.EventType.TOUCH_START,this.onLabelExpTouch,this);
         this.btnShare.node.on(cc.Node.EventType.TOUCH_START,this.onShare,this);
-        this.btnSevenDay.node.on(cc.Node.EventType.TOUCH_START,this.onSevenDayBtnTouch,this);
+        this.btnStore.node.on(cc.Node.EventType.TOUCH_START,this.onStoreBtnTouch,this);
         this.taskBtn.node.on(cc.Node.EventType.TOUCH_START,this.onTaskBtnTouch,this);
         this.rankBtn.node.on(cc.Node.EventType.TOUCH_START,this.onRankBtnTouch,this);
         this.soundBtn.node.on(TouchHandler.TOUCH_CLICK,this.onSoundClick,this);
@@ -207,7 +209,7 @@ export default class MainUI extends UIBase {
     onDisable(){
         this.lblExp.node.off(cc.Node.EventType.TOUCH_START,this.onLabelExpTouch,this);
         this.btnShare.node.off(cc.Node.EventType.TOUCH_START,this.onShare,this);
-        this.btnSevenDay.node.off(cc.Node.EventType.TOUCH_START,this.onSevenDayBtnTouch,this);
+        this.btnStore.node.off(cc.Node.EventType.TOUCH_START,this.onStoreBtnTouch,this);
         this.taskBtn.node.off(cc.Node.EventType.TOUCH_START,this.onTaskBtnTouch,this)
         this.rankBtn.node.off(cc.Node.EventType.TOUCH_START,this.onRankBtnTouch,this);
         this.soundBtn.node.off(TouchHandler.TOUCH_CLICK,this.onSoundClick,this);
@@ -239,7 +241,7 @@ export default class MainUI extends UIBase {
         UI.createPopUp(ResConst.TaskPanel,{});
     }
 
-    private onSevenDayBtnTouch(e){
+    private onStoreBtnTouch(e){
         // UI.createPopUp(ResConst.SevenDayPanel,{});
         UI.createPopUp(ResConst.StorePanel,{});
     }

@@ -356,7 +356,8 @@
     "_dstBlendFactor": 771,
     "_atlas": null,
     "url": "",
-    "resType": "png"
+    "resType": "png",
+    "defaultSpr": null
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1115,7 +1116,10 @@
     "_dstBlendFactor": 771,
     "_atlas": null,
     "url": "",
-    "resType": "png"
+    "resType": "png",
+    "defaultSpr": {
+      "__uuid__": "d4d65286-91c0-4efd-96ab-65dca04de994"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1137,7 +1141,7 @@
     },
     "_children": [],
     "_tag": -1,
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 36
@@ -1310,7 +1314,8 @@
     "_dstBlendFactor": 771,
     "_atlas": null,
     "url": "",
-    "resType": "png"
+    "resType": "png",
+    "defaultSpr": null
   },
   {
     "__type__": "cc.PrefabInfo",
