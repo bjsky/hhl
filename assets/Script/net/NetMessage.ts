@@ -4,6 +4,10 @@ import { EVENT } from "../message/EventCenter";
 import { UI } from "../manager/UIManager";
 import LoadingStepServerData from "../module/loading/steps/LoadingStepServerData";
 import { GAME } from "../GameController";
+import MessageBase from "./msg/MessageBase";
+import MsgUtil from "./msg/MsgUtil";
+import { Battle } from "../module/battle/BattleAssist";
+import MsgPushRabCard from "./msg/MsgPushRabCard";
 
 export default class NetMessage extends cc.Component{
 
@@ -54,18 +58,22 @@ export default class NetMessage extends cc.Component{
             }                
             break;
             default:{
-                this.MsgPushParser(msgid,e.detail.data);
+                this.MsgPushParser(Number(msgid),e.detail.data);
             }
             break;
         }
     }
 
-    private MsgPushParser(id:string,data:any)
+    private MsgPushParser(id:number,data:any)
     {
         console.log("推通消息处理：",id,JSON.stringify(data));
+        var message:MessageBase = null;
         switch(id)
         {
-            
+            case NetConst.PushRabCard:
+            message = MsgUtil.createMessage(id);
+            Battle.onPushRabCard(message as MsgPushRabCard);
+            break;
         }
 
     }

@@ -193,6 +193,21 @@ export default class BattleAssist{
             }
         },this)
     }
+
+    public refreshPersonalEnemy(){
+        NET.send(MsgGetPersonalEnemy.create(),(msg:MsgGetPersonalEnemy)=>{
+            if(msg && msg.resp){
+                if(msg.resp.battleInfo!=null){
+                    this._battleInfo.initFromServer(msg.resp.battleInfo);
+                }
+                this._personalEnemeyList = this.createPersonalEnemyList(msg.resp.personalEnmeyList);
+                this._personalEnemyListComplete = true;
+                // 刷新仇人
+                EVENT.emit(GameEvent.Battle_refresh_personalEnemey);
+            }
+        },this)
+        
+    }
     //挑战敌人成功
     public fightEnemeySuccess(enemyInfo:EnemyInfo,victory:boolean,evaluate:number,isGuide:boolean,cb:Function){
         if(victory){
@@ -243,20 +258,21 @@ export default class BattleAssist{
         },this)
     }
 
-    public testPushRabCard(){
-        NET.send(MsgPushRabCard.create(),(msg:MsgPushRabCard)=>{
-            if(msg && msg.resp){
-                var record = new FightRecord();
-                record.initFromRab(msg.resp);
-                UI.createPopUp(ResConst.BeFightPanel,{type:BeFightPanelType.BeFight,records:[record]});
-                this.battleInfo.score -= msg.resp.score;
-                EVENT.emit(GameEvent.Battle_Info_Change);
-                //移除卡牌
-                Card.removeCardByUUid(record.rabCardUuid);
-                EVENT.emit(GameEvent.Card_Remove,{uuid:record.rabCardUuid,type:CardRemoveType.RabRemove});
-            }
-        },this)
+    public onPushRabCard(msg:MsgPushRabCard){
+        if(msg && msg.resp){
+            var record = new FightRecord();
+            record.initFromRab(msg.resp);
+            UI.createPopUp(ResConst.BeFightPanel,{type:BeFightPanelType.BeFight,records:[record]});
+            this.battleInfo.score -= msg.resp.score;
+            EVENT.emit(GameEvent.Battle_Info_Change);
+            //移除卡牌
+            Card.removeCardByUUid(record.rabCardUuid);
+            EVENT.emit(GameEvent.Card_Remove,{uuid:record.rabCardUuid,type:CardRemoveType.RabRemove});
+            //刷新仇人
+            this.refreshPersonalEnemy();
+        }
     }
+
     ////////////////////
     //  积分
     ////////////////////

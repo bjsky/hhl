@@ -1,14 +1,14 @@
 {
   "ver": "2.0.0",
-  "uuid": "62566540-cfde-486f-8b82-c630a199abfb",
+  "uuid": "07ff4bd5-73e2-4ec6-b514-116bbba763e0",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
-    "zssc_icon": {
+    "wfjs_icon": {
       "ver": "1.0.3",
-      "uuid": "7ccdb762-77ad-42be-a770-09f856b1b1ec",
-      "rawTextureUuid": "62566540-cfde-486f-8b82-c630a199abfb",
+      "uuid": "06031b6f-6294-419c-b5d2-92ab1b104d58",
+      "rawTextureUuid": "07ff4bd5-73e2-4ec6-b514-116bbba763e0",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,

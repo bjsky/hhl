@@ -93,7 +93,7 @@ export default class CastlePanel extends UIBase {
         EVENT.on(GameEvent.FightEnemey_Success,this.onFightEnemySuccess,this);
         EVENT.on(GameEvent.Battle_Info_Change,this.onBattleInfoChange,this);
         EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
-        
+        EVENT.on(GameEvent.Battle_refresh_personalEnemey,this.onRefreshPersonalEnemey,this);
 
         this.initView();
     }
@@ -111,11 +111,16 @@ export default class CastlePanel extends UIBase {
         EVENT.off(GameEvent.FightEnemey_Success,this.onFightEnemySuccess,this);
         EVENT.off(GameEvent.Battle_Info_Change,this.onBattleInfoChange,this);
         EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
+        EVENT.off(GameEvent.Battle_refresh_personalEnemey,this.onRefreshPersonalEnemey,this);
 
         this.enemyList.setListData([]);
         this.personalEnemyList.setListData([]);
     }
 
+    private onRefreshPersonalEnemey(e){
+        this.initBattleData();
+        this.initPersonalEnemyList();
+    }
     private onRecordsClick(e){
         NET.send(MsgGetFightRecordList.create(COMMON.accountId),(msg:MsgGetFightRecordList)=>{
             if(msg && msg.resp){

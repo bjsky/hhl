@@ -49,6 +49,7 @@ export default class GameEvent{
 
     //侦查完成
     public static Battle_scout_Complete:string ="Battle_scout_Complete";
+    public static Battle_refresh_personalEnemey:string ="Battle_refresh_personalEnemey";
     //进攻完成
     public static FightEnemey_Success:string ="FightEnemey_Success";
     //抢夺卡牌显示完成

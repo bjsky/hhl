@@ -90,6 +90,8 @@ export default class MainUI extends UIBase {
     btnSevenDay:cc.Button = null;
     @property(cc.Button)
     btnStore:cc.Button = null;
+    @property(cc.Button)
+    btnIntro:cc.Button = null;
 
     onLoad () {
 
@@ -198,6 +200,7 @@ export default class MainUI extends UIBase {
         this.btnAddStone.node.on(cc.Node.EventType.TOUCH_START,this.onAddStone,this);
         this.btnDiamondStore.node.on(cc.Node.EventType.TOUCH_START,this.onDiamondStore,this);
         this.headIcon.node.on(cc.Node.EventType.TOUCH_START,this.onHeadTouch,this);
+        this.btnIntro.node.on(cc.Node.EventType.TOUCH_START,this.onIntroClick,this);
 
         EVENT.on(GameEvent.Res_update_Cost_Complete,this.resUpdateCost,this);
         EVENT.on(GameEvent.Show_AwardPanel,this.showAwardPop,this);
@@ -217,6 +220,7 @@ export default class MainUI extends UIBase {
         this.btnAddStone.node.off(cc.Node.EventType.TOUCH_START,this.onAddStone,this);
         this.btnDiamondStore.node.off(cc.Node.EventType.TOUCH_START,this.onDiamondStore,this);
         this.headIcon.node.off(cc.Node.EventType.TOUCH_START,this.onHeadTouch,this);
+        this.btnIntro.node.off(cc.Node.EventType.TOUCH_START,this.onIntroClick,this);
 
         EVENT.off(GameEvent.Res_update_Cost_Complete,this.resUpdateCost,this);
         EVENT.off(GameEvent.Show_AwardPanel,this.showAwardPop,this);
@@ -234,6 +238,9 @@ export default class MainUI extends UIBase {
         var accountStr:string = "用户ID:";
         accountStr += COMMON.accountId;
         UI.showAlert(accountStr);
+    }
+    private onIntroClick(e){
+        UI.createPopUp(ResConst.IntroPanel,{});
     }
 
     private onTaskBtnTouch(e){

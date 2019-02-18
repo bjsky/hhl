@@ -15,6 +15,7 @@ import GameEvent from "../message/GameEvent";
 import StringUtil from "../utils/StringUtil";
 import { GUIDE, GuideTypeEnum } from "../manager/GuideManager";
 import ResPanel, { ResPanelType } from "./ResPanel";
+import { Battle } from "../module/battle/BattleAssist";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -119,7 +120,7 @@ export default class BuildPanel extends UIBase{
         
         EVENT.on(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
         EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
-
+        
         this.loadBuild();
     }
     onDisable(){
