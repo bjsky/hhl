@@ -98,8 +98,6 @@ export default class BattlePanel extends UIBase {
         EVENT.on(GameEvent.Passage_FightBossEnd,this.onPassageFightBossEnd,this);
         EVENT.on(GameEvent.Lineup_Changed,this.onLineupChange,this);
         EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
-
-        this.schedule(this.showPassageAddEffect,this._interval);
     }
 
     onDisable(){
@@ -203,6 +201,7 @@ export default class BattlePanel extends UIBase {
         this._curExp = Number(Math.floor(Passage.getUnCollectExp()).toFixed(0));
         this._curStone = Number(Math.floor(Passage.getUnCollectStone()).toFixed(0));
         this.setPassageTopLabels();
+        this.schedule(this.showPassageAddEffect,this._interval);
     }
 
     private setPassageTopLabels(){
@@ -214,8 +213,8 @@ export default class BattlePanel extends UIBase {
 
     private showPassageAddEffect(){
         var max = CONSTANT.getPassIncreaseMaxTime()*1000;
-        if(Passage.passageInfo.getPassIncreaseTime()>max){
-            this.unscheduleAllCallbacks();
+        if(Passage.passageInfo.getPassIncreaseTime()>=max){
+            this.unschedule(this.showPassageAddEffect);
             return;
         }
         var addGold = this.goldFly.playEffect(this._passGoldPS);

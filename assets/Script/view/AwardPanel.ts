@@ -8,6 +8,7 @@ import GameEvent from "../message/GameEvent";
 import { GUIDE } from "../manager/GuideManager";
 import { SCENE } from "../manager/SceneManager";
 import CityScene from "../scene/CityScene";
+import { GAME } from "../GameController";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -54,6 +55,7 @@ export default class AwardPanel extends PopUpBase {
                 }
                 this.node.position = COMMON.ZERO;
                 UI.closePopUp(this.node);
+                GAME.showLevelUp();
             })
         )
         this.node.runAction(seq)

@@ -38,7 +38,8 @@ export const ResConst = {
     FightRecordPanel:"prefabs/fightRecordPanel",
     BeFightPanel:"prefabs/beFightPanel",
     CardHeadTip:"prefabs/cardHeadTip",
-    IntroPanel:"prefabs/introPanel"
+    IntroPanel:"prefabs/introPanel",
+    LevelupPanel:"prefabs/levelUpPanel"
 }
 /**
  * 加载配置

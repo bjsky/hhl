@@ -10,12 +10,10 @@ import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 import ResBounceEffect from "../../component/ResBounceEffect";
 import ExpLevelEffect from "../../component/ExpLevelEffect";
 import LoadSprite from "../../component/LoadSprite";
-import { WXInterface, WeiXin } from "../../wxInterface";
+import { WeiXin } from "../../wxInterface";
 import { SOUND } from "../../manager/SoundManager";
 import PathUtil from "../../utils/PathUtil";
 import ResPanel, { ResPanelType } from "../ResPanel";
-import { NET } from "../../net/core/NetController";
-import MsgGetRankList from "../../net/msg/MsgGetRankList";
 import { CONSTANT } from "../../Constant";
 import { Share } from "../../module/share/ShareAssist";
 import { Card } from "../../module/card/CardAssist";
@@ -240,7 +238,6 @@ export default class MainUI extends UIBase {
         EVENT.off(GameEvent.ShareGetReward_Complete,this.onShareComplete,this);
     }
 
-
     private initRedPoint(){
         this.nodeShareRed.active = Share.canShareGetReward;
         this.nodeStoreRed.active = Card.isCanBuyCard;
@@ -285,6 +282,7 @@ export default class MainUI extends UIBase {
             return;
         }
         UI.createPopUp(ResConst.RankPanel,{});
+        // UI.createPopUp(ResConst.LevelupPanel,{});
     }
 
     private onShare(e){

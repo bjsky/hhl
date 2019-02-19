@@ -16,6 +16,7 @@ import CardInfo from "../../model/CardInfo";
 import { UI } from "../../manager/UIManager";
 import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 import { CardBigShowType } from "../card/CardBig";
+import { GAME } from "../../GameController";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -221,6 +222,11 @@ export default class FightResultPanel extends PopUpBase {
         }else{
             SOUND.playFightFailSound();
         }
+    }
+
+    protected onCloseComplete(){
+        super.onCloseComplete();
+        GAME.showLevelUp();
     }
     ///////////////////
     // 引导

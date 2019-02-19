@@ -21,6 +21,8 @@ import { CardSimpleShowType } from "../card/CardSmall";
 import { GUIDE } from "../../manager/GuideManager";
 import { CardBigShowType } from "../card/CardBig";
 import ResPanel, { ResPanelType } from "../ResPanel";
+import MainUI from "../main/MainUI";
+import { GAME } from "../../GameController";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -274,7 +276,6 @@ export default class TemplePanel extends UIBase {
                 break;
             }
         }
-
         centerCard.playShowEffect(uuid,()=>{
             var wPos:cc.Vec2 = centerCard.node.parent.convertToWorldSpaceAR(centerCard.node.position);
             var toPos:cc.Vec2 = this.buildHeroBtn.node.parent.convertToWorldSpaceAR(this.buildHeroBtn.node.position);

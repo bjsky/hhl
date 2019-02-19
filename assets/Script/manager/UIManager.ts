@@ -61,6 +61,15 @@ export default class UIManager{
     public get uiPool(){
         return this._uiPool;
     }
+    //没存过的ui，取不到
+    public getUI(res:string){
+        var uiNode:cc.Node = this._uiPool.getUIFromPool(res);
+        if(uiNode){
+            return uiNode.getComponent(UIBase);
+        }else{
+            return null;
+        }
+    }
 
     // private _isLoading:boolean = false;
     public loadUI(res:string,data:any,parent:cc.Node,complete?:Function){
@@ -154,10 +163,15 @@ export default class UIManager{
         EVENT.emit(GameEvent.Mask_touch);
     }
 
+    private _popupCreating:boolean =false;
+    public get hasPopup(){
+        return this._popupCreating || this._popups.length>0;
+    }
     public createPopUp(res:string,data:any,createComplete?:Function){
         this._mask.active = true;
         this._mask.zIndex = this._popups.length > 0?this._popups[this._popups.length -1].node.zIndex+1:0;
         console.log("createPopup,mask index:"+this._mask.zIndex)
+        this._popupCreating = true;
         this.loadUI(res,data,this.PopupLayer,(ui:UIBase)=>{
             if(ui){
                 this._popups.push(ui);
@@ -166,6 +180,7 @@ export default class UIManager{
                 this._mask.zIndex = this._popups.length > 0?this._popups[this._popups.length -1].node.zIndex-1:0;
                 this._mask.opacity = ui.maskOpacity;
                 console.log("createPopup,node index:"+ui.node.zIndex,"mask index:"+this._mask.zIndex)
+                this._popupCreating = false;
                 // this.checkMaskLayer();
                 createComplete && createComplete(ui);
             }
@@ -195,6 +210,7 @@ export default class UIManager{
     }
     public closePopUp(node:cc.Node){
         var ui:UIBase = node.getComponent(UIBase);
+        var allClosed:boolean = false;
         if(ui){
             var index:number = this._popups.indexOf(ui);
             if(index>-1){
@@ -212,10 +228,14 @@ export default class UIManager{
                 this._mask.active = false;
                 this._mask.zIndex = 0;
                 this._curPopup = null;
+                allClosed = true;
             }
             console.log("closePopup,mask index:"+this._mask.zIndex)
         }
         this.removeUI(node);
+        if(allClosed){
+            EVENT.emit(GameEvent.PopUp_AllClosed,{});
+        }
     }
 
     //获得当前弹窗上的节点

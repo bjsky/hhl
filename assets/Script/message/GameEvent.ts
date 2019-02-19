@@ -11,6 +11,8 @@ export default class GameEvent{
     public static Show_UserInfo_AuthButton:string = "Show_UserInfo_AuthButton";
     //遮罩点击
     public static Mask_touch:string = "Mask_touch";
+    //所有弹窗关闭
+    public static PopUp_AllClosed:string ="PopUp_AllClosed";
     //场景
     public static Scene_Change_Complete:string = "Scene_Change_Complete";
     //面板显示效果完成
@@ -65,5 +67,5 @@ export default class GameEvent{
     //引导结束
     public static Guide_End:string ="Guide_End";
     //用户升级
-    public static User_Level_UP:string ="用户升级";
+    public static User_Level_UP:string ="User_Level_UP";
 }

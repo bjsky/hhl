@@ -14,6 +14,7 @@ import TouchHandler from "../../component/TouchHandler";
 import { WeiXin } from "../../wxInterface";
 import { Share } from "../../module/share/ShareAssist";
 import { SOUND } from "../../manager/SoundManager";
+import { GAME } from "../../GameController";
 
 const {ccclass, property} = cc._decorator;
 
@@ -186,6 +187,7 @@ export default class CardBig extends PopUpBase{
                 this.node.position = COMMON.ZERO;
                 this.node.rotation = 0;
                 UI.closePopUp(this.node);
+                GAME.showLevelUp();
             })
         )
         this.node.runAction(getAct);

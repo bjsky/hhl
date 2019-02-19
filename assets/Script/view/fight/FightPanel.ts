@@ -156,7 +156,7 @@ export default class FightPanel extends UIBase {
             // this.nodeMine.runAction(cc.moveTo(0.3,cc.v2(15,this.nodeMine.position.y)).easing(cc.easeInOut(2)));
         },0.15)
     }
-    private _endEnableDelay:number = 5;
+    private _endEnableDelay:number = 9;
     private _curTime:number = 0;
     private startDelayEndEnable(){
         this._curTime = 0;
