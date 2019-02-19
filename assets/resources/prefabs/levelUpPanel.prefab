@@ -46,10 +46,13 @@
     "_components": [
       {
         "__id__": 45
+      },
+      {
+        "__id__": 46
       }
     ],
     "_prefab": {
-      "__id__": 46
+      "__id__": 47
     },
     "_id": "",
     "_opacity": 255,
@@ -68,8 +71,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 750,
-      "height": 1334
+      "width": 585,
+      "height": 475
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -78,7 +81,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 100
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -132,7 +135,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 94
+      "y": 0
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -229,7 +232,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 255,
-      "y": 137
+      "y": 48
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -382,7 +385,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -19,
-      "y": 148
+      "y": 59
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -473,7 +476,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 54,
-      "y": 142
+      "y": 53
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -562,7 +565,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -167,
-      "y": 74
+      "y": -15
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -669,7 +672,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -179
+      "y": -268
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1243,7 +1246,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -241
+      "y": -330
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1334,7 +1337,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 8,
-      "y": -21
+      "y": -110
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1383,12 +1386,22 @@
     "closeBtn": {
       "__id__": 7
     },
+    "enableMaskTouchClose": true,
     "labelLevel": {
       "__id__": 14
     },
     "descText": {
       "__id__": 43
     }
+  },
+  {
+    "__type__": "cc.BlockInputEvents",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true
   },
   {
     "__type__": "cc.PrefabInfo",

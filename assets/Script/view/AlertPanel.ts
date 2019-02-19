@@ -79,6 +79,10 @@ export default class AlertPanel extends PopUpBase {
         this.onClose(e);
     }
 
+    protected onMaskTouch(e){
+        this.onCancelTouch(e);
+    }
+
     protected onCloseComplete(){
         UI.closePopUp(this.node);
         if(this._clickOk) this._okCb && this._okCb(this);

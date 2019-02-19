@@ -43,10 +43,13 @@
     "_components": [
       {
         "__id__": 33
+      },
+      {
+        "__id__": 34
       }
     ],
     "_prefab": {
-      "__id__": 34
+      "__id__": 35
     },
     "_id": "",
     "_opacity": 255,
@@ -65,8 +68,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 750,
-      "height": 1334
+      "width": 678,
+      "height": 351
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -1029,6 +1032,7 @@
     "closeBtn": {
       "__id__": 30
     },
+    "enableMaskTouchClose": true,
     "nodeOutlineTitle": {
       "__id__": 8
     },
@@ -1038,6 +1042,15 @@
     "richText": {
       "__id__": 17
     }
+  },
+  {
+    "__type__": "cc.BlockInputEvents",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true
   },
   {
     "__type__": "cc.PrefabInfo",

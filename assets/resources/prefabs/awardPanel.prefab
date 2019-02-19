@@ -37,10 +37,13 @@
       },
       {
         "__id__": 24
+      },
+      {
+        "__id__": 25
       }
     ],
     "_prefab": {
-      "__id__": 25
+      "__id__": 26
     },
     "_id": "",
     "_opacity": 255,
@@ -736,6 +739,7 @@
     "_enabled": true,
     "maskOpacity": 40,
     "closeBtn": null,
+    "enableMaskTouchClose": true,
     "lblDesc": {
       "__id__": 9
     },
@@ -745,6 +749,15 @@
     "awardGroup": {
       "__id__": 21
     }
+  },
+  {
+    "__type__": "cc.BlockInputEvents",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true
   },
   {
     "__type__": "cc.PrefabInfo",

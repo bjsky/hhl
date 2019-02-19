@@ -43,10 +43,13 @@
     "_components": [
       {
         "__id__": 110
+      },
+      {
+        "__id__": 111
       }
     ],
     "_prefab": {
-      "__id__": 111
+      "__id__": 112
     },
     "_id": "",
     "_opacity": 255,
@@ -65,8 +68,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 750,
-      "height": 1334
+      "width": 624,
+      "height": 598
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -1352,7 +1355,8 @@
     "_dstBlendFactor": 771,
     "_atlas": null,
     "url": "",
-    "resType": "png"
+    "resType": "png",
+    "defaultSpr": null
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1634,7 +1638,8 @@
     "_dstBlendFactor": 771,
     "_atlas": null,
     "url": "",
-    "resType": "png"
+    "resType": "png",
+    "defaultSpr": null
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -3407,6 +3412,7 @@
     "closeBtn": {
       "__id__": 13
     },
+    "enableMaskTouchClose": true,
     "lineUpMine": {
       "__id__": 77
     },
@@ -3434,6 +3440,15 @@
     "textRecords": {
       "__id__": 88
     }
+  },
+  {
+    "__type__": "cc.BlockInputEvents",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true
   },
   {
     "__type__": "cc.PrefabInfo",

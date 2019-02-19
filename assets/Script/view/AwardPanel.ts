@@ -106,6 +106,10 @@ export default class AwardPanel extends PopUpBase {
         this.onClose(e);
     }
 
+    protected onMaskTouch(e){
+        this.onShouquTouch(e);
+    }
+
 
     protected onShowComplete(){
         super.onShowComplete();

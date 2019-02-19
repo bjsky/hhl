@@ -3561,6 +3561,7 @@
     "_enabled": true,
     "maskOpacity": 200,
     "closeBtn": null,
+    "enableMaskTouchClose": false,
     "victoryNode": {
       "__id__": 2
     },

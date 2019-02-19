@@ -1,6 +1,8 @@
 import UIBase from "./UIBase";
 import ButtonEffect from "./ButtonEffect";
 import { UI } from "../manager/UIManager";
+import { EVENT } from "../message/EventCenter";
+import GameEvent from "../message/GameEvent";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -19,6 +21,8 @@ export default class PopUpBase extends UIBase {
 
     @property(cc.Button)
     closeBtn: cc.Button = null;
+    @property(Boolean)
+    enableMaskTouchClose: boolean = false;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -33,17 +37,25 @@ export default class PopUpBase extends UIBase {
             this.closeBtn.node.on(ButtonEffect.CLICK_END,this.onClose,this);
         }
         this.onShow();
+        if(this.enableMaskTouchClose){
+            EVENT.on(GameEvent.Mask_touch,this.onMaskTouch,this);
+        }
     }
 
     onDisable(){
         if(this.closeBtn!=null){
             this.closeBtn.node.off(ButtonEffect.CLICK_END,this.onClose,this);
         }
+        if(this.enableMaskTouchClose){
+            EVENT.off(GameEvent.Mask_touch,this.onMaskTouch,this);
+        }
     }
     start () {
 
     }
-    
+    protected onMaskTouch(e){
+        this.onClose(e);
+    }
     public onShow(){
         this.node.scale = 0.8;
         var seq = cc.sequence(

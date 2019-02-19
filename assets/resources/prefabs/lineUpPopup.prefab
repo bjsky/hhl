@@ -40,10 +40,13 @@
       },
       {
         "__id__": 137
+      },
+      {
+        "__id__": 138
       }
     ],
     "_prefab": {
-      "__id__": 138
+      "__id__": 139
     },
     "_id": "",
     "_opacity": 255,
@@ -62,8 +65,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 750,
-      "height": 1334
+      "width": 700,
+      "height": 744
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -2204,7 +2207,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 620,
+      "width": 570,
       "height": 360
     },
     "_rotationX": 0,
@@ -2652,7 +2655,8 @@
     "_dstBlendFactor": 771,
     "_atlas": null,
     "url": "",
-    "resType": "png"
+    "resType": "png",
+    "defaultSpr": null
   },
   {
     "__type__": "ca0e3F7ORtKEKkIUi0bE0Hw",
@@ -2904,7 +2908,8 @@
     "_dstBlendFactor": 771,
     "_atlas": null,
     "url": "",
-    "resType": "png"
+    "resType": "png",
+    "defaultSpr": null
   },
   {
     "__type__": "ca0e3F7ORtKEKkIUi0bE0Hw",
@@ -3156,7 +3161,8 @@
     "_dstBlendFactor": 771,
     "_atlas": null,
     "url": "",
-    "resType": "png"
+    "resType": "png",
+    "defaultSpr": null
   },
   {
     "__type__": "ca0e3F7ORtKEKkIUi0bE0Hw",
@@ -3408,7 +3414,8 @@
     "_dstBlendFactor": 771,
     "_atlas": null,
     "url": "",
-    "resType": "png"
+    "resType": "png",
+    "defaultSpr": null
   },
   {
     "__type__": "ca0e3F7ORtKEKkIUi0bE0Hw",
@@ -3660,7 +3667,8 @@
     "_dstBlendFactor": 771,
     "_atlas": null,
     "url": "",
-    "resType": "png"
+    "resType": "png",
+    "defaultSpr": null
   },
   {
     "__type__": "ca0e3F7ORtKEKkIUi0bE0Hw",
@@ -4246,6 +4254,26 @@
     "sync": false
   },
   {
+    "__type__": "eb4129hDmhMwryNlB82jfky",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "maskOpacity": 40,
+    "closeBtn": {
+      "__id__": 10
+    },
+    "enableMaskTouchClose": true,
+    "lineup": {
+      "__id__": 67
+    },
+    "cardsList": {
+      "__id__": 126
+    }
+  },
+  {
     "__type__": "cc.Widget",
     "_name": "",
     "_objFlags": 0,
@@ -4256,10 +4284,10 @@
     "alignMode": 1,
     "_target": null,
     "_alignFlags": 45,
-    "_left": 0,
-    "_right": 0,
-    "_top": 0,
-    "_bottom": 0,
+    "_left": 25,
+    "_right": 25,
+    "_top": 295,
+    "_bottom": 295,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -4272,23 +4300,13 @@
     "_originalHeight": 1334
   },
   {
-    "__type__": "eb4129hDmhMwryNlB82jfky",
+    "__type__": "cc.BlockInputEvents",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 1
     },
-    "_enabled": true,
-    "maskOpacity": 40,
-    "closeBtn": {
-      "__id__": 10
-    },
-    "lineup": {
-      "__id__": 67
-    },
-    "cardsList": {
-      "__id__": 126
-    }
+    "_enabled": true
   },
   {
     "__type__": "cc.PrefabInfo",

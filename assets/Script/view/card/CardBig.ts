@@ -10,8 +10,6 @@ import { GUIDE } from "../../manager/GuideManager";
 import { CFG } from "../../manager/ConfigManager";
 import { ConfigConst } from "../../module/loading/steps/LoadingStepConfig";
 import PopUpBase from "../../component/PopUpBase";
-import TouchHandler from "../../component/TouchHandler";
-import { WeiXin } from "../../wxInterface";
 import { Share } from "../../module/share/ShareAssist";
 import { SOUND } from "../../manager/SoundManager";
 import { GAME } from "../../GameController";
@@ -60,8 +58,6 @@ export default class CardBig extends PopUpBase{
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        this.node.width = cc.winSize.width;
-        this.node.height = cc.winSize.height;
         this.node.position = cc.v2(0,0)//cc.v2(cc.winSize.width/2,cc.winSize.height/2);
         
     }
@@ -153,12 +149,12 @@ export default class CardBig extends PopUpBase{
         this.onShow();
     }
     protected onShowComplete(){
-        this.node.on(cc.Node.EventType.TOUCH_START,this.onMaskTouch,this);
+        this.node.on(cc.Node.EventType.TOUCH_START,this.onNodeTouch,this);
     }
     
 
-    private onMaskTouch(e){
-        this.node.off(cc.Node.EventType.TOUCH_START,this.onMaskTouch,this);
+    private onNodeTouch(e){
+        this.node.off(cc.Node.EventType.TOUCH_START,this.onNodeTouch,this);
         if(this._type == CardBigShowType.GetCard){
             this.rotationOut();
         }else if(this._type == CardBigShowType.ShowCard

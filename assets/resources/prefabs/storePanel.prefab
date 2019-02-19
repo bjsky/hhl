@@ -46,10 +46,13 @@
       },
       {
         "__id__": 74
+      },
+      {
+        "__id__": 75
       }
     ],
     "_prefab": {
-      "__id__": 75
+      "__id__": 76
     },
     "_id": "",
     "_opacity": 255,
@@ -69,7 +72,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 750,
-      "height": 1334
+      "height": 863
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -925,7 +928,8 @@
     "_dstBlendFactor": 771,
     "_atlas": null,
     "url": "",
-    "resType": "png"
+    "resType": "png",
+    "defaultSpr": null
   },
   {
     "__type__": "ca0e3F7ORtKEKkIUi0bE0Hw",
@@ -1177,7 +1181,8 @@
     "_dstBlendFactor": 771,
     "_atlas": null,
     "url": "",
-    "resType": "png"
+    "resType": "png",
+    "defaultSpr": null
   },
   {
     "__type__": "ca0e3F7ORtKEKkIUi0bE0Hw",
@@ -1429,7 +1434,8 @@
     "_dstBlendFactor": 771,
     "_atlas": null,
     "url": "",
-    "resType": "png"
+    "resType": "png",
+    "defaultSpr": null
   },
   {
     "__type__": "ca0e3F7ORtKEKkIUi0bE0Hw",
@@ -1681,7 +1687,8 @@
     "_dstBlendFactor": 771,
     "_atlas": null,
     "url": "",
-    "resType": "png"
+    "resType": "png",
+    "defaultSpr": null
   },
   {
     "__type__": "ca0e3F7ORtKEKkIUi0bE0Hw",
@@ -1933,7 +1940,8 @@
     "_dstBlendFactor": 771,
     "_atlas": null,
     "url": "",
-    "resType": "png"
+    "resType": "png",
+    "defaultSpr": null
   },
   {
     "__type__": "ca0e3F7ORtKEKkIUi0bE0Hw",
@@ -2307,6 +2315,7 @@
     "closeBtn": {
       "__id__": 7
     },
+    "enableMaskTouchClose": true,
     "btnGroup": {
       "__id__": 62
     },
@@ -2327,8 +2336,8 @@
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
-    "_top": 0,
-    "_bottom": 0,
+    "_top": 235.5,
+    "_bottom": 235.5,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -2339,6 +2348,15 @@
     "_isAbsVerticalCenter": true,
     "_originalWidth": 750,
     "_originalHeight": 1334
+  },
+  {
+    "__type__": "cc.BlockInputEvents",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true
   },
   {
     "__type__": "cc.PrefabInfo",

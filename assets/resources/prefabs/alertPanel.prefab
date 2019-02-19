@@ -37,10 +37,13 @@
     "_components": [
       {
         "__id__": 24
+      },
+      {
+        "__id__": 25
       }
     ],
     "_prefab": {
-      "__id__": 25
+      "__id__": 26
     },
     "_id": "",
     "_opacity": 255,
@@ -59,8 +62,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 750,
-      "height": 1334
+      "width": 532,
+      "height": 300
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -782,6 +785,7 @@
     "_enabled": true,
     "maskOpacity": 40,
     "closeBtn": null,
+    "enableMaskTouchClose": true,
     "content": {
       "__id__": 12
     },
@@ -791,6 +795,15 @@
     "btnCancel": {
       "__id__": 16
     }
+  },
+  {
+    "__type__": "cc.BlockInputEvents",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true
   },
   {
     "__type__": "cc.PrefabInfo",
