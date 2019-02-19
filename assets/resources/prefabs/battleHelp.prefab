@@ -126,7 +126,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 641,
+      "width": 656,
       "height": 572
     },
     "_rotationX": 0,
@@ -418,7 +418,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 268,
+      "x": 296,
       "y": 271
     },
     "_skewX": 0,
@@ -562,7 +562,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 540,
+      "width": 560,
       "height": 150
     },
     "_rotationX": 0,
@@ -593,7 +593,7 @@
     "_N$horizontalAlign": 0,
     "_N$fontSize": 26,
     "_N$font": null,
-    "_N$maxWidth": 540,
+    "_N$maxWidth": 560,
     "_N$lineHeight": 30,
     "_N$imageAtlas": null,
     "_N$handleTouchEvent": true
@@ -726,7 +726,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 540,
+      "width": 560,
       "height": 150
     },
     "_rotationX": 0,
@@ -757,7 +757,7 @@
     "_N$horizontalAlign": 0,
     "_N$fontSize": 26,
     "_N$font": null,
-    "_N$maxWidth": 540,
+    "_N$maxWidth": 560,
     "_N$lineHeight": 30,
     "_N$imageAtlas": null,
     "_N$handleTouchEvent": true
@@ -808,7 +808,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 540,
+      "width": 560,
       "height": 120
     },
     "_rotationX": 0,
@@ -839,7 +839,7 @@
     "_N$horizontalAlign": 0,
     "_N$fontSize": 26,
     "_N$font": null,
-    "_N$maxWidth": 540,
+    "_N$maxWidth": 560,
     "_N$lineHeight": 30,
     "_N$imageAtlas": null,
     "_N$handleTouchEvent": true

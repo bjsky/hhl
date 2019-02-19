@@ -5686,11 +5686,17 @@
     "btnShare": {
       "__id__": 150
     },
+    "nodeShareRed": {
+      "__id__": 146
+    },
     "btnSevenDay": {
       "__id__": 157
     },
     "btnStore": {
       "__id__": 167
+    },
+    "nodeStoreRed": {
+      "__id__": 163
     },
     "btnIntro": {
       "__id__": 174

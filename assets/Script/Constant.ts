@@ -134,6 +134,10 @@ export default class Constant{
     public getScoutCost():number{
         return Number(this._constantKeyValueMap["scout_cost"]);
     }
+    //排行榜显示等级
+    public getRankShowLevel():number{
+        return Number(this._constantKeyValueMap["rank_show_level"]);
+    }
 }
 
 export var CONSTANT:Constant = Constant.getInstance();

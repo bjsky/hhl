@@ -332,10 +332,10 @@ export default class MsgLogin
         // }
         var json:any = {firstLogin:true,
             accountId:StringUtil.getUUidClient(),
-            newUser:0,
+            newUser:1,
             serverTime:new Date().getTime(),
             userInfo:{name:"上古战神",icon:"",gender:1,exp:0,level:1},
-            resInfo:{gold:50000,diamond:500,lifeStone:50000,soulStone:0},
+            resInfo:{gold:200000,diamond:0,lifeStone:200000,soulStone:0},
             guideInfo:{guideId:1},
             buildInfos:[{type:0,level:1,locked:true},
                 {type:1,level:1,locked:true},

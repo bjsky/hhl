@@ -36,6 +36,8 @@ export default class ResInfo extends InfoBase{
         change.lifeStone = data.lifeStone - this.lifeStone;
         change.soulStone = data.soulStone - this.soulStone;
         this.initFromServer(data);
+        
+        EVENT.emit(GameEvent.Res_Data_Change,{});
         return change;
     }
 

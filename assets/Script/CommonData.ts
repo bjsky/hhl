@@ -2,15 +2,14 @@ import UserInfo from "./model/UserInfo";
 import ResInfo from "./model/ResInfo";
 import { SCLoginData, SResInfo, SUserInfo } from "./net/msg/MsgLogin";
 import { GUIDE } from "./manager/GuideManager";
-import BuildInfo from "./model/BuildInfo";
 import { BUILD } from "./module/build/BuildAssist";
 import { Card } from "./module/card/CardAssist";
-import PassageInfo from "./model/PassageInfo";
 import { Passage } from "./module/battle/PassageAssist";
 import { Lineup } from "./module/battle/LineupAssist";
 import { Share } from "./module/share/ShareAssist";
 import { Battle } from "./module/battle/BattleAssist";
-import { FightRecord } from "./model/BattleInfo";
+import { EVENT } from "./message/EventCenter";
+import GameEvent from "./message/GameEvent";
 
 export enum DirectionEnum{
     Left = 0,       //左
@@ -106,7 +105,19 @@ export default class CommonData{
     }
 
     public updateUserInfo(data:SUserInfo){
+        var levelPrev = this.userInfo.level;
         this.userInfo.updateInfo(data);
+        var levelup = this.userInfo.level - levelPrev>0;
+        if(levelup){
+            this.onUserLevelUp();
+            //升级
+            EVENT.emit(GameEvent.User_Level_UP,{});
+        }
+    }
+
+    private onUserLevelUp(){
+        //刷新战场数据
+        Battle.initEnemyList();
     }
 }
 

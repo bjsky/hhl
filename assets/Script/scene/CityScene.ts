@@ -10,6 +10,9 @@ import GameEvent from "../message/GameEvent";
 import { SOUND, SoundConst } from "../manager/SoundManager";
 import { Battle } from "../module/battle/BattleAssist";
 import { BeFightPanelType } from "../view/castle/BeFightPanel";
+import { Passage } from "../module/battle/PassageAssist";
+import { Lineup } from "../module/battle/LineupAssist";
+import { Card } from "../module/card/CardAssist";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -34,6 +37,14 @@ export default class CityScene extends SceneBase {
     buildHero: cc.Node = null;
     @property(cc.Node)
     buildBattle: cc.Node = null;
+    @property(cc.Node)
+    buildCastleRed: cc.Node = null;
+    @property(cc.Node)
+    buildTempleRed: cc.Node = null;
+    @property(cc.Node)
+    buildHeroRed: cc.Node = null;
+    @property(cc.Node)
+    buildBattleRed: cc.Node = null;
     @property(cc.Camera)
     cam: cc.Camera = null;
     @property(cc.Node)
@@ -84,6 +95,13 @@ export default class CityScene extends SceneBase {
         
         EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
         EVENT.on(GameEvent.Goto_build_panel,this.onGotoPanelFast,this);
+        EVENT.on(GameEvent.Res_Data_Change,this.onResDataChange,this);
+        EVENT.on(GameEvent.Card_data_change,this.onCardDataChange,this);
+        EVENT.on(GameEvent.Passage_data_change,this.onPassageDataChange,this);
+        EVENT.on(GameEvent.Battle_data_Change,this.onBattleDataChange,this);
+        EVENT.on(GameEvent.Guide_End,this.onGuideEnd,this);
+        
+        this.initRedpoint();
     }
     onDisable(){
         this.buildCastle.off(TouchHandler.TOUCH_CLICK,this.onCastleTouch,this);
@@ -93,6 +111,33 @@ export default class CityScene extends SceneBase {
 
         EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
         EVENT.off(GameEvent.Goto_build_panel,this.onGotoPanelFast,this);
+        EVENT.off(GameEvent.Res_Data_Change,this.onResDataChange,this);
+        EVENT.off(GameEvent.Card_data_change,this.onCardDataChange,this);
+        EVENT.off(GameEvent.Passage_data_change,this.onPassageDataChange,this);
+        EVENT.off(GameEvent.Battle_data_Change,this.onBattleDataChange,this);
+        EVENT.off(GameEvent.Guide_End,this.onGuideEnd,this);
+    }
+    
+    private initRedpoint(){
+        this.buildCastleRed.active = Battle.isCanFightOrRevenge;
+        this.buildBattleRed.active = Passage.isCanReceiveAward;
+        this.buildHeroRed.active = Card.isCanComposeCard;
+        this.buildTempleRed.active = Card.isCanSummonCard;
+    }
+    private onResDataChange(){
+        this.initRedpoint();
+    }
+    private onCardDataChange(){
+        this.initRedpoint();
+    }
+    private onPassageDataChange(){
+        this.initRedpoint();
+    }
+    private onBattleDataChange(){
+        this.initRedpoint();
+    }
+    private onGuideEnd(){
+        this.initRedpoint();
     }
 
     private onGotoPanelFast(e){

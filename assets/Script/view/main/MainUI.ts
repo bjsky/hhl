@@ -16,6 +16,9 @@ import PathUtil from "../../utils/PathUtil";
 import ResPanel, { ResPanelType } from "../ResPanel";
 import { NET } from "../../net/core/NetController";
 import MsgGetRankList from "../../net/msg/MsgGetRankList";
+import { CONSTANT } from "../../Constant";
+import { Share } from "../../module/share/ShareAssist";
+import { Card } from "../../module/card/CardAssist";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -86,10 +89,14 @@ export default class MainUI extends UIBase {
     headIcon:LoadSprite = null;
     @property(cc.Button)
     btnShare:cc.Button = null;
+    @property(cc.Node)
+    nodeShareRed:cc.Node = null;
     @property(cc.Button)
     btnSevenDay:cc.Button = null;
     @property(cc.Button)
     btnStore:cc.Button = null;
+    @property(cc.Node)
+    nodeStoreRed:cc.Node = null;
     @property(cc.Button)
     btnIntro:cc.Button = null;
 
@@ -205,6 +212,10 @@ export default class MainUI extends UIBase {
         EVENT.on(GameEvent.Res_update_Cost_Complete,this.resUpdateCost,this);
         EVENT.on(GameEvent.Show_AwardPanel,this.showAwardPop,this);
         EVENT.on(GameEvent.Show_Res_Add,this.showResAddAni,this);
+        EVENT.on(GameEvent.Res_Data_Change,this.onResDataChange,this);
+        EVENT.on(GameEvent.ShareGetReward_Complete,this.onShareComplete,this);
+
+        this.initRedPoint();
     }
 
 
@@ -225,9 +236,23 @@ export default class MainUI extends UIBase {
         EVENT.off(GameEvent.Res_update_Cost_Complete,this.resUpdateCost,this);
         EVENT.off(GameEvent.Show_AwardPanel,this.showAwardPop,this);
         EVENT.off(GameEvent.Show_Res_Add,this.showResAddAni,this);
+        EVENT.off(GameEvent.Res_Data_Change,this.onResDataChange,this);
+        EVENT.off(GameEvent.ShareGetReward_Complete,this.onShareComplete,this);
     }
 
 
+    private initRedPoint(){
+        this.nodeShareRed.active = Share.canShareGetReward;
+        this.nodeStoreRed.active = Card.isCanBuyCard;
+    }
+
+    private onResDataChange(e){
+        this.initRedPoint();
+    }
+
+    private onShareComplete(e){
+        this.initRedPoint();
+    }
     private _showLabelExp:boolean = true;
     private onLabelExpTouch(e){
         this._showLabelExp = !this._showLabelExp;
@@ -254,6 +279,11 @@ export default class MainUI extends UIBase {
     }
 
     private onRankBtnTouch(e){
+        var openLevel:number = CONSTANT.getRankShowLevel();
+        if(COMMON.userInfo.level<openLevel){
+            UI.showTip("排行榜"+openLevel+"级开启");
+            return;
+        }
         UI.createPopUp(ResConst.RankPanel,{});
     }
 

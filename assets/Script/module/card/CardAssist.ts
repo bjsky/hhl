@@ -6,7 +6,7 @@ import MsgCardSummon, { CardSummonType, SCardInfo } from "../../net/msg/MsgCardS
 import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
 import { ResType } from "../../model/ResInfo";
-import { COMMON } from "../../CommonData";
+import CommonData, { COMMON } from "../../CommonData";
 import CardInfo from "../../model/CardInfo";
 import BuildInfo from "../../model/BuildInfo";
 import { BUILD } from "../build/BuildAssist";
@@ -14,13 +14,12 @@ import { BuildType } from "../../view/BuildPanel";
 import MsgCardUpLv from "../../net/msg/MsgCardUpLv";
 import MsgCardUpStar from "../../net/msg/MsgCardUpStar";
 import MsgCardDestroy from "../../net/msg/MsgCardDestroy";
-import { ResConst } from "../loading/steps/LoadingStepRes";
 import { AwardTypeEnum } from "../../view/AwardPanel";
 import { SResInfo } from "../../net/msg/MsgLogin";
-import LineupInfo from "../../model/LineupInfo";
 import MsgCardSummonGuide from "../../net/msg/MsgCardSummonGuide";
 import { SOUND } from "../../manager/SoundManager";
 import NumberUtil from "../../utils/NumberUtil";
+import { GUIDE } from "../../manager/GuideManager";
 
 export enum CardRaceType{
     All =0,
@@ -82,6 +81,33 @@ export default class CardAssist{
     public getUsedCardsConfig():Array<any>{
         return CFG.getCfgByKey(ConfigConst.CardInfo,"use",1);
     }
+    
+    //是否可召唤卡牌
+    public get isCanSummonCard(){
+        var cost:number = BUILD.getSummonStoneCostBuffed();
+        return (GUIDE.isInGuide)?false:COMMON.resInfo.lifeStone>=cost;
+    }
+    //是否可以合成卡牌
+    public get isCanComposeCard(){
+        var cardCfgArr = this.getCardCfgList(0);
+        var isCan:boolean  = false;
+        for(var i:number = 0;i<cardCfgArr.length;i++){
+            var cardId = cardCfgArr[i].id;
+            isCan = isCan || this.getCardCanCompose(cardId);
+        }
+        return (GUIDE.isInGuide)?false:isCan;
+    }
+    //是否可以购买卡牌
+    public get isCanBuyCard(){
+        var minPrice:number =10000;
+        var cfg:any = CFG.getCfgGroup(ConfigConst.Store);
+        for(var key in cfg){
+            var grade = Number(cfg[key].grade);
+            var price = Number(cfg[key].priceDiamond);
+            minPrice = Math.min(minPrice,price);
+        }
+        return (GUIDE.isInGuide)?false:COMMON.resInfo.diamond>=minPrice;
+    }
 
     public summonCard(summonType:CardSummonType,stoneCost:number=0){
         //召唤卡牌
@@ -122,6 +148,7 @@ export default class CardAssist{
         var newCard:CardInfo = new CardInfo();
         newCard.initFormServer(card);
         this.cardsMap[newCard.uuid] = newCard;
+        EVENT.emit(GameEvent.Card_data_change,{});
     }
 
     //根据uuid查找卡牌
@@ -137,6 +164,7 @@ export default class CardAssist{
     //移除一张卡牌
     public removeCardByUUid(uuid:string){
         delete this.cardsMap[uuid];
+        EVENT.emit(GameEvent.Card_data_change,{});
     }
 
     public getCardCfgList(type:number){
@@ -225,17 +253,17 @@ export default class CardAssist{
     }
 
     //获取升星同星级卡牌
-    public getUpStarCardOne(info:CardInfo):CardInfo{
-        var card:CardInfo = null;
-        for(var uuid in this.cardsMap){
-            card = this.cardsMap[uuid];
-            if(card.uuid != info.uuid &&
-                card.grade == info.grade && card.cardId == info.cardId){
-                return card;
-            }
-        }
-        return null;
-    }
+    // public getUpStarCardOne(info:CardInfo):CardInfo{
+    //     var card:CardInfo = null;
+    //     for(var uuid in this.cardsMap){
+    //         card = this.cardsMap[uuid];
+    //         if(card.uuid != info.uuid &&
+    //             card.grade == info.grade && card.cardId == info.cardId){
+    //             return card;
+    //         }
+    //     }
+    //     return null;
+    // }
     //该卡牌是否可以合成
     public getCardCanCompose(cardId:number){
         var map:any = {};
@@ -312,6 +340,7 @@ export default class CardAssist{
     public updateCardInfo(info:SCardInfo){
         var cardInfo:CardInfo = this.getCardByUUid(info.uuid);
         cardInfo.updateInfo(info);
+        EVENT.emit(GameEvent.Card_data_change,{});
     }
 
 

@@ -25,6 +25,7 @@ import MsgPushRabCard from "../../net/msg/MsgPushRabCard";
 import { UI } from "../../manager/UIManager";
 import { ResConst } from "../loading/steps/LoadingStepRes";
 import { BeFightPanelType } from "../../view/castle/BeFightPanel";
+import { GUIDE } from "../../manager/GuideManager";
 
 export default class BattleAssist{
 
@@ -61,6 +62,11 @@ export default class BattleAssist{
     public updateBattleInfo(info:SBattleInfo){
         this._battleInfo.initFromServer(info);
         this.initScoreCfg();
+        EVENT.emit(GameEvent.Battle_data_Change);
+    }
+    //是否可以攻击或者复仇
+    public get isCanFightOrRevenge(){
+        return (GUIDE.isInGuide)?false:this._battleInfo.actionPoint>0 || (this._battleInfo.revengeTime<=0 && this._personalEnemeyList.length>0);
     }
 
     public initEnemyList(){
@@ -264,7 +270,7 @@ export default class BattleAssist{
             record.initFromRab(msg.resp);
             UI.createPopUp(ResConst.BeFightPanel,{type:BeFightPanelType.BeFight,records:[record]});
             this.battleInfo.score -= msg.resp.score;
-            EVENT.emit(GameEvent.Battle_Info_Change);
+            EVENT.emit(GameEvent.Battle_data_Change);
             //移除卡牌
             Card.removeCardByUUid(record.rabCardUuid);
             EVENT.emit(GameEvent.Card_Remove,{uuid:record.rabCardUuid,type:CardRemoveType.RabRemove});

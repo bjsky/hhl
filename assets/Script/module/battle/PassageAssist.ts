@@ -13,6 +13,8 @@ import { ResType } from "../../model/ResInfo";
 import MsgFightBoss from "../../net/msg/MsgFightBoss";
 import FightInfo, { FightPlayerType } from "../../model/FightInfo";
 import LineupInfo from "../../model/LineupInfo";
+import { CONSTANT } from "../../Constant";
+import { GUIDE } from "../../manager/GuideManager";
 
 export default class PassageAssist{
 
@@ -33,6 +35,7 @@ export default class PassageAssist{
 
     public updatePassageInfo(info:SPassageInfo){
         this.passageInfo.initFromServer(info);
+        EVENT.emit(GameEvent.Passage_data_change,{});
     }
     //获取加成后的挂机资源
     public getPassageValueBuffed(value:number){
@@ -60,6 +63,13 @@ export default class PassageAssist{
         return this.passageInfo.getPassIncreaseTime() * addStonePerMin/(1000*60);
     }
 
+    //是否可以领取挂机奖励
+    public get isCanReceiveAward(){
+        var needTime = CONSTANT.getPassCollectMinTime();
+        var curTime = this.passageInfo.getPassIncreaseTime()/1000;
+        console.log("挂机领取时间：",needTime,"，当前挂机时间：",curTime)
+        return (GUIDE.isInGuide)?false:curTime >= needTime;
+    }
 
     public collectRes(isGuide:boolean){
         NET.send(MsgCollectRes.create(isGuide),(msg:MsgCollectRes)=>{

@@ -1,7 +1,5 @@
 import MessageBase from "./MessageBase";
 import NetConst from "../NetConst";
-import { COMMON } from "../../CommonData";
-import { SFightRecord } from "./MsgLogin";
 import { SCardInfo } from "./MsgCardSummon";
 import StringUtil from "../../utils/StringUtil";
 import { Card } from "../../module/card/CardAssist";

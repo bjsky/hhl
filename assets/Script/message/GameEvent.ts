@@ -20,6 +20,8 @@ export default class GameEvent{
 
     //建筑升级完成
     public static Build_Update_Complete:string ="Build_Update_Complete";
+    //资源数据更新
+    public static Res_Data_Change:string = "Res_Data_Change";
     //资源消耗
     public static Res_update_Cost_Complete:string ="Res_update_Cost_Complete";
     //获得资源面板
@@ -54,6 +56,14 @@ export default class GameEvent{
     public static FightEnemey_Success:string ="FightEnemey_Success";
     //抢夺卡牌显示完成
     public static Card_RabGet_Close:string ="Card_RabGet_Close";
+    //卡牌数据变化
+    public static Card_data_change:string ="Card_data_change";
     //战斗数据变化
-    public static Battle_Info_Change:string = "Battle_Info_Change";
+    public static Battle_data_Change:string = "Battle_data_Change";
+    //挂机奖励更新
+    public static Passage_data_change:string ="Passage_data_change";
+    //引导结束
+    public static Guide_End:string ="Guide_End";
+    //用户升级
+    public static User_Level_UP:string ="用户升级";
 }

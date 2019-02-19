@@ -129,6 +129,7 @@ export default class GuideManager{
         this.guideTap  = null;
         this.guideInfo = null;
         this.isInGuide = false;
+        EVENT.emit(GameEvent.Guide_End,{});
     }
     
     /** 初始化GuideMaskLayer */

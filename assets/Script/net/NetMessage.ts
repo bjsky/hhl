@@ -2,7 +2,6 @@ import NetConst from "./NetConst";
 import { NET } from "./core/NetController";
 import { EVENT } from "../message/EventCenter";
 import { UI } from "../manager/UIManager";
-import LoadingStepServerData from "../module/loading/steps/LoadingStepServerData";
 import { GAME } from "../GameController";
 import MessageBase from "./msg/MessageBase";
 import MsgUtil from "./msg/MsgUtil";
@@ -21,7 +20,6 @@ export default class NetMessage extends cc.Component{
     onDisable() {
         EVENT.off(NET.NET_MESSAGE, this.onNetMessage, this);
     }
-    private isInBack:boolean = false;
     private onNetMessage(e:any)
     {
         let msgid = e.detail.id+"";

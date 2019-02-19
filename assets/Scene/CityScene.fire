@@ -1838,6 +1838,18 @@
     "buildBattle": {
       "__id__": 36
     },
+    "buildCastleRed": {
+      "__id__": 14
+    },
+    "buildTempleRed": {
+      "__id__": 23
+    },
+    "buildHeroRed": {
+      "__id__": 32
+    },
+    "buildBattleRed": {
+      "__id__": 41
+    },
     "cam": {
       "__id__": 48
     },

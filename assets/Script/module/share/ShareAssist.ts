@@ -38,6 +38,10 @@ export default class ShareAssist{
         return this.todayShareCount <this.maxShareCount;
     }
 
+    public get canShareGetReward(){
+        return GUIDE.isInGuide?false: this.shareGetReward;
+    }
+
     //分享链接
     public shareAppMessage(){
         if(GLOBAL.serverType == ServerType.Publish){
