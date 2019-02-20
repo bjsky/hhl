@@ -3,6 +3,7 @@ var wxlogin = require("./wxlogin");
 ///////////// global ////////////////////////
 window.systemInfo = null;
 window.wxToken = null;  //code
+window.isPlayVideoAd = false;
 
 window.wxlogin = function(cb) {
   wx.checkSession({
@@ -88,6 +89,69 @@ window.shareAppMessage = function(title,image,query){
     imageUrl: image,
     query: query,
   })
+}
+// 视频广告
+window.showVideoAd = function (cb, VideoAd_type) {
+  if (wx.createRewardedVideoAd == undefined) {
+    return false;
+  }
+
+  if (window.isPlayVideoAd == false) {
+    window.isPlayVideoAd = true;
+    if (VideoAd_type == 2) {
+      // 看视频送金币
+      window.rewardedVideoAd = wx.createRewardedVideoAd({
+        adUnitId: 'adunit-5dffa8a2d343c81c'
+      })
+    } else if (VideoAd_type == 3){
+      // 看视频送灵石
+      window.rewardedVideoAd = wx.createRewardedVideoAd({
+        adUnitId: 'adunit-c610ec0fe1e6b502'
+      })
+    }
+
+    window.rewardedVideoAd.onLoad(() => {
+      console.log('激励视频 广告加载成功');
+      window.rewardedVideoAd.offLoad();
+
+    })
+    window.rewardedVideoAd.onError(err => {
+      console.log(err, "激励视频 广告加载失败");
+      window.rewardedVideoAd.offError();
+      cb(2);
+
+    })
+
+
+    window.rewardedVideoAd.onClose(res => {
+      window.isPlayVideoAd = false;
+
+      let retCode = 0;
+      if (res && res.isEnded || res === undefined) {
+        // 正常播放结束，可以下发游戏奖励
+        if (cb != null) {
+          console.log("发奖励，", res);
+          cb(1);
+        }
+        retCode = 0;
+      }
+      else {
+        // 播放中途退出，不下发游戏奖励
+        retCode = 1;
+        cb(0);
+      }
+
+      window.rewardedVideoAd.offClose();
+
+    })
+    window.rewardedVideoAd.load()
+      .then(() => window.rewardedVideoAd.show())
+      .catch(err => {
+        console.log(err.errMsg)
+        window.isPlayVideoAd = false;
+      })
+
+  }
 }
 
 let shareCallbackFunc = function(){

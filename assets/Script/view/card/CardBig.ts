@@ -201,7 +201,7 @@ export default class CardBig extends PopUpBase{
         var guideId = e.detail.id;
         var nodeName = e.detail.name;
         if(nodeName == "popup_cardBig"){
-            this.onMaskTouch(null);
+            this.onNodeTouch(null);
             GUIDE.nextGuide(guideId);
         }
 

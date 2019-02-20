@@ -123,7 +123,7 @@ export default class BattleAssist{
     private addTestEnemy(arr:EnemyInfo[]){
         var test:EnemyInfo = new EnemyInfo();
         test.enemyType = EnemyTypeEnum.Enemy;
-        test.enemyUid = "test005";
+        test.enemyUid = "test021";
         test.enemyName = "default";
         test.enemyLevel = 3;
         test.enemySex = 1;

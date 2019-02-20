@@ -785,7 +785,7 @@
     "_enabled": true,
     "maskOpacity": 40,
     "closeBtn": null,
-    "enableMaskTouchClose": true,
+    "enableMaskTouchClose": false,
     "content": {
       "__id__": 12
     },

@@ -78,7 +78,7 @@ export default class SingleAwardPanel extends PopUpBase {
 
     private onReceive(){
         this.onClose(null);
-        EVENT.emit(GameEvent.Show_Res_Add,{types:[{type:this._type,value:this._num}]});
+        EVENT.emit(GameEvent.Show_Res_Add,{types:[{type:this._resType,value:this._num}]});
     }
     // update (dt) {}
 }

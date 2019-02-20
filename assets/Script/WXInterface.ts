@@ -1,5 +1,5 @@
-import { GAME } from "./GameController";
 import { GLOBAL, ServerType } from "./GlobalData";
+import { GetRewardType } from "./net/msg/MsgGetReward";
 
 export class WXInterface{
     public static _inst:WXInterface;
@@ -40,6 +40,12 @@ export class WXInterface{
     public shareAppMessage(title,imgUrl,query){
         var func = window["shareAppMessage"];
         func(title,imgUrl,query);
+    }
+
+    public showVideoAd(cb:Function,type:GetRewardType){
+        console.log("观看视频开始："+type);
+        var func = window["showVideoAd"];
+        func(cb,type);
     }
 }
 

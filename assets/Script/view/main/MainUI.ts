@@ -212,6 +212,7 @@ export default class MainUI extends UIBase {
         EVENT.on(GameEvent.Show_Res_Add,this.showResAddAni,this);
         EVENT.on(GameEvent.Res_Data_Change,this.onResDataChange,this);
         EVENT.on(GameEvent.ShareGetReward_Complete,this.onShareComplete,this);
+        EVENT.on(GameEvent.Guide_End,this.onGuideEnd,this);
 
         this.initRedPoint();
     }
@@ -236,6 +237,7 @@ export default class MainUI extends UIBase {
         EVENT.off(GameEvent.Show_Res_Add,this.showResAddAni,this);
         EVENT.off(GameEvent.Res_Data_Change,this.onResDataChange,this);
         EVENT.off(GameEvent.ShareGetReward_Complete,this.onShareComplete,this);
+        EVENT.off(GameEvent.Guide_End,this.onGuideEnd,this);
     }
 
     private initRedPoint(){
@@ -248,6 +250,10 @@ export default class MainUI extends UIBase {
     }
 
     private onShareComplete(e){
+        this.initRedPoint();
+    }
+
+    private onGuideEnd(e){
         this.initRedPoint();
     }
     private _showLabelExp:boolean = true;

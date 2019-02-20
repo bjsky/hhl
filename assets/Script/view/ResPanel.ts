@@ -8,6 +8,13 @@ import { ResConst } from "../module/loading/steps/LoadingStepRes";
 import { GLOBAL } from "../GlobalData";
 import PathUtil from "../utils/PathUtil";
 import Constant, { CONSTANT } from "../Constant";
+import { WeiXin } from "../wxInterface";
+import { AlertBtnType } from "./AlertPanel";
+import { Share } from "../module/share/ShareAssist";
+import MsgGetReward, { GetRewardType } from "../net/msg/MsgGetReward";
+import { NET } from "../net/core/NetController";
+import { EVENT } from "../message/EventCenter";
+import { SOUND } from "../manager/SoundManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -26,6 +33,11 @@ export enum ResPanelType{
     StoneNotEnough,     //灵石不足
     GoldRes,            //金币
     StoneRes,           //灵石
+}
+export enum SeeVideoResult{
+    NotComplete = 0,    //未看完
+    Complete ,          //正常看我
+    LoadError           //加载失败
 }
 @ccclass
 export default class ResPanel extends PopUpBase {
@@ -53,14 +65,17 @@ export default class ResPanel extends PopUpBase {
     private _awardType:ResPanelType = 0;
     private _resType:ResType = 0;
     private _awardNum:number = 0;
+    private _rewardType:GetRewardType = 0;
     public setData(data:any){
         super.setData(data);
         this._awardType = data.type;
         if(this._awardType == ResPanelType.GoldRes || this._awardType == ResPanelType.GoldNotEnough){
             this._resType = ResType.gold;
+            this._rewardType = GetRewardType.SeeVideoGetGold;
             this._awardNum = CONSTANT.getSeeVideoGold();
         }else if(this._awardType == ResPanelType.StoneRes || this._awardType == ResPanelType.StoneNotEnough){
             this._resType = ResType.lifeStone;
+            this._rewardType = GetRewardType.SeeVideoGetStone;
             this._awardNum = CONSTANT.getSeeVideoStone();
         }
     }
@@ -116,7 +131,28 @@ export default class ResPanel extends PopUpBase {
     }
 
     private onVideoSee(){
-        
+        SOUND.stopBgSound();
+        WeiXin.showVideoAd((result:SeeVideoResult)=>{
+            if(result == SeeVideoResult.Complete){
+                this.getVideoReward(this._rewardType,this._awardNum);
+            }else if(result == SeeVideoResult.LoadError){
+                UI.showAlert("加载失败！请稍候再来",null,null,AlertBtnType.OKButton);
+            }else if(result == SeeVideoResult.NotComplete){
+                UI.showAlert("观看未完成，领取奖励失败！",null,null,AlertBtnType.OKButton);
+            }
+            SOUND.playBgSound();
+        },this._rewardType)
+    }
+
+    //看视频得奖励
+    public getVideoReward(type:GetRewardType,num:number){
+        NET.send(MsgGetReward.create(type,num),(msg:MsgGetReward)=>{
+            if(msg && msg.resp){
+                COMMON.updateResInfo(msg.resp.resInfo);
+                UI.createPopUp(ResConst.singleAwardPanel,
+                    {type:type,num:num})
+            }
+        },this)
     }
 
     public static show(type:ResPanelType){
