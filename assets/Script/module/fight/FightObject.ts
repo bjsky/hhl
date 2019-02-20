@@ -110,7 +110,7 @@ export default class FightObject{
         var returnLife:number = 0;
         var returnStr:string ="";
         if(this.skillObj!=null && this.skillObj.skillProperty == SkillProperty.ReturnBlood){
-            returnLife = this.buffedTotalLife*this.skillObj.skillValue;
+            returnLife = Math.floor(attackPower * this.skillObj.skillValue);
             if(this.loseLife - returnLife<0){
                 returnLife = this.loseLife;
             }

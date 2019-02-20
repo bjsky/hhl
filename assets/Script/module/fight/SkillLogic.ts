@@ -139,8 +139,7 @@ export default class SkillLogic{
                 // else if( skillId == 18 && beAttack.lineup.raceId == CardRaceType.WuZu){
                 //     hasAction = true;
                 // }
-                var rate:number = attack.skill.skillVal;
-                if(Math.random()<rate){
+                if(Math.random()<0.66){
                     hasAction = hasAction && true;
                 }else{
                     hasAction = false;
@@ -148,7 +147,7 @@ export default class SkillLogic{
                 if(hasAction){
                     action = new SkillAction(attack);
                     action.skillProperty = SkillProperty.AddPower;
-                    action.skillValue = 2.25;//(1+attack.skill.skillVal);
+                    action.skillValue = (1+attack.skill.skillVal);//(1+attack.skill.skillVal);
                 }
             }break;
             // case 2: //万箭齐发
@@ -172,8 +171,7 @@ export default class SkillLogic{
             // }break;
             case 17:    //人皇秩序
             {
-                var rate:number = attack.skill.skillVal;
-                if(Math.random()<rate){
+                if(Math.random()<0.33){
                     hasAction = true;
                 }else{
                     hasAction = false;
@@ -181,21 +179,20 @@ export default class SkillLogic{
                 if(hasAction){
                     action = new SkillAction(attack);
                     action.skillProperty = SkillProperty.PowerAttachLife;
-                    action.skillValue = 0.25;
+                    action.skillValue = attack.skill.skillVal;
                 }
             }break;
-            // case 8: //长生不老
-            // {
-            //     var rate:number = attack.skill.skillVal;
-            //     if(Math.random()<rate){
-            //         hasAction = true;
-            //     }
-            //     if(hasAction){
-            //         action = new SkillAction(attack);
-            //         action.skillProperty = SkillProperty.ReturnBlood;
-            //         action.skillValue = 0.25;
-            //     }
-            // }break;
+            case 8: //长生不老
+            {
+                if(Math.random()<0.33){
+                    hasAction = true;
+                }
+                if(hasAction){
+                    action = new SkillAction(attack);
+                    action.skillProperty = SkillProperty.ReturnBlood;
+                    action.skillValue = attack.skill.skillVal;
+                }
+            }break;
         }
         return action;
     }
@@ -205,8 +202,7 @@ export default class SkillLogic{
         var hasAction:boolean = false;
         var skillId:number = beAttack.skill.skillId;
         switch(skillId){
-            // case 15: //二郎真君
-            case 16: //百毒不侵
+            case 15: //二郎真君
             {
                 var rate:number = beAttack.skill.skillVal;
                 if(Math.random()<rate){
@@ -214,14 +210,19 @@ export default class SkillLogic{
                 }
                 if(hasAction){
                     action = new SkillAction(beAttack);
-                    // if(skillId == 15){
-                    //     action.skillProperty = SkillProperty.Dodge;
-                    //     action.skillValue = 0;
-                    // }else 
-                    if(skillId == 16){
-                        action.skillProperty = SkillProperty.Absorb;
-                        action.skillValue = 0.5;
-                    }
+                    action.skillProperty = SkillProperty.Dodge;
+                    action.skillValue = 0;
+                }
+            }break;
+            case 16: //百毒不侵
+            {
+                if(Math.random()<0.4){
+                    hasAction = true;
+                }
+                if(hasAction){
+                    action = new SkillAction(beAttack);
+                    action.skillProperty = SkillProperty.Absorb;
+                    action.skillValue = beAttack.skill.skillVal;
                 }
             }break;
         }

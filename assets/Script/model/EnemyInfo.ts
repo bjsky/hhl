@@ -5,6 +5,8 @@ import { COMMON } from "../CommonData";
 import { CFG } from "../manager/ConfigManager";
 import { ConfigConst } from "../module/loading/steps/LoadingStepConfig";
 import FightInfo, { FightPlayerType } from "./FightInfo";
+import MsgCardSummon from "../net/msg/MsgCardSummon";
+import { Card } from "../module/card/CardAssist";
 
 export enum EnemyTypeEnum{
     Enemy = 1, //玩家
@@ -92,7 +94,15 @@ export default class EnemyInfo {
         var lineupIds:string = passCfg.amyHero;
         var lineupGradeLevel:string = passCfg.amyHeroGradeLv;
         if(lineupIds!=""){
-            var ids:Array<string> = lineupIds.split(";");
+            var ids:Array<string> = [];
+            while(ids.length<5){
+               var id = Card.getSummonCardId().toString();//lineupIds.split(";");
+               if(id == "5"||id=="18")
+               continue;
+               if(ids.indexOf(id)<0){
+                   ids.push(id);
+               }
+            }
             var lineup:LineupInfo;
             var gradeLvs:Array<string> = lineupGradeLevel.split("|");
             var gradelv:string;

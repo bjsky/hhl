@@ -12,6 +12,7 @@ import BuffNode from "./BuffNode";
 import FightOnce from "../../module/fight/FightOnce";
 import { SOUND, SoundConst } from "../../manager/SoundManager";
 import { GUIDE } from "../../manager/GuideManager";
+import { SkillProperty } from "../../module/fight/SkillLogic";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -417,16 +418,17 @@ export default class FightPanel extends UIBase {
                 if(this._fightOnce.attackSkill!=null && this._fightOnce.beAttackSkill==null){
                     hasAllShake = true;
                 }
+                var isDodge:boolean = this._fightOnce.beAttackSkill && this._fightOnce.beAttackSkill.skillProperty == SkillProperty.Dodge;
                 if(this._fightOnce.beAttackSkill!=null){
                     var pos:cc.Vec2 = this._beAttackCard.node.parent.convertToWorldSpaceAR(this._beAttackCard.node.position);
                     Fight.panel.playSkill(pos,this._fightOnce.beAttackSkill.attackObj.skill.skillCfg.skillIcon,()=>{
-                        this._beAttackCard.beAttack(this._fightOnce.attack.attackPower,false,()=>{
+                        this._beAttackCard.beAttack(this._fightOnce.attack.attackPower,isDodge,false,()=>{
                             this.playFightOnce();
                         });
                     });
                 }else{
 
-                    this._beAttackCard.beAttack(this._fightOnce.attack.attackPower,!hasAllShake,()=>{
+                    this._beAttackCard.beAttack(this._fightOnce.attack.attackPower,false,!hasAllShake,()=>{
                         this.playFightOnce();
                     });
                 }

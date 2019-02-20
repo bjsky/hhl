@@ -246,16 +246,20 @@ export default class CardFight extends  UIBase {
     public setBeFight(shakePos:cc.Vec2){
         this._beFightPos = shakePos//.div(1.5);
     }
-    public beAttack(attackPower:number,beAttackAni:boolean,cb:Function){
+    public beAttack(attackPower:number,isDodge:boolean,beAttackAni:boolean,cb:Function){
         var tipStr:string = ""
         // if(this._loseLife+attackPower>this._totalLife){
         //     attackPower = this._totalLife - this._loseLife;
         //     // tipStr = "阵亡";
         // }
-        tipStr = "-"+attackPower.toFixed(0);
-        this._loseLife += attackPower;
-        this.numEffLife.setValue(this.curLife);
-        this.cardLiftProgress.progress = this.getLiftPro();
+        if(isDodge){
+            tipStr = "闪避";
+        }else{
+            tipStr = "-"+attackPower.toFixed(0);
+            this._loseLife += attackPower;
+            this.numEffLife.setValue(this.curLife);
+            this.cardLiftProgress.progress = this.getLiftPro();
+        }
         var pos = this.cardLife.node.parent.convertToWorldSpaceAR(this.cardLife.node.position);
         if(!beAttackAni){
             this.showBeAttackTip(tipStr,pos);
