@@ -116,15 +116,15 @@ export default class BattleAssist{
                 enemyArr.push(info);
             }
         }
-        this.addTestEnemy(enemyArr);
+        // this.addTestEnemy(enemyArr);
         return enemyArr;
     }
 
     private addTestEnemy(arr:EnemyInfo[]){
         var test:EnemyInfo = new EnemyInfo();
         test.enemyType = EnemyTypeEnum.Enemy;
-        test.enemyUid = "test021";
-        test.enemyName = "default";
+        test.enemyUid = "10000000100000";
+        test.enemyName = "大宝";
         test.enemyLevel = 3;
         test.enemySex = 1;
         test.enemyIcon = "default";
@@ -269,13 +269,15 @@ export default class BattleAssist{
             var record = new FightRecord();
             var scoreChange:number = Math.abs(this._battleInfo.score - msg.resp.score);
             record.initFromPush(msg.resp,scoreChange);
-            UI.createPopUp(ResConst.BeFightPanel,{type:BeFightPanelType.BeFight,records:[record]});
-            this.battleInfo.score  = msg.resp.score;//-= msg.resp.score;
-            EVENT.emit(GameEvent.Battle_data_Change);
-            if(record.isRabCard){
-                //移除卡牌
-                Card.removeCardByUUid(record.rabCardUuid);
-                EVENT.emit(GameEvent.Card_Remove,{uuid:record.rabCardUuid,type:CardRemoveType.RabRemove});
+            if(scoreChange>0){
+                this.battleInfo.score  = msg.resp.score;//-= msg.resp.score;
+                EVENT.emit(GameEvent.Battle_data_Change);
+                if(record.isRabCard){
+                    UI.createPopUp(ResConst.BeFightPanel,{type:BeFightPanelType.BeFight,records:[record]});
+                    //移除卡牌
+                    Card.removeCardByUUid(record.rabCardUuid);
+                    EVENT.emit(GameEvent.Card_Remove,{uuid:record.rabCardUuid,type:CardRemoveType.RabRemove});
+                }
             }
             //刷新仇人
             this.refreshPersonalEnemy();

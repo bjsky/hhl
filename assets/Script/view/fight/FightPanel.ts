@@ -141,7 +141,7 @@ export default class FightPanel extends UIBase {
             cc.callFunc(()=>{
                 UI.hidePanelLayer();
         
-                SOUND.playBgSound(SoundConst.Fight_sound);
+                SOUND.playFightBgSound();
                 Fight.startFight();
                 this.startDelayEndEnable();
             })

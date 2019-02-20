@@ -212,6 +212,7 @@ export default class CastlePanel extends UIBase {
         if(GUIDE.isInGuide){
             var guideEnemy:EnemyInfo = new EnemyInfo();
             guideEnemy.initGuide();
+            enemyList.shift();
             enemyList.unshift(guideEnemy);
         }
         this.enemyList.setListData(enemyList);

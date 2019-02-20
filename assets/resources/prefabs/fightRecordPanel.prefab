@@ -761,7 +761,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 540,
-      "height": 96
+      "height": 108
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -792,7 +792,7 @@
     "_N$fontSize": 24,
     "_N$font": null,
     "_N$maxWidth": 540,
-    "_N$lineHeight": 32,
+    "_N$lineHeight": 36,
     "_N$imageAtlas": null,
     "_N$handleTouchEvent": true
   },

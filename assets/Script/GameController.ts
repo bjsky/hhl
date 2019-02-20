@@ -66,6 +66,42 @@ export default class GameController{
     public reLogin(){
         this.loadingStepMgr.startReLogin();
     }
+
+    //后台加载资源
+    private _preloadArr:Array<any> = [];
+    private _preloadComplete:boolean = false;
+    public preloadResDir(){
+        if(this._preloadComplete){
+            return;
+        }
+        this._preloadArr = [];
+        for(var key in BackLoadResConst){
+            this._preloadArr.push(BackLoadResConst[key]);
+        }
+        this.preloadNext();
+    }
+
+    private preloadNext(){
+        if(this._preloadArr.length>0){
+            var preload = this._preloadArr.shift();
+            cc.loader.loadResDir(preload, (error: Error, resource: any[]) => {
+                if(error){
+                    cc.error(error);
+                }else{
+                    console.log("preloadRes complete:"+preload);
+                }
+                this.preloadNext();
+            });
+        }else{
+            this._preloadComplete = true;
+        }
+    }
+}
+export const BackLoadResConst = {
+    Cards:"ui/image/card",
+    Heads:"ui/image/head",
+    Skills:"ui/image/skill",
+    Sound:"sound"
 }
 
 export var GAME = GameController.getInstance();

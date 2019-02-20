@@ -62,6 +62,8 @@ export default class LoadingView extends cc.Component {
     }
 
     public onLoadingComplete(e:GameEvent){
+        //开始后天加载;
+        GAME.preloadResDir();
         this.setProgressValue(100);
         this.scheduleOnce(()=>{
             SCENE.changeScene(SceneConst.CityScene);

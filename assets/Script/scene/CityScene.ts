@@ -13,6 +13,7 @@ import { BeFightPanelType } from "../view/castle/BeFightPanel";
 import { Passage } from "../module/battle/PassageAssist";
 import { Lineup } from "../module/battle/LineupAssist";
 import { Card } from "../module/card/CardAssist";
+import { FightRecord } from "../model/BattleInfo";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -82,9 +83,17 @@ export default class CityScene extends SceneBase {
 
     private onEnterGame(){
         if(Battle.outlineRecords.length >0 && !GUIDE.isInGuide){
-            UI.createPopUp(ResConst.BeFightPanel,{type:BeFightPanelType.Outline,records:Battle.outlineRecords});
+            var beRab:boolean =false;
+            Battle.outlineRecords.forEach((rd:FightRecord)=>{
+                if(rd.befightUId == COMMON.accountId){
+                    beRab = beRab || rd.isRabCard;
+                }
+            })
+            if(beRab){  //被抢夺
+                UI.createPopUp(ResConst.BeFightPanel,{type:BeFightPanelType.Outline,records:Battle.outlineRecords});
+            }
         }
-        SOUND.playBgSound(SoundConst.Bg_sound);
+        SOUND.playBgSound();
     }
 
     onEnable(){

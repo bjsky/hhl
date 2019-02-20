@@ -4,7 +4,7 @@ export default class SoundManager{
     private _bgVolume:number = 0.8;
     private _volume:number = 1;
 
-    private _musicSwitch:boolean = true;
+    // private _musicSwitch:boolean = true;
     private _bgMusicSwitch:boolean = true;
 
     private static _instance: SoundManager = null;
@@ -15,106 +15,99 @@ export default class SoundManager{
         }
         return SoundManager._instance;
     }
-    /**
-     * 播放按钮声音
-     */
-    public playBtnSound(){
-        this.playSoundOnce(SoundConst.Btn_sound);
-    }
-
     
-    private _loadSound:boolean = false;
-    public playSoundOnce(path:string){
-        var self = this;
-        if (this._bgMusicSwitch == false || this._loadSound) {
-            return;
-        }
-        this._loadSound = true;
-        cc.loader.loadRes(path, cc.AudioClip, (err, clip)=>{
-            this._loadSound = false;
-            cc.audioEngine.play(clip,false,self._volume);
-        });
-    }
-
     public getBgMusicSwitch() {
         return this._bgMusicSwitch;
     }
 
-    public getMusicSwitch() {
-        return this._musicSwitch;
-    }
+    // public getMusicSwitch() {
+    //     return this._musicSwitch;
+    // }
 
-    public SetBgMuiscOpen() {
+    public SetBgMuiscOpenClose() {
         this._bgMusicSwitch = !this._bgMusicSwitch;
         if (this._bgMusicSwitch) {
-            this.resumeBgSound();
+            this.resumeMusic();
         }else {
-            this.stopBgSound();
+            this.pauseMusic();
         }
         let val = this._bgMusicSwitch ? 1 : 0;
     }
 
-    public SetMuiscOpen() {
-        this._musicSwitch = !this._musicSwitch;
-        let val = this._musicSwitch ? 1 : 0;
-    }
+    // public SetMuiscOpen() {
+    //     this._musicSwitch = !this._musicSwitch;
+    //     let val = this._musicSwitch ? 1 : 0;
+    // }
 
-    private _currentSoundId:number = NaN;
-    private _loadBgSound:boolean = false;
-    /**
-     * 播放背景音乐
-     */
-    public playBgSound(soundName:string = SoundConst.Bg_sound)
-    {
-        if ( this._bgMusicSwitch == false || this._loadBgSound) {
+    private _currentOnceId:number = NaN;
+    private playEffectSound(path:string){
+        if (this._bgMusicSwitch == false){
             return;
         }
-        
-        if(!isNaN(this._currentSoundId)){
-            cc.audioEngine.stop(this._currentSoundId);
-        }
-        var self = this;
-        this._loadBgSound = true;
-        cc.loader.loadRes(soundName, cc.AudioClip, (err, clip) =>{
-            this._loadBgSound = false;
-            this._currentSoundId = cc.audioEngine.play(clip,true,self._bgVolume);
-            cc.log("music start:",this._currentSoundId);
+        cc.loader.loadRes(path, cc.AudioClip, (err, clip)=>{
+            if(!isNaN(this._currentOnceId)){
+                cc.audioEngine.stop(this._currentOnceId);
+            }
+            this._currentOnceId = cc.audioEngine.play(clip,false,this._volume);
+            cc.log("sound start:",this._currentOnceId);
         });
     }
 
-    public resumeBgSound()
-    {
-        if(!isNaN(this._currentSoundId)){
-            cc.audioEngine.resume(this._currentSoundId);
-            cc.log("music resume:",this._currentSoundId);
+    private _currentBgId:number = NaN;
+    private playMusicSound(path:string){
+        if (this._bgMusicSwitch == false){
+            return;
+        }
+        cc.loader.loadRes(path, cc.AudioClip, (err, clip)=>{
+            if(!isNaN(this._currentBgId)){
+                cc.audioEngine.stop(this._currentBgId);
+            }
+            this._currentBgId = cc.audioEngine.play(clip,true,this._bgVolume);
+            cc.log("music start:",this._currentBgId);
+        });
+    }
+
+    public resumeMusic(){
+        if(isNaN(this._currentBgId)){
+            this.playMusicSound(SoundConst.Bg_sound);
         }else{
-            this.playBgSound(SoundConst.Bg_sound);
+            cc.audioEngine.resume(this._currentBgId);
+            cc.log("music resume:",this._currentBgId);
         }
     }
 
-    public stopBgSound()
-    {
-        if(!isNaN(this._currentSoundId))
-        {
-            cc.audioEngine.pause(this._currentSoundId);
-            cc.log("music pause:",this._currentSoundId);
+    public pauseMusic(){
+        if(!isNaN(this._currentBgId)){
+            cc.audioEngine.pause(this._currentBgId);
+            cc.log("music pause:",this._currentBgId);
         }
     }
-
+    /**
+     * 播放按钮声音
+     */
+    public playBtnSound(){
+        this.playEffectSound(SoundConst.Btn_sound);
+    }
     public playGetCardSound(){
-        this.playSoundOnce(SoundConst.Card_sound);
+        this.playEffectSound(SoundConst.Card_sound);
     }
     public playFightWinSound(){
-        this.playSoundOnce(SoundConst.Fight_win_sound);
+        this.playEffectSound(SoundConst.Fight_win_sound);
     }
     public playFightFailSound(){
-        this.playSoundOnce(SoundConst.Fight_lose_sound);
+        this.playEffectSound(SoundConst.Fight_lose_sound);
     }
     public playFighthitSound(){
-        this.playSoundOnce(SoundConst.Fight_hit_sound);
+        this.playEffectSound(SoundConst.Fight_hit_sound);
     }
     public playFightSkillSound(){
-        this.playSoundOnce(SoundConst.Fight_skill_sound);
+        this.playEffectSound(SoundConst.Fight_skill_sound);
+    }
+    public playBgSound(){
+        this.playMusicSound(SoundConst.Bg_sound);
+    }
+    public playFightBgSound(){
+        this.playMusicSound(SoundConst.Fight_sound);
     }
 }
 

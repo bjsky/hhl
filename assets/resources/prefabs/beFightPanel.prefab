@@ -490,7 +490,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 502,
+      "width": 482,
       "height": 264
     },
     "_rotationX": 0,
@@ -499,7 +499,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 82,
+      "x": 67,
       "y": 102
     },
     "_skewX": 0,
@@ -548,7 +548,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 502,
+      "width": 482,
       "height": 264
     },
     "_rotationX": 0,
@@ -602,8 +602,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 502,
-      "height": 128
+      "width": 482,
+      "height": 180
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -633,8 +633,8 @@
     "_N$horizontalAlign": 0,
     "_N$fontSize": 26,
     "_N$font": null,
-    "_N$maxWidth": 502,
-    "_N$lineHeight": 32,
+    "_N$maxWidth": 482,
+    "_N$lineHeight": 36,
     "_N$imageAtlas": null,
     "_N$handleTouchEvent": true
   },

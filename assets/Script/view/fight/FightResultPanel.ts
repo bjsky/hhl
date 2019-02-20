@@ -160,7 +160,7 @@ export default class FightResultPanel extends PopUpBase {
     private closeEndFight(e){
         this.onClose(e);
 
-        SOUND.playBgSound(SoundConst.Bg_sound);
+        SOUND.playBgSound();
         Fight.endFight();
     }
     start () {
@@ -216,7 +216,7 @@ export default class FightResultPanel extends PopUpBase {
     protected onShowComplete(){
         super.onShowComplete();
         this._enableGetGuideNode = true;
-        SOUND.stopBgSound();
+        SOUND.pauseMusic();
         if(this._result.victory){
             SOUND.playFightWinSound();
         }else{

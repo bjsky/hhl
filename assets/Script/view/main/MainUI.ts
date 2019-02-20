@@ -296,7 +296,7 @@ export default class MainUI extends UIBase {
     }
 
     private onSoundClick(e){
-        SOUND.SetBgMuiscOpen();
+        SOUND.SetBgMuiscOpenClose();
         this.soundIcon.load(PathUtil.getSoundIcon(SOUND.getBgMusicSwitch()));
     }
 

@@ -131,7 +131,7 @@ export default class ResPanel extends PopUpBase {
     }
 
     private onVideoSee(){
-        SOUND.stopBgSound();
+        SOUND.pauseMusic();
         WeiXin.showVideoAd((result:SeeVideoResult)=>{
             if(result == SeeVideoResult.Complete){
                 this.getVideoReward(this._rewardType,this._awardNum);
@@ -140,7 +140,7 @@ export default class ResPanel extends PopUpBase {
             }else if(result == SeeVideoResult.NotComplete){
                 UI.showAlert("观看未完成，领取奖励失败！",null,null,AlertBtnType.OKButton);
             }
-            SOUND.playBgSound();
+            SOUND.resumeMusic();
         },this._rewardType)
     }
 

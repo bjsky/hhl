@@ -58,14 +58,14 @@ export default class BeFightPanel extends PopUpBase {
 
     private getOutlineText():string{
         var beRabArr:FightRecord[] = [];
-        var fightCount:number = 0;
-        var scoreTotal:number = 0;
+        // var fightCount:number = 0;
+        // var scoreTotal:number = 0;
         var nameArrStr:string = "";
         var cardArrStr:string = "";
         this._records.forEach((record:FightRecord)=>{
-            if(record.befightUId == COMMON.accountId){
-                fightCount++;
-                scoreTotal+= record.score;
+            if(record.befightUId == COMMON.accountId ){//&& record.score>0
+                // fightCount++;
+                // scoreTotal+= record.score;
                 if(record.isRabCard){
                     nameArrStr+=(record.fightName+"，");
                     var cardCfg = CFG.getCfgDataById(ConfigConst.CardInfo,record.rabCardId);
@@ -83,10 +83,12 @@ export default class BeFightPanel extends PopUpBase {
             cardArrStr = cardArrStr.substr(0,cardArrStr.length-1);
         }
         var rabOnlyStr:string = (beRabArr.length>1)?"分别":"";
-        var rabStr:string = (nameArrStr!="")?
-        ("其中<color=#1A60DD>"+nameArrStr+"</c>"+rabOnlyStr+"抢夺了你的卡牌："+cardArrStr+"<br />"):"";
-        var str:string ="<color=#7D3F3F>主人，您不在线期间，有 <color=#29b92f>"+fightCount+"</c> 位玩家攻击了您，"+
-        "您的积分<color=#D50336>－"+scoreTotal+"</c><br />"+ rabStr +"君子报仇，十年不晚，快去提升自己的实力吧！</color>";
+        // var rabStr:string = (nameArrStr!="")?
+        // ("其中<color=#1A60DD>"+nameArrStr+"</c>"+rabOnlyStr+"抢夺了你的卡牌："+cardArrStr+"<br />"):"";
+        // var str:string ="<color=#7D3F3F>主人，您不在线期间，有 <color=#29b92f>"+fightCount+"</c> 位玩家攻击了您，"+
+        // "您的积分<color=#D50336>－"+scoreTotal+"</c><br />"+ rabStr +"君子报仇，十年不晚，快去提升自己的实力吧！</color>";
+        var rabStr = "玩家<color=#1A60DD>"+nameArrStr+"</c>"+rabOnlyStr+"抢夺了你的卡牌："+cardArrStr;
+        var str = "<color=#7D3F3F>主人，您不在线期间，"+ rabStr +"<br />君子报仇，十年不晚，快去提升自己的实力吧！</color>"
         return str;
     }
     private getBefightText():string{
@@ -98,9 +100,12 @@ export default class BeFightPanel extends PopUpBase {
             var cardCfg = CFG.getCfgDataById(ConfigConst.CardInfo,record.rabCardId);
             var cardStr = record.rabCardGrade+"星<color="+ColorUtil.getGradeColorHex(record.rabCardGrade)+
                 ">"+cardCfg.name+"</c>";
-            str ="<color=#7D3F3F>主人，刚刚玩家 <color=#1A60DD>"+fightName+"</c> 战胜了您，"+
-            "您的积分<color=#D50336>－"+score+"</c><br />敌人抢走了你的卡牌："+cardStr+"<br />"+
-            "复仇抢夺概率双倍，不是不报，时候未到！</color>";
+            // str ="<color=#7D3F3F>主人，刚刚玩家 <color=#1A60DD>"+fightName+"</c> 攻击了您，"+
+            // "您的积分<color=#D50336>－"+score+"</c><br />敌人抢走了你的卡牌："+cardStr+"<br />"+
+            // "复仇抢夺双倍概率，不是不报，时候未到！</color>";
+
+            str = "<color=#7D3F3F>主人，刚刚玩家 <color=#1A60DD>"+fightName+"</c> 抢走了你的卡牌："+cardStr+"<br />"+
+            "复仇抢夺双倍概率，不是不报，时候未到！</color>";
         }
         return str;
     }
