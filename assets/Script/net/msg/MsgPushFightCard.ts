@@ -5,39 +5,41 @@ import StringUtil from "../../utils/StringUtil";
 import { Card } from "../../module/card/CardAssist";
 import CardInfo from "../../model/CardInfo";
 
-export class SCPushRabCard{
+export class SCPushFightCard{
     //时间
     public time:number = 0;
     //玩家uid
-    public rabEnemyUid:string = "";
+    public fightEnemyUid:string = "";
     //玩家名字
-    public rabEnemeyName:string = '';
-    //积分变化
+    public fightEnemyName:string = '';
+    //积分结果
     public score:number = 0;
     //抢夺卡牌
     public rabCard:SCardInfo = null;
 
-    public static parse(obj:any):SCPushRabCard{
-        var info:SCPushRabCard = new SCPushRabCard();
+    public static parse(obj:any):SCPushFightCard{
+        var info:SCPushFightCard = new SCPushFightCard();
         info.time = obj.time;
-        info.rabEnemyUid = obj.rabEnemyUid;
-        info.rabEnemeyName = obj.rabEnemeyName;
-        info.rabCard = SCardInfo .parse(obj.rabCard);
+        info.fightEnemyUid = obj.rabEnemyUid;
+        info.fightEnemyName = obj.rabEnemyName;
+        if(obj.rabCard!=undefined || obj.rabCard!=null){
+            info.rabCard = SCardInfo .parse(obj.rabCard);
+        }
         info.score = obj.score;
         return info;
     }
 }
 
-export default class MsgPushRabCard extends MessageBase{
+export default class MsgPushFightCard extends MessageBase{
     public param:any;
-    public resp:SCPushRabCard;
+    public resp:SCPushFightCard;
 
     constructor(){
-        super(NetConst.PushRabCard);
-        this.isLocal = true;
+        super(NetConst.PushFightCard);
+        // this.isLocal = true;
     }
-    public static create():MsgPushRabCard{
-        var msg:MsgPushRabCard = new MsgPushRabCard();
+    public static create():MsgPushFightCard{
+        var msg:MsgPushFightCard = new MsgPushFightCard();
         msg.param = {};
         return msg;
     }
@@ -60,7 +62,7 @@ export default class MsgPushRabCard extends MessageBase{
     }
 
     private parse(obj:any):MessageBase{
-        this.resp = SCPushRabCard.parse(obj);
+        this.resp = SCPushFightCard.parse(obj);
         return this;
     }
     public respFromServer(obj:any):MessageBase{

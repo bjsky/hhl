@@ -5,7 +5,7 @@ import ColorUtil from "../utils/ColorUtil";
 import { CFG } from "../manager/ConfigManager";
 import { ConfigConst } from "../module/loading/steps/LoadingStepConfig";
 import StringUtil from "../utils/StringUtil";
-import { SCPushRabCard } from "../net/msg/MsgPushRabCard";
+import { SCPushFightCard } from "../net/msg/MsgPushFightCard";
 
 export class FightRecord{
     //时间;毫秒
@@ -41,17 +41,21 @@ export class FightRecord{
         this.rabCardId = info.rabCardId;
         this.rabCardGrade = info.rabCardGrade;
     }
-    public initFromRab(info:SCPushRabCard){
+    public initFromPush(info:SCPushFightCard,score:number){
         this.time = info.time;
-        this.fightUId = info.rabEnemyUid;
-        this.fightName = info.rabEnemeyName;
+        this.fightUId = info.fightEnemyUid;
+        this.fightName = info.fightEnemyName;
         this.befightUId = COMMON.accountId;
         this.befightName = COMMON.userInfo.name;
-        this.score = info.score;
-        this.isRabCard = true;
-        this.rabCardUuid = info.rabCard.uuid;
-        this.rabCardId = info.rabCard.cardId;
-        this.rabCardGrade = info.rabCard.grade;
+        this.score = score;
+        if(info.rabCard!=null){
+            this.isRabCard = true;
+            this.rabCardUuid = info.rabCard.uuid;
+            this.rabCardId = info.rabCard.cardId;
+            this.rabCardGrade = info.rabCard.grade;
+        }else{
+            this.isRabCard = false;
+        }
     }
 
     public getDescHtml(fighterUid:string):string{

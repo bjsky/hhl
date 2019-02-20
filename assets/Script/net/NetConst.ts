@@ -49,8 +49,8 @@ export default class NetConst{
     public static FightEnemy:number = 21124;
     //获得敌人数据
     public static GetEnemyList:number = 21121;
-    //推送抢夺卡牌
-    public static PushRabCard:number = 21125;
+    //推送攻击
+    public static PushFightCard:number = 21125;
     //获取玩家uid的战斗纪录
     public static GetFightRecordList:number = 21123;
     //排行榜数据

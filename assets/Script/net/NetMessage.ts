@@ -6,7 +6,7 @@ import { GAME } from "../GameController";
 import MessageBase from "./msg/MessageBase";
 import MsgUtil from "./msg/MsgUtil";
 import { Battle } from "../module/battle/BattleAssist";
-import MsgPushRabCard from "./msg/MsgPushRabCard";
+import MsgPushFightCard from "./msg/MsgPushFightCard";
 
 export default class NetMessage extends cc.Component{
 
@@ -65,13 +65,13 @@ export default class NetMessage extends cc.Component{
     private MsgPushParser(id:number,data:any)
     {
         console.log("推通消息处理：",id,JSON.stringify(data));
-        var message:MessageBase = null;
+        var message:MessageBase = MsgUtil.createMessage(id);
+        message = message.respFromServer(data);
         switch(id)
         {
-            case NetConst.PushRabCard:
-            message = MsgUtil.createMessage(id);
-            Battle.onPushRabCard(message as MsgPushRabCard);
-            break;
+            case NetConst.PushFightCard:{
+                Battle.onPushRabCard(message as MsgPushFightCard);
+            }break;
         }
 
     }

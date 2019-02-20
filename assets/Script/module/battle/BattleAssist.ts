@@ -21,11 +21,11 @@ import EnemyInfo from "../../model/EnemyInfo";
 import MsgFightEnemy from "../../net/msg/MsgFightEnemy";
 import CardInfo from "../../model/CardInfo";
 import { Card, CardRemoveType } from "../card/CardAssist";
-import MsgPushRabCard from "../../net/msg/MsgPushRabCard";
 import { UI } from "../../manager/UIManager";
 import { ResConst } from "../loading/steps/LoadingStepRes";
 import { BeFightPanelType } from "../../view/castle/BeFightPanel";
 import { GUIDE } from "../../manager/GuideManager";
+import MsgPushFightCard from "../../net/msg/MsgPushFightCard";
 
 export default class BattleAssist{
 
@@ -264,16 +264,19 @@ export default class BattleAssist{
         },this)
     }
 
-    public onPushRabCard(msg:MsgPushRabCard){
+    public onPushRabCard(msg:MsgPushFightCard){
         if(msg && msg.resp){
             var record = new FightRecord();
-            record.initFromRab(msg.resp);
+            var scoreChange:number = Math.abs(this._battleInfo.score - msg.resp.score);
+            record.initFromPush(msg.resp,scoreChange);
             UI.createPopUp(ResConst.BeFightPanel,{type:BeFightPanelType.BeFight,records:[record]});
-            this.battleInfo.score -= msg.resp.score;
+            this.battleInfo.score  = msg.resp.score;//-= msg.resp.score;
             EVENT.emit(GameEvent.Battle_data_Change);
-            //移除卡牌
-            Card.removeCardByUUid(record.rabCardUuid);
-            EVENT.emit(GameEvent.Card_Remove,{uuid:record.rabCardUuid,type:CardRemoveType.RabRemove});
+            if(record.isRabCard){
+                //移除卡牌
+                Card.removeCardByUUid(record.rabCardUuid);
+                EVENT.emit(GameEvent.Card_Remove,{uuid:record.rabCardUuid,type:CardRemoveType.RabRemove});
+            }
             //刷新仇人
             this.refreshPersonalEnemy();
         }
