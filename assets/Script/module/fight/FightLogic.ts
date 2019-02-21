@@ -2,6 +2,7 @@ import FightObject, { FightTeamObject } from "./FightObject";
 import { Fight } from "./FightAssist";
 import { BuffAction } from "./FightAction";
 import FightOnce from "./FightOnce";
+import { SkillProperty } from "./SkillLogic";
 
 export class FightResult{
     constructor(victory:boolean ,evaluate:number=0){
@@ -106,7 +107,7 @@ export default class FightLogic extends cc.EventTarget{
         });
     }
 
-    public attckOnce(){
+    public attckOnce(isDouble:boolean =false){
         var attckObj:FightObject = this.getTeam(this._isMyTeamfight).getFightObj();
         if(attckObj == null){
             this.endFight(false,0)
@@ -119,15 +120,19 @@ export default class FightLogic extends cc.EventTarget{
             return;
         }
 
-        var fightOnce:FightOnce = new FightOnce(attckObj,beAttackObj);
+        var fightOnce:FightOnce = new FightOnce(attckObj,beAttackObj,isDouble);
         fightOnce.fight();
         this._fights.push(fightOnce);
         if(fightOnce.attack.isEnemyDead){
             this._isEnd = beAttackTeam.next();
         }
         if(!this._isEnd){
-            this._isMyTeamfight = !this._isMyTeamfight;
-            this.attckOnce();
+            if(fightOnce.attackSkill!=null && fightOnce.attackSkill.skillProperty == SkillProperty.DoubleAttack){
+                this.attckOnce(true);
+            }else{
+                this._isMyTeamfight = !this._isMyTeamfight;
+                this.attckOnce(false);
+            }
         }else{
             var evaluate:number = 0;
             this._fightTeamMine.fightObjArr.forEach((fo:FightObject)=>{

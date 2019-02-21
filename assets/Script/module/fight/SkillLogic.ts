@@ -46,6 +46,7 @@ export enum SkillProperty{
     ReturnBlood, //回血
     PowerAttachLife,  //攻击附加生命
     Revenge,    //攻击附加所受伤害
+    DoubleAttack, //连击
 }
 
 export class SkillObject{
@@ -190,6 +191,18 @@ export default class SkillLogic{
                     action = new SkillAction(attack);
                     action.skillProperty = SkillProperty.ReturnBlood;
                     action.skillValue = attack.skill.skillVal;
+                }
+            }break;
+            case 18: //河图洛书
+            {
+                var rate:number = beAttack.skill.skillVal;
+                if(Math.random()<rate){
+                    hasAction = true;
+                }
+                if(hasAction){
+                    action = new SkillAction(attack);
+                    action.skillProperty = SkillProperty.DoubleAttack;
+                    action.skillValue = 1;
                 }
             }break;
         }

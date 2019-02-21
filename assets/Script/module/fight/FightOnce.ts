@@ -4,13 +4,15 @@ import { Fight } from "./FightAssist";
 
 //单次攻击
 export default class FightOnce{
-    constructor(attack,beAttack){
+    constructor(attack,beAttack,isDouble){
         this.attackObj = attack;
         this.beAttackObj = beAttack;
 
-        this.attackSkill = Fight.skill.checkAttackSkill(this.attackObj,this.beAttackObj);
-        if(this.attackSkill!=null){
-            this.attackSkill.applySkill(this.attackObj);
+        if(!isDouble){ //不是连击
+            this.attackSkill = Fight.skill.checkAttackSkill(this.attackObj,this.beAttackObj);
+            if(this.attackSkill!=null){
+                this.attackSkill.applySkill(this.attackObj);
+            }
         }
         this.beAttackSkill = Fight.skill.checkBeAttackSill(this.beAttackObj);
         if(this.beAttackSkill!=null){
