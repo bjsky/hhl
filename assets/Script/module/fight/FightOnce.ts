@@ -29,7 +29,6 @@ export default class FightOnce{
     //被攻击
     public beAttackSkill:SkillAction = null;
 
-
     public fight(){
         this.attack = this.attackObj.fight(this.beAttackObj);
     }

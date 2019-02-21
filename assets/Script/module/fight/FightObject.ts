@@ -1,7 +1,7 @@
 import LineupInfo from "../../model/LineupInfo";
 import { CFG } from "../../manager/ConfigManager";
 import { ConfigConst } from "../loading/steps/LoadingStepConfig";
-import { SkillObject, SkillProperty, BuffProperty, BuffObject } from "./SkillLogic";
+import { SkillObject, SkillProperty, BuffProperty, BuffObject, BuffType } from "./SkillLogic";
 import { AttackAction } from "./FightAction";
 
 export class SkillInfo{
@@ -82,6 +82,8 @@ export default class FightObject{
     public skillObj:SkillObject = null;
     //加成
     public buff:Array<BuffObject> = [];
+    //攻击buff
+    public fightBuff:Array<BuffObject> = [];
 
     public originalPower:number = 0;
     public originalToalLife:number = 0;
@@ -98,28 +100,55 @@ export default class FightObject{
         if(this.skillObj!= null && this.skillObj.skillProperty == SkillProperty.PowerAttachLife){
             attackPower += beAttack.buffedTotalLife*this.skillObj.skillValue;
         }
+        if(this.fightBuff.length>0){
+            var tmp:BuffObject[] = [];
+            for(var i:number = 0;i<this.fightBuff.length;i++){
+                var buff:BuffObject = this.fightBuff[i];
+                if(buff.buffProperty == BuffProperty.PowerValue){ //附加攻击
+                    attackPower += buff.buffValue;
+                }
+                if(!isNaN(buff.buffLastNum)){
+                    buff.buffLastNum -= 1;
+                    if(buff.buffLastNum >0){
+                        tmp.push(buff);
+                    }
+                }else{
+                    tmp.push(buff);
+                }
+            }
+            this.fightBuff = tmp;
+        }
+        var noDefensePower = attackPower;
         if(beAttack.skillObj!=null){
             if(beAttack.skillObj.skillProperty == SkillProperty.Dodge){
                 attackPower = 0;
             }else if(beAttack.skillObj.skillProperty == SkillProperty.Absorb){
                 attackPower = attackPower*(1-beAttack.skillObj.skillValue);
+            }else if(beAttack.skillObj.skillProperty == SkillProperty.Revenge){
+                if(attackPower>=beAttack.curLife){ //保命
+                    attackPower = beAttack.curLife -1;
+                }
+                var buffValue = Math.floor(noDefensePower * beAttack.skillObj.skillValue);
+                var addbuff:BuffObject = new BuffObject(beAttack.skillObj.skill,BuffType.Mine,BuffProperty.PowerValue,buffValue);
+                beAttack.addFightBuff(addbuff,1,1);
             }
         }
 
         beAttack.loseLife += attackPower;
         var returnLife:number = 0;
-        var returnStr:string ="";
+        // var returnStr:string ="";
         if(this.skillObj!=null && this.skillObj.skillProperty == SkillProperty.ReturnBlood){
             returnLife = Math.floor(attackPower * this.skillObj.skillValue);
             if(this.loseLife - returnLife<0){
                 returnLife = this.loseLife;
             }
             this.loseLife -= returnLife;
-            returnStr = "\n恢复生命"+returnLife;
+            // returnStr = "\n恢复生命"+returnLife;
         }
 
         this.skillObj = null;
         var action:AttackAction = new AttackAction(this,beAttack);
+        action.noDefensePower  = noDefensePower;
         action.attackPower = attackPower;
         action.isEnemyDead = beAttack.isDead;
         action.returnBlood = returnLife;
@@ -134,8 +163,10 @@ export default class FightObject{
             }
         })
         var power = this.originalPower * (1+poweradd);
-        if(this.skillObj!=null && this.skillObj.skillProperty == SkillProperty.AddPower){
-            power *= this.skillObj.skillValue;
+        if(this.skillObj!=null ){
+            if(this.skillObj.skillProperty == SkillProperty.AddPower){
+                power *= this.skillObj.skillValue;
+            }
         }
         return power;
     }
@@ -157,5 +188,10 @@ export default class FightObject{
 
     public addBuff(buff:BuffObject){
         this.buff.push(buff);
+    }
+    public addFightBuff(buff:BuffObject,superNum:number,lastNum:number){
+        buff.buffSuperNum = superNum;
+        buff.buffLastNum = lastNum;
+        this.fightBuff.push(buff);
     }
 }

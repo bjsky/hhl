@@ -1,6 +1,6 @@
 import FightObject, { SkillInfo } from "./FightObject";
 import { Fight } from "./FightAssist";
-import { SkillProperty, SkillObject, BuffProperty, BuffObject } from "./SkillLogic";
+import { SkillProperty, SkillObject, BuffProperty, BuffObject, BuffType } from "./SkillLogic";
 
 export default class FightAction{
     // //是否本队
@@ -36,6 +36,8 @@ export class AttackAction extends FightAction{
     }
 
     public beAttackObj:FightObject = null;
+    //不抵抗伤害
+    public noDefensePower:number = 0;
     //受到伤害
     public attackPower:number = 0;
     //是否阵亡
@@ -63,7 +65,12 @@ export class BuffAction extends FightAction{
     public fromPos:number = 0;
     //buff位置
     public buffPos:number[] = [];
-
+    //叠加次数
+    public buffSuperNum:number = 0;
+    //持续次数
+    public buffLastNum:number = NaN;
+    // nodeUUid
+    public nodeUuid:string = "";
     public applyBuff(){
         this.buffPos.forEach((pos:number)=>{
             var fo:FightObject = Fight.fight.getFightObj(this.attackObj.isMyTeam,pos);
@@ -81,9 +88,33 @@ export class SkillAction extends FightAction{
     public skillProperty:SkillProperty  = 0;
     public skillValue:number = 0;
 
+    //攻击提示
+    public attackStr:string ="";
+    //技能效果
+    public skillBuff:BuffAction = null;
     public applySkill(fightObj:FightObject){
         var skillObj =  new SkillObject(this.attackObj.skill,this.skillProperty,this.skillValue);
         fightObj.skillObj = skillObj;
+    }
+
+    public updateSkill(attack:AttackAction){
+        if(this.skillProperty== SkillProperty.Dodge){
+            this.attackStr = "闪避";
+        }else if(this.skillProperty == SkillProperty.Revenge 
+            &&attack.attackPower!=attack.noDefensePower)
+        {
+            this.attackStr ="护身";
+        }
+        if(this.skillProperty == SkillProperty.Revenge){
+            var buff:BuffAction = new BuffAction(this.attackObj);
+            buff.buffProperty = BuffProperty.PowerValue;
+            var buffValue = Math.floor(attack.noDefensePower * this.skillValue);
+            buff.buffValue = buffValue;
+            buff.buffType = BuffType.Mine;
+            buff.buffSuperNum = 1;
+            buff.buffLastNum = 1;
+            this.skillBuff = buff;
+        }
     }
     
     public getHtmlDesc():string{

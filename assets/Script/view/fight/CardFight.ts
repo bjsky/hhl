@@ -4,14 +4,16 @@ import LoadSprite from "../../component/LoadSprite";
 import { CFG } from "../../manager/ConfigManager";
 import { ConfigConst } from "../../module/loading/steps/LoadingStepConfig";
 import PathUtil from "../../utils/PathUtil";
-import FightAction, { BuffAction} from "../../module/fight/FightAction";
+import FightAction, { BuffAction, SkillAction} from "../../module/fight/FightAction";
 import { UI } from "../../manager/UIManager";
 import { ResConst } from "../../module/loading/steps/LoadingStepRes";
-import { BuffType, BuffProperty } from "../../module/fight/SkillLogic";
+import { BuffType, BuffProperty, SkillProperty } from "../../module/fight/SkillLogic";
 import { Fight } from "../../module/fight/FightAssist";
 import { CardAcitonObject } from "./FightPanel";
 import NumberEffect from "../../component/NumberEffect";
 import { FightTipType } from "./FightTip";
+import NumberUtil from "../../utils/NumberUtil";
+import StringUtil from "../../utils/StringUtil";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -126,6 +128,7 @@ export default class CardFight extends  UIBase {
         while(this.debuffNode.childrenCount>0){
             UI.removeUI(this.debuffNode.children[0]);
         }
+        this._buffNodeMap ={};
         this.node.stopAllActions();
         this.unscheduleAllCallbacks();
         this.numEffLife.stop();
@@ -190,7 +193,7 @@ export default class CardFight extends  UIBase {
     private _buffs:Array<BuffAction> = [];
     private _debuffs:Array<BuffAction> = [];
     private _buffIconHeight:number = 35;
-
+    private _buffNodeMap:any ={};
     public addBuff(addIndex:number,fromPos:cc.Vec2,buff:BuffAction,cb:Function){
         if(this._buffs.indexOf(buff)>-1 || this._debuffs.indexOf(buff)>-1){
             cb && cb();
@@ -220,16 +223,24 @@ export default class CardFight extends  UIBase {
             addValue = this._curPower * buff.buffValue;
             buffAnim.str = "攻击：+"+addValue.toFixed(0);
             buffAnim.pos = this.cardPower.node.parent.convertToWorldSpaceAR(this.cardPower.node.position);
+        }else if(buff.buffProperty == BuffProperty.PowerValue){
+            addValue = buff.buffValue;
+            buffAnim.str = "攻击：+"+addValue.toFixed(0);
+            buffAnim.pos = this.cardPower.node.parent.convertToWorldSpaceAR(this.cardPower.node.position);
         }
         buffAnim.addValue =  addValue;
         buffAnim.prop = buff.buffProperty;
         
         var toWPos:cc.Vec2 = pNode.convertToWorldSpaceAR(toPos);
         Fight.panel.showBuffFly(addIndex,buff,fromPos,toWPos,()=>{
+            var selfBuff = buff;
+            selfBuff.nodeUuid = StringUtil.getUUidClient();
             UI.loadUI(ResConst.BuffNode,{type:buff.buffType,sign:buff.attackObj.skill.skillCfg.skillSign},pNode,(ui:UIBase)=>{
                 ui.node.setPosition(toPos);
+                this._buffNodeMap[selfBuff.nodeUuid] = ui.node;
             })
-            if(buffAnim.prop == BuffProperty.Power){
+            if(buffAnim.prop == BuffProperty.Power ||
+                buffAnim.prop == BuffProperty.PowerValue){
                 this._curPower += buffAnim.addValue;
                 this.numEffPower.setValue(this._curPower);
             }else if(buffAnim.prop == BuffProperty.Life){
@@ -246,20 +257,21 @@ export default class CardFight extends  UIBase {
     public setBeFight(shakePos:cc.Vec2){
         this._beFightPos = shakePos//.div(1.5);
     }
-    public beAttack(attackPower:number,isDodge:boolean,beAttackAni:boolean,cb:Function){
+    public beAttack(attackPower:number,attackStr:string,beAttackAni:boolean,cb:Function){
         var tipStr:string = ""
         // if(this._loseLife+attackPower>this._totalLife){
         //     attackPower = this._totalLife - this._loseLife;
         //     // tipStr = "阵亡";
         // }
-        if(isDodge){
-            tipStr = "闪避";
+        
+        if(attackStr!=""){
+            tipStr = attackStr;
         }else{
             tipStr = "-"+attackPower.toFixed(0);
-            this._loseLife += attackPower;
-            this.numEffLife.setValue(this.curLife);
-            this.cardLiftProgress.progress = this.getLiftPro();
         }
+        this._loseLife += attackPower;
+        this.numEffLife.setValue(this.curLife);
+        this.cardLiftProgress.progress = this.getLiftPro();
         var pos = this.cardLife.node.parent.convertToWorldSpaceAR(this.cardLife.node.position);
         if(!beAttackAni){
             this.showBeAttackTip(tipStr,pos);
@@ -336,7 +348,42 @@ export default class CardFight extends  UIBase {
             Fight.panel.playSkill(pos,(action as BuffAction).attackObj.skill.skillCfg.skillIcon,()=>{
                 this.showBuffFly();
             });
+        }else if(action instanceof SkillAction){
+            var pos:cc.Vec2 = this.node.parent.convertToWorldSpaceAR(this.node.position);
+            var skillAct:SkillAction = action as SkillAction;
+            var icon:string = skillAct.attackObj.skill.skillCfg.skillIcon;
+            Fight.panel.playSkill(pos,icon,()=>{
+                if(skillAct.skillProperty == SkillProperty.Revenge){    //复仇buff
+                    this.showFightBuffFly(skillAct.skillBuff);
+                }else{
+                    this.endAction();
+                }
+            });
         }
+    }
+
+    public updateFightNum(){
+        var tmp:BuffAction[] = [];
+        for(var i:number = 0;i<this._buffs.length;i++){
+            var buf:BuffAction = this._buffs[i];
+            if(!isNaN(buf.buffLastNum)){
+                buf.buffLastNum -= 1;
+                if(buf.buffLastNum<=0){
+                    var node:cc.Node = this._buffNodeMap[buf.nodeUuid];
+                    UI.removeUI(node);
+                    delete this._buffNodeMap[buf.nodeUuid];
+                    if(buf.buffProperty == BuffProperty.PowerValue){
+                        this._curPower -= buf.buffValue;
+                    }
+                    this.numEffPower.setValue(this._curPower,false);
+                }else{
+                    tmp.push(buf);
+                }
+            }else{
+                tmp.push(buf);
+            }
+        }
+        this._buffs = tmp;
     }
 
     public endAction(){
@@ -364,6 +411,14 @@ export default class CardFight extends  UIBase {
             });
             addIndex ++;
         })
+    }
+
+    private showFightBuffFly(buff:BuffAction){
+        var addIndex = 0;
+        var fromPos:cc.Vec2 = this.node.parent.convertToWorldSpaceAR(cc.v2(this.node.position));
+        this.addBuff(addIndex,fromPos,buff,()=>{
+            this.endAction();
+        });
     }
     // update (dt) {}
 

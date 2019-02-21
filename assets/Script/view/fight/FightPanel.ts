@@ -396,10 +396,13 @@ export default class FightPanel extends UIBase {
         switch(this._fightPlayState){
             case FightOncePlayState.AttackSkill:{
                 if(this._fightOnce.attackSkill!=null){
-                    var pos:cc.Vec2 = this._attackCard.node.parent.convertToWorldSpaceAR(this._attackCard.node.position);
-                    this.playSkill(pos,this._fightOnce.attackSkill.attackObj.skill.skillCfg.skillIcon,()=>{
+                    this._attackCard.playAction(this._fightOnce.attackSkill,()=>{
                         this.playFightOnce();
-                    });
+                    })
+                    // var pos:cc.Vec2 = this._attackCard.node.parent.convertToWorldSpaceAR(this._attackCard.node.position);
+                    // this.playSkill(pos,this._fightOnce.attackSkill.attackObj.skill.skillCfg.skillIcon,()=>{
+                    //     this.playFightOnce();
+                    // });
                 }else{
                     this.playFightOnce();
                 }
@@ -418,17 +421,21 @@ export default class FightPanel extends UIBase {
                 if(this._fightOnce.attackSkill!=null && this._fightOnce.beAttackSkill==null){
                     hasAllShake = true;
                 }
-                var isDodge:boolean = this._fightOnce.beAttackSkill && this._fightOnce.beAttackSkill.skillProperty == SkillProperty.Dodge;
                 if(this._fightOnce.beAttackSkill!=null){
-                    var pos:cc.Vec2 = this._beAttackCard.node.parent.convertToWorldSpaceAR(this._beAttackCard.node.position);
-                    Fight.panel.playSkill(pos,this._fightOnce.beAttackSkill.attackObj.skill.skillCfg.skillIcon,()=>{
-                        this._beAttackCard.beAttack(this._fightOnce.attack.attackPower,isDodge,false,()=>{
+                    this._fightOnce.beAttackSkill.updateSkill(this._fightOnce.attack);
+                    this._beAttackCard.playAction(this._fightOnce.beAttackSkill,()=>{
+                        this._beAttackCard.beAttack(this._fightOnce.attack.attackPower,this._fightOnce.beAttackSkill.attackStr,false,()=>{
                             this.playFightOnce();
                         });
-                    });
+                    })
+                    // var pos:cc.Vec2 = this._beAttackCard.node.parent.convertToWorldSpaceAR(this._beAttackCard.node.position);
+                    // Fight.panel.playSkill(pos,this._fightOnce.beAttackSkill.attackObj.skill.skillCfg.skillIcon,()=>{
+                    //     this._beAttackCard.beAttack(this._fightOnce.attack.attackPower,isDodge,false,()=>{
+                    //         this.playFightOnce();
+                    //     });
+                    // });
                 }else{
-
-                    this._beAttackCard.beAttack(this._fightOnce.attack.attackPower,false,!hasAllShake,()=>{
+                    this._beAttackCard.beAttack(this._fightOnce.attack.attackPower,"",!hasAllShake,()=>{
                         this.playFightOnce();
                     });
                 }
@@ -448,6 +455,7 @@ export default class FightPanel extends UIBase {
                 }
             }break;
             default:{
+                this._attackCard.updateFightNum();
                 this.playDelaySequence();
             }break;
         }

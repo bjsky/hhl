@@ -5,8 +5,9 @@ import { Fight } from "./FightAssist";
 
 
 export enum BuffProperty{
-    Power = 1,
-    Life,
+    Power = 1,  //攻击比率
+    Life,       //攻击比率
+    PowerValue,//攻击值
 }
 
 export enum BuffType{
@@ -30,6 +31,11 @@ export class BuffObject{
     public buffProperty:BuffProperty = 0;
     //buff值
     public buffValue:number = 0;
+    //buff叠加次数
+    public buffSuperNum:number = 0;
+    //buff持续回合，NaN为永久
+    public buffLastNum:number = NaN;
+
 }
 
 export enum SkillProperty{
@@ -38,7 +44,8 @@ export enum SkillProperty{
     Dodge,//闪避
     Absorb, //吸收
     ReturnBlood, //回血
-    PowerAttachLife  //攻击附加生命
+    PowerAttachLife,  //攻击附加生命
+    Revenge,    //攻击附加所受伤害
 }
 
 export class SkillObject{
@@ -120,14 +127,9 @@ export default class SkillLogic{
         var hasAction:boolean = false;
         var skillId:number = attack.skill.skillId;
         switch(skillId){
-            // case 5: //复仇傀儡
             case 10: //魅惑妖术
             case 12: //诛妖阵法
-            // case 18: //河图洛书
             {
-                // if( skillId == 5 && beAttack.lineup.raceId == CardRaceType.XianJie){
-                //     hasAction = true;
-                // }else 
                 if( skillId == 10 && (beAttack.lineup.raceId == CardRaceType.RenJie ||
                         beAttack.lineup.raceId == CardRaceType.XianJie)){
                     hasAction = true;
@@ -136,9 +138,6 @@ export default class SkillLogic{
                     beAttack.lineup.raceId == CardRaceType.YaoZu)){
                     hasAction = true;
                 }
-                // else if( skillId == 18 && beAttack.lineup.raceId == CardRaceType.WuZu){
-                //     hasAction = true;
-                // }
                 if(Math.random()<0.66){
                     hasAction = hasAction && true;
                 }else{
@@ -222,6 +221,17 @@ export default class SkillLogic{
                 if(hasAction){
                     action = new SkillAction(beAttack);
                     action.skillProperty = SkillProperty.Absorb;
+                    action.skillValue = beAttack.skill.skillVal;
+                }
+            }break;
+            case 5: //复仇傀儡
+            {
+                if(Math.random()<0.4){
+                    hasAction = true;
+                }
+                if(hasAction){
+                    action = new SkillAction(beAttack);
+                    action.skillProperty = SkillProperty.Revenge;
                     action.skillValue = beAttack.skill.skillVal;
                 }
             }break;
