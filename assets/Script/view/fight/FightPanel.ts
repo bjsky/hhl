@@ -135,16 +135,31 @@ export default class FightPanel extends UIBase {
         // this.nodeMine.position = cc.v2(15-cc.winSize.width,this.nodeMine.position.y);
     }
 
+    public get cardsAllLoadComplete(){
+        var nodeCard:cc.Node;
+        var allComplete:boolean =true;
+        for(var i:number = 0;i<this.nodeMyCards.length;i++){
+            nodeCard = this.nodeMyCards[i];
+            allComplete = allComplete && nodeCard.childrenCount>0;
+        }
+        for(var i:number = 0;i<this.nodeEnemyCards.length;i++){
+            nodeCard = this.nodeEnemyCards[i];
+            allComplete = allComplete && nodeCard.childrenCount>0;
+        }
+        return allComplete;
+    }
+
     private show(){
         this.reset();
         var seq =cc.sequence(
             cc.fadeIn(0.3),
             cc.callFunc(()=>{
                 UI.hidePanelLayer();
-        
-                SOUND.playFightBgSound();
-                Fight.startFight();
-                this.startDelayEndEnable();
+                if(this.cardsAllLoadComplete){
+                    this.startFight();
+                }else{
+                    this.schedule(this.checkStartFight,0.05);
+                }
             })
         );
         this.node.runAction(seq);
@@ -157,6 +172,19 @@ export default class FightPanel extends UIBase {
             // this.nodeMine.runAction(cc.moveTo(0.3,cc.v2(15,this.nodeMine.position.y)).easing(cc.easeInOut(2)));
         },0.15)
     }
+
+    private startFight(){
+        SOUND.playFightBgSound();
+        Fight.startFight();
+        this.startDelayEndEnable();
+    }
+    private checkStartFight(){
+        if(this.cardsAllLoadComplete){
+            this.unschedule(this.checkStartFight);
+            this.startFight();
+        }
+    }
+
     private _endEnableDelay:number = 9;
     private _curTime:number = 0;
     private startDelayEndEnable(){
@@ -291,7 +319,7 @@ export default class FightPanel extends UIBase {
             UI.loadUI(ResConst.CardFight,{data:this._fightEnemy.lineup[i]},nodeCard);
         }
     }
-    
+
     public getCardFightWithPos(pos:number,isMyTeam:boolean):CardFight{
         var teamNodes:cc.Node[] = isMyTeam?this.nodeMyCards:this.nodeEnemyCards;
         var node :cc.Node = teamNodes[pos].children[0];

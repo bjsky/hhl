@@ -49,6 +49,7 @@ export default class GameController{
      * 
      */
     public start(){
+        GLOBAL.initSystemInfo();
         //初始化
         GLOBAL.initGameConfig();
         //加载

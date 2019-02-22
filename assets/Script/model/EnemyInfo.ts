@@ -94,15 +94,16 @@ export default class EnemyInfo {
         var lineupIds:string = passCfg.amyHero;
         var lineupGradeLevel:string = passCfg.amyHeroGradeLv;
         if(lineupIds!=""){
-            var ids:Array<string> = [];
-            while(ids.length<5){
-               var id = Card.getSummonCardId().toString();//lineupIds.split(";");
-               if(id == "5"||id=="18")
-               continue;
-               if(ids.indexOf(id)<0){
-                   ids.push(id);
-               }
-            }
+            // var ids:Array<string> = [];
+            // while(ids.length<5){
+            //    var id = Card.getSummonCardId().toString();//lineupIds.split(";");
+            //    if(id == "5"||id=="18")
+            //    continue;
+            //    if(ids.indexOf(id)<0){
+            //        ids.push(id);
+            //    }
+            // }
+            var ids = lineupIds.split(";");
             var lineup:LineupInfo;
             var gradeLvs:Array<string> = lineupGradeLevel.split("|");
             var gradelv:string;

@@ -17,6 +17,7 @@ import ResPanel, { ResPanelType } from "../ResPanel";
 import { CONSTANT } from "../../Constant";
 import { Share } from "../../module/share/ShareAssist";
 import { Card } from "../../module/card/CardAssist";
+import { GLOBAL } from "../../GlobalData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -98,8 +99,12 @@ export default class MainUI extends UIBase {
     @property(cc.Button)
     btnIntro:cc.Button = null;
 
+    private _topPos:cc.Vec2 =cc.v2(0,0);
     onLoad () {
 
+        if(GLOBAL.isIPhoneX){
+            this._topPos = cc.v2(0,-GLOBAL.statusBarHeight);
+        }
         this.initTopView();
 
         WeiXin.createGameClubButton();
@@ -107,8 +112,8 @@ export default class MainUI extends UIBase {
 
     start () {
         if(this._showAction){
-            this.topNode.setPosition(cc.v2(0,200));
-            this.topNode.runAction(cc.moveTo(0.15,COMMON.ZERO));
+            this.topNode.setPosition(cc.v2(0,250));
+            this.topNode.runAction(cc.moveTo(0.15,this._topPos));
             this.bottomNode.setPosition(cc.v2(0,-200));
             this.bottomNode.runAction(cc.moveTo(0.15,COMMON.ZERO));
             this.sideNode.setPosition(cc.v2(-500,0));

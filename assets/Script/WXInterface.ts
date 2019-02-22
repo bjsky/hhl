@@ -32,6 +32,10 @@ export class WXInterface{
         }
     }
 
+    public getSystemInfo(){
+        return window["systemInfo"];
+    }
+
     public getUserInfo(cb){
         var func = window["getUserInfo"];
         func(cb)

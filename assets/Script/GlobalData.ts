@@ -1,4 +1,5 @@
 import { WeiXin } from "./wxInterface";
+import { UI } from "./manager/UIManager";
 
 
 export enum ServerType{
@@ -18,7 +19,7 @@ export default class GlobalData{
 
 
     public serverType:number = ServerType.Publish;
-    public version:string = "1.0.17";
+    public version:string = "1.0.19";
 
     public serverUrl:string = "wss://www.xh52.top:8580/websocket";
     // public serverUrl:string = "ws://192.168.0.102:8502/websocket";
@@ -38,6 +39,20 @@ export default class GlobalData{
             this.serverUrl = gameCfg.serverUrl;
         }
         console.log("initGameConfig:",this.serverType,this.serverUrl)
+    }
+
+    public isIPhoneX:boolean =false;
+    public statusBarHeight:number = 0;
+    public systemInfo:any =null;
+    public initSystemInfo(){
+        this.systemInfo = WeiXin.getSystemInfo(); 
+        console.log("initSystemInfo:"+JSON.stringify(this.systemInfo) );
+        if(this.systemInfo && this.systemInfo.model.indexOf("iPhone X")>=0 )
+        {
+            this.isIPhoneX = true;
+            this.statusBarHeight = Number(this.systemInfo.statusBarHeight);
+            UI.adjustHeight();
+        }
     }
 
     public initUserInfo(userInfo){

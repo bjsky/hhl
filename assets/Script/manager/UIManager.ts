@@ -5,6 +5,7 @@ import { ResConst } from "../module/loading/steps/LoadingStepRes";
 import { EVENT } from "../message/EventCenter";
 import GameEvent from "../message/GameEvent";
 import PathUtil from "../utils/PathUtil";
+import { GLOBAL } from "../GlobalData";
 
 /**
  * 管理各种界面单例,层级
@@ -36,12 +37,14 @@ export default class UIManager{
     //引导层
     public GuideLayer:cc.Node = null;
 
+    private _root:cc.Node = null;
     /**
      * 注册层级
      * @param root  ui根节点
      */
     public registerLayer(root:cc.Node){
         cc.game.addPersistRootNode(root);
+        this._root = root;
 
         root.addComponent(NetMessage);
         
@@ -54,6 +57,14 @@ export default class UIManager{
         this.GuideLayer = root.getChildByName("GuideLayer");
 
         this.initMaskLayer();
+    }
+
+    public adjustHeight(){
+        if(GLOBAL.isIPhoneX){
+            this._root.getComponent(cc.Widget).top = GLOBAL.statusBarHeight;
+            this._mask.y = GLOBAL.statusBarHeight;
+            this._mask.setContentSize(cc.winSize.width, cc.winSize.height+44);
+        }
     }
 
     private _uiPool:UIPool = new UIPool();

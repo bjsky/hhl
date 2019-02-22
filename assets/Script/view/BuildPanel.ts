@@ -16,6 +16,7 @@ import StringUtil from "../utils/StringUtil";
 import { GUIDE, GuideTypeEnum } from "../manager/GuideManager";
 import ResPanel, { ResPanelType } from "./ResPanel";
 import { Battle } from "../module/battle/BattleAssist";
+import { GLOBAL } from "../GlobalData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -81,8 +82,6 @@ export default class BuildPanel extends UIBase{
     }
 
     onLoad () {
-        this.doHide(true);
-        
     }
 
     public loadBuild(){
@@ -111,6 +110,16 @@ export default class BuildPanel extends UIBase{
 
     private loadComplete(ui:UIBase){
         this._buildUI = ui;
+        this.panelNode.width = cc.winSize.width+10;
+        if(GLOBAL.isIPhoneX){
+            this.panelNode.height = cc.winSize.height - GLOBAL.statusBarHeight -414;
+        }else{
+            this.panelNode.height = cc.winSize.height - 414;
+        }
+        this.panelNode.y = -1100;
+        this.panelNode.active = true;
+        this.topNode.active = true;
+        this.topNode.x = 750;
         this.doShow();
     }
 
@@ -121,6 +130,8 @@ export default class BuildPanel extends UIBase{
         EVENT.on(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
         EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
         
+        this.panelNode.active = false;
+        this.topNode.active = false;
         this.loadBuild();
     }
     onDisable(){
@@ -150,7 +161,7 @@ export default class BuildPanel extends UIBase{
     }
 
     private doClose(cb?:Function){
-        this.doHide(false,()=>{
+        this.doHide(()=>{
             UI.removePanel(this.node);
             var scene:CityScene = SCENE.CurScene as CityScene;
             scene.activeBuild = null;
@@ -164,7 +175,7 @@ export default class BuildPanel extends UIBase{
 
     private _moveNextFrame:boolean = false;
     private _moveNextFrame2:boolean = false;
-    private doShow(cb?:Function){
+    private doShow(){
         
         this.topNode.runAction(cc.moveTo(0.3,cc.v2(0,0)).easing(cc.easeOut(2)));
         this.panelNode.runAction(
@@ -177,18 +188,12 @@ export default class BuildPanel extends UIBase{
         this._moveNextFrame = true;
     }
 
-    private doHide(noAction:boolean =false,cb?:Function){
-        if(noAction){
-            this.topNode.x = 750;
-            this.panelNode.y = -1100;
-        }else{
-            this.topNode.runAction(cc.moveTo(0.3,cc.v2(750,0)).easing(cc.easeIn(2)));
-            this.panelNode.runAction(cc.moveTo(0.3,cc.v2(0,-1000)).easing(cc.easeIn(2)))
-            // this.buildName.node.runAction(cc.fadeOut(0.1));
-            var scene:CityScene = SCENE.CurScene as CityScene;
-            if(scene){
-                scene.moveCamBack(cb);
-            }
+    private doHide(cb?:Function){
+        this.topNode.runAction(cc.moveTo(0.3,cc.v2(750,0)).easing(cc.easeIn(2)));
+        this.panelNode.runAction(cc.moveTo(0.3,cc.v2(0,-1100)).easing(cc.easeIn(2)))
+        var scene:CityScene = SCENE.CurScene as CityScene;
+        if(scene){
+            scene.moveCamBack(cb);
         }
     }
 
@@ -261,6 +266,7 @@ export default class BuildPanel extends UIBase{
         }else{
             if(this._moveNextFrame2){
                 this._moveNextFrame2 = false;
+                
                 var scene:CityScene = SCENE.CurScene as CityScene;
                 if(scene){
                     var builidng:cc.Node = scene.getBuilding(this._buildType);
