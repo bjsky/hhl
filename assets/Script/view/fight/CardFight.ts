@@ -156,7 +156,7 @@ export default class CardFight extends  UIBase {
             this.numEffLife.setValue(this.curLife,false);
             this.cardLiftProgress.progress = this.getLiftPro();
             var headUrl = this._cardInfoCfg.simgPath;
-            this.cardSpr.load(PathUtil.getCardImgPath(headUrl),null,this.loadComplete.bind(this));
+            this.cardSpr.load(PathUtil.getCardSamllImgPath(headUrl),null,this.loadComplete.bind(this));
             this.cardFront.load(PathUtil.getCardFrontImgPath(this._lineupData.grade));
             this.cardRace.load(PathUtil.getCardRaceImgPath(this._lineupData.raceId));
         }

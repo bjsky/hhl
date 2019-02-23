@@ -57,7 +57,7 @@ export default class CardComposeUI extends UIBase {
     }
 
     private initView(){
-        this.cardSrc.load(PathUtil.getCardImgPath(this._info.cardInfoCfg.simgPath));
+        this.cardSrc.load(PathUtil.getCardSamllImgPath(this._info.cardInfoCfg.simgPath));
         this.cardStar.load(PathUtil.getCardGradeImgPath(this._info.grade));
         this.cardFront.load(PathUtil.getCardFrontImgPath(this._info.grade));
     }

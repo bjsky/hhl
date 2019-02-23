@@ -67,7 +67,7 @@ export default class CardStoreItem extends DListItem{
 
     private initView(){
         this.cardName.string = this._cardCfg.name;
-        this.cardSrc.load(PathUtil.getCardImgPath(this._cardCfg.simgPath));
+        this.cardSrc.load(PathUtil.getCardSamllImgPath(this._cardCfg.simgPath));
         this.cardStar.load(PathUtil.getCardGradeImgPath(this._grade));
         this.cardFront.load(PathUtil.getCardFrontImgPath(this._grade));
         this.cardRace.load(PathUtil.getCardRaceImgPath(this._cardCfg.raceId));

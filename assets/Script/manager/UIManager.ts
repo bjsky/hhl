@@ -143,7 +143,6 @@ export default class UIManager{
         cc.loader.loadRes(PathUtil.getMaskBgUrl(),cc.SpriteFrame,(error: Error, spr: cc.SpriteFrame) => {
             sp.spriteFrame = spr;
         })
-        //sp.spriteFrame = new cc.SpriteFrame('res/raw-internal/image/default_sprite_splash.png');
         sp.sizeMode = cc.Sprite.SizeMode.CUSTOM;
         this._mask.opacity = 51;
         this._mask.color = cc.color(0, 0, 0);
@@ -160,7 +159,6 @@ export default class UIManager{
         cc.loader.loadRes(PathUtil.getMaskBgUrl(),cc.SpriteFrame,(error: Error, spr: cc.SpriteFrame) => {
             panelSpr.spriteFrame = spr;
         })
-        //sp.spriteFrame = new cc.SpriteFrame('res/raw-internal/image/default_sprite_splash.png');
         panelSpr.sizeMode = cc.Sprite.SizeMode.CUSTOM;
         this._panelMask.opacity = 0;
         this._panelMask.color = cc.color(0, 0, 0);

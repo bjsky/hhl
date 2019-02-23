@@ -166,7 +166,6 @@ export default class GuideManager{
         cc.loader.loadRes(PathUtil.getMaskBgUrl(),cc.SpriteFrame,(error: Error, spr: cc.SpriteFrame) => {
             sp.spriteFrame = spr;
         })
-        // sp.spriteFrame = new cc.SpriteFrame('res/raw-internal/image/default_sprite_splash.png');
         sp.sizeMode = cc.Sprite.SizeMode.CUSTOM;
         colorLayer.opacity = 0;
         colorLayer.color = cc.color(0, 0, 0);

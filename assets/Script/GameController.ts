@@ -99,10 +99,12 @@ export default class GameController{
     }
 }
 export const BackLoadResConst = {
-    Cards:"ui/image/card",
-    Heads:"ui/image/head",
-    Skills:"ui/image/skill",
-    Sound:"sound"
+    Cards:"image/card",
+    CardSmall:"image/cardSmall",
+    Heads:"image/head",
+    Skills:"image/skill",
+    Sound:"sound",
+    ImageUI:"image/ui"
 }
 
 export var GAME = GameController.getInstance();

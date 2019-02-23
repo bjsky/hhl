@@ -128,13 +128,13 @@ export default class CardSmall extends DListItem {
     private setHeroView(){
         this.cardHeroName.string = this._cardCfg.name;
         this.cardHeroRace.load(PathUtil.getCardRaceImgPath(this._cardCfg.raceId));
-        this.cardSrc.load(PathUtil.getCardImgPath(this._cardCfg.simgPath));
+        this.cardSrc.load(PathUtil.getCardSamllImgPath(this._cardCfg.simgPath));
     }
 
     private setOwnerView(isInit:boolean = false){
         this.cardName.string = this._cardInfo.cardInfoCfg.name;
         if(isInit){
-            this.cardSrc.load(PathUtil.getCardImgPath(this._cardInfo.cardInfoCfg.simgPath));
+            this.cardSrc.load(PathUtil.getCardSamllImgPath(this._cardInfo.cardInfoCfg.simgPath));
         }
 
         this.cardStar.load(PathUtil.getCardGradeImgPath(this._cardInfo.grade));

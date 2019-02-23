@@ -38,10 +38,10 @@ window.createUserInfoButton = function(left,top,width,height,cb){
     }
   });
   button.onTap((res) => {
+    button.hide();
     if(res.userInfo){
       console.log("[launch]用户授权成功:", JSON.stringify(res));
       var userInfo = res.userInfo;
-      button.hide();
       cb(userInfo);
     }else{
       console.log("[launch]用户拒绝授权");
