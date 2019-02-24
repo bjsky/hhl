@@ -57,8 +57,8 @@ export default class CardFight extends  UIBase {
     cardSpr: LoadSprite = null;
     @property(LoadSprite)
     cardFront: LoadSprite = null;
-    @property(LoadSprite)
-    cardRace: LoadSprite = null;
+    // @property(LoadSprite)
+    // cardRace: LoadSprite = null;
 
     @property(NumberEffect)
     numEffPower:NumberEffect = null;
@@ -158,7 +158,7 @@ export default class CardFight extends  UIBase {
             var headUrl = this._cardInfoCfg.simgPath;
             this.cardSpr.load(PathUtil.getCardSamllImgPath(headUrl),null,this.loadComplete.bind(this));
             this.cardFront.load(PathUtil.getCardFrontImgPath(this._lineupData.grade));
-            this.cardRace.load(PathUtil.getCardRaceImgPath(this._lineupData.raceId));
+            // this.cardRace.load(PathUtil.getCardRaceImgPath(this._lineupData.raceId));
         }
     }
 

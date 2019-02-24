@@ -6,6 +6,7 @@ import GameEvent from "./message/GameEvent";
 import { GUIDE } from "./manager/GuideManager";
 import { UI } from "./manager/UIManager";
 import { ResConst } from "./module/loading/steps/LoadingStepRes";
+import LoadSprite from "./component/LoadSprite";
 
 /**
  *  游戏逻辑控制器
@@ -49,6 +50,7 @@ export default class GameController{
      * 
      */
     public start(){
+        // LoadSprite.addSpriteAtlas("image/ui/","image/ui/image_ui");
         GLOBAL.initSystemInfo();
         //初始化
         GLOBAL.initGameConfig();

@@ -25,8 +25,8 @@ export default class SharePanel extends PopUpBase{
     @property(cc.Button)
     btnShare: cc.Button = null;
 
-    @property(cc.Button)
-    btnStore: cc.Button = null;
+    // @property(cc.Button)
+    // btnStore: cc.Button = null;
     @property(DList)
     listShared: DList = null;
 
@@ -37,7 +37,7 @@ export default class SharePanel extends PopUpBase{
     onEnable(){
         super.onEnable();
         this.btnShare.node.on(cc.Node.EventType.TOUCH_START,this.onShare,this);
-        this.btnStore.node.on(cc.Node.EventType.TOUCH_START,this.onStoreClick,this);
+        // this.btnStore.node.on(cc.Node.EventType.TOUCH_START,this.onStoreClick,this);
         EVENT.on(GameEvent.ShareGetReward_Complete,this.shareComplete,this);
         this.initView();
     }
@@ -45,7 +45,7 @@ export default class SharePanel extends PopUpBase{
     onDisable(){
         super.onDisable();
         this.btnShare.node.off(cc.Node.EventType.TOUCH_START,this.onShare,this);
-        this.btnStore.node.off(cc.Node.EventType.TOUCH_START,this.onStoreClick,this);
+        // this.btnStore.node.off(cc.Node.EventType.TOUCH_START,this.onStoreClick,this);
         EVENT.off(GameEvent.ShareGetReward_Complete,this.shareComplete,this);
     }
 

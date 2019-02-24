@@ -247,7 +247,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "d4b303e3-f239-42bd-aefc-7d8fc707ec7a"
+      "__uuid__": "08149280-00a4-4ad4-89e6-adb43aef9404"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -262,7 +262,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "e561bd28-a3df-47f0-ae00-36087b90b7b1"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -347,7 +349,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "8cdfaf61-cc97-406f-b985-2b1368b3719c"
+      "__uuid__": "9b64230f-df20-4b7b-85b9-1f1abc4c193a"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -362,7 +364,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "e561bd28-a3df-47f0-ae00-36087b90b7b1"
+    }
   },
   {
     "__type__": "cc.Button",
@@ -1803,8 +1807,8 @@
         "__id__": 43
       }
     ],
-    "selectIcon": "ui/Common2/btn_2",
-    "unSelectIcon": "ui/Common2/btn_1"
+    "selectIcon": "image/ui/toggle_btn_s",
+    "unSelectIcon": "image/ui/toggle_btn"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2131,7 +2135,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "dc65b835-0462-4967-811d-4d86e92fa630"
+      "__uuid__": "8cde8a08-7275-4f71-8aa1-082d431b035f"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -2146,7 +2150,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "e561bd28-a3df-47f0-ae00-36087b90b7b1"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2329,7 +2335,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "dda82af0-a313-4253-81e7-0b6449b62673"
+      "__uuid__": "1de4c56f-a34f-4a8c-a0bb-ee6137c8a7ef"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -2344,7 +2350,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "e561bd28-a3df-47f0-ae00-36087b90b7b1"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",

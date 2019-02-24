@@ -39,14 +39,14 @@ export default class CardSmall extends DListItem {
     cardStar: LoadSprite = null;
     @property(LoadSprite)
     cardFront: LoadSprite = null;
-    @property(cc.Label)
-    cardLevel: cc.Label = null;
+    // @property(cc.Label)
+    // cardLevel: cc.Label = null;
     @property(cc.Label)
     cardPower: cc.Label = null;
     @property(cc.Label)
     cardHeroName: cc.Label = null;
-    @property(LoadSprite)
-    cardHeroRace: LoadSprite = null;
+    // @property(LoadSprite)
+    // cardHeroRace: LoadSprite = null;
     @property(cc.Node)
     cardSelect: cc.Node = null;
     @property(cc.Node)
@@ -127,7 +127,7 @@ export default class CardSmall extends DListItem {
 
     private setHeroView(){
         this.cardHeroName.string = this._cardCfg.name;
-        this.cardHeroRace.load(PathUtil.getCardRaceImgPath(this._cardCfg.raceId));
+        // this.cardHeroRace.load(PathUtil.getCardRaceImgPath(this._cardCfg.raceId));
         this.cardSrc.load(PathUtil.getCardSamllImgPath(this._cardCfg.simgPath));
     }
 
@@ -139,7 +139,7 @@ export default class CardSmall extends DListItem {
 
         this.cardStar.load(PathUtil.getCardGradeImgPath(this._cardInfo.grade));
         this.cardFront.load(PathUtil.getCardFrontImgPath(this._cardInfo.grade));
-        this.cardLevel.string = "Lv."+this._cardInfo.level;
+        // this.cardLevel.string = "Lv."+this._cardInfo.level;
         this.cardPower.node.active = this._showPower;
         this.cardPower.string = this._cardInfo.carUpCfg.power ;
         this.cardRace.load(PathUtil.getCardRaceImgPath(this._cardInfo.cardInfoCfg.raceId));

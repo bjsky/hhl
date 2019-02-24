@@ -42,8 +42,8 @@ export default class BuildPanel extends UIBase{
 
     @property(cc.Button)
     closeBtn: cc.Button = null;
-    @property(cc.Sprite)
-    bgSpr: cc.Sprite = null;
+    // @property(cc.Sprite)
+    // bgSpr: cc.Sprite = null;
     @property(cc.Node)
     topNode: cc.Node = null;
     @property(cc.Node)

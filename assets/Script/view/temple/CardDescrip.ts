@@ -39,10 +39,10 @@ export default class CardDescrip extends PopUpBase {
     cardDesc: cc.Label = null;
     @property(LoadSprite)
     cardImg: LoadSprite = null;
-    @property(cc.Node)
-    summoner: cc.Node = null;
-    @property(cc.Label)
-    lblSummoner: cc.Label = null;
+    // @property(cc.Node)
+    // summoner: cc.Node = null;
+    // @property(cc.Label)
+    // lblSummoner: cc.Label = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -78,12 +78,12 @@ export default class CardDescrip extends PopUpBase {
         this.cardRace.load(PathUtil.getCardRaceImgPath(this._cardCfg.raceId));
         this.cardSkillDesc.string = "          "+Skill.getSkillHelDescHtml(this._cardSkillCfg);
         this.cardSkillType.string = this._cardSkillCfg.cardType;
-        if(this._cardCfg.summoner != ""){
-            this.summoner.active = true;
-            this.lblSummoner.string = "召唤师："+this._cardCfg.summoner;
-        }else{
-            this.summoner.active = false;
-        }
+        // if(this._cardCfg.summoner != ""){
+        //     this.summoner.active = true;
+        //     this.lblSummoner.string = "召唤师："+this._cardCfg.summoner;
+        // }else{
+        //     this.summoner.active = false;
+        // }
     }
 
     private showCardBig(e){

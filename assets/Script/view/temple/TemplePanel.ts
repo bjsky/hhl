@@ -41,10 +41,10 @@ export default class TemplePanel extends UIBase {
 
     @property(cc.Button)
     lifeStoneBtn: cc.Button = null;
-    @property(cc.Button)
-    videoBtn: cc.Button = null;
-    @property(cc.Button)
-    helpBtn: cc.Button = null;
+    // @property(cc.Button)
+    // videoBtn: cc.Button = null;
+    // @property(cc.Button)
+    // helpBtn: cc.Button = null;
     @property(cc.Button)
     buildHeroBtn: cc.Button = null;
 
@@ -72,8 +72,8 @@ export default class TemplePanel extends UIBase {
     // LIFE-CYCLE CALLBACKS:
     onEnable(){
         this.lifeStoneBtn.node.on(cc.Node.EventType.TOUCH_START,this.onLifeStoneClick,this);
-        this.videoBtn.node.on(cc.Node.EventType.TOUCH_START,this.onVideoClick,this);
-        this.helpBtn.node.on(cc.Node.EventType.TOUCH_START,this.onHelpClick,this);
+        // this.videoBtn.node.on(cc.Node.EventType.TOUCH_START,this.onVideoClick,this);
+        // this.helpBtn.node.on(cc.Node.EventType.TOUCH_START,this.onHelpClick,this);
         this.buildHeroBtn.node.on(cc.Node.EventType.TOUCH_START,this.onGotoHeroFast,this);
         this.btnGroup.node.on(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.groupSelectChange,this);
         this.cardsList.node.on(DList.ITEM_CLICK,this.onCardClick,this);
@@ -86,8 +86,8 @@ export default class TemplePanel extends UIBase {
 
     onDisable(){
         this.lifeStoneBtn.node.off(cc.Node.EventType.TOUCH_START,this.onLifeStoneClick,this);
-        this.videoBtn.node.off(cc.Node.EventType.TOUCH_START,this.onVideoClick,this);
-        this.helpBtn.node.off(cc.Node.EventType.TOUCH_START,this.onHelpClick,this);
+        // this.videoBtn.node.off(cc.Node.EventType.TOUCH_START,this.onVideoClick,this);
+        // this.helpBtn.node.off(cc.Node.EventType.TOUCH_START,this.onHelpClick,this);
         this.buildHeroBtn.node.off(cc.Node.EventType.TOUCH_START,this.onGotoHeroFast,this);
         this.btnGroup.node.off(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.groupSelectChange,this);
         this.cardsList.node.off(DList.ITEM_CLICK,this.onCardClick,this);

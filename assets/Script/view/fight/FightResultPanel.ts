@@ -63,10 +63,10 @@ export default class FightResultPanel extends PopUpBase {
     @property(cc.Label)
     nameEnemy: cc.Label = null;
 
-    @property(cc.RichText)
-    detailText:cc.RichText = null;
-    @property(cc.ScrollView)
-    detailScroll:cc.ScrollView = null;
+    // @property(cc.RichText)
+    // detailText:cc.RichText = null;
+    // @property(cc.ScrollView)
+    // detailScroll:cc.ScrollView = null;
 
     @property(cc.Button)
     btnShare: cc.Button = null;

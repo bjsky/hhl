@@ -107,27 +107,20 @@ export default class PathUtil{
         return "image/ui/maskbg";
     }
 
-    //////////////
-    public static getSprFightEnd(enable:boolean){
-        return "ui/module/fight/"+(enable?"tz_tg":"tz_tg_k");
-    }
-    public static getResultRewardTitleUrl(victory:boolean):string{
-        return "ui/module/fightResult/"+(victory?"sljl":"sbjl");
-    }
-    public static getCardnextGradeCard(grade:number):string{
-        return "ui/module/cardUp/hero_hc"+grade+"xkp";
-    }
-
     public static getResTipNameUrl(type:ResType){
         var url:string = "";
         switch(type){
             case ResType.gold:
-            url = "ui/module/getRes/dqjb";
+            url = "image/ui/lbl_dqjb";
             break;
             case ResType.lifeStone:
-            url = "ui/module/getRes/dqls";
+            url = "image/ui/lbl_dqls";
             break;
         }
         return url;
     }
+    public static getCardnextGradeCard(grade:number):string{
+        return "image/ui/lbl_hc"+grade+"xkp";
+    }
+
 }

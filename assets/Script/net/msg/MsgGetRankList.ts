@@ -1,5 +1,6 @@
 import MessageBase from "./MessageBase";
 import NetConst from "../NetConst";
+import { SResInfo } from "./MsgLogin";
 
 
 export enum GetRankListType{
@@ -90,9 +91,16 @@ export default class MsgGetRankList extends MessageBase{
             sInfo.playerScore = Math.floor(Math.random()*100);
             tempList.push(sInfo);
         }
+        var you:SRankInfo = new SRankInfo();
+        sInfo.playerName = "随机"+Math.floor(Math.random()*this.param.listMaxCount);
+        sInfo.playerLevel = i+1;
+        sInfo.playerIcon= "";
+        sInfo.playerSex = 1;
+        sInfo.playerPower = Math.floor(Math.random()*88888)+10000;
+        sInfo.playerScore = Math.floor(Math.random()*100);
         var json:any= {
-            myOrder:5,
-            rankList:tempList
+            you:you,
+            top:tempList
         };
         return this.parse(json);
     }

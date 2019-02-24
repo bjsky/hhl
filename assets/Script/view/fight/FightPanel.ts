@@ -83,8 +83,10 @@ export default class FightPanel extends UIBase {
     btnEnd: cc.Button = null;
     @property(cc.Label)
     lblEnd: cc.Label = null;
-    @property(LoadSprite)
-    sprEnd: LoadSprite = null;
+    @property(cc.Sprite)
+    sprEnd: cc.Sprite = null;
+    @property(cc.Sprite)
+    sprEnd2: cc.Sprite = null;
 
     @property(cc.Node)
     nodeEnemy: cc.Node = null;
@@ -194,14 +196,16 @@ export default class FightPanel extends UIBase {
     private resetEndEnable(){
         this.lblEnd.node.active = true;
         this.lblEnd.string = this._endEnableDelay.toString();
-        this.sprEnd.load(PathUtil.getSprFightEnd(false));
+        this.sprEnd2.node.active = false;
+        this.sprEnd.node.active = true;
     }
     private delayEndEnable(){
         this._curTime++;
         if(this._curTime>=this._endEnableDelay){
             this.unschedule(this.delayEndEnable);
             this.lblEnd.node.active = false;
-            this.sprEnd.load(PathUtil.getSprFightEnd(true));
+            this.sprEnd2.node.active = true;
+            this.sprEnd.node.active = false;
             this.btnEnd.node.on(cc.Node.EventType.TOUCH_START,this.onEndTouch,this);
         }else{
             this.lblEnd.string = Math.round(this._endEnableDelay - this._curTime).toString();
