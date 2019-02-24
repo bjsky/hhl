@@ -643,7 +643,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "41e0df38-b69b-450c-8454-cf55a59e34db"
+      "__uuid__": "2e191f39-3d7f-4969-aafd-e839f76777ab"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -658,7 +658,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "e561bd28-a3df-47f0-ae00-36087b90b7b1"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1274,7 +1276,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "0279bd0e-7842-41e4-8d73-84f5219dcf40"
+      "__uuid__": "cd778b1a-b2da-4acd-a23a-f1d9acf3b33c"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -1981,9 +1983,7 @@
     },
     "cardImg": {
       "__id__": 22
-    },
-    "summoner": null,
-    "lblSummoner": null
+    }
   },
   {
     "__type__": "cc.Widget",
