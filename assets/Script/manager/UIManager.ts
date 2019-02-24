@@ -211,10 +211,12 @@ export default class UIManager{
         this._panelMask.active = false;
     }
 
+    public showFighting :boolean = false;
     public showPanelLayer(){
         this.PanelLayer.active = true;
     }
     public hidePanelLayer(){
+        this.showFighting = true;
         this.PanelLayer.active = false;
     }
     public closePopUp(node:cc.Node){

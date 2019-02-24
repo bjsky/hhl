@@ -130,9 +130,13 @@ export default class BuildPanel extends UIBase{
         EVENT.on(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
         EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
         
-        this.panelNode.active = false;
-        this.topNode.active = false;
-        this.loadBuild();
+        if(UI.showFighting){
+            UI.showFighting = false;
+        }else{
+            this.panelNode.active = false;
+            this.topNode.active = false;
+            this.loadBuild();
+        }
     }
     onDisable(){
         this.closeBtn.node.off(ButtonEffect.CLICK_END,this.onClose,this);
@@ -141,7 +145,9 @@ export default class BuildPanel extends UIBase{
         EVENT.off(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
         EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
         
-        this.clear();
+        if(!UI.showFighting){
+            this.clear();
+        }
     }
 
     public closeUI(cb:Function){

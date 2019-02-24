@@ -13,6 +13,8 @@ import { Battle } from "../battle/BattleAssist";
 import EnemyInfo, { EnemyTypeEnum } from "../../model/EnemyInfo";
 import { SCardInfo } from "../../net/msg/MsgCardSummon";
 import CardInfo from "../../model/CardInfo";
+import { SOUND } from "../../manager/SoundManager";
+import { GAME } from "../../GameController";
 
 export default class FightAssist{
     private static _instance: FightAssist = null;
@@ -57,6 +59,7 @@ export default class FightAssist{
             this._param = param;
         }
         
+        UI.hidePanelLayer();
         UI.createPopUp(ResConst.FightPanel,{mine:infoMine,enemy:infoEnemy},(ui:UIBase)=>{
             this._fightPanel = ui as FightPanel;
             // this._fightPanel.show();
@@ -134,6 +137,10 @@ export default class FightAssist{
         }
         this._isFighting = false;
         this._fightPanel.hide(()=>{
+
+            GAME.showLevelUp();
+            SOUND.playBgSound();
+            UI.showPanelLayer();
             this._fightPanel = null;
         });
     }

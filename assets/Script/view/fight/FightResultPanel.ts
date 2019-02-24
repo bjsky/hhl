@@ -135,16 +135,16 @@ export default class FightResultPanel extends PopUpBase {
             this.showGetCard(this._addCard.uuid);
         }else{
             EVENT.emit(GameEvent.Show_Res_Add,{types:this._rewards});
-            this.closeEndFight(e);
+            this.onClose(e);
         }
     }
     private onCardRabGetClose(e){
         EVENT.off(GameEvent.Card_RabGet_Close,this.onCardRabGetClose,this)
         EVENT.emit(GameEvent.Show_Res_Add,{types:this._rewards});
-        this.closeEndFight(e);
+        this.onClose(e);
     }
     private onCloseClick(e){
-        this.closeEndFight(e);
+        this.onClose(e);
     }
 
     private onShare(e){
@@ -155,13 +155,6 @@ export default class FightResultPanel extends PopUpBase {
                 Share.getShareReward();
             },0.1)
         }
-    }
-    
-    private closeEndFight(e){
-        this.onClose(e);
-
-        SOUND.playBgSound();
-        Fight.endFight();
     }
     start () {
 
@@ -226,7 +219,7 @@ export default class FightResultPanel extends PopUpBase {
 
     protected onCloseComplete(){
         super.onCloseComplete();
-        GAME.showLevelUp();
+        Fight.endFight();
     }
     ///////////////////
     // 引导

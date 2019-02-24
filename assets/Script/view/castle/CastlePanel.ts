@@ -113,8 +113,10 @@ export default class CastlePanel extends UIBase {
         EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
         EVENT.off(GameEvent.Battle_refresh_personalEnemey,this.onRefreshPersonalEnemey,this);
 
-        this.enemyList.setListData([]);
-        this.personalEnemyList.setListData([]);
+        if(!UI.showFighting){
+            this.enemyList.setListData([]);
+            this.personalEnemyList.setListData([]);
+        }
     }
 
     private onRefreshPersonalEnemey(e){

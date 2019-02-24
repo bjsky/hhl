@@ -154,9 +154,8 @@ export default class FightPanel extends UIBase {
     private show(){
         this.reset();
         var seq =cc.sequence(
-            cc.fadeIn(0.3),
+            cc.delayTime(0.3),
             cc.callFunc(()=>{
-                UI.hidePanelLayer();
                 if(this.cardsAllLoadComplete){
                     this.startFight();
                 }else{
@@ -213,15 +212,8 @@ export default class FightPanel extends UIBase {
     }
 
     public hide(cb:Function){
-        UI.showPanelLayer();
-        var seq =cc.sequence(
-            cc.fadeOut(0.5),
-            cc.callFunc(()=>{
-                UI.closePopUp(this.node);
-                cb && cb();
-            })
-        );
-        this.node.runAction(seq);
+        UI.closePopUp(this.node);
+        cb && cb();
     }
 
     onEnable(){
