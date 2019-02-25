@@ -206,9 +206,9 @@ export default class BuildPanel extends UIBase{
     private initBuildView(){
         this.buildName.string = this._buildInfo.level+" 级";// + "  " + CONSTANT.getBuidlingName(this._buildType);
         var str = CONSTANT.getBuildingBuffDesc(this._buildType);
-        this.curLevelDesc.string = str.replace("#",(this._buildInfo.buildLevelCfg.addValue*100).toFixed(0));
+        this.curLevelDesc.string = str.replace("#",(this._buildInfo.buildLevelCfg.addValue*100).toFixed(1));
         if(this._nextLevelCfg!=null){
-            this.nextLevelDesc.string = str.replace("#",(this._nextLevelCfg.addValue*100).toFixed(0));
+            this.nextLevelDesc.string = str.replace("#",(this._nextLevelCfg.addValue*100).toFixed(1));
             this.upgradeBtn.node.active = true;
             this.costGold.string = StringUtil.formatReadableNumber(this._buildInfo.buildLevelCfg.upNeedGold);
         }else{

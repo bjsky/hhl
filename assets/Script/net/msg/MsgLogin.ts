@@ -322,9 +322,10 @@ export default class MsgLogin
     }
 
     public respFromLocal(){
-        var ownerCards:Array<any> = [
-            this.getSkillCard(18),this.getSkillCard(15),this.getSkillCard(13),this.getSkillCard(16),this.getSkillCard(17)
-        ];
+        var ownerCards:Array<any> = [];
+        // [
+        //     this.getSkillCard(18),this.getSkillCard(15),this.getSkillCard(13),this.getSkillCard(16),this.getSkillCard(17)
+        // ];
         // for(var i:number = 0;i<5;i++){
         //     ownerCards.push(MsgCardSummon.randomCardInfo(CardSummonType.LifeStone));
         // }
@@ -334,9 +335,9 @@ export default class MsgLogin
         // }
         var json:any = {firstLogin:true,
             accountId:StringUtil.getUUidClient(),
-            newUser:0,
+            newUser:1,
             serverTime:new Date().getTime(),
-            userInfo:{name:"上古战神",icon:"",gender:1,exp:0,level:10},
+            userInfo:{name:"上古战神",icon:"",gender:1,exp:0,level:1},
             resInfo:{gold:200000,diamond:0,lifeStone:200000,soulStone:0},
             guideInfo:{guideId:1},
             buildInfos:[{type:0,level:1,locked:true},
@@ -358,7 +359,7 @@ export default class MsgLogin
                 actionPoint:10,
                 apStartTime:0,
                 revengeStartTime:0,
-                score:49
+                score:0
             },
             outlineFightRecord:[]
         };
