@@ -1,5 +1,5 @@
 [
-    {"id":"1","area":"1","areaName":"1-1","amyHero":"1;3","amyHeroGradeLv":"1;1|1;1|1;1|1;1|1;1","needPower":"12000","firstExp":"30000","firstGold":"30000","firstStone":"30000","passageExp":"500","passageGold":"500","passageStone":"500"},
+    {"id":"1","area":"1","areaName":"1-1","amyHero":"1;3;9;10;13","amyHeroGradeLv":"1;1|1;1|1;1|1;1|1;1","needPower":"12000","firstExp":"30000","firstGold":"30000","firstStone":"30000","passageExp":"500","passageGold":"500","passageStone":"500"},
     {"id":"2","area":"1","areaName":"1-2","amyHero":"1;3;9;10;13","amyHeroGradeLv":"1;2|1;2|1;2|1;2|1;2","needPower":"15000","firstExp":"30300","firstGold":"30300","firstStone":"30300","passageExp":"510","passageGold":"510","passageStone":"510"},
     {"id":"3","area":"1","areaName":"1-3","amyHero":"1;3;9;10;13","amyHeroGradeLv":"1;2|1;2|1;2|1;2|2;2","needPower":"18000","firstExp":"30600","firstGold":"30600","firstStone":"30600","passageExp":"520","passageGold":"520","passageStone":"520"},
     {"id":"4","area":"1","areaName":"1-4","amyHero":"1;3;9;10;13","amyHeroGradeLv":"1;3|1;3|1;3|1;3|2;3","needPower":"21000","firstExp":"30900","firstGold":"30900","firstStone":"30900","passageExp":"530","passageGold":"530","passageStone":"530"},

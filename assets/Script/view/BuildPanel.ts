@@ -73,7 +73,7 @@ export default class BuildPanel extends UIBase{
     public setData(param:any){
         this._buildType = param.buildType;
         this._buildInfo = BUILD.getBuildInfo(this._buildType);
-        if((this._buildInfo.level+1)>30){
+        if((this._buildInfo.level+1)>CONSTANT.getMaxPlayerLevel()){
             this._nextLevelCfg = null;
         }else{
             this._nextLevelCfg = CFG.getCfgByKey(ConfigConst.Building,"level",(this._buildInfo.level+1))[0];

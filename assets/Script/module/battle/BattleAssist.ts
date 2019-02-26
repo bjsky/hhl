@@ -74,7 +74,7 @@ export default class BattleAssist{
         var levelMin = COMMON.userInfo.level - levelArea;
         if(levelMin<2) levelMin = 2;
         var levelMax = COMMON.userInfo.level + levelArea;
-        if(levelMax>30) levelMax = 30;
+        if(levelMax>CONSTANT.getMaxPlayerLevel()) levelMax = CONSTANT.getMaxPlayerLevel();
         NET.send(MsgGetEnemyList.create(levelMin,levelMax,0),(msg:MsgGetEnemyList)=>{
             if(msg && msg.resp){
                 this._enemyList = this.createEnemyList(msg.resp.enmeyList);
@@ -188,7 +188,7 @@ export default class BattleAssist{
         var levelMin = COMMON.userInfo.level - levelArea;
         if(levelMin<2) levelMin = 2;
         var levelMax = COMMON.userInfo.level + levelArea;
-        if(levelMax>30) levelMax = 30;
+        if(levelMax>CONSTANT.getMaxPlayerLevel()) levelMax = CONSTANT.getMaxPlayerLevel();
         NET.send(MsgGetEnemyList.create(levelMin,levelMax,cost),(msg:MsgGetEnemyList)=>{
             if(msg && msg.resp){
                 var cost:SResInfo = COMMON.updateResInfo(msg.resp.resInfo);

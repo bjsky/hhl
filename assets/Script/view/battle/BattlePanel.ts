@@ -233,12 +233,18 @@ export default class BattlePanel extends UIBase {
 
     private _bossFightInfo:FightInfo = null;;
     private initLineupBoss(){
-        this.bossFinished.node.active = false;
-        this._bossFightInfo = Passage.getBossFightInfo();
-        this.lineUpBoss.initLineup(this._bossFightInfo.lineup);
-        this.bossGold.string = StringUtil.formatReadableNumber(Passage.passageInfo.passageCfg.firstGold);
-        this.bossStone.string = StringUtil.formatReadableNumber(Passage.passageInfo.passageCfg.firstStone);
-        this.bossExp.string = StringUtil.formatReadableNumber(Passage.passageInfo.passageCfg.firstExp);
+        if(Passage.passageInfo.isMaxPassage){
+            this.bossNode.active = false;
+            this.bossFinished.node.active = true;
+        }else{
+            this.bossFinished.node.active = false;
+            this.bossNode.active = true;
+            this._bossFightInfo = Passage.getBossFightInfo();
+            this.lineUpBoss.initLineup(this._bossFightInfo.lineup);
+            this.bossGold.string = StringUtil.formatReadableNumber(Passage.passageInfo.passageCfg.firstGold);
+            this.bossStone.string = StringUtil.formatReadableNumber(Passage.passageInfo.passageCfg.firstStone);
+            this.bossExp.string = StringUtil.formatReadableNumber(Passage.passageInfo.passageCfg.firstExp);
+        }
     }
 
     ///////////////////

@@ -15,6 +15,8 @@ import { SCardInfo } from "../../net/msg/MsgCardSummon";
 import CardInfo from "../../model/CardInfo";
 import { SOUND } from "../../manager/SoundManager";
 import { GAME } from "../../GameController";
+import { GUIDE } from "../../manager/GuideManager";
+import LineupInfo from "../../model/LineupInfo";
 
 export default class FightAssist{
     private static _instance: FightAssist = null;
@@ -52,8 +54,20 @@ export default class FightAssist{
     public showFight(infoMine:FightInfo,infoEnemy:FightInfo,param?:any){
         if(this._isFighting)
             return;
-        this._infoMine = infoMine;
-        this._infoEnemy = infoEnemy;
+        var gInfoMine:FightInfo = infoMine;
+        var gInfoEnemy:FightInfo = infoEnemy;
+        if(GUIDE.isInGuide){
+            if(infoEnemy.playerType == FightPlayerType.Boss){  //bos引导
+                gInfoMine.lineup = this.getGuideLineup("9;1;3;8;5",5,1,infoMine.lineup[0]);
+                gInfoEnemy.lineup = this.getGuideLineup("10;12;13;16;17",5,1)
+            }else{  //征战引导
+                gInfoMine.lineup = this.getGuideLineup("13;16;17;18;15",5,1,infoMine.lineup[0]);
+                gInfoEnemy.lineup = this.getGuideLineup("1;3;9;10;16",5,1)
+            }
+        }
+
+        this._infoMine = gInfoMine;
+        this._infoEnemy = gInfoEnemy;
         this._isFighting = true;
         if(param!=undefined){
             this._param = param;
@@ -67,11 +81,28 @@ export default class FightAssist{
     }
 
     public startFight(){
+        //增加引导阵容
+        
         this._fight = new FightLogic(this._infoMine.lineup,this._infoEnemy.lineup);
         this._skill = new SkillLogic();
         this._fight.start(this.endFunc.bind(this));
     }
 
+    private getGuideLineup(ids:string,grade:number,level:number,mylineup:LineupInfo= null){
+        var lineup:any ={};
+        var idsArr:string[] = ids.split(";");
+        var info:LineupInfo = null
+        for(var i:number = 0;i<5;i++){
+            if(i== 0 && mylineup!=null){
+                info = mylineup;
+            }else{
+                info = new LineupInfo();
+                info.initBoss(i,Number(idsArr[i]),grade,level);
+            }
+            lineup[i] = info;
+        }
+        return lineup;
+    }
 
     private endFunc(result:FightResult){
         this._result = result;

@@ -2,6 +2,7 @@ import FightObject, { FightTeamObject, SkillInfo } from "./FightObject";
 import { BuffAction, SkillAction } from "./FightAction";
 import { CardRaceType } from "../card/CardAssist";
 import { Fight } from "./FightAssist";
+import { GUIDE } from "../../manager/GuideManager";
 
 
 export enum BuffProperty{
@@ -217,7 +218,7 @@ export default class SkillLogic{
             case 15: //二郎真君
             {
                 var rate:number = beAttack.skill.skillVal;
-                if(Math.random()<rate){
+                if(Math.random()<rate || GUIDE.isInGuide){
                     hasAction = true;
                 }
                 if(hasAction){
@@ -239,7 +240,7 @@ export default class SkillLogic{
             }break;
             case 5: //复仇傀儡
             {
-                if(Math.random()<0.4){
+                if(Math.random()<0.4 || GUIDE.isInGuide){
                     hasAction = true;
                 }
                 if(hasAction){

@@ -138,6 +138,14 @@ export default class Constant{
     public getRankShowLevel():number{
         return Number(this._constantKeyValueMap["rank_show_level"]);
     }
+
+    public getMaxPassageId():number{
+        return 100;
+    }
+
+    public getMaxPlayerLevel():number{
+        return 60;
+    }
 }
 
 export var CONSTANT:Constant = Constant.getInstance();

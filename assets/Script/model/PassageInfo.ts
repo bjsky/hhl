@@ -16,8 +16,11 @@ export default class PassageInfo{
     public initFromServer(info:SPassageInfo){
         this.passId = info.passId;
         this.passStartTime = info.passStartTime;
-
         this.passageCfg = CFG.getCfgDataById(ConfigConst.Passage,this.passId);
+    }
+    //是否是最后一关
+    public get isMaxPassage(){
+        return this.passId == CONSTANT.getMaxPassageId();
     }
 
     public cloneServerInfo():SPassageInfo{
