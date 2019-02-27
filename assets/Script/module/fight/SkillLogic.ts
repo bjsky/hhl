@@ -140,7 +140,7 @@ export default class SkillLogic{
                     beAttack.lineup.raceId == CardRaceType.YaoZu)){
                     hasAction = true;
                 }
-                if(Math.random()<0.66){
+                if(Math.random()<0.5){
                     hasAction = hasAction && true;
                 }else{
                     hasAction = false;
@@ -185,7 +185,7 @@ export default class SkillLogic{
             }break;
             case 8: //长生不老
             {
-                if(Math.random()<0.33){
+                if(Math.random()<0.4){
                     hasAction = true;
                 }
                 if(hasAction){
@@ -229,7 +229,7 @@ export default class SkillLogic{
             }break;
             case 16: //百毒不侵
             {
-                if(Math.random()<0.4){
+                if(Math.random()<0.33){
                     hasAction = true;
                 }
                 if(hasAction){
@@ -240,7 +240,7 @@ export default class SkillLogic{
             }break;
             case 5: //复仇傀儡
             {
-                if(Math.random()<0.4 || GUIDE.isInGuide){
+                if(Math.random()<0.25 || GUIDE.isInGuide){
                     hasAction = true;
                 }
                 if(hasAction){
