@@ -84,18 +84,30 @@ export default class LoadingView extends cc.Component {
         // console.log("winSize: ",winSize);
         // console.log("frameSize: ",frameSize);
         //适配不同机型来创建微信授权按钮
-        let left = (winSize.width*0.5+btnNode.x-btnSize.width*0.5)/winSize.width*frameSize.width;
-        let top = (winSize.height*0.5-btnNode.y-btnSize.height*0.5)/winSize.height*frameSize.height;
-        let width = btnSize.width/winSize.width*frameSize.width;
-        let height = btnSize.height/winSize.height*frameSize.height;
+        // let left = (winSize.width*0.5+btnNode.x-btnSize.width*0.5)/winSize.width*frameSize.width;
+        // let top = (winSize.height*0.5-btnNode.y-btnSize.height*0.5)/winSize.height*frameSize.height;
+        // let width = btnSize.width/winSize.width*frameSize.width;
+        // let height = btnSize.height/winSize.height*frameSize.height;
+        let left = 0;
+        let top = 0;
+        let width = frameSize.width;
+        let height = frameSize.height;
         WeiXin.createUserInfoButton(left,top,width,height,(userInfo)=>{
+            this.unschedule(this.getUserInfoTimeout);
             GLOBAL.initUserInfo(userInfo);
             GAME.resumeLogin();
         });
         this.nodeLoading.active = false;
+        this.scheduleOnce(this.getUserInfoTimeout,10);
     }
     start () {
 
+    }
+
+    //拉去超时
+    private getUserInfoTimeout(){
+        this.unschedule(this.getUserInfoTimeout);
+        GAME.resumeLogin();
     }
 
     private infoButtonTap(useInfo){

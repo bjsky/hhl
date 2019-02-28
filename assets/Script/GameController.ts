@@ -59,9 +59,13 @@ export default class GameController{
         this.loadingStepMgr.startLoading();
     }
 
+    private _resumeed:boolean = false;
     public resumeLogin(){
+        if(this._resumeed)
+        return;
         var loginStep:LoadingStepLogin = this.loadingStepMgr.getStep(LoadingStepEnum.Login)
         if(loginStep){
+            this._resumeed = true;
             loginStep.setNext(LoadingStepEnum.ServerConnect);
         }
     }
