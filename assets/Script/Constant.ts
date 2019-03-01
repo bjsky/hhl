@@ -146,6 +146,16 @@ export default class Constant{
     public getMaxPlayerLevel():number{
         return 60;
     }
+    //任务奖励id 
+    public getTaskRewardIds():string[]{
+        var ids:string[] = this._constantKeyValueMap["taskRewardIds"].split(";");
+        return ids;
+    }
+    //七日奖励id 
+    public getSevendayRewardIds():string[]{
+        var ids:string[] = this._constantKeyValueMap["sevendayRewardIds"].split(";");
+        return ids;
+    }
 }
 
 export var CONSTANT:Constant = Constant.getInstance();

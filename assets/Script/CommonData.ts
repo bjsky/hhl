@@ -10,6 +10,8 @@ import { Share } from "./module/share/ShareAssist";
 import { Battle } from "./module/battle/BattleAssist";
 import { EVENT } from "./message/EventCenter";
 import GameEvent from "./message/GameEvent";
+import { Task } from "./module/TaskAssist";
+import { Activity } from "./module/ActivityAssist";
 
 export enum DirectionEnum{
     Left = 0,       //左
@@ -98,6 +100,10 @@ export default class CommonData{
         Battle.initBattle(data.battleInfo);
 
         Battle.initOutlineFightRecords(data.outlineFightRecord);
+
+        Task.initTask(data.taskInfo);
+
+        Activity.initSenvenday(data.senvenDayInfo);
     }
 
     public updateResInfo(data:SResInfo):SResInfo{

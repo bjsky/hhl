@@ -1,0 +1,15 @@
+[
+{"id":"1","taskDesc":"灵石抽卡","taskScore":"10","taskCount":"5","taskTotal":"50"},
+{"id":"2","taskDesc":"升级卡牌","taskScore":"5","taskCount":"10","taskTotal":"50"},
+{"id":"3","taskDesc":"合成卡牌","taskScore":"20","taskCount":"3","taskTotal":"60"},
+{"id":"4","taskDesc":"领取挂机奖励","taskScore":"10","taskCount":"5","taskTotal":"50"},
+{"id":"5","taskDesc":"挑战boss获得胜利","taskScore":"20","taskCount":"5","taskTotal":"100"},
+{"id":"6","taskDesc":"挑战玩家获得胜利","taskScore":"20","taskCount":"5","taskTotal":"100"},
+{"id":"7","taskDesc":"复仇玩家获得胜利","taskScore":"20","taskCount":"3","taskTotal":"60"},
+{"id":"8","taskDesc":"刷新玩家列表","taskScore":"10","taskCount":"3","taskTotal":"30"},
+{"id":"9","taskDesc":"分享给好友","taskScore":"20","taskCount":"3","taskTotal":"60"},
+{"id":"10","taskDesc":"看视频获得金币","taskScore":"30","taskCount":"2","taskTotal":"60"},
+{"id":"11","taskDesc":"看视频获得金币","taskScore":"30","taskCount":"2","taskTotal":"60"},
+{"id":"12","taskDesc":"调整对战阵型","taskScore":"5","taskCount":"2","taskTotal":"10"},
+{"id":"13","taskDesc":"消费钻石","taskScore":"50","taskCount":"1","taskTotal":"50"}
+]

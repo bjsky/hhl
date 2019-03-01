@@ -1,4 +1,5 @@
 import PopUpBase from "../../component/PopUpBase";
+import DList, { DListDirection } from "../../component/DList";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -14,19 +15,42 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class TaskPanel extends PopUpBase{
-
-    @property(cc.Label)
-    label: cc.Label = null;
-
-    @property
-    text: string = 'hello';
+    @property(DList)
+    taskList: DList = null;
 
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
 
+    private _taskListData:Array<any>= [];
     start () {
 
+    }
+    onLoad () {
+        this.taskList.direction = DListDirection.Horizontal;
+        this.initView();
+    }
+
+    onShowComplete(){
+        this.initTaskList();
+    }
+    onEnable(){
+        super.onEnable();
+    }
+    onDisable(){
+        super.onDisable();
+        this.taskList.setListData([]);
+    }
+
+    private initView(){
+
+    }
+    private initTaskList(){
+        this._taskListData = [];
+        for(var i:number = 0;i<13;i++){
+            this._taskListData.push({});
+        }
+        this.taskList.setListData(this._taskListData);
     }
 
     // update (dt) {}

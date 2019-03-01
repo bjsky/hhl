@@ -27,5 +27,7 @@
     {"id":"26","key":"rank_list_count","name":"排行榜显示个数","param1":"30"},
     {"id":"27","key":"rank_show_level","name":"排行榜显示等级","param1":"10"},
     {"id":"28","key":"enmeyLevelArea","name":"敌人等级范围","param1":"3"},
-    {"id":"29","key":"robotPowerarea","name":"机器人战力范围","param1":"10000"}
+    {"id":"29","key":"robotPowerarea","name":"机器人战力范围","param1":"10000"},
+    {"id":"30","key":"taskRewardIds","name":"活跃度奖励id","param1":"8;9;10;11;12"},
+    {"id":"31","key":"sevendayRewardIds","name":"七日奖励id","param1":"1;2;3;4;5;6;7"}
     ]

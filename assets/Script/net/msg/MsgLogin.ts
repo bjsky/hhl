@@ -51,8 +51,11 @@ export class SCLoginData {
     //战场数据 
     public battleInfo:SBattleInfo = null;
     //离线攻击记录
-    public outlineFightRecord:Array<SFightRecord> = []
-
+    public outlineFightRecord:Array<SFightRecord> = [];
+    //任务信息
+    public taskInfo:STaskInfo = null;
+    //七日奖励信息
+    public senvenDayInfo:SRewardInfo = null;
 
     public static parse(obj:any):SCLoginData{
         var data:SCLoginData = new SCLoginData();
@@ -104,6 +107,12 @@ export class SCLoginData {
             obj.outlineFightRecord.forEach((record:any) => {
                 data.outlineFightRecord.push(SFightRecord.parse(record));
             });
+        }
+        if(obj.taskInfo){
+            data.taskInfo = STaskInfo.parse(obj.taskInfo);
+        }
+        if(obj.senvenDayInfo){
+            data.senvenDayInfo = SRewardInfo.parse(obj.senvenDayInfo);
         }
 
         return data;
@@ -294,6 +303,58 @@ export class SFightRecord{
     }
 }
 
+export class SRewardInfo{
+    //奖励id
+    public rewardId:number = 0;
+    //是否已经领奖
+    public isReceived:boolean = false;
+
+    public static parse(obj:any):SRewardInfo{
+        var info:SRewardInfo = new SRewardInfo();
+        info.rewardId = obj.rewardId;
+        info.isReceived = obj.isReceived;
+
+        return info;
+    }
+}
+
+export class STaskInfo{
+    //活跃度积分，所有任务进度的活跃度总分
+    public activeScore:number = 0;
+    //已领取活跃度奖励信息，未领取时为空数组
+    public taskRewards:Array<SRewardInfo> = [];
+    //已保存任务进度，未保存时为空数组
+    public taskProgresses:Array<STaskProgressInfo> = [];
+
+    public static parse(obj:any):STaskInfo{
+        var info:STaskInfo = new STaskInfo();
+        info.activeScore = obj.activeScore;
+        info.taskRewards = [];
+        obj.taskRewards.forEach((reward:any) => {
+            info.taskRewards.push(SRewardInfo.parse(reward));
+        });
+        info.taskProgresses = [];
+        obj.taskProgresses.forEach((progress:any) => {
+            info.taskProgresses.push(STaskProgressInfo.parse(progress));
+        });
+        return info;
+    }
+}
+
+export class STaskProgressInfo{
+    //任务id
+    public taskId:number = 0;
+    //完成次数
+    public finishNum:number = 0;
+
+    public static parse(obj:any):STaskProgressInfo{
+        var info:STaskProgressInfo = new STaskProgressInfo();
+        info.taskId = obj.taskId;
+        info.finishNum = obj.finishNum;
+        return info;
+    }
+}
+
 export default class MsgLogin
  extends MessageBase {
     public param:CSLoginData;
@@ -335,7 +396,7 @@ export default class MsgLogin
         // }
         var json:any = {firstLogin:true,
             accountId:StringUtil.getUUidClient(),
-            newUser:1,
+            newUser:0,
             serverTime:new Date().getTime(),
             userInfo:{name:"上古战神",icon:"",gender:1,exp:0,level:1},
             resInfo:{gold:200000,diamond:0,lifeStone:200000,soulStone:0},
@@ -361,7 +422,36 @@ export default class MsgLogin
                 revengeStartTime:0,
                 score:0
             },
-            outlineFightRecord:[]
+            outlineFightRecord:[],
+            taskInfo:{
+                activeScore:0,
+                taskRewards:[
+                    // {rewardId:8,isReceived:false},
+                    // {rewardId:9,isReceived:false},
+                    // {rewardId:10,isReceived:false},
+                    // {rewardId:11,isReceived:false},
+                    // {rewardId:12,isReceived:false},
+                    // {rewardId:13,isReceived:false},
+                ],
+                taskProgresses:[
+                    // {taskId:1,finishNum:0},
+                    // {taskId:2,finishNum:0},
+                    // {taskId:3,finishNum:0},
+                    // {taskId:4,finishNum:0},
+                    // {taskId:5,finishNum:0},
+                    // {taskId:6,finishNum:0},
+                    // {taskId:7,finishNum:0},
+                    // {taskId:8,finishNum:0},
+                    // {taskId:9,finishNum:0},
+                    // {taskId:10,finishNum:0},
+                    // {taskId:11,finishNum:0},
+                    // {taskId:12,finishNum:0},
+                    // {taskId:13,finishNum:0}
+                ]
+            },
+            senvenDayInfo:{
+                rewardId:1,isReceived:false
+            }
         };
         return this.parse(json);
     }

@@ -3707,7 +3707,7 @@
       }
     ],
     "_tag": -1,
-    "_active": false,
+    "_active": true,
     "_components": [],
     "_prefab": {
       "__id__": 125
@@ -4651,7 +4651,7 @@
       }
     ],
     "_tag": -1,
-    "_active": false,
+    "_active": true,
     "_components": [],
     "_prefab": {
       "__id__": 154
@@ -5232,7 +5232,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 315,
-      "y": 197
+      "y": 57
     },
     "_skewX": 0,
     "_skewY": 0,

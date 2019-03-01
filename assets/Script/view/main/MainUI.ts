@@ -211,6 +211,7 @@ export default class MainUI extends UIBase {
         this.btnDiamondStore.node.on(cc.Node.EventType.TOUCH_START,this.onDiamondStore,this);
         this.headIcon.node.on(cc.Node.EventType.TOUCH_START,this.onHeadTouch,this);
         this.btnIntro.node.on(cc.Node.EventType.TOUCH_START,this.onIntroClick,this);
+        this.btnSevenDay.node.on(cc.Node.EventType.TOUCH_START,this.onSevendayClick,this);
 
         EVENT.on(GameEvent.Res_update_Cost_Complete,this.resUpdateCost,this);
         EVENT.on(GameEvent.Show_AwardPanel,this.showAwardPop,this);
@@ -236,6 +237,7 @@ export default class MainUI extends UIBase {
         this.btnDiamondStore.node.off(cc.Node.EventType.TOUCH_START,this.onDiamondStore,this);
         this.headIcon.node.off(cc.Node.EventType.TOUCH_START,this.onHeadTouch,this);
         this.btnIntro.node.off(cc.Node.EventType.TOUCH_START,this.onIntroClick,this);
+        this.btnSevenDay.node.off(cc.Node.EventType.TOUCH_START,this.onSevendayClick,this);
 
         EVENT.off(GameEvent.Res_update_Cost_Complete,this.resUpdateCost,this);
         EVENT.off(GameEvent.Show_AwardPanel,this.showAwardPop,this);
@@ -279,6 +281,10 @@ export default class MainUI extends UIBase {
     private onTaskBtnTouch(e){
         // UI.showAlert("功能暂未开放，敬请期待！",null,null,AlertBtnType.OKAndCancel);
         UI.createPopUp(ResConst.TaskPanel,{});
+    }
+
+    private onSevendayClick(e){
+        UI.createPopUp(ResConst.SevenDayPanel,{});
     }
 
     private onStoreBtnTouch(e){

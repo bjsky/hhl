@@ -1,0 +1,14 @@
+[
+{"id":"1","rewardName":"第一天","rewardType":"1","resType":"0","resNum":"200000","cardId":"0","cardGrade":"0","needScore":"0"},
+{"id":"2","rewardName":"第二天","rewardType":"1","resType":"2","resNum":"200000","cardId":"0","cardGrade":"0","needScore":"0"},
+{"id":"3","rewardName":"第三天","rewardType":"1","resType":"5","resNum":"0","cardId":"3","cardGrade":"4","needScore":"0"},
+{"id":"4","rewardName":"第四天","rewardType":"1","resType":"0","resNum":"600000","cardId":"0","cardGrade":"0","needScore":"0"},
+{"id":"5","rewardName":"第五天","rewardType":"1","resType":"2","resNum":"600000","cardId":"0","cardGrade":"0","needScore":"0"},
+{"id":"6","rewardName":"第六天","rewardType":"1","resType":"1","resNum":"2000","cardId":"0","cardGrade":"0","needScore":"0"},
+{"id":"7","rewardName":"第七天","rewardType":"1","resType":"5","resNum":"0","cardId":"18","cardGrade":"5","needScore":"0"},
+{"id":"8","rewardName":"第一档","rewardType":"2","resType":"2","resNum":"50000","cardId":"0","cardGrade":"0","needScore":"100"},
+{"id":"9","rewardName":"第二档","rewardType":"2","resType":"0","resNum":"100000","cardId":"0","cardGrade":"0","needScore":"200"},
+{"id":"10","rewardName":"第三档","rewardType":"2","resType":"1","resNum":"100","cardId":"0","cardGrade":"0","needScore":"300"},
+{"id":"11","rewardName":"第四档","rewardType":"2","resType":"2","resNum":"150000","cardId":"0","cardGrade":"0","needScore":"450"},
+{"id":"12","rewardName":"第五档","rewardType":"2","resType":"1","resNum":"300","cardId":"0","cardGrade":"0","needScore":"600"}
+]
