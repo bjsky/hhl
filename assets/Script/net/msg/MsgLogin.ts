@@ -55,7 +55,7 @@ export class SCLoginData {
     //任务信息
     public taskInfo:STaskInfo = null;
     //七日奖励信息
-    public senvenDayInfo:SRewardInfo = null;
+    public senvenDayInfo:SSevendayInfo = null;
 
     public static parse(obj:any):SCLoginData{
         var data:SCLoginData = new SCLoginData();
@@ -112,7 +112,7 @@ export class SCLoginData {
             data.taskInfo = STaskInfo.parse(obj.taskInfo);
         }
         if(obj.senvenDayInfo){
-            data.senvenDayInfo = SRewardInfo.parse(obj.senvenDayInfo);
+            data.senvenDayInfo = SSevendayInfo.parse(obj.senvenDayInfo);
         }
 
         return data;
@@ -355,6 +355,21 @@ export class STaskProgressInfo{
     }
 }
 
+export class SSevendayInfo{
+
+    //第几天索引：0-6
+    public dayIndex:number = 0;
+    //今日奖励领取情况
+    public todayReward:SRewardInfo = null;
+
+    public static parse(obj:any):SSevendayInfo{
+        var info:SSevendayInfo = new SSevendayInfo();
+        info.dayIndex = obj.dayIndex;
+        info.todayReward = SRewardInfo.parse(obj.todayReward);
+        return info;
+    }
+}
+
 export default class MsgLogin
  extends MessageBase {
     public param:CSLoginData;
@@ -450,7 +465,10 @@ export default class MsgLogin
                 ]
             },
             senvenDayInfo:{
-                rewardId:1,isReceived:false
+                dayIndex:0,
+                todayReward:{
+                    rewardId:1,isReceived:false
+                }
             }
         };
         return this.parse(json);

@@ -1,4 +1,9 @@
 import PopUpBase from "../component/PopUpBase";
+import SevendayItem from "./SevendayItem";
+import { UI } from "../manager/UIManager";
+import { ResConst } from "../module/loading/steps/LoadingStepRes";
+import { CONSTANT } from "../Constant";
+import { Activity } from "../module/ActivityAssist";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -15,15 +20,34 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class SevenDayPanel extends PopUpBase {
 
-    @property(cc.Label)
-    label: cc.Label = null;
-
-    @property
-    text: string = 'hello';
+    @property([cc.Node])
+    nodeDays: cc.Node[]= [];
+    @property([cc.Button])
+    btnLinqu: cc.Button= null;
+    
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
+    private _items:SevendayItem[] = [];
+    onLoad () {
+        
+    }
+
+    onEnable(){
+        super.onEnable();
+        this._items =[];
+        for(var i:number = 0;i<7;i++){
+            var node:cc.Node = this.nodeDays[i];
+            if(node.childrenCount>0){
+                UI.removeUI(node.children[0]);
+            }
+            
+            UI.loadUI(ResConst.SevendayItem,{index:i},node,(ui:SevendayItem)=>{
+                this._items.push(ui);
+            });
+        }
+        this.btnLinqu.node.active = !Activity.senvendayTodayReward.isReceived;
+    }
 
     start () {
 

@@ -1,4 +1,5 @@
 import DListItem from "../../component/DListItem";
+import { TaskProgressInfo } from "../../model/TaskInfo";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -16,17 +17,48 @@ const {ccclass, property} = cc._decorator;
 export default class TaskItem extends DListItem{
 
     @property(cc.Label)
-    label: cc.Label = null;
+    activeScore: cc.Label = null;
+    @property(cc.Label)
+    desc: cc.Label = null;
+    @property(cc.Label)
+    finishNum: cc.Label = null;
+    @property(cc.Label)
+    totalNum: cc.Label = null;
 
-    @property
-    text: string = 'hello';
+    @property(cc.Button )
+    btnGoto: cc.Button = null;
 
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
 
+    private _taskPro:TaskProgressInfo = null;
+    public setData(data:any){
+        super.setData(data);
+        this._taskPro = data as TaskProgressInfo;
+        
+    }
+
     start () {
 
+    }
+
+    onEnable(){
+        super.onEnable();
+        this.initView();
+    }
+
+    onDisable(){
+        super.onDisable();
+        
+    }
+
+    private initView(){
+        this.activeScore.string = (this._taskPro.taskScore).toString();
+        this.desc.string = this._taskPro.taskDesc;
+        this.finishNum.string = this._taskPro.finishNum.toString();
+        this.totalNum.string = "/"+this._taskPro.taskCount.toString();
+        this.btnGoto.node.active = this._taskPro.finishNum<this._taskPro.taskCount;
     }
 
     // update (dt) {}

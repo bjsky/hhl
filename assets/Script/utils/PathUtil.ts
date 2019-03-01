@@ -123,4 +123,8 @@ export default class PathUtil{
         return "image/ui/lbl_hc"+grade+"xkp";
     }
 
+    public static getBoxRecevieIcon(receive:boolean):string{
+        return "image/ui/"+(receive?"k_5":"g_5");
+    }
+
 }

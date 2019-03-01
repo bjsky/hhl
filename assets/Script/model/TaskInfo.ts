@@ -48,6 +48,7 @@ export default class TaskInfo{
             taskCfg = taskCfgMap[key];
             taskProgress = new TaskProgressInfo();
             taskProgress.taskId = Number(taskCfg.id);
+            taskProgress.taskDesc = taskCfg.taskDesc;
             taskProgress.taskScore = Number(taskCfg.taskScore);
             taskProgress.taskCount = Number(taskCfg.taskCount);
 
@@ -86,6 +87,8 @@ export class RewardInfo{
 export class TaskProgressInfo{
     //任务id
     public taskId:number = 0;
+    //任务描述
+    public taskDesc:string = "";
     //完成次数
     public finishNum:number = 0;
     //任务积分
