@@ -319,12 +319,14 @@ export class SRewardInfo{
 }
 
 export class STaskInfo{
-    //活跃度积分，所有任务进度的活跃度总分
+    //活跃度积分，所有任务进度的活跃度总分，次日重置
     public activeScore:number = 0;
-    //已领取活跃度奖励信息，未领取时为空数组
+    //已领取活跃度奖励信息，未领取时为空数组，次日重置
     public taskRewards:Array<SRewardInfo> = [];
-    //已保存任务进度，未保存时为空数组
+    //已保存任务进度，未保存时为空数组，次日重置
     public taskProgresses:Array<STaskProgressInfo> = [];
+    //已领取成长奖励数组，未领取时为空,永久保存
+    public growthRewards:Array<SRewardInfo> = [];
 
     public static parse(obj:any):STaskInfo{
         var info:STaskInfo = new STaskInfo();
@@ -336,6 +338,9 @@ export class STaskInfo{
         info.taskProgresses = [];
         obj.taskProgresses.forEach((progress:any) => {
             info.taskProgresses.push(STaskProgressInfo.parse(progress));
+        });
+        obj.growthRewards.forEach((reward:any) => {
+            info.growthRewards.push(SRewardInfo.parse(reward));
         });
         return info;
     }
@@ -357,7 +362,7 @@ export class STaskProgressInfo{
 
 export class SSevendayInfo{
 
-    //第几天索引：0-6
+    //第几天索引：0-6，次日加1重置，6之后不处理
     public dayIndex:number = 0;
     //今日奖励领取情况
     public todayReward:SRewardInfo = null;
@@ -462,7 +467,8 @@ export default class MsgLogin
                     // {taskId:11,finishNum:0},
                     // {taskId:12,finishNum:0},
                     // {taskId:13,finishNum:0}
-                ]
+                ],
+                growthRewards:[]
             },
             senvenDayInfo:{
                 dayIndex:0,

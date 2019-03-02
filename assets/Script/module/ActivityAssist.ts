@@ -32,7 +32,6 @@ export default class ActivityAssist{
             reward.rewardResNum = Number(rewardCfg.resNum);
             reward.rewardCardId = Number(rewardCfg.cardId);
             reward.rewardCardGrade = Number(rewardCfg.cardGrade);
-            reward.rewardNeedScore = Number(rewardCfg.needScore);
 
             if(i== this.senvendayIndex){
                 reward.isReceived = sSenvenday.todayReward.isReceived;

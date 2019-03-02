@@ -18,6 +18,7 @@ import { CONSTANT } from "../../Constant";
 import { Share } from "../../module/share/ShareAssist";
 import { Card } from "../../module/card/CardAssist";
 import { GLOBAL } from "../../GlobalData";
+import { TaskViewSelect } from "../task/TaskPanel";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -99,6 +100,11 @@ export default class MainUI extends UIBase {
     @property(cc.Button)
     btnIntro:cc.Button = null;
 
+    @property(cc.Node)
+    nodeGrowth:cc.Node = null;
+    @property(cc.Label)
+    labelGrowth:cc.Label = null;
+
     private _topPos:cc.Vec2 =cc.v2(0,0);
     onLoad () {
 
@@ -108,6 +114,8 @@ export default class MainUI extends UIBase {
         this.initTopView();
 
         WeiXin.createGameClubButton();
+
+        this.playGrowth();
     }
 
     start () {
@@ -144,6 +152,18 @@ export default class MainUI extends UIBase {
         this.explevelEffect.initProgress(COMMON.userInfo.exp,COMMON.userInfo.totalExp,COMMON.userInfo.level);
     }
     
+    private playGrowth(){
+        this.nodeGrowth.scaleY = 0;
+        var seq = cc.sequence(
+            cc.scaleTo(0.3,1,1.2),
+            cc.scaleTo(0.1,1,1),
+            cc.delayTime(5),
+            cc.scaleTo(0.1,1,1.2),
+            cc.scaleTo(0.3,1,0),
+            cc.delayTime(10)
+        )
+        this.nodeGrowth.runAction(seq.repeatForever());
+    }
 
     private resUpdateCost(e){
         var types:any[] = e.detail.types;
@@ -212,6 +232,7 @@ export default class MainUI extends UIBase {
         this.headIcon.node.on(cc.Node.EventType.TOUCH_START,this.onHeadTouch,this);
         this.btnIntro.node.on(cc.Node.EventType.TOUCH_START,this.onIntroClick,this);
         this.btnSevenDay.node.on(cc.Node.EventType.TOUCH_START,this.onSevendayClick,this);
+        this.nodeGrowth.on(cc.Node.EventType.TOUCH_START,this.onGrowthNodeTouch,this);
 
         EVENT.on(GameEvent.Res_update_Cost_Complete,this.resUpdateCost,this);
         EVENT.on(GameEvent.Show_AwardPanel,this.showAwardPop,this);
@@ -238,6 +259,7 @@ export default class MainUI extends UIBase {
         this.headIcon.node.off(cc.Node.EventType.TOUCH_START,this.onHeadTouch,this);
         this.btnIntro.node.off(cc.Node.EventType.TOUCH_START,this.onIntroClick,this);
         this.btnSevenDay.node.off(cc.Node.EventType.TOUCH_START,this.onSevendayClick,this);
+        this.nodeGrowth.off(cc.Node.EventType.TOUCH_START,this.onGrowthNodeTouch,this);
 
         EVENT.off(GameEvent.Res_update_Cost_Complete,this.resUpdateCost,this);
         EVENT.off(GameEvent.Show_AwardPanel,this.showAwardPop,this);
@@ -280,11 +302,15 @@ export default class MainUI extends UIBase {
 
     private onTaskBtnTouch(e){
         // UI.showAlert("功能暂未开放，敬请期待！",null,null,AlertBtnType.OKAndCancel);
-        UI.createPopUp(ResConst.TaskPanel,{});
+        UI.createPopUp(ResConst.TaskPanel,{view:TaskViewSelect.EvenyDayActive});
     }
 
     private onSevendayClick(e){
         UI.createPopUp(ResConst.SevenDayPanel,{});
+    }
+
+    private onGrowthNodeTouch(e){
+        UI.createPopUp(ResConst.TaskPanel,{view:TaskViewSelect.GrowthReward});
     }
 
     private onStoreBtnTouch(e){

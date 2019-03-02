@@ -1,6 +1,5 @@
 import { STaskInfo } from "../net/msg/MsgLogin";
-import TaskInfo from "../model/TaskInfo";
-import { CONSTANT } from "../Constant";
+import TaskInfo, { GrowRewardType } from "../model/TaskInfo";
 
 export default class TaskAssist{
     private static _instance: TaskAssist = null;
@@ -17,7 +16,6 @@ export default class TaskAssist{
 
         this.taskInfo.initFormServer(sTask);
     }
-
 }
 
 export var Task:TaskAssist = TaskAssist.getInstance();

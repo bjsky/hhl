@@ -42,7 +42,8 @@ export const ResConst = {
     LevelupPanel:"prefabs/levelUpPanel",
     RewardTip:"prefabs/rewardTip",
     TaskItem:"prefabs/taskItem",
-    SevendayItem:"prefabs/sevendayItem"
+    SevendayItem:"prefabs/sevendayItem",
+    BoxReward:"prefabs/boxReward"
 }
 /**
  * 加载配置

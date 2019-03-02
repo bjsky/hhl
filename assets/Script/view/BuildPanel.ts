@@ -31,10 +31,10 @@ import { GLOBAL } from "../GlobalData";
 const {ccclass, property} = cc._decorator;
 
 export enum BuildType{
-    Castle = 0,
-    Temple,
-    Hero,
-    Battle
+    Castle = 0, //瀛洲城
+    Temple, //祭坛
+    Hero,   //英雄
+    Battle  //试炼
 }
 
 @ccclass

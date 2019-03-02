@@ -281,6 +281,22 @@ export default class CardAssist{
         return false;
     }
 
+    /**
+     * 获取卡牌品级的个数
+     * @param grade 、
+     */
+    public getGradeCardCount(grade:number){
+        var count:number = 0;
+        var card:CardInfo = null;
+        for(var uuid in this.cardsMap){
+            card = this.cardsMap[uuid];
+            if(card.grade == grade){
+                count++;
+            }
+        }
+        return count;
+    }
+
     //初始化卡牌
     public initCard(cards:Array<SCardInfo>){
         cards.forEach((card:SCardInfo)=>{

@@ -3,14 +3,35 @@ import { CFG } from "../manager/ConfigManager";
 import { ConfigConst } from "../module/loading/steps/LoadingStepConfig";
 import { ResType } from "./ResInfo";
 import { CONSTANT } from "../Constant";
+import { COMMON } from "../CommonData";
+import { Passage } from "../module/battle/PassageAssist";
+import { Card } from "../module/card/CardAssist";
+import { Battle } from "../module/battle/BattleAssist";
 
+export enum RewardType{
+    SevenDay = 1,   //7日奖励
+    TaskActive,     //活跃度奖励
+    Growth,    //成长奖励
+}
+export enum GrowRewardType{
+    LevelGrowth = 1,    //等级奖励
+    PassGrowth,     //通关奖励
+    cardGrowth4,    //卡牌4星奖励
+    cardGrowth5,    //卡牌5星奖励
+    scoreGrowth     //积分奖励
+}
 export default class TaskInfo{
 
     public activeScore:number = 0;
-    //活跃度奖励信息
+    //活跃度奖励
     public taskRewardArr:RewardInfo[] = [];
+    public totalScore:number = 0;
     //任务进度
     public taskProgressArr:TaskProgressInfo[] = [];
+    //奖励信息
+    public growthRewardMap:any= {};
+
+    public growthNameArr:string[] = [];
 
     public initFormServer(sInfo:STaskInfo){
 
@@ -20,15 +41,17 @@ export default class TaskInfo{
         var reward:RewardInfo;
         var rewardIds = CONSTANT.getTaskRewardIds();
         for(var i:number = 0;i<rewardIds.length;i++){
+            var needScore = Number(rewardIds[i].split(";")[0]);
+            var rewardId = Number(rewardIds[i].split(";")[1]);
             reward = new RewardInfo();
-            reward.rewardId = Number(rewardIds[i]);
+            reward.rewardId = rewardId;
             var rewardCfg:any = CFG.getCfgDataById(ConfigConst.Reward,reward.rewardId)
             reward.rewardName = rewardCfg.rewardName;
             reward.rewardResType = Number(rewardCfg.resType);
             reward.rewardResNum = Number(rewardCfg.resNum);
             reward.rewardCardId = Number(rewardCfg.cardId);
             reward.rewardCardGrade = Number(rewardCfg.cardGrade);
-            reward.rewardNeedScore = Number(rewardCfg.needScore);
+            reward.needScore = needScore;
 
             var sReward:SRewardInfo = null;
             sInfo.taskRewards.forEach((sr:SRewardInfo)=>{
@@ -39,6 +62,7 @@ export default class TaskInfo{
             reward.isReceived =(sReward!= null)?sReward.isReceived:false;
             this.taskRewardArr.push(reward);
         }
+        this.totalScore = this.taskRewardArr[this.taskRewardArr.length-1].needScore;
 
         this.taskProgressArr = [];
         var taskCfgMap = CFG.getCfgGroup(ConfigConst.Task);
@@ -62,6 +86,77 @@ export default class TaskInfo{
             taskProgress.finishNum = (sTaskPro!=null)?sTaskPro.finishNum:0;
             this.taskProgressArr.push(taskProgress);
         }
+
+        this.initGrowthReward(GrowRewardType.LevelGrowth,sInfo.growthRewards);
+        this.initGrowthReward(GrowRewardType.PassGrowth,sInfo.growthRewards);
+        this.initGrowthReward(GrowRewardType.cardGrowth4,sInfo.growthRewards);
+        this.initGrowthReward(GrowRewardType.cardGrowth5,sInfo.growthRewards);
+        this.initGrowthReward(GrowRewardType.scoreGrowth,sInfo.growthRewards);
+
+        this.growthNameArr = [];
+        for(i = GrowRewardType.LevelGrowth;i<=GrowRewardType.scoreGrowth;i++){
+            var reward = this.getGrowNextReward(i);
+            if(reward){
+                this.growthNameArr.push(reward.rewardName);
+            }
+        }
+    }
+
+    private initGrowthReward(type:GrowRewardType,sRewards:SRewardInfo[]){
+        var growthRewardIds:string[] = CONSTANT.getGrowthRewardIds(type);
+        var reward:RewardInfo;
+        var rewardArr:RewardInfo[] = [];
+        for(var i:number = 0;i<growthRewardIds.length;i++){
+            var needNum:number = Number(growthRewardIds[i].split(";")[0]);
+            var rewardId:number = Number(growthRewardIds[i].split(";")[1])
+            reward = new RewardInfo();
+            reward.rewardId = rewardId;
+            var rewardCfg:any = CFG.getCfgDataById(ConfigConst.Reward,reward.rewardId)
+            reward.rewardName = rewardCfg.rewardName;
+            reward.rewardResType = Number(rewardCfg.resType);
+            reward.rewardResNum = Number(rewardCfg.resNum);
+            reward.rewardCardId = Number(rewardCfg.cardId);
+            reward.rewardCardGrade = Number(rewardCfg.cardGrade);
+            reward.needScore = needNum;
+
+            var sReward:SRewardInfo = null;
+            sRewards.forEach((sr:SRewardInfo)=>{
+                if(sr.rewardId == reward.rewardId){
+                    sReward = sr;
+                }
+            });
+            reward.isReceived =(sReward!= null)?sReward.isReceived:false;
+            rewardArr.push(reward);
+        }
+        this.growthRewardMap[type] = rewardArr;
+    }
+
+    public getGrowthRewardWithType(type:GrowRewardType):RewardInfo[]{
+        return this.growthRewardMap[type];
+    }
+
+    public getGrowNextReward(type:GrowRewardType):RewardInfo{
+        var next:RewardInfo = null;
+        var cur:number = 0;
+        if(type== GrowRewardType.LevelGrowth){
+            cur = COMMON.userInfo.level;
+        }else if(type == GrowRewardType.PassGrowth){
+            cur = Passage.passageInfo.passId;
+        }else if(type == GrowRewardType.cardGrowth4){
+            cur = Card.getGradeCardCount(4);
+        }else if(type == GrowRewardType.cardGrowth5){
+            cur = Card.getGradeCardCount(5);
+        }else if(type == GrowRewardType.scoreGrowth){
+            cur = Battle.battleInfo.score;
+        }
+        var arr:RewardInfo[] = this.getGrowthRewardWithType(type);
+        for(var i:number =0 ;i<arr.length;i++){
+            if(arr[i].needScore>cur){
+                next = arr[i];
+                break;
+            }
+        }
+        return next;
     }
 }
 
@@ -80,8 +175,8 @@ export class RewardInfo{
     public rewardCardId:number = 0;
     //奖励卡牌星级
     public rewardCardGrade:number = 0;
-    //领奖需要积分
-    public rewardNeedScore:number = 0;
+    //达成条件
+    public needScore:number = 0;
 }
 
 export class TaskProgressInfo{

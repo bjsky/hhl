@@ -2,6 +2,7 @@ import { BuildType } from "./view/BuildPanel";
 import { CFG } from "./manager/ConfigManager";
 import { ConfigConst } from "./module/loading/steps/LoadingStepConfig";
 import { COMMON } from "./CommonData";
+import { GrowRewardType } from "./model/TaskInfo";
 
 export default class Constant{
     public static _inst:Constant;
@@ -148,12 +149,28 @@ export default class Constant{
     }
     //任务奖励id 
     public getTaskRewardIds():string[]{
-        var ids:string[] = this._constantKeyValueMap["taskRewardIds"].split(";");
+        var ids:string[] = this._constantKeyValueMap["taskRewardIds"].split("|");
         return ids;
     }
     //七日奖励id 
     public getSevendayRewardIds():string[]{
         var ids:string[] = this._constantKeyValueMap["sevendayRewardIds"].split(";");
+        return ids;
+    }
+    //成长奖励id 
+    public getGrowthRewardIds(type:GrowRewardType):string[]{
+        var ids:string[];
+        if(type == GrowRewardType.LevelGrowth){
+            ids = this._constantKeyValueMap["levelGrowthRewards"].split("|");
+        }else if(type == GrowRewardType.PassGrowth){
+            ids = this._constantKeyValueMap["passGrowthRewards"].split("|");
+        }else if(type == GrowRewardType.cardGrowth4){
+            ids = this._constantKeyValueMap["star4GrowthRewards"].split("|");
+        }else if(type == GrowRewardType.cardGrowth5){
+            ids = this._constantKeyValueMap["star5GrowthRewards"].split("|");
+        }else if(type == GrowRewardType.scoreGrowth){
+            ids = this._constantKeyValueMap["scoreGrowthRewards"].split("|");
+        }
         return ids;
     }
 }
