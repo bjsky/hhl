@@ -364,13 +364,13 @@ export class SSevendayInfo{
 
     //第几天索引：0-6，次日加1重置，6之后不处理
     public dayIndex:number = 0;
-    //今日奖励领取情况
-    public todayReward:SRewardInfo = null;
+    //今日奖励领取情况 :0，未领取，1领取
+    public todayReward:number = 0;
 
     public static parse(obj:any):SSevendayInfo{
         var info:SSevendayInfo = new SSevendayInfo();
         info.dayIndex = obj.dayIndex;
-        info.todayReward = SRewardInfo.parse(obj.todayReward);
+        info.todayReward = obj.todayReward;
         return info;
     }
 }
@@ -472,9 +472,7 @@ export default class MsgLogin
             },
             senvenDayInfo:{
                 dayIndex:0,
-                todayReward:{
-                    rewardId:1,isReceived:false
-                }
+                todayReward:0
             }
         };
         return this.parse(json);

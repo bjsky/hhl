@@ -56,8 +56,8 @@ export default class NetConst{
     //排行榜数据
     public static GetRankList:number = 20081;
     //获取配置奖励（任务、成长、七日等）
-    public static GetConfigReward:number = 80001;
+    public static GetConfigReward:number = 21141;
     //更新任务进度
-    public static UpdateTask:number = 800002;
+    public static UpdateTask:number = 21140;
 }
 

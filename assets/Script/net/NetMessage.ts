@@ -65,11 +65,12 @@ export default class NetMessage extends cc.Component{
     private MsgPushParser(id:number,data:any)
     {
         console.log("推通消息处理：",id,JSON.stringify(data));
-        var message:MessageBase = MsgUtil.createMessage(id);
-        message = message.respFromServer(data);
+        var message:MessageBase;
         switch(id)
         {
             case NetConst.PushFightCard:{
+                message = MsgUtil.createMessage(id);
+                message = message.respFromServer(data);
                 Battle.onPushRabCard(message as MsgPushFightCard);
             }break;
         }

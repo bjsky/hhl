@@ -20,7 +20,8 @@ export enum CardBigShowType{
     GetCard = 1,  
     ShowCard,
     DiamondGetCard ,
-    RabGetCard
+    RabGetCard,
+    ActivityGetCard,
 }
 
 @ccclass
@@ -73,7 +74,8 @@ export default class CardBig extends PopUpBase{
         this._type = data.type;
         if(this._type == CardBigShowType.GetCard
             || this._type == CardBigShowType.DiamondGetCard
-            || this._type == CardBigShowType.RabGetCard){
+            || this._type == CardBigShowType.RabGetCard
+            || this._type == CardBigShowType.ActivityGetCard){
             this._cardUUid = data.cardUUid;
             this._cardInfo = Card.getCardByUUid(this._cardUUid);
 
@@ -119,7 +121,8 @@ export default class CardBig extends PopUpBase{
         this.node.opacity = 0;
         if(this._type == CardBigShowType.GetCard
             ||this._type == CardBigShowType.DiamondGetCard
-            || this._type == CardBigShowType.RabGetCard){
+            || this._type == CardBigShowType.RabGetCard
+            ||this._type == CardBigShowType.ActivityGetCard){
             this.heroNode.active = true;
             this.cardName.string = this._cardInfo.cardInfoCfg.name;
             this.cardRace.load(PathUtil.getCardRaceImgPath(this._cardInfo.cardInfoCfg.raceId));
@@ -159,7 +162,7 @@ export default class CardBig extends PopUpBase{
             this.rotationOut();
         }else if(this._type == CardBigShowType.ShowCard
             || this._type == CardBigShowType.DiamondGetCard
-            ){
+            || this._type == CardBigShowType.ActivityGetCard){
             this.onClose(e);
         }else if(this._type == CardBigShowType.RabGetCard){
             this.onClose(e);

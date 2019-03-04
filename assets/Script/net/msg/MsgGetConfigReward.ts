@@ -15,7 +15,7 @@ export class SCGetConfigReward{
     //任务数据(领取活跃度奖励、成长奖励时变更)
     public taskInfo:STaskInfo = null;
     //七日数据(领取七日奖励时修改已领奖);
-    public sevendayInfo:SSevendayInfo = null;
+    public senvenDayInfo:SSevendayInfo = null;
     //最新的资源数据，获得资源奖励后增加
     public resInfo:SResInfo = null;
     //获得的卡牌，获得卡牌奖励时增加，不获得时为空或者不给
@@ -23,10 +23,15 @@ export class SCGetConfigReward{
 
     public static parse(obj:any):SCGetConfigReward{
         var info:SCGetConfigReward = new SCGetConfigReward();
-        info.taskInfo = STaskInfo.parse(obj.taskInfo);
-
-        info.sevendayInfo = SSevendayInfo.parse(obj.sevendayInfo);
-        info.resInfo = SResInfo.parse(obj.resInfo);
+        if(obj.taskInfo!=undefined && obj.taskInfo!=null){
+            info.taskInfo = STaskInfo.parse(obj.taskInfo);
+        }
+        if(obj.senvenDayInfo!=undefined && obj.senvenDayInfo!=null){
+            info.senvenDayInfo = SSevendayInfo.parse(obj.senvenDayInfo);
+        }
+        if(obj.resInfo!=undefined && obj.resInfo!=null){
+            info.resInfo = SResInfo.parse(obj.resInfo);
+        }
         if(obj.newCard!=undefined && obj.newCard!=null){
             info.newCard = SCardInfo.parse(obj.newCard);
         }
@@ -40,7 +45,7 @@ export default class MsgGetConfigReward extends MessageBase{
 
     constructor(){
         super(NetConst.GetConfigReward);
-        this.isLocal = true;
+        // this.isLocal = true;
     }
 
     public static create(rewardId:number,rewardType:RewardType){

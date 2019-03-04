@@ -28,7 +28,7 @@ export default class MsgUpdateTask extends MessageBase{
 
     constructor(){
         super(NetConst.UpdateTask);
-        this.isLocal = true;
+        // this.isLocal = true;
     }
 
     public static create(taskId:number,num:number){

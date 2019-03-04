@@ -68,4 +68,6 @@ export default class GameEvent{
     public static Guide_End:string ="Guide_End";
     //用户升级
     public static User_Level_UP:string ="User_Level_UP";
+    //七日领奖
+    public static SevendayReceived:string ="SevendayReceived";
 }

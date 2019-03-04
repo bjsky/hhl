@@ -1,8 +1,19 @@
 import { SRewardInfo, SSevendayInfo } from "../net/msg/MsgLogin";
-import { RewardInfo } from "../model/TaskInfo";
+import { RewardInfo, RewardType } from "../model/TaskInfo";
 import { ConfigConst } from "./loading/steps/LoadingStepConfig";
 import { CFG } from "../manager/ConfigManager";
 import { CONSTANT } from "../Constant";
+import { NET } from "../net/core/NetController";
+import MsgGetConfigReward from "../net/msg/MsgGetConfigReward";
+import { Card } from "./card/CardAssist";
+import { EVENT } from "../message/EventCenter";
+import GameEvent from "../message/GameEvent";
+import { UI } from "../manager/UIManager";
+import { ResConst } from "./loading/steps/LoadingStepRes";
+import { CardBigShowType } from "../view/card/CardBig";
+import { COMMON } from "../CommonData";
+import { GetRewardType } from "../net/msg/MsgGetReward";
+import { ResType } from "../model/ResInfo";
 
 export default class ActivityAssist{
     private static _instance: ActivityAssist = null;
@@ -34,7 +45,7 @@ export default class ActivityAssist{
             reward.rewardCardGrade = Number(rewardCfg.cardGrade);
 
             if(i== this.senvendayIndex){
-                reward.isReceived = sSenvenday.todayReward.isReceived;
+                reward.isReceived = (sSenvenday.todayReward==0?false:true);
             }else{
                 reward.isReceived = i<this.senvendayIndex;
             }
@@ -42,9 +53,37 @@ export default class ActivityAssist{
         }
     }
 
+    public updateSevenday(sSenvenday:SSevendayInfo){
+        this.initSenvenday(sSenvenday);
+    }
+
     public get senvendayTodayReward():RewardInfo{
         return this.senvendayRewardArr[this.senvendayIndex];
     }
+
+    public receiveSevenday(index:number){
+        var rewardId = CONSTANT.getSevendayRewardIds()[index];
+        var rewardCfg = CFG.getCfgDataById(ConfigConst.Reward,rewardId);
+        NET.send(MsgGetConfigReward.create(Number(rewardId),RewardType.SevenDay),(msg:MsgGetConfigReward)=>{
+            if(msg && msg.resp){
+                if(msg.resp.newCard!=null){ //新卡牌
+                    Card.addNewCard(msg.resp.newCard);
+                    this.showGetCard(msg.resp.newCard.uuid);
+                }else{  //资源
+                    COMMON.updateResInfo(msg.resp.resInfo);
+                    UI.createPopUp(ResConst.singleAwardPanel,
+                        {resType:Number(rewardCfg.resType),num:Number(rewardCfg.resNum)})
+                    }
+            }
+            this.updateSevenday(msg.resp.senvenDayInfo);
+            EVENT.emit(GameEvent.SevendayReceived,{index:index});
+        },this)
+    }
+
+    private showGetCard(uuid){
+        UI.createPopUp(ResConst.cardBig,{type:CardBigShowType.ActivityGetCard, cardUUid:uuid,fPos:null,tPos:null});
+    }
+
 }
 
 export var Activity:ActivityAssist = ActivityAssist .getInstance();

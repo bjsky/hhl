@@ -2,6 +2,8 @@ import UIBase from "../../component/UIBase";
 import LoadSprite from "../../component/LoadSprite";
 import { RewardInfo } from "../../model/TaskInfo";
 import PathUtil from "../../utils/PathUtil";
+import { UI } from "../../manager/UIManager";
+import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -41,9 +43,25 @@ export default class BoxRewardUI extends UIBase {
 
     onEnable(){
         this.initView();
+        this.icon.node.on(cc.Node.EventType.TOUCH_START,this.onTouchStart,this);
+        this.icon.node.on(cc.Node.EventType.TOUCH_END,this.onTouchCancel,this);
+        this.icon.node.on(cc.Node.EventType.TOUCH_CANCEL,this.onTouchCancel,this);
+    }
+    onDisable(){
+        this.icon.node.off(cc.Node.EventType.TOUCH_START,this.onTouchStart,this);
+        this.icon.node.off(cc.Node.EventType.TOUCH_END,this.onTouchCancel,this);
+        this.icon.node.off(cc.Node.EventType.TOUCH_CANCEL,this.onTouchCancel,this);
     }
     start () {
 
+    }
+
+    private onTouchStart(e){
+        UI.showDetailTip(ResConst.RewardTip,{reward:this._reward,target:this.node});
+    }
+
+    private onTouchCancel(e){
+        UI.hideDetailTip();
     }
 
     private initView(){

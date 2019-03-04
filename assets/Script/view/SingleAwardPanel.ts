@@ -6,6 +6,7 @@ import { EVENT } from "../message/EventCenter";
 import GameEvent from "../message/GameEvent";
 import { GetRewardType } from "../net/msg/MsgGetReward";
 import PathUtil from "../utils/PathUtil";
+import StringUtil from "../utils/StringUtil";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -52,6 +53,9 @@ export default class SingleAwardPanel extends PopUpBase {
             this._resType = ResType.gold;
             break;
         }
+        if(data.resType!=undefined){
+            this._resType = data.resType;
+        }
         this._num = data.num;
     }
 
@@ -72,7 +76,7 @@ export default class SingleAwardPanel extends PopUpBase {
     }
 
     private initView(){
-        this.numLabel.string = "+" + this._num;
+        this.numLabel.string = "+" + StringUtil.formatReadableNumber(this._num);
         this.resIcon.load(PathUtil.getResMutiIconUrl(this._resType));
     }
 

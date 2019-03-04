@@ -71,6 +71,11 @@ export default class SevendayItem extends UIBase {
             this.labelNum.node.color = cc.hexToColor("#ffffff");
             this.nodeKuang.active = false;
         }
+        this.btnShow();
+    }
+
+    private btnShow(){
+
         if(this._reward.isReceived){
             this.labelLinqu.node.active = true;
             this.labelNum.node.active = false;
@@ -78,6 +83,11 @@ export default class SevendayItem extends UIBase {
             this.labelLinqu.node.active = false;
             this.labelNum.node.active = true;
         }
+    }
+
+    public recevied(){
+        this._reward = Activity.senvendayRewardArr[this._index];
+        this.btnShow();
     }
     start () {
 

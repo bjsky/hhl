@@ -4,6 +4,8 @@ import { UI } from "../manager/UIManager";
 import { ResConst } from "../module/loading/steps/LoadingStepRes";
 import { CONSTANT } from "../Constant";
 import { Activity } from "../module/ActivityAssist";
+import { EVENT } from "../message/EventCenter";
+import GameEvent from "../message/GameEvent";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -24,6 +26,8 @@ export default class SevenDayPanel extends PopUpBase {
     nodeDays: cc.Node[]= [];
     @property([cc.Button])
     btnLinqu: cc.Button= null;
+    @property([cc.Label])
+    lblTodayReceived:cc.Label= null;
     
 
     // LIFE-CYCLE CALLBACKS:
@@ -35,6 +39,18 @@ export default class SevenDayPanel extends PopUpBase {
 
     onEnable(){
         super.onEnable();
+        this.btnLinqu.node.on(cc.Node.EventType.TOUCH_START,this.onTouchStart,this);
+        EVENT.on(GameEvent.SevendayReceived,this.onReceived,this);
+        this.initView();
+    }
+
+    onDisable(){
+        super.onDisable();
+        this.btnLinqu.node.off(cc.Node.EventType.TOUCH_START,this.onTouchStart,this);
+        EVENT.off(GameEvent.SevendayReceived,this.onReceived,this);
+    }
+
+    private initView(){
         this._items =[];
         for(var i:number = 0;i<7;i++){
             var node:cc.Node = this.nodeDays[i];
@@ -46,9 +62,23 @@ export default class SevenDayPanel extends PopUpBase {
                 this._items.push(ui);
             });
         }
-        this.btnLinqu.node.active = !Activity.senvendayTodayReward.isReceived;
+        this.btnShow();
     }
 
+    private btnShow(){
+        this.btnLinqu.node.active = !Activity.senvendayTodayReward.isReceived;
+        this.lblTodayReceived.node.active = Activity.senvendayTodayReward.isReceived;
+    }
+
+    private onTouchStart(e){
+        Activity.receiveSevenday(Activity.senvendayIndex);
+    }
+
+    private onReceived(e){
+        var index:number = e.detail.index;
+        this._items[index].recevied();
+        this.btnShow();
+    }
     start () {
 
     }
