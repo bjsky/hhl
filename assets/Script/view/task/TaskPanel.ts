@@ -1,15 +1,12 @@
 import PopUpBase from "../../component/PopUpBase";
 import DList, { DListDirection } from "../../component/DList";
-import LoadSprite from "../../component/LoadSprite";
 import { Task } from "../../module/TaskAssist";
-import { RewardInfo, GrowRewardType } from "../../model/TaskInfo";
-import PathUtil from "../../utils/PathUtil";
 import ButtonGroup from "../../component/ButtonGroup";
 import RewardProgressUI from "./RewardProgressUI";
-import { COMMON } from "../../CommonData";
-import { Passage } from "../../module/battle/PassageAssist";
-import { Card } from "../../module/card/CardAssist";
-import { Battle } from "../../module/battle/BattleAssist";
+import { UI } from "../../manager/UIManager";
+import { ResConst } from "../../module/loading/steps/LoadingStepRes";
+import GrowthBoxUI from "./GrowthBoxUI";
+import { GrowRewardType } from "../../model/TaskInfo";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -44,38 +41,21 @@ export default class TaskPanel extends PopUpBase{
     @property(cc.Node)
     nodeGrowthReward:cc.Node = null;
 
-    @property(RewardProgressUI)
-    levelGrowthRewardPro: RewardProgressUI = null;
-    @property(cc.Label)
-    levelGrowthLabel: cc.Label = null;
-    @property(RewardProgressUI)
-    passGrowthRewardPro: RewardProgressUI = null;
-    @property(cc.Label)
-    passGrowthLabel: cc.Label = null;
-    @property(RewardProgressUI)
-    card4GrowthRewardPro: RewardProgressUI = null;
-    @property(cc.Label)
-    card4GrowthLabel: cc.Label = null;
-    @property(RewardProgressUI)
-    card5GrowthRewardPro: RewardProgressUI = null;
-    @property(cc.Label)
-    card5GrowthLabel: cc.Label = null;
-    @property(RewardProgressUI)
-    scoreGrowthRewardPro: RewardProgressUI = null;
-    @property(cc.Label)
-    scoreGrowthLabel: cc.Label = null;
+    @property(cc.Node)
+    nodeGrowthBox:cc.Node = null;
     
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
 
     private _taskListData:Array<any>= [];
+    private _growthBoxArr:GrowthBoxUI[] = [];
     start () {
 
     }
     onLoad () {
         this.taskList.direction = DListDirection.Horizontal;
         this.viewGroup.labelVisible = false;
+        
     }
 
     private _viewType:TaskViewSelect = 0;
@@ -121,35 +101,16 @@ export default class TaskPanel extends PopUpBase{
     }
 
     private initGrowthView(){
-        var levelCur:number = COMMON.userInfo.level;
-        var levelGrowthArr:RewardInfo[] = Task.taskInfo.getGrowthRewardWithType(GrowRewardType.LevelGrowth);
-        var levelMax:number =levelGrowthArr[levelGrowthArr.length-1].needScore;
-        this.levelGrowthRewardPro.setRewards(levelMax,levelCur,levelGrowthArr);
-        this.levelGrowthLabel.string = "等级："+Task.taskInfo.growthNameArr[0];
-
-        var passCur:number = Passage.passageInfo.passId;
-        var passGrowthArr:RewardInfo[] = Task.taskInfo.getGrowthRewardWithType(GrowRewardType.PassGrowth);
-        var passMax:number =passGrowthArr[passGrowthArr.length-1].needScore;
-        this.passGrowthRewardPro.setRewards(passMax,passCur,passGrowthArr);
-        this.passGrowthLabel.string = "试炼："+Task.taskInfo.growthNameArr[1];
-
-        var card4Cur:number = Card.getGradeCardCount(4);
-        var card4GrowthArr:RewardInfo[] = Task.taskInfo.getGrowthRewardWithType(GrowRewardType.cardGrowth4);
-        var card4Max:number =card4GrowthArr[card4GrowthArr.length-1].needScore;
-        this.card4GrowthRewardPro.setRewards(card4Max,card4Cur,card4GrowthArr);
-        this.card4GrowthLabel.string = "卡牌："+Task.taskInfo.growthNameArr[2];
-
-        var card5Cur:number = Card.getGradeCardCount(5);
-        var card5GrowthArr:RewardInfo[] = Task.taskInfo.getGrowthRewardWithType(GrowRewardType.cardGrowth5);
-        var card5Max:number =card5GrowthArr[card5GrowthArr.length-1].needScore;
-        this.card5GrowthRewardPro.setRewards(card5Max,card5Cur,card5GrowthArr);
-        this.card5GrowthLabel.string = "卡牌："+Task.taskInfo.growthNameArr[3];
-
-        var scoreCur:number =50;// Battle.battleInfo.score;
-        var scoreGrowthArr:RewardInfo[] = Task.taskInfo.getGrowthRewardWithType(GrowRewardType.scoreGrowth);
-        var scoreMax:number =scoreGrowthArr[scoreGrowthArr.length-1].needScore;
-        this.scoreGrowthRewardPro.setRewards(scoreMax,scoreCur,scoreGrowthArr);
-        this.scoreGrowthLabel.string = "战场："+Task.taskInfo.growthNameArr[4];
+        this._growthBoxArr = [];
+        while(this.nodeGrowthBox.childrenCount>0){
+            UI.removeUI(this.nodeGrowthBox.children[0]);
+        }
+        for(var i= GrowRewardType.LevelGrowth;i<=GrowRewardType.scoreGrowth;i++){
+            UI.loadUI(ResConst.GrowthBox,{type:i},this.nodeGrowthBox,(ui:GrowthBoxUI)=>{
+                this._growthBoxArr.push(ui);
+                ui.node.setPosition(-2,167-(ui.index*110));
+            })
+        }
 
     }
 

@@ -26,6 +26,7 @@ import { ResConst } from "../loading/steps/LoadingStepRes";
 import { BeFightPanelType } from "../../view/castle/BeFightPanel";
 import { GUIDE } from "../../manager/GuideManager";
 import MsgPushFightCard from "../../net/msg/MsgPushFightCard";
+import { Task, TaskType } from "../TaskAssist";
 
 export default class BattleAssist{
 
@@ -197,6 +198,9 @@ export default class BattleAssist{
                 EVENT.emit(GameEvent.Battle_scout_Complete);
                 EVENT.emit(GameEvent.Res_update_Cost_Complete,{types:[{type:ResType.gold,value:cost.gold}]});
             }
+
+            //完成任务
+            Task.finishTask(TaskType.RefreshEnemy);
         },this)
     }
 

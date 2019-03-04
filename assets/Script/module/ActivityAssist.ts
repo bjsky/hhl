@@ -73,10 +73,11 @@ export default class ActivityAssist{
                     COMMON.updateResInfo(msg.resp.resInfo);
                     UI.createPopUp(ResConst.singleAwardPanel,
                         {resType:Number(rewardCfg.resType),num:Number(rewardCfg.resNum)})
-                    }
+                }
+
+                this.updateSevenday(msg.resp.senvenDayInfo);
+                EVENT.emit(GameEvent.SevendayReceived,{index:index});
             }
-            this.updateSevenday(msg.resp.senvenDayInfo);
-            EVENT.emit(GameEvent.SevendayReceived,{index:index});
         },this)
     }
 

@@ -4,6 +4,9 @@ import { RewardInfo } from "../../model/TaskInfo";
 import PathUtil from "../../utils/PathUtil";
 import { UI } from "../../manager/UIManager";
 import { ResConst } from "../../module/loading/steps/LoadingStepRes";
+import { Task } from "../../module/TaskAssist";
+import { EVENT } from "../../message/EventCenter";
+import GameEvent from "../../message/GameEvent";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -31,6 +34,7 @@ export default class BoxRewardUI extends UIBase {
     // onLoad () {}
     private _reward:RewardInfo = null;
     private _isGrowth:boolean = false;
+    private _canReceive:boolean = false;
     public get reward(){
         return this._reward;
     }
@@ -39,15 +43,18 @@ export default class BoxRewardUI extends UIBase {
         super.setData(data);
         this._reward = data.reward as RewardInfo;
         this._isGrowth = data.isGrowth;
+        this._canReceive = data.canReceive;
     }
 
     onEnable(){
         this.initView();
+        EVENT.on(GameEvent.TaskActiveReceived,this.onTaskActiveReceived,this);
         this.icon.node.on(cc.Node.EventType.TOUCH_START,this.onTouchStart,this);
         this.icon.node.on(cc.Node.EventType.TOUCH_END,this.onTouchCancel,this);
         this.icon.node.on(cc.Node.EventType.TOUCH_CANCEL,this.onTouchCancel,this);
     }
     onDisable(){
+        EVENT.off(GameEvent.TaskActiveReceived,this.onTaskActiveReceived,this);
         this.icon.node.off(cc.Node.EventType.TOUCH_START,this.onTouchStart,this);
         this.icon.node.off(cc.Node.EventType.TOUCH_END,this.onTouchCancel,this);
         this.icon.node.off(cc.Node.EventType.TOUCH_CANCEL,this.onTouchCancel,this);
@@ -56,8 +63,22 @@ export default class BoxRewardUI extends UIBase {
 
     }
 
+
+    private onTaskActiveReceived(e){
+        var rewardId = e.detail.id;
+        if(rewardId == this.reward.rewardId){
+            this.received(rewardId);
+        }
+    }
+
     private onTouchStart(e){
-        UI.showDetailTip(ResConst.RewardTip,{reward:this._reward,target:this.node});
+        if(this._canReceive){
+            if(!this._reward.isReceived){
+                Task.receiveTaskReward(this._reward);
+            }
+        }else{
+            UI.showDetailTip(ResConst.RewardTip,{reward:this._reward,target:this.node});
+        }
     }
 
     private onTouchCancel(e){
@@ -68,6 +89,13 @@ export default class BoxRewardUI extends UIBase {
         this.label.string = this._reward.needScore.toString();
         this.label.node.active = !this._isGrowth;
         this.icon.load(PathUtil.getBoxRecevieIcon(this._reward.isReceived));
+    }
+
+    private received(rewardId:number){
+        this._reward = Task.taskInfo.getTaskReward(rewardId);
+        if(this._reward){
+            this.initView();
+        }
     }
 
     // update (dt) {}

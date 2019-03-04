@@ -17,6 +17,7 @@ import { SOUND } from "../../manager/SoundManager";
 import { GAME } from "../../GameController";
 import { GUIDE } from "../../manager/GuideManager";
 import LineupInfo from "../../model/LineupInfo";
+import { Task, TaskType } from "../TaskAssist";
 
 export default class FightAssist{
     private static _instance: FightAssist = null;
@@ -151,6 +152,14 @@ export default class FightAssist{
                                 {type:ResType.exp,value:addExp},
                                 {type:ResType.diamond,value:addDiamond}
                             ]});
+                        if(enemy.enemyType == EnemyTypeEnum.PersonlEnemy){  //复仇
+                            //完成任务 
+                            Task.finishTask(TaskType.RevengeEnemy);
+                        }else if(enemy.enemyType == EnemyTypeEnum.Enemy
+                            ||enemy.enemyType == EnemyTypeEnum.Robit){
+                            //完成任务 
+                            Task.finishTask(TaskType.FightEnemy);
+                        }
                     }else{
                         UI.createPopUp(ResConst.FightResult,
                             {result:this._result,

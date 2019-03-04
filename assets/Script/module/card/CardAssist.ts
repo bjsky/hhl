@@ -20,6 +20,7 @@ import MsgCardSummonGuide from "../../net/msg/MsgCardSummonGuide";
 import { SOUND } from "../../manager/SoundManager";
 import NumberUtil from "../../utils/NumberUtil";
 import { GUIDE } from "../../manager/GuideManager";
+import { Task, TaskType } from "../TaskAssist";
 
 export enum CardRaceType{
     All =0,
@@ -123,6 +124,9 @@ export default class CardAssist{
 
             EVENT.emit(GameEvent.Card_summon_Complete,{uuid:msg.resp.newCard.uuid});
             EVENT.emit(GameEvent.Res_update_Cost_Complete,{types:[{type:ResType.lifeStone,value:stoneCost}]});
+
+            //完成任务
+            Task.finishTask(TaskType.SummonTask);
         },this)
     }
     public summonCardGuide(stoneCost:number = 0){
@@ -322,6 +326,9 @@ export default class CardAssist{
                 var cost:SResInfo = COMMON.updateResInfo(msg.resp.resInfo);
                 EVENT.emit(GameEvent.Res_update_Cost_Complete,{types:[{type:ResType.lifeStone,value:cost.lifeStone}]});
                 EVENT.emit(GameEvent.Card_update_Complete,{uuid:msg.resp.cardInfo.uuid,type:CardUpType.UpLevel});
+
+                //完成任务
+                Task.finishTask(TaskType.UpLvTask);
             }
         },this);
     }
@@ -337,6 +344,9 @@ export default class CardAssist{
                 EVENT.emit(GameEvent.Card_Remove,{uuid:removeUuid,type:CardRemoveType.upStarRemove});
                 var cost:SResInfo = COMMON.updateResInfo(msg.resp.resInfo);
                 EVENT.emit(GameEvent.Res_update_Cost_Complete,{types:[{type:ResType.gold,value:cost.gold}]});
+
+                //完成任务
+                Task.finishTask(TaskType.UpGradeTask);
             }
         },this);
     }

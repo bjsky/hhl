@@ -13,6 +13,7 @@ import GameEvent from "../../message/GameEvent";
 import { ResType } from "../../model/ResInfo";
 import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 import { CardBigShowType } from "./CardBig";
+import { Task, TaskType } from "../../module/TaskAssist";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -103,6 +104,8 @@ export default class CardStoreItem extends DListItem{
                 
                 EVENT.emit(GameEvent.Res_update_Cost_Complete,{types:[{type:ResType.diamond,value:this._cost}]});
                 this.showGetCard(msg.resp.newCard.uuid);
+                //完成任务 
+                Task.finishTask(TaskType.DiamondBuy);
             }
         },this)
     }

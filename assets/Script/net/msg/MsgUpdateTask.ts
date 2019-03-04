@@ -17,7 +17,7 @@ export class SCUpdateTask{
 
     public static parse(obj:any):SCUpdateTask{
         var info:SCUpdateTask = new SCUpdateTask();
-        info.taskInfo = STaskInfo.parse(obj);
+        info.taskInfo = STaskInfo.parse(obj.taskInfo);
         return info;
     }
 }

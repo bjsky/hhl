@@ -15,6 +15,7 @@ import MsgGetReward, { GetRewardType } from "../net/msg/MsgGetReward";
 import { NET } from "../net/core/NetController";
 import { EVENT } from "../message/EventCenter";
 import { SOUND } from "../manager/SoundManager";
+import { Task, TaskType } from "../module/TaskAssist";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -151,6 +152,14 @@ export default class ResPanel extends PopUpBase {
                 COMMON.updateResInfo(msg.resp.resInfo);
                 UI.createPopUp(ResConst.singleAwardPanel,
                     {type:type,num:num})
+                
+                if(type == GetRewardType.SeeVideoGetGold){
+                    //完成任务 
+                    Task.finishTask(TaskType.SeeVideoGetGold);
+                }else if(type == GetRewardType.SeeVideoGetStone){
+                    //完成任务 
+                    Task.finishTask(TaskType.SeeVideoGetStone);
+                }
             }
         },this)
     }

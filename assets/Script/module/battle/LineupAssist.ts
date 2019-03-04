@@ -9,6 +9,7 @@ import { COMMON } from "../../CommonData";
 import { SEnemyLineup } from "../../net/msg/MsgGetEnemyList";
 import CardInfo from "../../model/CardInfo";
 import { Card } from "../card/CardAssist";
+import { Task, TaskType } from "../TaskAssist";
 
 export default class LineupAssist{
 
@@ -103,6 +104,9 @@ export default class LineupAssist{
             if(msg && msg.resp){
                 Lineup.initOwnerLineup(msg.resp.lineUpOwner);
                 EVENT.emit(GameEvent.Lineup_Changed);
+
+                //完成任务 
+                Task.finishTask(TaskType.ChangeLineup);
             }
         },this)
     }
@@ -113,6 +117,8 @@ export default class LineupAssist{
             if(msg && msg.resp){
                 Lineup.initOwnerLineup(msg.resp.lineUpOwner);
                 EVENT.emit(GameEvent.Lineup_Changed);
+                //完成任务 
+                Task.finishTask(TaskType.ChangeLineup);
             }
         },this)
     }

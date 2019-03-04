@@ -9,6 +9,7 @@ import { ResConst } from "../loading/steps/LoadingStepRes";
 import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
 import { GUIDE } from "../../manager/GuideManager";
+import { Task, TaskType } from "../TaskAssist";
 
 export default class ShareAssist{
     private static _instance: ShareAssist = null;
@@ -50,6 +51,8 @@ export default class ShareAssist{
             var query:string ="";
 
             WeiXin.shareAppMessage(title,imgUrl,query);
+            //完成任务 
+            Task.finishTask(TaskType.ShareFriend);
         }
     }
 

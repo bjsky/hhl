@@ -43,7 +43,8 @@ export const ResConst = {
     RewardTip:"prefabs/rewardTip",
     TaskItem:"prefabs/taskItem",
     SevendayItem:"prefabs/sevendayItem",
-    BoxReward:"prefabs/boxReward"
+    BoxReward:"prefabs/boxReward",
+    GrowthBox:"prefabs/growthBox"
 }
 /**
  * 加载配置

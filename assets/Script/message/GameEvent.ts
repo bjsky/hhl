@@ -70,4 +70,10 @@ export default class GameEvent{
     public static User_Level_UP:string ="User_Level_UP";
     //七日领奖
     public static SevendayReceived:string ="SevendayReceived";
+    //任务更新
+    public static TaskUpdate:string ="TaskUpdate";
+    //任务活跃度领奖
+    public static TaskActiveReceived:string = "TaskActiveReceived";
+    //领取成长奖励
+    public static TaskGrowthReceived:string = "TaskGrowthReceived";
 }

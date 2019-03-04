@@ -312,7 +312,7 @@ export class SRewardInfo{
     public static parse(obj:any):SRewardInfo{
         var info:SRewardInfo = new SRewardInfo();
         info.rewardId = obj.rewardId;
-        info.isReceived = obj.isReceived;
+        info.isReceived = (Number(obj.isReceived)== 1)?true:false;
 
         return info;
     }
@@ -354,7 +354,7 @@ export class STaskProgressInfo{
 
     public static parse(obj:any):STaskProgressInfo{
         var info:STaskProgressInfo = new STaskProgressInfo();
-        info.taskId = obj.taskId;
+        info.taskId = Number(obj.taskId);
         info.finishNum = obj.finishNum;
         return info;
     }

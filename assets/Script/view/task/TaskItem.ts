@@ -53,12 +53,17 @@ export default class TaskItem extends DListItem{
         
     }
 
+    private _finishNum :number = 0;
     private initView(){
         this.activeScore.string = (this._taskPro.taskScore).toString();
         this.desc.string = this._taskPro.taskDesc;
-        this.finishNum.string = this._taskPro.finishNum.toString();
+        this._finishNum = this._taskPro.finishNum;
+        if(this._finishNum>this._taskPro.taskCount){
+            this._finishNum = this._taskPro.taskCount;
+        }
+        this.finishNum.string = this._finishNum.toString();
         this.totalNum.string = "/"+this._taskPro.taskCount.toString();
-        this.btnGoto.node.active = this._taskPro.finishNum<this._taskPro.taskCount;
+        this.btnGoto.node.active = this._finishNum<this._taskPro.taskCount;
     }
 
     // update (dt) {}

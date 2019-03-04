@@ -15,6 +15,7 @@ import FightInfo, { FightPlayerType } from "../../model/FightInfo";
 import LineupInfo from "../../model/LineupInfo";
 import { CONSTANT } from "../../Constant";
 import { GUIDE } from "../../manager/GuideManager";
+import { Task, TaskType } from "../TaskAssist";
 
 export default class PassageAssist{
 
@@ -84,6 +85,9 @@ export default class PassageAssist{
                         {type:ResType.lifeStone,value:cost.lifeStone},
                         {type:ResType.exp,value:msg.resp.addExp},
                     ]})
+                
+                //完成任务
+                Task.finishTask(TaskType.CollectRes);
             }
         },this)
     }
@@ -136,6 +140,9 @@ export default class PassageAssist{
                 //         {type:ResType.lifeStone,value:cost.lifeStone},
                 //         {type:ResType.exp,value:msg.resp.addExp},
                 //     ]})
+                
+                //完成任务
+                Task.finishTask(TaskType.FightBoss);
             }
         },this)
     }

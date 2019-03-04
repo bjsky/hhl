@@ -2,6 +2,8 @@ import { RewardInfo } from "../../model/TaskInfo";
 import BoxRewardUI from "./BoxRewardUI";
 import { UI } from "../../manager/UIManager";
 import { ResConst } from "../../module/loading/steps/LoadingStepRes";
+import { EVENT } from "../../message/EventCenter";
+import GameEvent from "../../message/GameEvent";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -49,7 +51,8 @@ export default class RewardProgressUI extends cc.Component {
 
         for(var i:number = 0;i<this._rewards.length;i++){
             var reward:RewardInfo = this._rewards[i];
-            UI.loadUI(ResConst.BoxReward,{reward:reward,isGrowth:this.isGrowth},this.boxNode,(ui:BoxRewardUI)=>{
+            var canReceive:boolean  = reward.needScore<=this._curScore;
+            UI.loadUI(ResConst.BoxReward,{reward:reward,isGrowth:this.isGrowth,canReceive:canReceive},this.boxNode,(ui:BoxRewardUI)=>{
                 var per:number = ui.reward.needScore /this._totalScore;
                 console.log(ui.reward.needScore,this._totalScore)
                 ui.node.setPosition(cc.v2(this.boxNode.width*per,10));
