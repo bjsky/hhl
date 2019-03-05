@@ -19,6 +19,13 @@ export default class GameEvent{
     public static Panel_Show_Effect_Complete:string ="Panel_Show_Effect_Complete";
     
     public static Guide_Touch_Complete:string ="Guide_Touch_Complete";   //完成引导点击
+    
+    //开始若引导
+    public static Guide_Weak_Start:string = "Guide_Weak_Start";
+    //弱引导点击
+    public static Guide_Weak_Touch_Complete:string ="Guide_Weak_Touch_Complete" ;
+    //弱引导结束
+    public static Guide_Weak_End:string = "Guide_Weak_end";
 
     //建筑升级完成
     public static Build_Update_Complete:string ="Build_Update_Complete";

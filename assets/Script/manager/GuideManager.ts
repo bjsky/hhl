@@ -12,6 +12,8 @@ import { EVENT } from "../message/EventCenter";
 import PathUtil from "../utils/PathUtil";
 import { COMMON } from "../CommonData";
 import { SGuideInfo } from "../net/msg/MsgLogin";
+import { TaskType } from "../module/TaskAssist";
+import { Battle } from "../module/battle/BattleAssist";
 
 export enum GuideTypeEnum {
     GuideStory = 1,
@@ -19,6 +21,11 @@ export enum GuideTypeEnum {
     GuideArrow = 3,
     GuideDrag = 4,
     GuideNodeTalk = 5,
+}
+
+export enum GuideForceEnum{
+    Force = 1,  //强引导
+    Weak,   //若引导
 }
 
 export enum GuideNpcDir{
@@ -30,7 +37,6 @@ export enum GuideArrowDir{
     ArrowDirLeft = 1,
     ArrowDirRight
 }
-
 
 export default class GuideManager{
     private static _instance: GuideManager = null;
@@ -47,12 +53,8 @@ export default class GuideManager{
 
     private guideTap:GuideTapPanel = null;
 
-    private _isINGuide:boolean = false;
     public get isInGuide(){
-        return this._isINGuide;
-    }
-    public set isInGuide(bool:boolean){
-        this._isINGuide = bool;
+        return this.guideInfo && this.guideInfo.guideId>0;
     }
 
     public initGuide(data:any,newUser:number){
@@ -70,7 +72,7 @@ export default class GuideManager{
     }
 
     public startGuide(){
-        if(!this._isINGuide){
+        if(!this.isInGuide){
             this.endGuide();
             return;
         }
@@ -128,7 +130,6 @@ export default class GuideManager{
         UI.removeUI(this.guideTap.node);
         this.guideTap  = null;
         this.guideInfo = null;
-        this.isInGuide = false;
         EVENT.emit(GameEvent.Guide_End,{});
     }
     
@@ -203,6 +204,57 @@ export default class GuideManager{
     public setBlockEnable(bool:boolean){
         this._guideBlockLayer.active = bool;
     }
+
+    /////////////弱引导/////////////////
+    private _currentWeakGuideId:number =0;
+    private _currentWeakGuideInfo:GuideInfo = null;
+    public startWeakGuide(guideId:number){
+        this._currentWeakGuideId = guideId;
+        if(!this.isInWeakGuide){
+            this.endWeakGuide();
+            return;
+        }
+        this._currentWeakGuideInfo = new GuideInfo();
+        this._currentWeakGuideInfo.initFromWeak(this._currentWeakGuideId);
+        if(this.checkGuideEnable(this._currentWeakGuideInfo)){
+            if(this.guideTap == null){
+                UI.loadUI(ResConst.GuideTap,{},UI.PlotLayer,(res:UIBase)=>{
+                    this.guideTap = res as GuideTapPanel;
+                    this.guideTap.showWeak(this._currentWeakGuideInfo);
+                });
+            }else{
+                this.guideTap.showWeak(this._currentWeakGuideInfo);
+            }
+        }else{
+            this.endWeakGuide();
+        }
+    }
+
+    private checkGuideEnable(info:GuideInfo):boolean{
+        if(info.guideName == "buildPanel_fightRevenge"){    //能够复仇
+            return Battle.personalEnemyList.length>0 && Battle.battleInfo.revengeTime<=0;
+        }else{
+            return true;
+        }
+    }
+
+    //是否在弱引导
+    public get isInWeakGuide(){
+        return this._currentWeakGuideId>0;
+    }
+
+    public endWeakGuide(){
+        UI.removeUI(this.guideTap.node);
+        this.guideTap  = null;
+        this._currentWeakGuideInfo = null;
+        this._currentWeakGuideId = 0;
+        EVENT.emit(GameEvent.Guide_Weak_End,{});
+    }
+
+    public nextWeakGuide(guideId:number){
+        this.startWeakGuide(MsgGuideUpdate.getNextGuide(guideId));
+    }
+
 }
 
 export var GUIDE = GuideManager.getInstance();

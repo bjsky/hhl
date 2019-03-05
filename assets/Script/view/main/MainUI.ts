@@ -19,6 +19,8 @@ import { Share } from "../../module/share/ShareAssist";
 import { Card } from "../../module/card/CardAssist";
 import { GLOBAL } from "../../GlobalData";
 import { TaskViewSelect } from "../task/TaskPanel";
+import { Task } from "../../module/TaskAssist";
+import { GUIDE } from "../../manager/GuideManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -116,6 +118,8 @@ export default class MainUI extends UIBase {
         WeiXin.createGameClubButton();
 
         this.playGrowth();
+
+        UI.main = this;
     }
 
     start () {
@@ -152,17 +156,35 @@ export default class MainUI extends UIBase {
         this.explevelEffect.initProgress(COMMON.userInfo.exp,COMMON.userInfo.totalExp,COMMON.userInfo.level);
     }
     
+    private _growthLabelIndex:number = 0;
     private playGrowth(){
         this.nodeGrowth.scaleY = 0;
-        var seq = cc.sequence(
-            cc.scaleTo(0.3,1,1.2),
-            cc.scaleTo(0.1,1,1),
-            cc.delayTime(5),
-            cc.scaleTo(0.1,1,1.2),
-            cc.scaleTo(0.3,1,0),
-            cc.delayTime(10)
-        )
-        this.nodeGrowth.runAction(seq.repeatForever());
+        if(Task.taskInfo.growthNameArr.length>0){
+            var seq = cc.sequence(
+                cc.callFunc(()=>{
+                    this.labelGrowth.string = Task.taskInfo.growthNameArr[this._growthLabelIndex];
+                    this.labelGrowth.node.parent.width = this.labelGrowth.node.width+100;
+                }),
+                cc.scaleTo(0.3,1,1.2),
+                cc.scaleTo(0.1,1,1),
+                cc.delayTime(15),
+                cc.scaleTo(0.1,1,1.2),
+                cc.scaleTo(0.3,1,0),
+                cc.delayTime(60),
+                cc.callFunc(()=>{
+                    if(Task.taskInfo.growthNameArr.length>0){
+                        if(this._growthLabelIndex>=Task.taskInfo.growthNameArr.length-1){
+                            this._growthLabelIndex = 0;
+                        }else{
+                            this._growthLabelIndex ++;
+                        }
+                    }else{
+                        this.nodeGrowth.stopAllActions();
+                    }
+                })
+            )
+            this.nodeGrowth.runAction(seq.repeatForever());
+        }
     }
 
     private resUpdateCost(e){
@@ -240,6 +262,7 @@ export default class MainUI extends UIBase {
         EVENT.on(GameEvent.Res_Data_Change,this.onResDataChange,this);
         EVENT.on(GameEvent.ShareGetReward_Complete,this.onShareComplete,this);
         EVENT.on(GameEvent.Guide_End,this.onGuideEnd,this);
+        EVENT.on(GameEvent.Guide_Weak_Touch_Complete,this.onWeakGuideTouch,this);
 
         this.initRedPoint();
     }
@@ -267,6 +290,8 @@ export default class MainUI extends UIBase {
         EVENT.off(GameEvent.Res_Data_Change,this.onResDataChange,this);
         EVENT.off(GameEvent.ShareGetReward_Complete,this.onShareComplete,this);
         EVENT.off(GameEvent.Guide_End,this.onGuideEnd,this);
+        EVENT.off(GameEvent.Guide_Weak_Touch_Complete,this.onWeakGuideTouch,this);
+
     }
 
     private initRedPoint(){
@@ -345,5 +370,45 @@ export default class MainUI extends UIBase {
     }
     private onDiamondStore(e){
         UI.createPopUp(ResConst.StorePanel,{});
+    }
+
+
+    ////////////////Guide//////////////////
+    public getGuideNode(name:string):cc.Node{
+        if(name == "ui_share"){
+            return this.btnShare.node;
+        }else if(name == "ui_getGold"){
+            return this.btnAddGold.node;
+        }else if(name == "ui_getStone"){
+            return this.btnAddStone.node;
+        }else if(name == "ui_diamondStore"){
+            return this.btnStore.node;
+        }else if(name == "ui_task"){
+            return this.taskBtn.node;
+        }else{
+            return null;
+        }
+    }
+
+    public onWeakGuideTouch(e){
+        var guideId = e.detail.id;
+        var nodeName = e.detail.name;
+        if(nodeName == "ui_share"){
+            this.onShare(null);
+            GUIDE.nextWeakGuide(guideId);
+        }else if(nodeName =="ui_getGold"){
+            this.onAddGold(null);
+            GUIDE.nextWeakGuide(guideId);
+        }else if(nodeName =="ui_getStone"){
+            this.onAddStone(null);
+            GUIDE.nextWeakGuide(guideId);
+        }else if(nodeName =="ui_diamondStore"){
+            this.onStoreBtnTouch(null);
+            GUIDE.nextWeakGuide(guideId);
+        }
+        else if(nodeName =="ui_task"){
+            this.onTaskBtnTouch(null);
+            GUIDE.nextWeakGuide(guideId);
+        }
     }
 }

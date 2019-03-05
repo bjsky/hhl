@@ -1,5 +1,8 @@
 import DListItem from "../../component/DListItem";
 import { TaskProgressInfo } from "../../model/TaskInfo";
+import { EVENT } from "../../message/EventCenter";
+import { GUIDE } from "../../manager/GuideManager";
+import GameEvent from "../../message/GameEvent";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -45,11 +48,12 @@ export default class TaskItem extends DListItem{
     onEnable(){
         super.onEnable();
         this.initView();
+        this.btnGoto.node.on(cc.Node.EventType.TOUCH_START,this.onGotoTouch,this);
     }
 
     onDisable(){
         super.onDisable();
-        
+        this.btnGoto.node.off(cc.Node.EventType.TOUCH_START,this.onGotoTouch,this);
     }
 
     private _finishNum :number = 0;
@@ -66,6 +70,10 @@ export default class TaskItem extends DListItem{
             this.lablNum.node.x = 163;
         }
         this.btnGoto.node.active = this._finishNum<this._taskPro.taskCount;
+    }
+
+    private onGotoTouch(){
+        EVENT.emit(GameEvent.Guide_Weak_Start,{guideId:this._taskPro.guideId});
     }
 
     // update (dt) {}

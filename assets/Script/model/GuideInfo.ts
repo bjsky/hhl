@@ -41,6 +41,11 @@ export default class GuideInfo extends InfoBase{
         this.setGuideInfo();
     }
 
+    public initFromWeak(guideId:number){
+        this.guideId = guideId;
+        this.setGuideInfo();
+    }
+
     public setGuideInfo(){
         if(this.guideId>0){
             var info = CFG.getCfgDataById(ConfigConst.Guide,this.guideId);
@@ -69,13 +74,6 @@ export default class GuideInfo extends InfoBase{
             this.delay = 0;
             this.checkTime = 0;
             this.params = null;
-        }
-
-
-        if(this.guideId != -1){
-            GUIDE.isInGuide = true;
-        }else{
-            GUIDE.isInGuide = false;
         }
     }
 

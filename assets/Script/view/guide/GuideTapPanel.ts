@@ -4,7 +4,7 @@ import TextAni from "../../component/TextAni";
 import { COMMON } from "../../CommonData";
 import CityScene from "../../scene/CityScene";
 import { SCENE } from "../../manager/SceneManager";
-import { GuideTypeEnum, GUIDE, GuideNpcDir, GuideArrowDir } from "../../manager/GuideManager";
+import { GuideTypeEnum, GUIDE, GuideNpcDir, GuideArrowDir, GuideForceEnum } from "../../manager/GuideManager";
 import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
 import { UI } from "../../manager/UIManager";
@@ -67,17 +67,9 @@ export default class GuideTapPanel extends UIBase {
         this.content.string ="";
         this.clickLabel.node.active = false;
     }
-
-    // onEnable(){
-    //     this.clickNode.on(cc.Node.EventType.TOUCH_START,this.onMaskClick,this);
-    // }
-
-    // onDisable(){
-    //     this.clickNode.off(cc.Node.EventType.TOUCH_START,this.onMaskClick,this);
-    // }
-
     private _guideId:number =0;
     private _guideInfo:GuideInfo = null;
+    private _guideForce:GuideForceEnum = 0;
 
     //设置数据
     public setData(data){
@@ -90,6 +82,7 @@ export default class GuideTapPanel extends UIBase {
     public show(data){
         this._guideInfo = data;
         this._guideId = this._guideInfo.guideId;
+        this._guideForce = GuideForceEnum.Force;
 
         this.unscheduleAllCallbacks();
         GUIDE.setBlockEnable(true);
@@ -240,10 +233,14 @@ export default class GuideTapPanel extends UIBase {
                 }
             }
         }else{
-            GUIDE.endGuide();
-            NET.send(MsgGuideUpdate.create(-1),(msg:MsgGuideUpdate)=>{
-                // GUIDE.endGuide();
-            },this)
+            if(this._guideForce == GuideForceEnum.Force){
+                GUIDE.endGuide();
+                NET.send(MsgGuideUpdate.create(-1),(msg:MsgGuideUpdate)=>{
+                    // GUIDE.endGuide();
+                },this)
+            }else if(this._guideForce == GuideForceEnum.Weak){
+                GUIDE.endWeakGuide();
+            }
         }
     }
 
@@ -281,6 +278,9 @@ export default class GuideTapPanel extends UIBase {
         }else if(this._guideInfo.nodeName.indexOf("popup_")>-1){
             return UI.getPopupGuideNode(this._guideInfo.nodeName);
         }
+        else if(this._guideInfo.nodeName.indexOf("ui_")>-1){
+            return UI.getMainUIGuideNode(this._guideInfo.nodeName);
+        }
         else {
             return null;
         }
@@ -295,7 +295,10 @@ export default class GuideTapPanel extends UIBase {
         }
         this.setClickArea(find);
         var wPos:cc.Vec2 = find.parent.convertToWorldSpaceAR(find.position);
-        GUIDE.updateGuideMaskPosAndSize(wPos,find.getContentSize(),cc.v2(find.anchorX,find.anchorY),51);
+        if(this._guideForce == GuideForceEnum.Force){ //强制类型处理遮罩
+            GUIDE.updateGuideMaskPosAndSize(wPos,find.getContentSize(),cc.v2(find.anchorX,find.anchorY),51);
+        }
+        this.guideArrowNode.stopAllActions();
         this.guideArrowNode.setPosition(this.clickNode.position)
         this.guideArrowNode.runAction(cc.sequence(
             cc.moveBy(0.5,cc.v2(0,30))
@@ -310,7 +313,11 @@ export default class GuideTapPanel extends UIBase {
         this.clickNode.off(cc.Node.EventType.TOUCH_START,this.onArrowClick,this);
         this.guideArrowNode.stopAllActions();
         this.arrowNode.active = false;
-        EVENT.emit(GameEvent.Guide_Touch_Complete,{id:this._guideId,name:this._guideInfo.nodeName});
+        if(this._guideForce == GuideForceEnum.Force){
+            EVENT.emit(GameEvent.Guide_Touch_Complete,{id:this._guideId,name:this._guideInfo.nodeName});
+        }else if(this._guideForce == GuideForceEnum.Weak){
+            EVENT.emit(GameEvent.Guide_Weak_Touch_Complete,{id:this._guideId,name:this._guideInfo.nodeName});
+        }
     }
 
 
@@ -337,4 +344,33 @@ export default class GuideTapPanel extends UIBase {
             ).repeatForever());
     }
     // update (dt) {}
+
+/////////////弱引导/////////////////
+    /**
+     * 显示若引导
+     * @param guideInfo 
+     */
+    public showWeak(guideInfo:GuideInfo){
+
+        this._guideInfo = guideInfo;
+        this._guideId = this._guideInfo.guideId;
+        this._guideForce = GuideForceEnum.Weak;
+
+        this.unscheduleAllCallbacks();
+        this.arrowNode.active = false;
+        this.storyNode.active = this.dialogNode.active = false;
+        this._checkNodeTime = 0;
+        this._checkNodeMaxTime = this._guideInfo.checkTime;
+        this.schedule(this.checkNode,this._checkNodeInterval);
+        this.node.on(cc.Node.EventType.TOUCH_START,this.onNodeTouch,this);
+    }
+
+    onDisable(){
+        this.node.off(cc.Node.EventType.TOUCH_START,this.onNodeTouch,this);
+    }
+    private onNodeTouch(e){
+        if(e.target !=this.clickNode){
+            GUIDE.endWeakGuide();
+        }
+    }
 }

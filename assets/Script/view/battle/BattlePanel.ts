@@ -98,6 +98,8 @@ export default class BattlePanel extends UIBase {
         EVENT.on(GameEvent.Passage_FightBossEnd,this.onPassageFightBossEnd,this);
         EVENT.on(GameEvent.Lineup_Changed,this.onLineupChange,this);
         EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
+
+        EVENT.on(GameEvent.Guide_Weak_Touch_Complete,this.onGuideWeakTouch,this);
     }
 
     onDisable(){
@@ -110,6 +112,8 @@ export default class BattlePanel extends UIBase {
         EVENT.off(GameEvent.Passage_FightBossEnd,this.onPassageFightBossEnd,this);
         EVENT.off(GameEvent.Lineup_Changed,this.onLineupChange,this);
         EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
+
+        EVENT.off(GameEvent.Guide_Weak_Touch_Complete,this.onGuideWeakTouch,this);
 
         this.unscheduleAllCallbacks();
         this.goldFly.reset();
@@ -278,6 +282,21 @@ export default class BattlePanel extends UIBase {
             GUIDE.nextGuide(guideId);
         }
 
+    }
+
+    private onGuideWeakTouch(e){
+        var guideId = e.detail.id;
+        var nodeName = e.detail.name;
+        if(nodeName == "buildPanel_lineup"){
+            this.showLineup(null);
+            GUIDE.nextWeakGuide(guideId);
+        }else if(nodeName == "buildPanel_fight"){
+            this.onFightBoss(null);
+            GUIDE.nextWeakGuide(guideId);
+        }else if(nodeName == "buildPanel_getRes"){
+            this.collectRes(null);
+            GUIDE.nextWeakGuide(guideId);
+        }
     }
     // update (dt) {}
 }

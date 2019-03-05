@@ -16,6 +16,8 @@ import { NET } from "../net/core/NetController";
 import { EVENT } from "../message/EventCenter";
 import { SOUND } from "../manager/SoundManager";
 import { Task, TaskType } from "../module/TaskAssist";
+import GameEvent from "../message/GameEvent";
+import { GUIDE } from "../manager/GuideManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -85,11 +87,13 @@ export default class ResPanel extends PopUpBase {
         super.onEnable();
         this.initView();
         this.videoBtn.node.on(cc.Node.EventType.TOUCH_START,this.onVideoSee,this);
+        EVENT.on(GameEvent.Guide_Weak_Touch_Complete,this.onWeakGuideTouch,this);
     }
 
     onDisable(){
         super.onDisable();
         this.videoBtn.node.off(cc.Node.EventType.TOUCH_START,this.onVideoSee,this);
+        EVENT.off(GameEvent.Guide_Weak_Touch_Complete,this.onWeakGuideTouch,this);
     }
 
     start () {
@@ -166,6 +170,25 @@ export default class ResPanel extends PopUpBase {
 
     public static show(type:ResPanelType){
         UI.createPopUp(ResConst.resPanel,{type:type});
+    }
+
+
+    ////////////////Guide//////////////////
+    public getGuideNode(name:string):cc.Node{
+        if(name == "popup_getBtn"){
+            return this.videoBtn.node;
+        }else{
+            return null;
+        }
+    }
+
+    public onWeakGuideTouch(e){
+        var guideId = e.detail.id;
+        var nodeName = e.detail.name;
+        if(nodeName == "popup_getBtn"){
+            this.onVideoSee();
+            GUIDE.nextWeakGuide(guideId);
+        }
     }
     // update (dt) {}
 }

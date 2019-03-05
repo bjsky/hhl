@@ -10,6 +10,9 @@ import { UI } from "../../manager/UIManager";
 import { Lineup } from "../../module/battle/LineupAssist";
 import FightInfo from "../../model/FightInfo";
 import { Fight } from "../../module/fight/FightAssist";
+import { EVENT } from "../../message/EventCenter";
+import GameEvent from "../../message/GameEvent";
+import { GUIDE } from "../../manager/GuideManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -62,6 +65,8 @@ export default class FightDeailPanel extends PopUpBase {
         this.btnAttack.node.on(cc.Node.EventType.TOUCH_START,this.onFightEnemy,this);
         this.btnRevenge.node.on(cc.Node.EventType.TOUCH_START,this.onRevenge,this);
         this.lineUpMine.initLineup(this._enemyInfo.enemyLineupMap);
+
+        EVENT.on(GameEvent.Guide_Weak_Touch_Complete,this.onGuideWeakTouch,this);
         this.initView();
     }
 
@@ -69,6 +74,9 @@ export default class FightDeailPanel extends PopUpBase {
         super.onDisable();
         this.btnAttack.node.off(cc.Node.EventType.TOUCH_START,this.onFightEnemy,this);
         this.btnRevenge.node.off(cc.Node.EventType.TOUCH_START,this.onRevenge,this);
+
+
+        EVENT.off(GameEvent.Guide_Weak_Touch_Complete,this.onGuideWeakTouch,this);
 
     }
 
@@ -130,5 +138,23 @@ export default class FightDeailPanel extends PopUpBase {
         Fight.showFight(foMine,foEnemey,this._enemyInfo);
     }
 
+    ///////////guide//////////////////
+    public getGuideNode(name:string):cc.Node{
+        if(name == "popup_revenge" && (Battle.battleInfo.revengeTime<=0)){
+            return this.btnRevenge.node;
+        }
+        else{
+            return null;
+        }
+    }
+
+    private onGuideWeakTouch(e){
+        var guideId = e.detail.id;
+        var nodeName = e.detail.name;
+        if(nodeName == "popup_revenge"){
+            this.onRevenge(null);
+            GUIDE.nextWeakGuide(guideId);
+        }
+    }
     // update (dt) {}
 }

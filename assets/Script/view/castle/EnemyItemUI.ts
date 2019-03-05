@@ -75,5 +75,16 @@ export default class EnmeyItemUI extends DListItem{
 
     }
 
+    public onShowDetail(){
+        this.onHeadTouch(null);
+    }
+
+    public getGuideNode(name:string):cc.Node{
+        if(name == "buildPanel_fightRevenge"){
+            return this.sprHead.node;
+        }else{
+            return null;
+        }
+    }
     // update (dt) {}
 }

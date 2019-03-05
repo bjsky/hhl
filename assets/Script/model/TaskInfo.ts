@@ -74,6 +74,7 @@ export default class TaskInfo{
             taskProgress.taskDesc = taskCfg.taskDesc;
             taskProgress.taskScore = Number(taskCfg.taskScore);
             taskProgress.taskCount = Number(taskCfg.taskCount);
+            taskProgress.guideId = Number(taskCfg.guideId);
 
             var sTaskPro:STaskProgressInfo = null;
             sInfo.taskProgresses.forEach((st:STaskProgressInfo)=>{
@@ -213,7 +214,8 @@ export class TaskProgressInfo{
     public taskScore:number =0;
     //任务总量 
     public taskCount:number = 0;
-
+    //引导id
+    public guideId:number = 0;
 }
 
 export class GrowthRewardInfo{

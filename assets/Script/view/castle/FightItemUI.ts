@@ -92,6 +92,9 @@ export default class FightItemUI extends DListItem{
         var foEnemey:FightInfo = this._enemyInfo.getFightInfo();
         Fight.showFight(foMine,foEnemey,this._enemyInfo);
     }
+    public onAttack(){
+        this.onAttackTouch(null);
+    }
     start () {
 
     }

@@ -109,6 +109,7 @@ export default class CityScene extends SceneBase {
         EVENT.on(GameEvent.Passage_data_change,this.onPassageDataChange,this);
         EVENT.on(GameEvent.Battle_data_Change,this.onBattleDataChange,this);
         EVENT.on(GameEvent.Guide_End,this.onGuideEnd,this);
+        EVENT.on(GameEvent.Guide_Weak_Touch_Complete,this.onGuideWeakTouch,this);
         
         this.initRedpoint();
     }
@@ -125,6 +126,7 @@ export default class CityScene extends SceneBase {
         EVENT.off(GameEvent.Passage_data_change,this.onPassageDataChange,this);
         EVENT.off(GameEvent.Battle_data_Change,this.onBattleDataChange,this);
         EVENT.off(GameEvent.Guide_End,this.onGuideEnd,this);
+        EVENT.off(GameEvent.Guide_Weak_Touch_Complete,this.onGuideWeakTouch,this);
     }
     
     private initRedpoint(){
@@ -342,6 +344,23 @@ export default class CityScene extends SceneBase {
         }else if(nodeName == "building_castle"){
             this.openBuildUI(BuildType.Castle);
             GUIDE.nextGuide(guideId);
+        }
+    }
+    private onGuideWeakTouch(e){
+        var guideId = e.detail.id;
+        var nodeName = e.detail.name;
+        if(nodeName == "building_temple"){
+            this.openBuildUI(BuildType.Temple);
+            GUIDE.nextWeakGuide(guideId);
+        }else if(nodeName == "building_hero"){
+            this.openBuildUI(BuildType.Hero);
+            GUIDE.nextWeakGuide(guideId);
+        }else if(nodeName == "building_battle"){
+            this.openBuildUI(BuildType.Battle);
+            GUIDE.nextWeakGuide(guideId);
+        }else if(nodeName == "building_castle"){
+            this.openBuildUI(BuildType.Castle);
+            GUIDE.nextWeakGuide(guideId);
         }
     }
     // update (dt) {}

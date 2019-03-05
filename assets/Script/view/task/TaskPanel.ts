@@ -7,6 +7,9 @@ import { UI } from "../../manager/UIManager";
 import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 import GrowthBoxUI from "./GrowthBoxUI";
 import { GrowRewardType } from "../../model/TaskInfo";
+import { EVENT } from "../../message/EventCenter";
+import GameEvent from "../../message/GameEvent";
+import { GUIDE } from "../../manager/GuideManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -69,13 +72,14 @@ export default class TaskPanel extends PopUpBase{
     onEnable(){
         super.onEnable();
         this.viewGroup.node.on(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.viewGroupSelectChange,this);
-
+        EVENT.on(GameEvent.Guide_Weak_Start,this.onStartWeakGuide,this);
         this.initView();
     }
     onDisable(){
         super.onDisable();
         this.taskList.setListData([]);
         this.viewGroup.node.off(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.viewGroupSelectChange,this)
+        EVENT.off(GameEvent.Guide_Weak_Start,this.onStartWeakGuide,this);
     }
 
     private _selectViewIndex:TaskViewSelect = 0;
@@ -113,15 +117,18 @@ export default class TaskPanel extends PopUpBase{
         }
 
     }
-
-
-
-    private onNodeTouch(e){
-
+    private _closeCompleStartGuideId:number = 0;
+    private onStartWeakGuide(e){
+        this._closeCompleStartGuideId = e.detail.guideId;
+        this.onClose(e);
     }
-
-    private onNodeCancel(e){
-
+    protected onCloseComplete(){
+        super.onCloseComplete();
+        if(this._closeCompleStartGuideId>0){
+            var guideId  = this._closeCompleStartGuideId;
+            this._closeCompleStartGuideId = 0;
+            GUIDE.startWeakGuide(guideId);
+        }
     }
 
     private initTaskList(){

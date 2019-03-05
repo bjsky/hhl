@@ -6,6 +6,8 @@ import { EVENT } from "../message/EventCenter";
 import GameEvent from "../message/GameEvent";
 import PathUtil from "../utils/PathUtil";
 import { GLOBAL } from "../GlobalData";
+import { GUIDE } from "./GuideManager";
+import MainUI from "../view/main/MainUI";
 
 /**
  * 管理各种界面单例,层级
@@ -38,6 +40,8 @@ export default class UIManager{
     public GuideLayer:cc.Node = null;
 
     private _root:cc.Node = null;
+    //主界面饮用
+    public main:MainUI = null;
     /**
      * 注册层级
      * @param root  ui根节点
@@ -253,6 +257,15 @@ export default class UIManager{
     public getPopupGuideNode(name:string):cc.Node{
         if(this._curPopup){
             return this._curPopup.getGuideNode(name);
+        }else{
+            return null;
+        }
+    }
+
+    //获得主界面上的节点
+    public getMainUIGuideNode(name:string):cc.Node{
+        if(this.main){
+            return this.main.getGuideNode(name);
         }else{
             return null;
         }

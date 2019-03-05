@@ -82,6 +82,7 @@ export default class TemplePanel extends UIBase {
         EVENT.on(GameEvent.Card_summon_Complete,this.onCardSummoned,this);
         EVENT.on(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
         EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
+        EVENT.on(GameEvent.Guide_Weak_Touch_Complete,this.onGuideWeakTouch,this);
     }
 
     onDisable(){
@@ -96,6 +97,7 @@ export default class TemplePanel extends UIBase {
         EVENT.off(GameEvent.Card_summon_Complete,this.onCardSummoned,this);
         EVENT.off(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
         EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
+        EVENT.off(GameEvent.Guide_Weak_Touch_Complete,this.onGuideWeakTouch,this);
 
         this.cardsList.setListData([]);
     }
@@ -301,6 +303,16 @@ export default class TemplePanel extends UIBase {
             GUIDE.nextGuide(guideId);
         }
 
+    }
+
+    private onGuideWeakTouch(e){
+
+        var guideId = e.detail.id;
+        var nodeName = e.detail.name;
+        if(nodeName == "buildPanel_getCard"){
+            this.onLifeStoneClick(null);
+            GUIDE.nextWeakGuide(guideId);
+        }
     }
 
 }

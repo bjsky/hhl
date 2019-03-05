@@ -19,6 +19,7 @@ import EnemyInfo from "../../model/EnemyInfo";
 import { GUIDE } from "../../manager/GuideManager";
 import DListItem from "../../component/DListItem";
 import FightItemUI from "./FightItemUI";
+import EnmeyItemUI from "./EnemyItemUI";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -94,6 +95,7 @@ export default class CastlePanel extends UIBase {
         EVENT.on(GameEvent.Battle_data_Change,this.onBattleDataChange,this);
         EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
         EVENT.on(GameEvent.Battle_refresh_personalEnemey,this.onRefreshPersonalEnemey,this);
+        EVENT.on(GameEvent.Guide_Weak_Touch_Complete,this.onGuideWeakTouch,this);
 
         this.initView();
     }
@@ -112,6 +114,7 @@ export default class CastlePanel extends UIBase {
         EVENT.off(GameEvent.Battle_data_Change,this.onBattleDataChange,this);
         EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
         EVENT.off(GameEvent.Battle_refresh_personalEnemey,this.onRefreshPersonalEnemey,this);
+        EVENT.off(GameEvent.Guide_Weak_Touch_Complete,this.onGuideWeakTouch,this);
 
         if(!UI.showFighting){
             this.enemyList.setListData([]);
@@ -235,12 +238,26 @@ export default class CastlePanel extends UIBase {
     ///////////////////
     private _enableGetGuideNode:boolean =false;
     private _guideItem:FightItemUI = null;
+    private _enemyItem:EnmeyItemUI = null;
     public getGuideNode(name:string):cc.Node{
         if(name == "buildPanel_fightEnemy"){
             if(this._enableGetGuideNode){
                 this._guideItem = this.enemyList.getItemAt(0) as FightItemUI;
                 if(this._guideItem){
                     return this._guideItem.getGuideNode(name);
+                }else{
+                    return null;
+                }
+            }else{
+                return null;
+            }
+        }else if(name == "buildPanel_refresh"){
+            return this.btnRefresh.node;
+        }else if(name == "buildPanel_fightRevenge"){
+            if(Battle.personalEnemyList.length>0){
+                this._enemyItem = this.personalEnemyList.getItemAt(0) as EnmeyItemUI;
+                if(this._enemyItem){
+                    return this._enemyItem.getGuideNode(name);
                 }else{
                     return null;
                 }
@@ -261,6 +278,25 @@ export default class CastlePanel extends UIBase {
                 this._guideItem.onAttackGuide();
             }
             GUIDE.nextGuide(guideId);
+        }
+    }
+
+    private onGuideWeakTouch(e){
+        var guideId = e.detail.id;
+        var nodeName = e.detail.name;
+        if(nodeName == "buildPanel_fightEnemy"){
+            if(this._guideItem){
+                this._guideItem.onAttack();
+            }
+            GUIDE.nextWeakGuide(guideId);
+        }else if(nodeName == "buildPanel_fightRevenge"){
+            if(this._enemyItem){
+                this._enemyItem.onShowDetail();
+            }
+            GUIDE.nextWeakGuide(guideId);
+        }else if(nodeName =="buildPanel_refresh"){
+            this.onRefreshClick(e);
+            GUIDE.nextWeakGuide(guideId);
         }
     }
     // update (dt) {}

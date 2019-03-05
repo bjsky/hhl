@@ -124,6 +124,7 @@ export default class HeroPanel extends UIBase {
         EVENT.on(GameEvent.Card_Remove,this.onCardRemoved,this);
 
         EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
+        EVENT.on(GameEvent.Guide_Weak_Touch_Complete,this.onWeakGuideTouch,this);
         EVENT.on(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
 
         Drag.addDragDrop(this.sprDestory.node);
@@ -143,6 +144,7 @@ export default class HeroPanel extends UIBase {
         EVENT.off(GameEvent.Card_Remove,this.onCardRemoved,this);
 
         EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
+        EVENT.off(GameEvent.Guide_Weak_Touch_Complete,this.onWeakGuideTouch,this);
         EVENT.off(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
 
         Drag.removeDragDrop(this.sprDestory.node);
@@ -498,6 +500,19 @@ export default class HeroPanel extends UIBase {
             this.viewGroup.selectIndex = HeroViewSelect.Compose;
             this.viewGroupSelectChange();
             GUIDE.nextGuide(guideId);
+        }
+    }
+
+    private onWeakGuideTouch(e){
+        var guideId = e.detail.id;
+        var nodeName = e.detail.name;
+        if(nodeName == "buildPanel_upgradeCard"){
+            this.upgradeHero(null);
+            GUIDE.nextWeakGuide(guideId);
+        }else if(nodeName == "buildPanel_upStar"){
+            this.viewGroup.selectIndex = HeroViewSelect.Compose;
+            this.viewGroupSelectChange();
+            GUIDE.nextWeakGuide(guideId);
         }
     }
 }

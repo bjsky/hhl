@@ -6,6 +6,7 @@ import DList, { DListDirection } from "../../component/DList";
 import { ResType } from "../../model/ResInfo";
 import { UI } from "../../manager/UIManager";
 import { ResConst } from "../../module/loading/steps/LoadingStepRes";
+import { GUIDE } from "../../manager/GuideManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -39,6 +40,7 @@ export default class SharePanel extends PopUpBase{
         this.btnShare.node.on(cc.Node.EventType.TOUCH_START,this.onShare,this);
         // this.btnStore.node.on(cc.Node.EventType.TOUCH_START,this.onStoreClick,this);
         EVENT.on(GameEvent.ShareGetReward_Complete,this.shareComplete,this);
+        EVENT.on(GameEvent.Guide_Weak_Touch_Complete,this.onGuideWeakTouch,this);
         this.initView();
     }
 
@@ -47,6 +49,7 @@ export default class SharePanel extends PopUpBase{
         this.btnShare.node.off(cc.Node.EventType.TOUCH_START,this.onShare,this);
         // this.btnStore.node.off(cc.Node.EventType.TOUCH_START,this.onStoreClick,this);
         EVENT.off(GameEvent.ShareGetReward_Complete,this.shareComplete,this);
+        EVENT.off(GameEvent.Guide_Weak_Touch_Complete,this.onGuideWeakTouch,this);
     }
 
     private onShare(){
@@ -82,6 +85,24 @@ export default class SharePanel extends PopUpBase{
 
     private onStoreClick(e){
         UI.createPopUp(ResConst.StorePanel,{});
+    }
+
+    ////////////////Guide//////////////////
+    public getGuideNode(name:string):cc.Node{
+        if(name == "popup_shareBtn"){
+            return this.btnShare.node;
+        }else{
+            return null;
+        }
+    }
+
+    public onGuideWeakTouch(e){
+        var guideId = e.detail.id;
+        var nodeName = e.detail.name;
+        if(nodeName == "popup_shareBtn"){
+            this.onShare();
+            GUIDE.nextWeakGuide(guideId);
+        }
     }
     // update (dt) {}
 }
