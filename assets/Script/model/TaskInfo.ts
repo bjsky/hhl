@@ -7,6 +7,8 @@ import { COMMON } from "../CommonData";
 import { Passage } from "../module/battle/PassageAssist";
 import { Card } from "../module/card/CardAssist";
 import { Battle } from "../module/battle/BattleAssist";
+import { EVENT } from "../message/EventCenter";
+import GameEvent from "../message/GameEvent";
 
 export enum RewardType{
     SevenDay = 1,   //7日奖励
@@ -29,6 +31,7 @@ export default class TaskInfo{
     //任务进度
     public taskProgressArr:TaskProgressInfo[] = [];
     //成长奖励信息
+    private _sGrowthRewards:SRewardInfo[] = [];
     public growthRewardMap:any = {};
     public growthNameArr:string[] = [];
 
@@ -87,21 +90,24 @@ export default class TaskInfo{
             this.taskProgressArr.push(taskProgress);
         }
 
-        this.initGrowthReward(GrowRewardType.LevelGrowth,sInfo.growthRewards);
-        this.initGrowthReward(GrowRewardType.PassGrowth,sInfo.growthRewards);
-        this.initGrowthReward(GrowRewardType.cardUpGrowth,sInfo.growthRewards);
-        this.initGrowthReward(GrowRewardType.cardGrowth,sInfo.growthRewards);
-        this.initGrowthReward(GrowRewardType.scoreGrowth,sInfo.growthRewards);
+        this._sGrowthRewards = sInfo.growthRewards;
+        this.updateGrowthReward();
+    }
+
+    public updateGrowthReward(){
+        this.initGrowthReward(GrowRewardType.LevelGrowth,this._sGrowthRewards);
+        this.initGrowthReward(GrowRewardType.PassGrowth,this._sGrowthRewards);
+        this.initGrowthReward(GrowRewardType.cardUpGrowth,this._sGrowthRewards);
+        this.initGrowthReward(GrowRewardType.cardGrowth,this._sGrowthRewards);
+        this.initGrowthReward(GrowRewardType.scoreGrowth,this._sGrowthRewards);
 
         this.growthNameArr = [];
-        for(i = GrowRewardType.LevelGrowth;i<=GrowRewardType.scoreGrowth;i++){
+        for(var i:number = GrowRewardType.LevelGrowth;i<=GrowRewardType.scoreGrowth;i++){
             var growthReward = this.getGrowthRewardWithType(i);
             if(growthReward && growthReward.reward){
                 this.growthNameArr.push(growthReward.reward.rewardName);
             }
         }
-
-
     }
 
     //获取任务的完成数量

@@ -63,6 +63,8 @@ export default class BattleAssist{
     public updateBattleInfo(info:SBattleInfo){
         this._battleInfo.initFromServer(info);
         this.initScoreCfg();
+        //更新成长
+        Task.updateGrowthReward();
         EVENT.emit(GameEvent.Battle_data_Change);
     }
     //是否可以攻击或者复仇

@@ -36,6 +36,8 @@ export default class PassageAssist{
 
     public updatePassageInfo(info:SPassageInfo){
         this.passageInfo.initFromServer(info);
+
+        Task.updateGrowthReward();
         EVENT.emit(GameEvent.Passage_data_change,{});
     }
     //获取加成后的挂机资源
@@ -131,6 +133,7 @@ export default class PassageAssist{
             if(msg && msg.resp){
                 COMMON.updateUserInfo(msg.resp.userInfo);
                 Passage.updatePassageInfo(msg.resp.passageInfo);
+                
                 EVENT.emit(GameEvent.Passage_FightBossEnd);
 
                 var cost:SResInfo = COMMON.updateResInfo(msg.resp.resInfo);

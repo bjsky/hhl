@@ -21,6 +21,7 @@ import { GLOBAL } from "../../GlobalData";
 import { TaskViewSelect } from "../task/TaskPanel";
 import { Task } from "../../module/TaskAssist";
 import { GUIDE } from "../../manager/GuideManager";
+import { Activity } from "../../module/ActivityAssist";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -69,6 +70,8 @@ export default class MainUI extends UIBase {
 
     @property(cc.Button)
     taskBtn: cc.Button = null;
+    @property(cc.Node)
+    nodeTaskRed:cc.Node = null;
     @property(cc.Button)
     rankBtn: cc.Button = null;
     @property(cc.Button)
@@ -95,6 +98,8 @@ export default class MainUI extends UIBase {
     nodeShareRed:cc.Node = null;
     @property(cc.Button)
     btnSevenDay:cc.Button = null;
+    @property(cc.Node)
+    nodeSevendayRed:cc.Node = null;
     @property(cc.Button)
     btnStore:cc.Button = null;
     @property(cc.Node)
@@ -263,6 +268,12 @@ export default class MainUI extends UIBase {
         EVENT.on(GameEvent.ShareGetReward_Complete,this.onShareComplete,this);
         EVENT.on(GameEvent.Guide_End,this.onGuideEnd,this);
         EVENT.on(GameEvent.Guide_Weak_Touch_Complete,this.onWeakGuideTouch,this);
+        EVENT.on(GameEvent.SevendayReceived,this.onSevendayReceived,this);
+        EVENT.on(GameEvent.TaskUpdate,this.onTaskUpdate,this);
+        EVENT.on(GameEvent.TaskActiveReceived,this.onTaskReceived,this);
+        EVENT.on(GameEvent.TaskGrowthReceived,this.onTaskReceived,this);
+        EVENT.on(GameEvent.TaskGrowthUpdate,this.onTaskUpdate,this);
+
 
         this.initRedPoint();
     }
@@ -291,12 +302,30 @@ export default class MainUI extends UIBase {
         EVENT.off(GameEvent.ShareGetReward_Complete,this.onShareComplete,this);
         EVENT.off(GameEvent.Guide_End,this.onGuideEnd,this);
         EVENT.off(GameEvent.Guide_Weak_Touch_Complete,this.onWeakGuideTouch,this);
-
+        EVENT.off(GameEvent.SevendayReceived,this.onSevendayReceived,this);
+        EVENT.off(GameEvent.TaskUpdate,this.onTaskUpdate,this);
+        EVENT.off(GameEvent.TaskActiveReceived,this.onTaskReceived,this);
+        EVENT.off(GameEvent.TaskGrowthReceived,this.onTaskReceived,this);
+        EVENT.off(GameEvent.TaskGrowthUpdate,this.onTaskUpdate,this);
     }
 
     private initRedPoint(){
         this.nodeShareRed.active = Share.canShareGetReward;
         this.nodeStoreRed.active = Card.isCanBuyCard;
+        this.nodeSevendayRed.active = Activity.isSevendayShowRed;
+        this.nodeTaskRed.active = Task.isShowRed;
+    }
+
+    private onTaskUpdate(e){
+        this.initRedPoint();
+    }
+
+    private onTaskReceived(e){
+        this.initRedPoint();
+    }
+
+    private onSevendayReceived(e){
+        this.initRedPoint();
     }
 
     private onResDataChange(e){

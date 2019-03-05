@@ -46,6 +46,39 @@ export default class TaskAssist{
     public updateTaskInfo(sTask:STaskInfo){
         this.initTask(sTask);
     }
+
+    public updateGrowthReward(){
+        this.taskInfo.updateGrowthReward();
+        EVENT.emit(GameEvent.TaskGrowthUpdate);
+    }
+
+    public get isShowRed(){
+        return this.canReceiveActive || this.canReceiveGrowth;
+    }
+    public get canReceiveActive():boolean{
+        var reward:RewardInfo;
+        for(var i:number= 0;i<this.taskInfo.taskRewardArr.length;i++){
+            reward = this.taskInfo.taskRewardArr[i];
+            if(this.taskInfo.activeScore >= reward.needScore && !reward.isReceived){
+                return true;
+            }else if(this.taskInfo.activeScore < reward.needScore){
+                break;
+            }
+        }
+        return false;
+    }
+    public get canReceiveGrowth():boolean{
+        for(var i:number = GrowRewardType.LevelGrowth;i<=GrowRewardType.scoreGrowth;i++){
+            var growthReward = this.taskInfo.getGrowthRewardWithType(i);
+            if(growthReward && growthReward.reward){
+                if(growthReward.canReceive){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     //完成任务 
     public finishTask(taskid:number):void{
         var taskCount = this.taskInfo.getTaskFinishCount(taskid)+1;

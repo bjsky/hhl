@@ -83,4 +83,6 @@ export default class GameEvent{
     public static TaskActiveReceived:string = "TaskActiveReceived";
     //领取成长奖励
     public static TaskGrowthReceived:string = "TaskGrowthReceived";
+    //成长任务更新
+    public static TaskGrowthUpdate:string ="TaskGrowthUpdate";
 }

@@ -116,6 +116,7 @@ export default class CommonData{
         var levelup = this.userInfo.level - levelPrev>0;
         if(levelup){
             this.onUserLevelUp();
+            Task.updateGrowthReward();
             //升级
             EVENT.emit(GameEvent.User_Level_UP,{});
         }

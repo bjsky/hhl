@@ -152,6 +152,8 @@ export default class CardAssist{
         var newCard:CardInfo = new CardInfo();
         newCard.initFormServer(card);
         this.cardsMap[newCard.uuid] = newCard;
+        //更新成长
+        Task.updateGrowthReward();
         EVENT.emit(GameEvent.Card_data_change,{});
     }
 
@@ -378,6 +380,8 @@ export default class CardAssist{
     public updateCardInfo(info:SCardInfo){
         var cardInfo:CardInfo = this.getCardByUUid(info.uuid);
         cardInfo.updateInfo(info);
+        //更新成长
+        Task.updateGrowthReward();
         EVENT.emit(GameEvent.Card_data_change,{});
     }
 

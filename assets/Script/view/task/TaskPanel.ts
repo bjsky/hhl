@@ -47,6 +47,11 @@ export default class TaskPanel extends PopUpBase{
     @property(cc.Node)
     nodeGrowthBox:cc.Node = null;
     
+
+    @property(cc.Node)
+    nodeActiveRed:cc.Node = null;
+    @property(cc.Node)
+    nodeGrowthRed:cc.Node = null;
     // LIFE-CYCLE CALLBACKS:
 
 
@@ -73,6 +78,8 @@ export default class TaskPanel extends PopUpBase{
         super.onEnable();
         this.viewGroup.node.on(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.viewGroupSelectChange,this);
         EVENT.on(GameEvent.Guide_Weak_Start,this.onStartWeakGuide,this);
+        EVENT.on(GameEvent.TaskActiveReceived,this.onReceived,this);
+        EVENT.on(GameEvent.TaskGrowthReceived,this.onReceived,this);
         this.initView();
     }
     onDisable(){
@@ -80,6 +87,16 @@ export default class TaskPanel extends PopUpBase{
         this.taskList.setListData([]);
         this.viewGroup.node.off(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.viewGroupSelectChange,this)
         EVENT.off(GameEvent.Guide_Weak_Start,this.onStartWeakGuide,this);
+        EVENT.off(GameEvent.TaskActiveReceived,this.onReceived,this);
+        EVENT.off(GameEvent.TaskGrowthReceived,this.onReceived,this);
+    }
+
+    private onReceived(e){
+        this.showRedPoint();
+    }
+    private showRedPoint(){
+        this.nodeActiveRed.active = Task.canReceiveActive;
+        this.nodeGrowthRed.active = Task.canReceiveGrowth;
     }
 
     private _selectViewIndex:TaskViewSelect = 0;
@@ -98,6 +115,7 @@ export default class TaskPanel extends PopUpBase{
     private initView(){
         this.viewGroup.selectIndex = this._viewType;
         this.viewGroupSelectChange();
+        this.showRedPoint();
     }
     private initAcitveView(){
         this.lblScore.string = Task.taskInfo.activeScore.toString();

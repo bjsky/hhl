@@ -85,6 +85,9 @@ export default class ActivityAssist{
         UI.createPopUp(ResConst.cardBig,{type:CardBigShowType.ActivityGetCard, cardUUid:uuid,fPos:null,tPos:null});
     }
 
+    public get isSevendayShowRed(){
+        return !this.senvendayTodayReward.isReceived;
+    }
 }
 
 export var Activity:ActivityAssist = ActivityAssist .getInstance();
