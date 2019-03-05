@@ -58,9 +58,9 @@ export class SEnemyInfo{
     public static parse(obj:any):SEnemyInfo{
         var info:SEnemyInfo = new SEnemyInfo();
         info.enemyUid = obj.enemyUid;
-        info.enemyName = obj.enemyName;
+        info.enemyName = (obj.enemyName=="default"?"游客":obj.enemyName);
         info.enemySex = obj.enemySex;
-        info.enemyIcon = obj.enemyIcon;
+        info.enemyIcon = (obj.enemyIcon=="default"?"":obj.enemyIcon);
         info.enemyLevel = obj.enemyLevel;
         info.enemyLineup = [];
         obj.enemyLineup.forEach((enemyLineup:any) => {

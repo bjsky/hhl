@@ -291,9 +291,9 @@ export class SFightRecord{
         var info:SFightRecord = new SFightRecord();
         info.time = obj.time;
         info.fightUid = obj.fightUid;
-        info.fightName = obj.fightName;
+        info.fightName = (obj.fightName=="default"?"游客":obj.fightName);
         info.befightUid = obj.befightUid;
-        info.befightName = obj.befightName;
+        info.befightName = (obj.befightName=="default"?"游客":obj.befightName);
         info.score = obj.score;
         info.isRabCard = obj.isRabCard;
         info.uuid = obj.uuid;

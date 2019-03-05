@@ -20,13 +20,12 @@ export default class TaskItem extends DListItem{
     activeScore: cc.Label = null;
     @property(cc.Label)
     desc: cc.Label = null;
-    @property(cc.Label)
-    finishNum: cc.Label = null;
-    @property(cc.Label)
-    totalNum: cc.Label = null;
 
     @property(cc.Button )
     btnGoto: cc.Button = null;
+    @property(cc.RichText)
+    lablNum: cc.RichText = null;
+
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -58,11 +57,14 @@ export default class TaskItem extends DListItem{
         this.activeScore.string = (this._taskPro.taskScore).toString();
         this.desc.string = this._taskPro.taskDesc;
         this._finishNum = this._taskPro.finishNum;
-        if(this._finishNum>this._taskPro.taskCount){
+        if(this._finishNum>=this._taskPro.taskCount){
             this._finishNum = this._taskPro.taskCount;
+            this.lablNum.string = "<color=#92501B>已完成</c>";
+            this.lablNum.node.x = 276;
+        }else{
+            this.lablNum.string = "<color=#92501B><color=#F3ED4A>"+this._finishNum+"</c>/"+this._taskPro.taskCount+"</c>";
+            this.lablNum.node.x = 163;
         }
-        this.finishNum.string = this._finishNum.toString();
-        this.totalNum.string = "/"+this._taskPro.taskCount.toString();
         this.btnGoto.node.active = this._finishNum<this._taskPro.taskCount;
     }
 

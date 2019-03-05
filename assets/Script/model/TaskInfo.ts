@@ -16,8 +16,8 @@ export enum RewardType{
 export enum GrowRewardType{
     LevelGrowth = 1,    //等级奖励
     PassGrowth,     //通关奖励
-    cardGrowth4,    //卡牌4星奖励
-    cardGrowth5,    //卡牌5星奖励
+    cardUpGrowth,    //卡牌升级奖励
+    cardGrowth,    //卡牌奖励
     scoreGrowth     //积分奖励
 }
 export default class TaskInfo{
@@ -88,8 +88,8 @@ export default class TaskInfo{
 
         this.initGrowthReward(GrowRewardType.LevelGrowth,sInfo.growthRewards);
         this.initGrowthReward(GrowRewardType.PassGrowth,sInfo.growthRewards);
-        this.initGrowthReward(GrowRewardType.cardGrowth4,sInfo.growthRewards);
-        this.initGrowthReward(GrowRewardType.cardGrowth5,sInfo.growthRewards);
+        this.initGrowthReward(GrowRewardType.cardUpGrowth,sInfo.growthRewards);
+        this.initGrowthReward(GrowRewardType.cardGrowth,sInfo.growthRewards);
         this.initGrowthReward(GrowRewardType.scoreGrowth,sInfo.growthRewards);
 
         this.growthNameArr = [];
@@ -172,9 +172,9 @@ export default class TaskInfo{
             cur = COMMON.userInfo.level;
         }else if(type == GrowRewardType.PassGrowth){
             cur = Passage.passageInfo.passId;
-        }else if(type == GrowRewardType.cardGrowth4){
-            cur = Card.getGradeCardCount(4);
-        }else if(type == GrowRewardType.cardGrowth5){
+        }else if(type == GrowRewardType.cardUpGrowth){
+            cur = Card.getMaxCardLevel();
+        }else if(type == GrowRewardType.cardGrowth){
             cur = Card.getGradeCardCount(5);
         }else if(type == GrowRewardType.scoreGrowth){
             cur = Battle.battleInfo.score;

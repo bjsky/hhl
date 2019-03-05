@@ -228,8 +228,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 194,
-      "height": 97
+      "width": 191,
+      "height": 95
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -237,8 +237,8 @@
     "_scaleY": 0.95,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 2,
-      "y": 294
+      "x": 4,
+      "y": 292
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -256,7 +256,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "e32acbc5-ac5a-41b7-b8a1-47b887b5c566"
+      "__uuid__": "1a4c0233-46d9-4bb0-bdb4-355931e199f0"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -271,9 +271,7 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": {
-      "__uuid__": "e561bd28-a3df-47f0-ae00-36087b90b7b1"
-    }
+    "_atlas": null
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1702,7 +1700,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "lingqu",
+    "_name": "jrylq",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -1723,8 +1721,8 @@
     "_color": {
       "__type__": "cc.Color",
       "r": 255,
-      "g": 30,
-      "b": 30,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -1735,8 +1733,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 150,
-      "height": 40
+      "width": 161,
+      "height": 34
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -1755,26 +1753,30 @@
     "groupIndex": 0
   },
   {
-    "__type__": "cc.Label",
+    "__type__": "cc.Sprite",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 53
     },
     "_enabled": true,
-    "_useOriginalSize": false,
-    "_actualFontSize": 30,
-    "_fontSize": 30,
-    "_lineHeight": 40,
-    "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
-    "_spacingX": 0,
-    "_N$string": "今日已领取",
-    "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
-    "_N$overflow": 0
+    "_spriteFrame": {
+      "__uuid__": "d051da98-1b7f-4951-9fb3-a025ae794dab"
+    },
+    "_type": 0,
+    "_sizeMode": 1,
+    "_fillType": 0,
+    "_fillCenter": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_fillStart": 0,
+    "_fillRange": 0,
+    "_isTrimmedMode": true,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_atlas": null
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1784,7 +1786,7 @@
     "asset": {
       "__uuid__": "aad6ddff-b5f3-4f68-9140-7f65d9575ac8"
     },
-    "fileId": "9b0vthpshKKoRtjcM4qlMN",
+    "fileId": "c4M9/B4JxOG51u8e30V6mU",
     "sync": false
   },
   {

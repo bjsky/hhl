@@ -300,6 +300,18 @@ export default class CardAssist{
         }
         return count;
     }
+    /**
+     * 获取卡牌最高等级
+     */
+    public getMaxCardLevel(){
+        var level:number = 0;
+        var card:CardInfo = null;
+        for(var uuid in this.cardsMap){
+            card = this.cardsMap[uuid];
+            level = Math.max(level,card.level);
+        }
+        return level;
+    }
 
     //初始化卡牌
     public initCard(cards:Array<SCardInfo>){

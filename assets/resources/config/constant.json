@@ -32,7 +32,7 @@
     {"id":"31","key":"sevendayRewardIds","name":"七日奖励id","param1":"1;2;3;4;5;6;7"},
     {"id":"32","key":"levelGrowthRewards","name":"等级成长奖励Id","param1":"10;13|20;14|30;15|40;16|50;17|60;18"},
     {"id":"33","key":"passGrowthRewards","name":"通关成长奖励","param1":"20;19|40;20|60;21|80;22|100;23"},
-    {"id":"34","key":"star4GrowthRewards","name":"卡牌成长奖励4","param1":"1;24|5;25|10;26"},
-    {"id":"35","key":"star5GrowthRewards","name":"卡牌成长奖励5","param1":"1;27|5;28|10;29"},
+    {"id":"34","key":"cardUpGrowthRewards","name":"卡牌升级奖励","param1":"20;24|40;25|60;26"},
+    {"id":"35","key":"cardGrowthRewards","name":"卡牌成长奖励","param1":"1;27|5;28|10;29"},
     {"id":"36","key":"scoreGrowthRewards","name":"积分成长奖励","param1":"50;30|150;31|300;32|500;33"}
     ]

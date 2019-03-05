@@ -2,6 +2,7 @@ import { CardRaceType } from "../module/card/CardAssist";
 import { ResType } from "../model/ResInfo";
 import { SexEnum } from "../CommonData";
 import { BuffType } from "../module/fight/SkillLogic";
+import { GrowRewardType } from "../model/TaskInfo";
 
 export default class PathUtil{
 
@@ -127,4 +128,25 @@ export default class PathUtil{
         return "image/ui/"+(receive?"k_5":"g_5");
     }
 
+    public static getGrowthTypeUrl(type:GrowRewardType):string{
+        var url:string = "";
+        switch(type){
+            case GrowRewardType.LevelGrowth:
+            url = "cz_dj";
+            break;
+            case GrowRewardType.PassGrowth:
+            url = "cz_sl";
+            break;
+            case GrowRewardType.cardUpGrowth:
+            url = "cz_py";
+            break;
+            case GrowRewardType.cardGrowth:
+            url = "cz_kp";
+            break;
+            case GrowRewardType.scoreGrowth:
+            url = "cz_zz";
+            break;
+        }
+        return "image/ui/"+url;
+    }
 }

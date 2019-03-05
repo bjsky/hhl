@@ -50,10 +50,10 @@ export class SRankInfo{
 
     public static parse(obj:any):SRankInfo{
         var info:SRankInfo = new SRankInfo();
-        info.playerName = obj.playerName;
+        info.playerName = (obj.playerName=="default"?"游客":obj.playerName);
         info.playerLevel = obj.playerLevel;
         info.playerSex = obj.playerSex;
-        info.playerIcon = obj.playerIcon;
+        info.playerIcon = (obj.playerIcon=="default"?"":obj.playerIcon);
         info.playerPower = obj.playerPower;
         info.playerScore = obj.playerScore;
         info.rank = obj.rank;

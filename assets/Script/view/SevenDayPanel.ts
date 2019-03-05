@@ -24,10 +24,10 @@ export default class SevenDayPanel extends PopUpBase {
 
     @property([cc.Node])
     nodeDays: cc.Node[]= [];
-    @property([cc.Button])
+    @property(cc.Button)
     btnLinqu: cc.Button= null;
-    @property([cc.Label])
-    lblTodayReceived:cc.Label= null;
+    @property(cc.Sprite)
+    lblTodayReceived:cc.Sprite= null;
     
 
     // LIFE-CYCLE CALLBACKS:

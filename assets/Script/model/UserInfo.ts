@@ -8,9 +8,22 @@ import { ConfigConst } from "../module/loading/steps/LoadingStepConfig";
  */
 export default class UserInfo  extends InfoBase{
     //用户名
-    public name:string = "";
+    private _name:string = "";
+    public get name(){
+        if(this._name=="default"){
+            return "游客";
+        }
+        return this._name;
+    }
     //头像url
-    public icon:string = "";
+    private _icon:string = "";
+
+    public get icon(){
+        if(this._icon=="default"){
+            return "";
+        }
+        return this._icon;
+    }
     //性别
     public gender:number = 0;
     //当前经验
@@ -22,8 +35,8 @@ export default class UserInfo  extends InfoBase{
     
 
     public initFromServer(data:SUserInfo){
-        this.name = data.name;
-        this.icon = data.icon;
+        this._name = data.name;
+        this._icon = data.icon;
         this.gender = data.gender;
         this.exp = data.exp;
         this.level = data.level;

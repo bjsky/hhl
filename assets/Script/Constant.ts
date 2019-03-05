@@ -164,10 +164,10 @@ export default class Constant{
             ids = this._constantKeyValueMap["levelGrowthRewards"].split("|");
         }else if(type == GrowRewardType.PassGrowth){
             ids = this._constantKeyValueMap["passGrowthRewards"].split("|");
-        }else if(type == GrowRewardType.cardGrowth4){
-            ids = this._constantKeyValueMap["star4GrowthRewards"].split("|");
-        }else if(type == GrowRewardType.cardGrowth5){
-            ids = this._constantKeyValueMap["star5GrowthRewards"].split("|");
+        }else if(type == GrowRewardType.cardUpGrowth){
+            ids = this._constantKeyValueMap["cardUpGrowthRewards"].split("|");
+        }else if(type == GrowRewardType.cardGrowth){
+            ids = this._constantKeyValueMap["cardGrowthRewards"].split("|");
         }else if(type == GrowRewardType.scoreGrowth){
             ids = this._constantKeyValueMap["scoreGrowthRewards"].split("|");
         }

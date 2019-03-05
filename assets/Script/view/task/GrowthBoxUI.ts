@@ -4,6 +4,8 @@ import { GrowRewardType, GrowthRewardInfo } from "../../model/TaskInfo";
 import { Task } from "../../module/TaskAssist";
 import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
+import LoadSprite from "../../component/LoadSprite";
+import PathUtil from "../../utils/PathUtil";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -22,8 +24,8 @@ export default class GrowthBoxUI extends UIBase {
 
     @property(cc.Label)
     labelName: cc.Label = null;
-    @property(cc.Label)
-    labelCur: cc.Label = null;
+    @property(cc.RichText)
+    labelCur: cc.RichText = null;
     @property(cc.Button)
     btnLingqu:cc.Button = null;
     @property(FlowGroup)
@@ -32,7 +34,8 @@ export default class GrowthBoxUI extends UIBase {
     nodeAllFinish: cc.Node = null;
     @property(cc.Node)
     nodeGrowth: cc.Node = null;
-
+    @property(LoadSprite)
+    sprType: LoadSprite = null;
 
     private _type:GrowRewardType = 0;
     public get index(){
@@ -62,16 +65,17 @@ export default class GrowthBoxUI extends UIBase {
 
 
     private initView(){
+        this.sprType.load(PathUtil.getGrowthTypeUrl(this._reward.growthType));
         if(this._reward.reward){
             this.nodeGrowth.active = true;
             this.nodeAllFinish.active = false;
 
             this.labelName.string = this._reward.reward.rewardName;
             if(this._reward.canReceive){
-                this.labelCur.string = "完成度：已完成";
+                this.labelCur.string = "<color=#92501B>已完成</c>";
                 this.btnLingqu.node.active = true;
             }else{
-                this.labelCur.string = "完成度："+this._reward.curNum+"/"+this._reward.reward.needScore;
+                this.labelCur.string = "<color=#92501B>完成度：<color=#F3ED4A>"+this._reward.curNum+"</c>/"+this._reward.reward.needScore+"</c>";
                 this.btnLingqu.node.active = false;
             }
 
