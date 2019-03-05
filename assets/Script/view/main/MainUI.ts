@@ -72,6 +72,8 @@ export default class MainUI extends UIBase {
     taskBtn: cc.Button = null;
     @property(cc.Node)
     nodeTaskRed:cc.Node = null;
+    @property(cc.Node)
+    nodeTaskHand:cc.Node = null;
     @property(cc.Button)
     rankBtn: cc.Button = null;
     @property(cc.Button)
@@ -120,10 +122,13 @@ export default class MainUI extends UIBase {
         }
         this.initTopView();
 
+        this.nodeTaskHand.active =false;
+        this.nodeGrowth.active =false;
+        this.nodeSevendayRed.active = false;
+        this.nodeShareRed.active = false;
+        this.nodeStoreRed.active =false;
+        this.nodeTaskRed.active = false;
         WeiXin.createGameClubButton();
-
-        this.playGrowth();
-
         UI.main = this;
     }
 
@@ -163,6 +168,7 @@ export default class MainUI extends UIBase {
     
     private _growthLabelIndex:number = 0;
     private playGrowth(){
+        this.nodeGrowth.active = true;
         this.nodeGrowth.scaleY = 0;
         if(Task.taskInfo.growthNameArr.length>0){
             var seq = cc.sequence(
@@ -191,6 +197,24 @@ export default class MainUI extends UIBase {
             this.nodeGrowth.runAction(seq.repeatForever());
         }
     }
+
+    // private _taskFreeTime:number =15;
+    // private onTaskFreeSchedule(){
+    //     if(GUIDE.isInGuide || GUIDE.isInWeakGuide){
+    //         return;
+    //     }
+    //     this.nodeTaskHand.active = true;
+    //     this.nodeTaskHand.runAction(cc.sequence(
+    //         cc.moveBy(0.5,cc.v2(0,30))
+    //         ,cc.moveBy(0.5,cc.v2(0,-30))
+    //         ).repeatForever());
+    // }
+    // public resetTaskGuide(){
+    //     this.nodeTaskHand.active =false;
+    //     this.nodeTaskHand.stopAllActions();
+    //     this.unschedule(this.onTaskFreeSchedule);
+    //     this.scheduleOnce(this.onTaskFreeSchedule,this._taskFreeTime);
+    // }
 
     private resUpdateCost(e){
         var types:any[] = e.detail.types;
@@ -275,10 +299,15 @@ export default class MainUI extends UIBase {
         EVENT.on(GameEvent.TaskGrowthUpdate,this.onTaskUpdate,this);
 
 
-        this.initRedPoint();
+        if(!GUIDE.isInGuide){
+            this.initView();
+        }
     }
-
-
+    private initView(){
+        this.initRedPoint();
+        this.playGrowth();
+        // this.resetTaskGuide();
+    }
 
     onDisable(){
         this.lblExp.node.off(cc.Node.EventType.TOUCH_START,this.onLabelExpTouch,this);
@@ -310,10 +339,10 @@ export default class MainUI extends UIBase {
     }
 
     private initRedPoint(){
-        this.nodeShareRed.active = Share.canShareGetReward;
-        this.nodeStoreRed.active = Card.isCanBuyCard;
-        this.nodeSevendayRed.active = Activity.isSevendayShowRed;
-        this.nodeTaskRed.active = Task.isShowRed;
+        this.nodeShareRed.active = !GUIDE.isInGuide && Share.canShareGetReward;
+        this.nodeStoreRed.active = !GUIDE.isInGuide && Card.isCanBuyCard;
+        this.nodeSevendayRed.active = !GUIDE.isInGuide && Activity.isSevendayShowRed;
+        this.nodeTaskRed.active = !GUIDE.isInGuide && Task.isShowRed;
     }
 
     private onTaskUpdate(e){
@@ -337,7 +366,7 @@ export default class MainUI extends UIBase {
     }
 
     private onGuideEnd(e){
-        this.initRedPoint();
+        this.initView();
     }
     private _showLabelExp:boolean = true;
     private onLabelExpTouch(e){
@@ -355,6 +384,7 @@ export default class MainUI extends UIBase {
     }
 
     private onTaskBtnTouch(e){
+        // this.resetTaskGuide();
         // UI.showAlert("功能暂未开放，敬请期待！",null,null,AlertBtnType.OKAndCancel);
         UI.createPopUp(ResConst.TaskPanel,{view:TaskViewSelect.EvenyDayActive});
     }

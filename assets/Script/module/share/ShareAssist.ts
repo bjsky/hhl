@@ -40,7 +40,7 @@ export default class ShareAssist{
     }
 
     public get canShareGetReward(){
-        return GUIDE.isInGuide?false: this.shareGetReward;
+        return this.shareGetReward;
     }
 
     //分享链接

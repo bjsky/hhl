@@ -71,7 +71,7 @@ export default class PassageAssist{
         var needTime = CONSTANT.getPassCollectMinTime();
         var curTime = this.passageInfo.getPassIncreaseTime()/1000;
         console.log("挂机领取时间：",needTime,"，当前挂机时间：",curTime)
-        return (GUIDE.isInGuide)?false:curTime >= needTime;
+        return curTime >= needTime;
     }
 
     public collectRes(isGuide:boolean){

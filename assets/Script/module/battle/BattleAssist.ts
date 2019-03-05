@@ -69,7 +69,7 @@ export default class BattleAssist{
     }
     //是否可以攻击或者复仇
     public get isCanFightOrRevenge(){
-        return (GUIDE.isInGuide)?false:this._battleInfo.actionPoint>0 || (this._battleInfo.revengeTime<=0 && this._personalEnemeyList.length>0);
+        return this._battleInfo.actionPoint>0 || (this._battleInfo.revengeTime<=0 && this._personalEnemeyList.length>0);
     }
 
     public initEnemyList(){

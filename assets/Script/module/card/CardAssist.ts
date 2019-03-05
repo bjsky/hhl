@@ -86,7 +86,7 @@ export default class CardAssist{
     //是否可召唤卡牌
     public get isCanSummonCard(){
         var cost:number = BUILD.getSummonStoneCostBuffed();
-        return (GUIDE.isInGuide)?false:COMMON.resInfo.lifeStone>=cost;
+        return COMMON.resInfo.lifeStone>=cost;
     }
     //是否可以合成卡牌
     public get isCanComposeCard(){
@@ -96,7 +96,7 @@ export default class CardAssist{
             var cardId = cardCfgArr[i].id;
             isCan = isCan || this.getCardCanCompose(cardId);
         }
-        return (GUIDE.isInGuide)?false:isCan;
+        return isCan;
     }
     //是否可以购买卡牌
     public get isCanBuyCard(){
@@ -107,7 +107,7 @@ export default class CardAssist{
             var price = Number(cfg[key].priceDiamond);
             minPrice = Math.min(minPrice,price);
         }
-        return (GUIDE.isInGuide)?false:COMMON.resInfo.diamond>=minPrice;
+        return COMMON.resInfo.diamond>=minPrice;
     }
 
     public summonCard(summonType:CardSummonType,stoneCost:number=0){

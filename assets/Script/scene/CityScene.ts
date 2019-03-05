@@ -60,6 +60,10 @@ export default class CityScene extends SceneBase {
     }
     // LIFE-CYCLE CALLBACKS:
     onLoad () {
+        this.buildCastleRed.active = false;
+        this.buildBattleRed.active = false;
+        this.buildHeroRed.active = false;
+        this.buildTempleRed.active = false;
         if(GUIDE.isInGuide && GUIDE.guideInfo.type == GuideTypeEnum.GuideStory){
             this.node.active = false;
             GUIDE.startGuide();
@@ -111,7 +115,9 @@ export default class CityScene extends SceneBase {
         EVENT.on(GameEvent.Guide_End,this.onGuideEnd,this);
         EVENT.on(GameEvent.Guide_Weak_Touch_Complete,this.onGuideWeakTouch,this);
         
-        this.initRedpoint();
+        if(!GUIDE.isInGuide){
+            this.initRedpoint();
+        }
     }
     onDisable(){
         this.buildCastle.off(TouchHandler.TOUCH_CLICK,this.onCastleTouch,this);
@@ -130,10 +136,10 @@ export default class CityScene extends SceneBase {
     }
     
     private initRedpoint(){
-        this.buildCastleRed.active = Battle.isCanFightOrRevenge;
-        this.buildBattleRed.active = Passage.isCanReceiveAward;
-        this.buildHeroRed.active = Card.isCanComposeCard;
-        this.buildTempleRed.active = Card.isCanSummonCard;
+        this.buildCastleRed.active = !GUIDE.isInGuide && Battle.isCanFightOrRevenge;
+        this.buildBattleRed.active = !GUIDE.isInGuide && Passage.isCanReceiveAward;
+        this.buildHeroRed.active = !GUIDE.isInGuide && Card.isCanComposeCard;
+        this.buildTempleRed.active = !GUIDE.isInGuide && Card.isCanSummonCard;
     }
     private onResDataChange(){
         this.initRedpoint();
