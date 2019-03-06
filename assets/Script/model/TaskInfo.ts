@@ -9,6 +9,7 @@ import { Card } from "../module/card/CardAssist";
 import { Battle } from "../module/battle/BattleAssist";
 import { EVENT } from "../message/EventCenter";
 import GameEvent from "../message/GameEvent";
+import { GLOBAL, ServerType } from "../GlobalData";
 
 export enum RewardType{
     SevenDay = 1,   //7日奖励
@@ -26,9 +27,11 @@ export default class TaskInfo{
 
     public activeScore:number = 0;
     //活跃度奖励
+    private _sTaskRewards:SRewardInfo[] = [];
     public taskRewardArr:RewardInfo[] = [];
     public totalScore:number = 0;
     //任务进度
+    private _sTaskProgress:STaskProgressInfo[]= [];
     public taskProgressArr:TaskProgressInfo[] = [];
     //成长奖励信息
     private _sGrowthRewards:SRewardInfo[] = [];
@@ -38,6 +41,9 @@ export default class TaskInfo{
     public initFormServer(sInfo:STaskInfo){
 
         this.activeScore = sInfo.activeScore;
+        this._sTaskRewards = sInfo.taskRewards;
+        this._sTaskProgress = sInfo.taskProgresses;
+        this._sGrowthRewards = sInfo.growthRewards;
 
         this.taskRewardArr = [];
         var reward:RewardInfo;
@@ -90,8 +96,16 @@ export default class TaskInfo{
             this.taskProgressArr.push(taskProgress);
         }
 
-        this._sGrowthRewards = sInfo.growthRewards;
         this.updateGrowthReward();
+    }
+
+    public cloneServerInfo():STaskInfo{
+        var info:STaskInfo = new STaskInfo();
+        info.activeScore = this.activeScore;
+        info.taskRewards = this._sTaskRewards;
+        info.taskProgresses =this._sTaskProgress;
+        info.growthRewards = this._sGrowthRewards;
+        return info;
     }
 
     public updateGrowthReward(){
@@ -105,7 +119,9 @@ export default class TaskInfo{
         for(var i:number = GrowRewardType.LevelGrowth;i<=GrowRewardType.scoreGrowth;i++){
             var growthReward = this.getGrowthRewardWithType(i);
             if(growthReward && growthReward.reward){
-                this.growthNameArr.push(growthReward.reward.rewardName);
+                var finishStr:string =growthReward.canReceive?"（已完成）":"";
+                var html:string ="<color=#92501B>"+growthReward.reward.rewardName+"<color=#4A9F33>"+finishStr+"<c/><c/>"
+                this.growthNameArr.push(html);
             }
         }
     }
@@ -163,7 +179,7 @@ export default class TaskInfo{
             }
         }
         if(growthReward.reward){
-            growthReward.curNum = this.getGrowthRewardCurNum(type);
+            growthReward.curNum = this.getGrowthRewardCurNum(type,GLOBAL.serverType == ServerType.Client);
             growthReward.canReceive = (growthReward.curNum >= growthReward.reward.needScore);
         }
         this.growthRewardMap[type] = growthReward;
@@ -173,18 +189,18 @@ export default class TaskInfo{
         return this.growthRewardMap[type];
     }
 
-    public getGrowthRewardCurNum(type:GrowRewardType):number{
+    public getGrowthRewardCurNum(type:GrowRewardType,test:boolean):number{
         var cur:number = 0;
         if(type== GrowRewardType.LevelGrowth){
-            cur = COMMON.userInfo.level;
+            cur = test?60:COMMON.userInfo.level;
         }else if(type == GrowRewardType.PassGrowth){
-            cur = Passage.passageInfo.passId;
+            cur = test?100:Passage.passageInfo.passId;
         }else if(type == GrowRewardType.cardUpGrowth){
-            cur = Card.getMaxCardLevel();
+            cur = test?60:Card.getMaxCardLevel();
         }else if(type == GrowRewardType.cardGrowth){
-            cur = Card.getGradeCardCount(5);
+            cur = test?10:Card.getGradeCardCount(5);
         }else if(type == GrowRewardType.scoreGrowth){
-            cur = Battle.battleInfo.score;
+            cur = test?500:Battle.battleInfo.score;
         }
         return cur;
     }

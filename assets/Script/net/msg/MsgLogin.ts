@@ -419,7 +419,7 @@ export default class MsgLogin
             newUser:0,
             serverTime:new Date().getTime(),
             userInfo:{name:"上古战神",icon:"",gender:1,exp:0,level:1},
-            resInfo:{gold:200000,diamond:0,lifeStone:200000,soulStone:0},
+            resInfo:{gold:300000,diamond:0,lifeStone:300000,soulStone:0},
             guideInfo:{guideId:1},
             buildInfos:[{type:0,level:1,locked:true},
                 {type:1,level:1,locked:true},
@@ -471,7 +471,7 @@ export default class MsgLogin
                 growthRewards:[]
             },
             senvenDayInfo:{
-                dayIndex:0,
+                dayIndex:2,
                 todayReward:0
             }
         };

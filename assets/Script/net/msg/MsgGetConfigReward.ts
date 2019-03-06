@@ -1,8 +1,15 @@
 import MessageBase from "./MessageBase";
 import NetConst from "../NetConst";
 import { RewardType } from "../../model/TaskInfo";
-import { STaskInfo, SResInfo, SSevendayInfo } from "./MsgLogin";
-import { SCardInfo } from "./MsgCardSummon";
+import { STaskInfo, SResInfo, SSevendayInfo, SRewardInfo } from "./MsgLogin";
+import MsgCardSummon, { SCardInfo, CardSummonType } from "./MsgCardSummon";
+import { Task } from "../../module/TaskAssist";
+import { CFG } from "../../manager/ConfigManager";
+import { ConfigConst } from "../../module/loading/steps/LoadingStepConfig";
+import { ResType } from "../../model/ResInfo";
+import { COMMON } from "../../CommonData";
+import { Activity } from "../../module/ActivityAssist";
+import { CONSTANT } from "../../Constant";
 
 export class CSGetConfigReward{
     //奖励表中id
@@ -57,8 +64,75 @@ export default class MsgGetConfigReward extends MessageBase{
     }
 
     public respFromLocal(){
-        var json:any ={};
+        var json:any;
+        if(this.param.rewardType == RewardType.TaskActive){
+            var info:STaskInfo = Task.taskInfo.cloneServerInfo();
+            var taskReward:SRewardInfo;
+            for(var i:number =0;i<info.taskRewards.length;i++){
+                if(info.taskRewards[i].rewardId == this.param.rewardId){
+                    taskReward = info.taskRewards[i];
+                    break;
+                }
+            }
+            if(!taskReward){
+                taskReward =new SRewardInfo();
+                taskReward.rewardId = this.param.rewardId;
+                info.taskRewards.push(taskReward);
+            }
+            taskReward.isReceived = true;
+            var res = this.receiveReward(this.param.rewardId).res;
+            json={
+                taskInfo:info,
+                resInfo:res
+            }
+        }else if(this.param.rewardType == RewardType.SevenDay){
+            var sevenday:SSevendayInfo = Activity.cloneSevendayInfo();
+            sevenday.todayReward = 1;
+            var rewardId:number = Number(CONSTANT.getSevendayRewardIds()[sevenday.dayIndex]);
+            var reward:any = this.receiveReward(rewardId);
+            json ={
+                senvenDayInfo:sevenday,
+                resInfo:reward.res,
+                newCard:reward.card
+            }
+        }else if(this.param.rewardType == RewardType.Growth){
+            var info:STaskInfo = Task.taskInfo.cloneServerInfo();
+            var growthReward:SRewardInfo;
+            for(var i:number =0;i<info.growthRewards.length;i++){
+                if(info.growthRewards[i].rewardId == this.param.rewardId){
+                    growthReward = info.growthRewards[i];
+                    break;
+                }
+            }
+            if(!growthReward){
+                growthReward =new SRewardInfo();
+                growthReward.rewardId = this.param.rewardId;
+                info.growthRewards.push(growthReward);
+            }
+            growthReward.isReceived = true;
+            var res = this.receiveReward(this.param.rewardId).res;
+            json={
+                taskInfo:info,
+                resInfo:res
+            }
+        }
         return this.parse(json);
+    }
+    private receiveReward(id:number):any{
+        var cfg:any = CFG.getCfgDataById(ConfigConst.Reward,id);
+        var resType:number = Number(cfg.resType);
+        var res:SResInfo = COMMON.resInfo.cloneServerInfo();
+        var card:SCardInfo = null;
+        if(resType == ResType.gold){
+            res.gold+= Number(cfg.resNum);
+        }else if(resType == ResType.lifeStone){
+            res.lifeStone+= Number(cfg.resNum);
+        }else if(resType == ResType.diamond){
+            res.diamond+= Number(cfg.resNum);
+        }else if(resType == ResType.card){
+            card = MsgCardSummon.randomCardInfo(CardSummonType.LifeStone);
+        }
+        return {res:res,card:card};
     }
     private parse(obj:any):MessageBase{
         this.resp = SCGetConfigReward.parse(obj);

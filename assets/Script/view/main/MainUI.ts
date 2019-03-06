@@ -111,8 +111,8 @@ export default class MainUI extends UIBase {
 
     @property(cc.Node)
     nodeGrowth:cc.Node = null;
-    @property(cc.Label)
-    labelGrowth:cc.Label = null;
+    @property(cc.RichText)
+    labelGrowth:cc.RichText = null;
 
     private _topPos:cc.Vec2 =cc.v2(0,0);
     onLoad () {
@@ -403,11 +403,11 @@ export default class MainUI extends UIBase {
     }
 
     private onRankBtnTouch(e){
-        var openLevel:number = CONSTANT.getRankShowLevel();
-        if(COMMON.userInfo.level<openLevel){
-            UI.showTip("排行榜"+openLevel+"级开启");
-            return;
-        }
+        // var openLevel:number = CONSTANT.getRankShowLevel();
+        // if(COMMON.userInfo.level<openLevel){
+        //     UI.showTip("排行榜"+openLevel+"级开启");
+        //     return;
+        // }
         UI.createPopUp(ResConst.RankPanel,{});
         // UI.createPopUp(ResConst.LevelupPanel,{});
     }

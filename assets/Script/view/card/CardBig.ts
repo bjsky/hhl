@@ -152,12 +152,12 @@ export default class CardBig extends PopUpBase{
         this.onShow();
     }
     protected onShowComplete(){
-        this.node.on(cc.Node.EventType.TOUCH_START,this.onNodeTouch,this);
+        this.cardNode.on(cc.Node.EventType.TOUCH_START,this.onNodeTouch,this);
     }
     
 
     private onNodeTouch(e){
-        this.node.off(cc.Node.EventType.TOUCH_START,this.onNodeTouch,this);
+        this.cardNode.off(cc.Node.EventType.TOUCH_START,this.onNodeTouch,this);
         if(this._type == CardBigShowType.GetCard){
             this.rotationOut();
         }else if(this._type == CardBigShowType.ShowCard

@@ -25,11 +25,13 @@ export default class ActivityAssist{
         return ActivityAssist._instance;
     }
 
+    private _sSenvendayReward:SSevendayInfo = null;
     public senvendayRewardArr:RewardInfo[] = null;
     public senvendayIndex:number = 0;
 
     public initSenvenday(sSenvenday:SSevendayInfo){
 
+        this._sSenvendayReward = sSenvenday;
         this.senvendayIndex = sSenvenday.dayIndex;
         this.senvendayRewardArr = [];
         var reward:RewardInfo;
@@ -55,6 +57,10 @@ export default class ActivityAssist{
 
     public updateSevenday(sSenvenday:SSevendayInfo){
         this.initSenvenday(sSenvenday);
+    }
+
+    public cloneSevendayInfo():SSevendayInfo{
+        return this._sSenvendayReward;
     }
 
     public get senvendayTodayReward():RewardInfo{

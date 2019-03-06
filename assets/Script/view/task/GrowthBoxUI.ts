@@ -54,9 +54,10 @@ export default class GrowthBoxUI extends UIBase {
     }
 
     onEnable(){
-        this.initView();
         this.btnLingqu.node.on(cc.Node.EventType.TOUCH_START,this.onTouchStart,this);
         EVENT.on(GameEvent.TaskGrowthReceived,this.onReceived,this);
+
+        this.initView();
     }
     onDisable(){
         this.btnLingqu.node.off(cc.Node.EventType.TOUCH_START,this.onTouchStart,this);
@@ -84,6 +85,7 @@ export default class GrowthBoxUI extends UIBase {
         }else{
             this.nodeGrowth.active = false;
             this.nodeAllFinish.active = true;
+            EVENT.off(GameEvent.TaskGrowthReceived,this.onReceived,this);
         }
     }
 
@@ -93,7 +95,7 @@ export default class GrowthBoxUI extends UIBase {
 
     private onReceived(e){
         var id :number = e.detail.id;
-        if(id == this._reward.reward.rewardId){
+        if(this._reward.reward && id == this._reward.reward.rewardId){
             this._reward = Task.taskInfo.getGrowthRewardWithType(this._type);
             this.initView();
         }

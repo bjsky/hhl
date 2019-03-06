@@ -1849,8 +1849,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 125,
-      "height": 30
+      "width": 123,
+      "height": 28
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -2388,8 +2388,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 125,
-      "height": 30
+      "width": 123,
+      "height": 28
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -2927,8 +2927,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 125,
-      "height": 30
+      "width": 123,
+      "height": 28
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -3777,9 +3777,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 146,
-      "g": 80,
-      "b": 27,
+      "r": 211,
+      "g": 92,
+      "b": 33,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -3790,7 +3790,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 173,
+      "width": 78,
       "height": 40
     },
     "_rotationX": 0,
@@ -3810,26 +3810,21 @@
     "groupIndex": 0
   },
   {
-    "__type__": "cc.Label",
+    "__type__": "cc.RichText",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 120
     },
     "_enabled": true,
-    "_useOriginalSize": false,
-    "_actualFontSize": 26,
-    "_fontSize": 26,
-    "_lineHeight": 40,
-    "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
-    "_spacingX": 0,
-    "_N$string": "通关100级副本",
+    "_N$string": "<color=#D35C21><color=#4A9F33>已完成</color></c>",
     "_N$horizontalAlign": 0,
-    "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
-    "_N$overflow": 0
+    "_N$fontSize": 26,
+    "_N$font": null,
+    "_N$maxWidth": 0,
+    "_N$lineHeight": 40,
+    "_N$imageAtlas": null,
+    "_N$handleTouchEvent": true
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -3839,7 +3834,7 @@
     "asset": {
       "__uuid__": "165e7216-18d1-4f42-b81e-c71091083b2c"
     },
-    "fileId": "64JcD/sRFP7pDT8NB4Hmp3",
+    "fileId": "06ZdAS0a5Nyq2Gs2MyMbm1",
     "sync": false
   },
   {
@@ -4229,7 +4224,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 126,
-      "height": 117
+      "height": 115
     },
     "_rotationX": 0,
     "_rotationY": 0,

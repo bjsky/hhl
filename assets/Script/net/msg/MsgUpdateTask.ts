@@ -1,6 +1,9 @@
 import MessageBase from "./MessageBase";
 import NetConst from "../NetConst";
-import { STaskInfo } from "./MsgLogin";
+import { STaskInfo, STaskProgressInfo } from "./MsgLogin";
+import { Task } from "../../module/TaskAssist";
+import { CFG } from "../../manager/ConfigManager";
+import { ConfigConst } from "../../module/loading/steps/LoadingStepConfig";
 
 
 export class CSUpdateTask{
@@ -40,7 +43,23 @@ export default class MsgUpdateTask extends MessageBase{
     }
 
     public respFromLocal(){
-        var json:any ={};
+        var info:STaskInfo = Task.taskInfo.cloneServerInfo();
+        var taskProgress:STaskProgressInfo;
+        for(var i:number =0;i<info.taskProgresses.length;i++){
+            if(info.taskProgresses[i].taskId == this.param.taskId){
+                taskProgress = info.taskProgresses[i];
+                break;
+            }
+        }
+        if(!taskProgress){
+            taskProgress =new STaskProgressInfo();
+            taskProgress.taskId = this.param.taskId;
+            info.taskProgresses.push(taskProgress);
+        }
+        taskProgress.finishNum = this.param.finishNum;
+        var score:number = Number(CFG.getCfgDataById(ConfigConst.Task,this.param.taskId).taskScore);
+        info.activeScore+= score;
+        var json:any ={taskInfo:info};
         return this.parse(json);
     }
     private parse(obj:any):MessageBase{
