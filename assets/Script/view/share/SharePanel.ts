@@ -53,14 +53,11 @@ export default class SharePanel extends PopUpBase{
     }
 
     private onShare(){
-        Share.shareAppMessage();
-
-        //假定时 
-        if(Share.shareGetReward){
-            this.scheduleOnce(()=>{
-                Share.getShareReward();
-            },0.1)
-        }
+        Share.shareAppMessage(()=>{
+            if(Share.shareGetReward){
+                Share.getShareReward()
+            }
+        });
     }
 
     private initView(){

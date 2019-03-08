@@ -14,6 +14,7 @@ import { COMMON } from "../CommonData";
 import { SGuideInfo } from "../net/msg/MsgLogin";
 import { TaskType } from "../module/TaskAssist";
 import { Battle } from "../module/battle/BattleAssist";
+import { CONSTANT } from "../Constant";
 
 export enum GuideTypeEnum {
     GuideStory = 1,
@@ -65,7 +66,7 @@ export default class GuideManager{
         // this.guideInfo.initFromServer(data);
         if(COMMON.isNewUser){
             var temp:SGuideInfo = new SGuideInfo();
-            temp.guideId = 2;
+            temp.guideId = CONSTANT.getFirstGuideId();
             this.guideInfo.initFromServer(temp);
         }
         this.initGuideMaskLayer();

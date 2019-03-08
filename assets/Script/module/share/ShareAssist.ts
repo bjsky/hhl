@@ -43,19 +43,44 @@ export default class ShareAssist{
         return this.shareGetReward;
     }
 
+    private _shareSuccessCB:Function = null;
+    private _shareFailCb:Function = null;
+    private _shareOnHideTime:number = 0;
+    public get isShareOnHide(){
+        return this._shareOnHideTime>0;
+    }
     //分享链接
-    public shareAppMessage(){
+    public shareAppMessage(success:Function,fail:Function = null){
         if(GLOBAL.serverType == ServerType.Publish){
             var title:string ="快来玩大家都在玩的洪荒故事小游戏！";
             var imgUrl:string ="https://www.xh52.top/resShare/share_1.jpg";
             var query:string ="";
 
+            
+            this._shareSuccessCB = success;
+            this._shareFailCb =fail;
+            this._shareOnHideTime = COMMON.getServerTime();
+            console.log("share on hide:",this._shareOnHideTime);
             WeiXin.shareAppMessage(title,imgUrl,query);
             //完成任务 
             Task.finishTask(TaskType.ShareFriend);
         }
     }
 
+    public shareOnShow(){
+        var time :number = COMMON.getServerTime();
+        console.log("share on show:",time);
+        if(time - this._shareOnHideTime>3000){
+            this._shareOnHideTime = 0;
+            this._shareSuccessCB();
+        }else{
+            UI.showTip("分享失败");
+            this._shareFailCb && this._shareFailCb();
+        }
+
+        this._shareSuccessCB = null;
+        this._shareFailCb = null;
+    }
     //分享获得奖励
     public getShareReward(){
         NET.send(MsgGetReward.create(GetRewardType.ShareGetDiamond,this.shareGetDiamond),(msg:MsgGetReward)=>{

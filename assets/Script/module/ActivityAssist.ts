@@ -67,10 +67,10 @@ export default class ActivityAssist{
         return this.senvendayRewardArr[this.senvendayIndex];
     }
 
-    public receiveSevenday(index:number){
+    public receiveSevenday(index:number,isDouble){
         var rewardId = CONSTANT.getSevendayRewardIds()[index];
         var rewardCfg = CFG.getCfgDataById(ConfigConst.Reward,rewardId);
-        NET.send(MsgGetConfigReward.create(Number(rewardId),RewardType.SevenDay),(msg:MsgGetConfigReward)=>{
+        NET.send(MsgGetConfigReward.create(Number(rewardId),RewardType.SevenDay,isDouble),(msg:MsgGetConfigReward)=>{
             if(msg && msg.resp){
                 if(msg.resp.newCard!=null){ //新卡牌
                     Card.addNewCard(msg.resp.newCard);

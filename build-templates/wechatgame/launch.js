@@ -161,6 +161,49 @@ let shareCallbackFunc = function(){
     query:"",
   }
 }
+let onHideFunc = function(res){
+  console.log("OnHide Info:" + JSON.stringify(res));
+  
+  window["wxOnHide"](res);
+}
+
+
+let onshowFunc = function(res){
+  console.log("OnShow Info:" + JSON.stringify(res));
+  
+  window["wxOnShow"](res);
+}
+
+let checkUpdate = function() {
+  console.log("[log] will check udpate ")
+  if (typeof wx.getUpdateManager === 'function') {
+    const updateManager = wx.getUpdateManager()
+  
+    updateManager.onCheckForUpdate(function (res) {
+      // 请求完新版本信息的回调
+      console.log("[log] is udpate : " + res.hasUpdate)
+    })
+  
+    updateManager.onUpdateReady(function () {
+      // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
+      wx.showModal({
+        title: '更新提示',
+        content: '又一个棒棒哒新版本，去瞅瞅~',
+        success: function (res) {
+          if (res.confirm) {
+          // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
+          updateManager.applyUpdate()
+          }
+        }
+      })        
+    })
+  
+    updateManager.onUpdateFailed(function () {
+      // 新的版本下载失败
+    })
+  }
+  
+}
 
 wx.onLaunch()
 {
@@ -173,4 +216,9 @@ wx.onLaunch()
   wx.showShareMenu();
   // 注册用户点击右上角转发侦听
   wx.onShareAppMessage(shareCallbackFunc)
+  //显示饮茶
+  wx.onHide(onHideFunc);
+  wx.onShow(onshowFunc)
+
+  checkUpdate();
 }

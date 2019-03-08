@@ -16,6 +16,8 @@ export class CSGetConfigReward{
     public rewardId:number = 0;
     //奖励表中type(1、七日奖励，2、活跃度奖励，3、成长奖励)
     public rewardType:RewardType = 0;
+    //是否双倍奖励
+    public isDouble:boolean =false;
 }
 
 export class SCGetConfigReward{
@@ -55,11 +57,12 @@ export default class MsgGetConfigReward extends MessageBase{
         // this.isLocal = true;
     }
 
-    public static create(rewardId:number,rewardType:RewardType){
+    public static create(rewardId:number,rewardType:RewardType,isDouble:boolean=false){
         var msg = new MsgGetConfigReward();
         msg.param = new CSGetConfigReward();
         msg.param.rewardId = rewardId;
         msg.param.rewardType = rewardType;
+        msg.param.isDouble = isDouble;
         return msg;
     }
 

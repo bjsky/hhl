@@ -19,7 +19,10 @@ export default class GameEvent{
     public static Panel_Show_Effect_Complete:string ="Panel_Show_Effect_Complete";
     
     public static Guide_Touch_Complete:string ="Guide_Touch_Complete";   //完成引导点击
-    
+    //回到游戏
+    public static Weixin_onShow:string ="Weixin_onShow";
+    //隐藏游戏
+    public static Weixin_onHide:string ="Weixin_onHide";
     //开始若引导
     public static Guide_Weak_Start:string = "Guide_Weak_Start";
     //弱引导点击

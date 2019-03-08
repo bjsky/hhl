@@ -149,12 +149,11 @@ export default class FightResultPanel extends PopUpBase {
 
     private onShare(e){
         this.btnShare.node.active = false;
-        Share.shareAppMessage();
-        if(Share.shareGetReward){
-            this.scheduleOnce(()=>{
+        Share.shareAppMessage(()=>{
+            if(Share.shareGetReward){
                 Share.getShareReward();
-            },0.1)
-        }
+            }
+        });
     }
     start () {
 

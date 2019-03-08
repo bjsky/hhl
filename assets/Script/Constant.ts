@@ -20,6 +20,10 @@ export default class Constant{
         }
 
     }
+    //引导开始id
+    public getFirstGuideId():number{
+        return Number(this._constantKeyValueMap["first_guide"]);
+    }
 
     public getBuidlingName(type:BuildType){
         return this._constantKeyValueMap["buidling_names"].split(";")[type];

@@ -30,7 +30,7 @@
   "title": "hhlgame",
   "webOrientation": "auto",
   "wechatgame": {
-    "REMOTE_SERVER_ROOT": "https://s.1233k.com/",
+    "REMOTE_SERVER_ROOT": "https://s.1233k.com/test/",
     "appid": "wx6e293b20af149086",
     "isSubdomain": false,
     "orientation": "portrait",

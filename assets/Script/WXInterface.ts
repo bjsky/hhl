@@ -1,11 +1,36 @@
 import { GLOBAL, ServerType } from "./GlobalData";
 import { GetRewardType } from "./net/msg/MsgGetReward";
+import { EVENT } from "./message/EventCenter";
+import GameEvent from "./message/GameEvent";
+import { Share } from "./module/share/ShareAssist";
 
 export class WXInterface{
     public static _inst:WXInterface;
     public static getInstance():WXInterface
     {
         return this._inst||(this._inst = new WXInterface())
+    }
+    constructor(){
+        window["wxOnShow"] = function(res)
+        {
+            EVENT.emit(GameEvent.Weixin_onShow);
+            try {
+                if(Share.isShareOnHide){    //分享中
+                    Share.shareOnShow();
+                }
+            }catch (error) {
+                console.log(error)
+            }
+        }
+        window["wxOnHide"] = function(res)
+        {
+            try {
+                EVENT.emit(GameEvent.Weixin_onHide);
+                console.log("wxOnHide emit");
+            } catch (error) {
+                console.log(error)
+            }
+        }
     }
     //获取配置信息
     public getGameConfigData():any{

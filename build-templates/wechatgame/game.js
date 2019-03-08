@@ -10,7 +10,7 @@ window.login_server_gameid = '10017001'; // 登录服appid -- 平台提供
 window.login_server_gamekey = 'uRH21v8SDxfdvWbO'; // 登录签名key -- 平台提供
 
 // wxDownloader.REMOTE_SERVER_ROOT = "https://www.xh52.top"; //远程cdn资源地址/
-wxDownloader.REMOTE_SERVER_ROOT = "https://s.1233k.com/"; //远程cdn资源地址
+wxDownloader.REMOTE_SERVER_ROOT = "https://s.1233k.com/test/"; //远程cdn资源地址
 wxDownloader.SUBCONTEXT_ROOT = "";
 
 

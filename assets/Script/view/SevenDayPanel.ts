@@ -6,6 +6,12 @@ import { CONSTANT } from "../Constant";
 import { Activity } from "../module/ActivityAssist";
 import { EVENT } from "../message/EventCenter";
 import GameEvent from "../message/GameEvent";
+import LoadSprite from "../component/LoadSprite";
+import PathUtil from "../utils/PathUtil";
+import { Share } from "../module/share/ShareAssist";
+import { ResType } from "../model/ResInfo";
+import { CFG } from "../manager/ConfigManager";
+import { ConfigConst } from "../module/loading/steps/LoadingStepConfig";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -28,6 +34,10 @@ export default class SevenDayPanel extends PopUpBase {
     btnLinqu: cc.Button= null;
     @property(cc.Sprite)
     lblTodayReceived:cc.Sprite= null;
+    @property(LoadSprite)
+    doubleIcon:LoadSprite= null;
+    @property(cc.Node)
+    doubleNode:cc.Node= null;
     
 
     // LIFE-CYCLE CALLBACKS:
@@ -41,6 +51,7 @@ export default class SevenDayPanel extends PopUpBase {
         super.onEnable();
         this.btnLinqu.node.on(cc.Node.EventType.TOUCH_START,this.onTouchStart,this);
         EVENT.on(GameEvent.SevendayReceived,this.onReceived,this);
+        this.doubleIcon.node.on(cc.Node.EventType.TOUCH_START,this.onDoubleTouch,this);
         this.initView();
     }
 
@@ -48,6 +59,7 @@ export default class SevenDayPanel extends PopUpBase {
         super.onDisable();
         this.btnLinqu.node.off(cc.Node.EventType.TOUCH_START,this.onTouchStart,this);
         EVENT.off(GameEvent.SevendayReceived,this.onReceived,this);
+        this.doubleIcon.node.off(cc.Node.EventType.TOUCH_START,this.onDoubleTouch,this);
     }
 
     private initView(){
@@ -68,10 +80,29 @@ export default class SevenDayPanel extends PopUpBase {
     private btnShow(){
         this.btnLinqu.node.active = !Activity.senvendayTodayReward.isReceived;
         this.lblTodayReceived.node.active = Activity.senvendayTodayReward.isReceived;
+        if(!Activity.senvendayTodayReward.isReceived){
+            var nodeDayRewardResType:ResType = CFG.getCfgDataById(ConfigConst.Reward,(Activity.senvendayTodayReward.rewardId)).resType;
+            if(nodeDayRewardResType!=ResType.card){
+                this.doubleNode.active = true;
+                this.setDoubleSelect(this._doubleSelect);
+            }else{
+                this.doubleNode.active = false;
+            }
+        }else{
+            this.doubleNode.active = false;
+        }
     }
 
     private onTouchStart(e){
-        Activity.receiveSevenday(Activity.senvendayIndex);
+        if(this._doubleSelect){
+            Share.shareAppMessage(()=>{
+                Activity.receiveSevenday(Activity.senvendayIndex,true);
+            },()=>{
+                Activity.receiveSevenday(Activity.senvendayIndex,false);
+            });
+        }else{
+            Activity.receiveSevenday(Activity.senvendayIndex,false);
+        }
     }
 
     private onReceived(e){
@@ -81,6 +112,16 @@ export default class SevenDayPanel extends PopUpBase {
     }
     start () {
 
+    }
+
+    private _doubleSelect:boolean =true;
+    private setDoubleSelect(select:boolean){
+        this._doubleSelect = select;
+        this.doubleIcon.load(PathUtil.getBoxRecevieIcon(select));
+    }
+
+    private onDoubleTouch(e){
+        this.setDoubleSelect(!this._doubleSelect);
     }
 
     // update (dt) {}
