@@ -56,7 +56,7 @@ export default class MsgCardSummonGuide extends MessageBase{
 
 
     public respFromLocal(){
-        var cardInfo = MsgCardSummonGuide.randomCardInfo();
+        var cardInfo = MsgCardSummonGuide.randomCardInfo(2,15);
         var upStarCard = this.copyCard(cardInfo);
         var retRes:SResInfo = COMMON.resInfo.cloneServerInfo();
         retRes.lifeStone -= this.param.stoneCost;
@@ -74,9 +74,9 @@ export default class MsgCardSummonGuide extends MessageBase{
         return this.parse(json);
     }
 
-    public static randomCardInfo(grade:number =2){
+    public static randomCardInfo(grade:number =2,guideId:number = NaN){
         var cardUUid:string = new Date().getTime()+ Number(Math.random()*1000000).toFixed(0);
-        var cardId = Card.getSummonCardId();
+        var cardId = !isNaN(guideId)?guideId:Card.getSummonCardId();
         var cardInfo = {
             uuid:cardUUid,
             level:1,

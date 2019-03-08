@@ -218,7 +218,7 @@ export default class SkillLogic{
             case 15: //二郎真君
             {
                 var rate:number = beAttack.skill.skillVal;
-                if(Math.random()<rate || GUIDE.isInGuide){
+                if(Math.random()<rate || (GUIDE.isInGuide && beAttack.lineup.pos==4)){
                     hasAction = true;
                 }
                 if(hasAction){
@@ -240,7 +240,7 @@ export default class SkillLogic{
             }break;
             case 5: //复仇傀儡
             {
-                if(Math.random()<0.25 || GUIDE.isInGuide){
+                if(Math.random()<0.25 || (GUIDE.isInGuide && beAttack.lineup.pos==4)){
                     hasAction = true;
                 }
                 if(hasAction){

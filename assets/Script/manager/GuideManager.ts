@@ -65,7 +65,7 @@ export default class GuideManager{
         // this.guideInfo.initFromServer(data);
         if(COMMON.isNewUser){
             var temp:SGuideInfo = new SGuideInfo();
-            temp.guideId = 1;
+            temp.guideId = 2;
             this.guideInfo.initFromServer(temp);
         }
         this.initGuideMaskLayer();
