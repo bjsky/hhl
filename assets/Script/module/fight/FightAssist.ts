@@ -4,15 +4,11 @@ import { ResConst } from "../loading/steps/LoadingStepRes";
 import UIBase from "../../component/UIBase";
 import FightInfo, { FightPlayerType } from "../../model/FightInfo";
 import FightLogic, { FightResult } from "./FightLogic";
-import { BuffAction } from "./FightAction";
 import SkillLogic from "./SkillLogic";
-import FightOnce from "./FightOnce";
 import { Passage } from "../battle/PassageAssist";
 import ResInfo, { ResType } from "../../model/ResInfo";
 import { Battle } from "../battle/BattleAssist";
 import EnemyInfo, { EnemyTypeEnum } from "../../model/EnemyInfo";
-import { SCardInfo } from "../../net/msg/MsgCardSummon";
-import CardInfo from "../../model/CardInfo";
 import { SOUND } from "../../manager/SoundManager";
 import { GAME } from "../../GameController";
 import { GUIDE } from "../../manager/GuideManager";
@@ -114,18 +110,24 @@ export default class FightAssist{
 
     private _result:FightResult = null;
     private resultEnd(){
+        var addGold:number = 0;
+        var addStone:number = 0;
+        var addExp:number = 0;
+        var addDiamond:number = 0;
+        var addScore:number = 0;
         if(this._infoEnemy.playerType == FightPlayerType.Boss){ 
             if(this._result.victory){//挑战boss成功
-                Passage.fightBossSuccess((restAdd:ResInfo,expadd:number)=>{
-                    UI.createPopUp(ResConst.FightResult,
-                            {result:this._result,
-                                fightMine:this._infoMine,
-                                fightEnemy:this._infoEnemy,
-                                rewards:[{type:ResType.gold,value:restAdd.gold},
-                                {type:ResType.lifeStone,value:restAdd.lifeStone},
-                                {type:ResType.exp,value:expadd}
-                            ]});
-                });
+                addGold = Number(Passage.passageInfo.passageCfg.firstGold);
+                addExp =  Number(Passage.passageInfo.passageCfg.firstExp);
+                addStone =  Number(Passage.passageInfo.passageCfg.firstStone);
+                UI.createPopUp(ResConst.FightResult,
+                        {result:this._result,
+                            fightMine:this._infoMine,
+                            fightEnemy:this._infoEnemy,
+                            rewards:[{type:ResType.gold,value:addGold},
+                            {type:ResType.lifeStone,value:addStone},
+                            {type:ResType.exp,value:addExp}
+                        ]});
             }else{
                 UI.createPopUp(ResConst.FightResult,
                     {result:this._result,
@@ -137,37 +139,38 @@ export default class FightAssist{
 
             var enemy:EnemyInfo = this._param as EnemyInfo;
             enemy.isAttacked = true;
-            var isguide:boolean = (enemy.enemyType == EnemyTypeEnum.Guide);
-            Battle.fightEnemeySuccess(enemy,this._result.victory,this._result.evaluate,isguide,
-                (addExp:number,addDiamond:number,addScore:number,cardInfo:CardInfo)=>{
-                    if(this._result.victory){
-                        UI.createPopUp(ResConst.FightResult,
-                            {
-                                result:this._result,
-                                fightMine:this._infoMine,
-                                fightEnemy:this._infoEnemy,
-                                addScore:addScore,
-                                addCard:cardInfo,
-                                rewards:[
-                                {type:ResType.exp,value:addExp},
-                                {type:ResType.diamond,value:addDiamond}
-                            ]});
-                        if(enemy.enemyType == EnemyTypeEnum.PersonlEnemy){  //复仇
-                            //完成任务 
-                            Task.finishTask(TaskType.RevengeEnemy);
-                        }else if(enemy.enemyType == EnemyTypeEnum.Enemy
-                            ||enemy.enemyType == EnemyTypeEnum.Robit){
-                            //完成任务 
-                            Task.finishTask(TaskType.FightEnemy);
-                        }
-                    }else{
-                        UI.createPopUp(ResConst.FightResult,
-                            {result:this._result,
-                                fightMine:this._infoMine,
-                                fightEnemy:this._infoEnemy,
-                                rewards:[]});
-                    }
-            })
+            if(this._result.victory){
+                addExp = Battle.getAddExpBuffed();
+                addDiamond = Battle.getAddDiamondBuffed();
+                addScore = this._result.evaluate;
+                UI.createPopUp(ResConst.FightResult,
+                {
+                    result:this._result,
+                    fightMine:this._infoMine,
+                    fightEnemy:this._infoEnemy,
+                    addScore:addScore,
+                    // addCard:cardInfo,
+                    enemy:enemy,
+                    rewards:[
+                    {type:ResType.exp,value:addExp},
+                    {type:ResType.diamond,value:addDiamond}
+                ]});
+                if(enemy.enemyType == EnemyTypeEnum.PersonlEnemy){  //复仇
+                    //完成任务 
+                    Task.finishTask(TaskType.RevengeEnemy);
+                }else if(enemy.enemyType == EnemyTypeEnum.Enemy
+                    ||enemy.enemyType == EnemyTypeEnum.Robit){
+                    //完成任务 
+                    Task.finishTask(TaskType.FightEnemy);
+                }
+            }else{
+                UI.createPopUp(ResConst.FightResult,
+                    {result:this._result,
+                        fightMine:this._infoMine,
+                        fightEnemy:this._infoEnemy,
+                        enemy:enemy,
+                        rewards:[]});
+            }
         }
     }
 

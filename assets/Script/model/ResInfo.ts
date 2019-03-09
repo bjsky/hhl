@@ -9,7 +9,7 @@ export enum ResType{
     lifeStone,
     soulStone,
     exp,
-    card,
+    card
 }
 
 export default class ResInfo extends InfoBase{

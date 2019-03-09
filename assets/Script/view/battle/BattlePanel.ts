@@ -1,7 +1,4 @@
 import UIBase from "../../component/UIBase";
-import { CFG } from "../../manager/ConfigManager";
-import { ConfigConst } from "../../module/loading/steps/LoadingStepConfig";
-import { COMMON } from "../../CommonData";
 import { Passage } from "../../module/battle/PassageAssist";
 import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
@@ -16,6 +13,9 @@ import { Lineup } from "../../module/battle/LineupAssist";
 import { Fight } from "../../module/fight/FightAssist";
 import FightInfo from "../../model/FightInfo";
 import { GUIDE } from "../../manager/GuideManager";
+import { AwardTypeEnum } from "../AwardPanel";
+import { ResType } from "../../model/ResInfo";
+import { Task, TaskType } from "../../module/TaskAssist";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -159,8 +159,12 @@ export default class BattlePanel extends UIBase {
                 return;
             }
         }
-        Passage.collectRes(GUIDE.isInGuide);
-
+        // Passage.collectRes(GUIDE.isInGuide);
+        EVENT.emit(GameEvent.Show_AwardPanel,{type:AwardTypeEnum.PassageCollect,
+            arr:[{type:ResType.gold,value:this._curGold},
+                {type:ResType.lifeStone,value:this._curStone},
+                {type:ResType.exp,value:this._curExp},
+            ]})
     }
 
 

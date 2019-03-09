@@ -10,7 +10,9 @@ export class CSCardUpLv{
     //卡牌uid 
     public cardUuid:string = "";  
     //卡牌消耗灵石，客户端算,简化服务器
-    public upCostlifeStone:number = 0;  
+    public upCostlifeStone:number = 0;
+    //看视频升级，不消耗灵石，升级数配表
+    public seeVideoUp:boolean = false;
 }
 
 export class SCCardUpLv{
@@ -37,11 +39,12 @@ export default class MsgCardUpLv extends MessageBase{
         // this.isLocal = true;
     }
 
-    public static create(cardUUid:string,cost:number){
+    public static create(cardUUid:string,cost:number,seeVideoUp:boolean =false){
         var msg = new MsgCardUpLv();
         msg.param = new CSCardUpLv();
         msg.param.cardUuid = cardUUid;
         msg.param.upCostlifeStone = cost;
+        msg.param.seeVideoUp = seeVideoUp;
         return msg;
     }
 

@@ -6,6 +6,8 @@ import { Passage } from "../../module/battle/PassageAssist";
 export class CSCollectRes{
     //是否引导中
     public isGuide:boolean = false;
+    //是否双倍
+    public isDouble:boolean = false;
 }
 export class SCCollectRes{
     //收集的经验
@@ -37,10 +39,11 @@ export default class MsgCollectRes extends MessageBase{
         // this.isLocal = true;
     }
 
-    public static create(isGuide:boolean){
+    public static create(isGuide:boolean,isDouble:boolean =false){
         var msg = new MsgCollectRes();
         msg.param = new CSCollectRes();
         msg.param.isGuide = isGuide;
+        msg.param.isDouble = isDouble;
         return msg;
     }
 

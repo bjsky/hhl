@@ -221,13 +221,18 @@ export default class BattleAssist{
         
     }
     //挑战敌人成功
-    public fightEnemeySuccess(enemyInfo:EnemyInfo,victory:boolean,evaluate:number,isGuide:boolean,cb:Function){
+    public fightEnemeySuccess(enemyInfo:EnemyInfo,victory:boolean,evaluate:number,isGuide:boolean,isDouble:boolean,cb:Function){
         if(victory){
             //挑战配置
             var fightScoreCfg :any= this.getFightScoreCfg(enemyInfo.enemyScore)
             var addExp:number = this.getAddExpBuffed();
             var addDiamond:number = this.getAddDiamondBuffed();
             var addScore = evaluate;
+            if(isDouble){
+                addExp *= 2;
+                addDiamond *=2;
+                addScore *=2;
+            }
             var costActionPoint = 1;
             var isRevenge = (enemyInfo.enemyType == EnemyTypeEnum.PersonlEnemy);
             var getCardRate = Number(fightScoreCfg.getCardRate);
@@ -235,7 +240,7 @@ export default class BattleAssist{
                 getCardRate *=2;
                 costActionPoint = 0;
             }
-            var isRabCard:boolean = (Math.random()<getCardRate);
+            var isRabCard:boolean = (Math.random()<getCardRate); 
             var rate ="";
             if(isRabCard){  
                 rate = fightScoreCfg.getCardRateStr;

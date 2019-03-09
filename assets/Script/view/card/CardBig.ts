@@ -44,16 +44,18 @@ export default class CardBig extends PopUpBase{
     cardLevel: cc.Label = null;
     @property(cc.Label)
     cardPower: cc.Label = null;
-    @property(cc.Button)
-    shareBtn:cc.Button = null;
 
     @property(cc.Node)
     heroNode:cc.Node = null;
 
+    @property(cc.Button)
+    btnRecevie:cc.Button = null;
+
     @property(cc.Sprite)
-    spr_fxdzs:cc.Sprite = null;
+    sprGet:cc.Sprite = null;
     @property(cc.Sprite)
-    spr_fxghy:cc.Sprite = null;
+    sprRabby:cc.Sprite = null;
+
     
 
     // LIFE-CYCLE CALLBACKS:
@@ -92,8 +94,6 @@ export default class CardBig extends PopUpBase{
 
     onEnable(){
         EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
-        EVENT.on(GameEvent.ShareGetReward_Complete,this.checkShareLabel,this);
-        this.shareBtn.node.on(cc.Node.EventType.TOUCH_START,this.onShare,this);
 
         this.initCardView();
     }
@@ -101,29 +101,16 @@ export default class CardBig extends PopUpBase{
 
     onDisable(){
         EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
-        EVENT.off(GameEvent.ShareGetReward_Complete,this.checkShareLabel,this);
-        this.shareBtn.node.on(cc.Node.EventType.TOUCH_START,this.onShare,this);
     }
 
 
-    private onShare(e:cc.Event){
-        e.stopPropagation();
-        this.shareBtn.node.active = false;
-        Share.shareAppMessage();
-        if(Share.shareGetReward){
-            this.scheduleOnce(()=>{
-                Share.getShareReward();
-            },0.1)
-        }
-    }
     private initCardView(){
-        this.shareBtn.node.active = true;
         this.node.opacity = 0;
+        this.heroNode.active = false;
         if(this._type == CardBigShowType.GetCard
             ||this._type == CardBigShowType.DiamondGetCard
             || this._type == CardBigShowType.RabGetCard
             ||this._type == CardBigShowType.ActivityGetCard){
-            this.heroNode.active = true;
             this.cardName.string = this._cardInfo.cardInfoCfg.name;
             this.cardRace.load(PathUtil.getCardRaceImgPath(this._cardInfo.cardInfoCfg.raceId));
             this.cardStar.load(PathUtil.getCardGradeImgPath(this._cardInfo.grade));
@@ -131,33 +118,36 @@ export default class CardBig extends PopUpBase{
             this.cardSrc.load(PathUtil.getCardImgPath(this._cardInfo.cardInfoCfg.imgPath),null,this.loadCardCb.bind(this));
             this.cardLevel.string = "Lv."+this._cardInfo.level;
             this.cardPower.string = this._cardInfo.carUpCfg.power ;
-            
-            this.shareBtn.node.active = Share.shareEnable;
-            this.checkShareLabel(null);
 
             SOUND.playGetCardSound();
         }else if(this._type == CardBigShowType.ShowCard){
-            this.heroNode.active = false;
             var infoCfg = CFG.getCfgDataById(ConfigConst.CardInfo,this._cardId);
             this.cardSrc.load(PathUtil.getCardImgPath(infoCfg.imgPath),null,this.loadCardCb.bind(this));
         }
+        this.sprGet.node.active = this.sprRabby.node.active = false;
+        if(this._type == CardBigShowType.RabGetCard){
+            this.sprRabby.node.active = true;
+        }else{
+            this.sprGet.node.active = true;
+        }
     }
-
-    private checkShareLabel(e){
-        this.spr_fxdzs.node.active = Share.shareGetReward;
-        this.spr_fxghy.node.active = !Share.shareGetReward;
-    }
-
     private loadCardCb(){
         this.onShow();
     }
     protected onShowComplete(){
-        this.cardNode.on(cc.Node.EventType.TOUCH_START,this.onNodeTouch,this);
+        this.btnRecevie.node.on(cc.Node.EventType.TOUCH_START,this.onNodeTouch,this);
+        if(this._type != CardBigShowType.ShowCard){
+            this.heroNode.active = true;
+        }
+        
+        this._enableGetGuideNode = true;
     }
-    
+
+    private _enableGetGuideNode:boolean =false;
 
     private onNodeTouch(e){
-        this.cardNode.off(cc.Node.EventType.TOUCH_START,this.onNodeTouch,this);
+        this.btnRecevie.node.off(cc.Node.EventType.TOUCH_START,this.onNodeTouch,this);
+        this.heroNode.active = false;
         if(this._type == CardBigShowType.GetCard){
             this.rotationOut();
         }else if(this._type == CardBigShowType.ShowCard
@@ -174,7 +164,6 @@ export default class CardBig extends PopUpBase{
         var toPos = this.node.convertToNodeSpaceAR(this._cardToPos);
         var fPos = this.node.position;
         var centerPos = cc.v2(fPos.x + (toPos.x - fPos.x) * 0.1, fPos.y - (toPos.y - fPos.y) * 0.7);
-        this.shareBtn.node.active = false;
         var getAct = cc.sequence(
             cc.spawn(
                 cc.bezierTo(0.4,[fPos,centerPos,toPos]),
@@ -193,8 +182,8 @@ export default class CardBig extends PopUpBase{
     }
 
     public getGuideNode(name:string):cc.Node{
-        if(name == "popup_cardBig"){
-            return this.node;
+        if(name == "popup_cardBig" && this._enableGetGuideNode){
+            return this.btnRecevie.node;
         }else{
             return null;
         }

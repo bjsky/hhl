@@ -74,24 +74,19 @@ export default class PassageAssist{
         return curTime >= needTime;
     }
 
-    public collectRes(isGuide:boolean){
+    public collectRes(isGuide:boolean,cb:Function){
         NET.send(MsgCollectRes.create(isGuide),(msg:MsgCollectRes)=>{
             if(msg && msg.resp){
                 COMMON.updateUserInfo(msg.resp.userInfo);
+                COMMON.updateResInfo(msg.resp.resInfo);
                 Passage.updatePassageInfo(msg.resp.passageInfo);
                 EVENT.emit(GameEvent.Passage_Collected);
 
-                var cost:SResInfo = COMMON.updateResInfo(msg.resp.resInfo);
-                EVENT.emit(GameEvent.Show_AwardPanel,{type:AwardTypeEnum.PassageCollect,
-                    arr:[{type:ResType.gold,value:cost.gold},
-                        {type:ResType.lifeStone,value:cost.lifeStone},
-                        {type:ResType.exp,value:msg.resp.addExp},
-                    ]})
-                
-                //完成任务
                 Task.finishTask(TaskType.CollectRes);
+                cb && cb();
             }
         },this)
+
     }
 
 
@@ -128,8 +123,8 @@ export default class PassageAssist{
     }
 
     //挑战boss成功
-    public fightBossSuccess(cb:Function){
-        NET.send(MsgFightBoss.create(this.passageInfo.passId),(msg:MsgFightBoss)=>{
+    public fightBossSuccess(cb:Function,isDouble:boolean){
+        NET.send(MsgFightBoss.create(this.passageInfo.passId,isDouble),(msg:MsgFightBoss)=>{
             if(msg && msg.resp){
                 COMMON.updateUserInfo(msg.resp.userInfo);
                 Passage.updatePassageInfo(msg.resp.passageInfo);

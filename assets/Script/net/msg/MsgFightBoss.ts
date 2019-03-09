@@ -7,6 +7,8 @@ import { COMMON } from "../../CommonData";
 export class CSFightBoss{
     //关卡id
     public passageId:number = 0;
+    //是否双倍
+    public isDouble:boolean = false;
 }
 
 export class SCFightBoss{
@@ -39,10 +41,11 @@ export default class MsgFightBoss extends MessageBase{
         // this.isLocal = true;
     }
 
-    public static create(passId:number){
+    public static create(passId:number,isDouble:boolean =false){
         var msg = new MsgFightBoss();
         msg.param = new CSFightBoss();
         msg.param.passageId = passId;
+        msg.param.isDouble = isDouble;
         return msg;
     }
 

@@ -306,6 +306,10 @@ export default class MainUI extends UIBase {
     private initView(){
         this.initRedPoint();
         this.playGrowth();
+
+        if(!Activity.senvendayTodayReward.isReceived){
+            this.onSevendayClick(null);
+        }
         // this.resetTaskGuide();
     }
 

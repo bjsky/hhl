@@ -34,8 +34,8 @@ export default class SevenDayPanel extends PopUpBase {
     btnLinqu: cc.Button= null;
     @property(cc.Sprite)
     lblTodayReceived:cc.Sprite= null;
-    @property(LoadSprite)
-    doubleIcon:LoadSprite= null;
+    @property(cc.Sprite)
+    doubleIcon:cc.Sprite= null;
     @property(cc.Node)
     doubleNode:cc.Node= null;
     
@@ -51,7 +51,7 @@ export default class SevenDayPanel extends PopUpBase {
         super.onEnable();
         this.btnLinqu.node.on(cc.Node.EventType.TOUCH_START,this.onTouchStart,this);
         EVENT.on(GameEvent.SevendayReceived,this.onReceived,this);
-        this.doubleIcon.node.on(cc.Node.EventType.TOUCH_START,this.onDoubleTouch,this);
+        this.doubleNode.on(cc.Node.EventType.TOUCH_START,this.onDoubleTouch,this);
         this.initView();
     }
 
@@ -59,7 +59,7 @@ export default class SevenDayPanel extends PopUpBase {
         super.onDisable();
         this.btnLinqu.node.off(cc.Node.EventType.TOUCH_START,this.onTouchStart,this);
         EVENT.off(GameEvent.SevendayReceived,this.onReceived,this);
-        this.doubleIcon.node.off(cc.Node.EventType.TOUCH_START,this.onDoubleTouch,this);
+        this.doubleNode.off(cc.Node.EventType.TOUCH_START,this.onDoubleTouch,this);
     }
 
     private initView(){
@@ -117,7 +117,7 @@ export default class SevenDayPanel extends PopUpBase {
     private _doubleSelect:boolean =true;
     private setDoubleSelect(select:boolean){
         this._doubleSelect = select;
-        this.doubleIcon.load(PathUtil.getBoxRecevieIcon(select));
+        this.doubleIcon.node.active = select;
     }
 
     private onDoubleTouch(e){

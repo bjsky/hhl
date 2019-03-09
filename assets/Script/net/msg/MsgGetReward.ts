@@ -9,6 +9,7 @@ export enum GetRewardType{
     ShareGetDiamond = 1,                  //分享得钻石
     SeeVideoGetGold ,                     //看视频得金币
     SeeVideoGetStone,                     //看视频得灵石
+    SeeVideoGetDiamond                    //看视频得钻石
 }
 //获得奖励参数
 export class CSGetReward{
@@ -55,6 +56,8 @@ export default class MsgGetReward extends MessageBase{
         }else if(type == GetRewardType.ShareGetDiamond){
             resType = ResType.diamond;
             share = true;
+        }else if(type == GetRewardType.SeeVideoGetDiamond){
+            resType = ResType.diamond;
         }
         msg.param.type = resType;
         msg.param.rewardNum = rewardNum;
@@ -72,7 +75,6 @@ export default class MsgGetReward extends MessageBase{
             resInfo.lifeStone += this.param.rewardNum;
         }else if(this.param.type == ResType.diamond){
             resInfo.diamond += this.param.rewardNum;
-            
         }
         if(this.param.share){
             shareCount +=1;
