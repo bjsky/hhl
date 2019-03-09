@@ -36,6 +36,8 @@ export enum ResPanelType{
     StoneNotEnough,     //灵石不足
     GoldRes,            //金币
     StoneRes,           //灵石
+    DiamondNotEnough,
+    DiamondRes,
 }
 export enum SeeVideoResult{
     NotComplete = 0,    //未看完
@@ -80,6 +82,10 @@ export default class ResPanel extends PopUpBase {
             this._resType = ResType.lifeStone;
             this._rewardType = GetRewardType.SeeVideoGetStone;
             this._awardNum = CONSTANT.getSeeVideoStone();
+        }else if(this._awardType == ResPanelType.DiamondRes || this._awardType == ResPanelType.DiamondNotEnough){
+            this._resType = ResType.diamond;
+            this._rewardType = GetRewardType.SeeVideoGetDiamond;
+            this._awardNum = CONSTANT.getSeeVideoDiamond();
         }
     }
 
@@ -119,6 +125,11 @@ export default class ResPanel extends PopUpBase {
             this.msg.node.active = false;
             this.resTip.load(PathUtil.getResTipNameUrl(this._resType));
             this.resNum.string = StringUtil.formatReadableNumber(COMMON.resInfo.lifeStone);
+        }else if(this._awardType == ResPanelType.DiamondRes){
+            this.resNode.active = true;
+            this.msg.node.active = false;
+            this.resTip.load(PathUtil.getResTipNameUrl(this._resType));
+            this.resNum.string = COMMON.resInfo.diamond.toString();
         }else if(this._awardType == ResPanelType.GoldNotEnough){
             this.resNode.active = false;
             this.msg.node.active = true;
@@ -127,25 +138,34 @@ export default class ResPanel extends PopUpBase {
             this.resNode.active = false;
             this.msg.node.active = true;
             this.msg.string = "灵石不足！";
+        }else if(this._awardType == ResPanelType.DiamondNotEnough){
+            this.resNode.active = false;
+            this.msg.node.active = true;
+            this.msg.string = "钻石不足！";
         }
     }
 
     private initVideoView(){
         this.awardIcon.load(PathUtil.getResMutiIconUrl(this._resType));
-        this.award.string = StringUtil.formatReadableNumber(this._awardNum);
+        if(this._awardType == ResPanelType.DiamondRes){
+            this.award.string = this._awardNum.toString();
+        }else{
+            this.award.string = StringUtil.formatReadableNumber(this._awardNum);
+        }
     }
 
     private onVideoSee(){
-        SOUND.pauseMusic();
+        // SOUND.pauseMusic();
+        this.onClose(null);
         WeiXin.showVideoAd((result:SeeVideoResult)=>{
             if(result == SeeVideoResult.Complete){
                 this.getVideoReward(this._rewardType,this._awardNum);
             }else if(result == SeeVideoResult.LoadError){
-                UI.showAlert("加载失败！请稍候再来",null,null,AlertBtnType.OKButton);
+                UI.showAlert("加载失败！请稍候再来");
             }else if(result == SeeVideoResult.NotComplete){
-                UI.showAlert("观看未完成，领取奖励失败！",null,null,AlertBtnType.OKButton);
+                UI.showAlert("观看未完成，领取奖励失败！");
             }
-            SOUND.resumeMusic();
+            // SOUND.resumeMusic();
         },this._rewardType)
     }
 

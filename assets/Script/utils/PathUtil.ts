@@ -117,6 +117,9 @@ export default class PathUtil{
             case ResType.lifeStone:
             url = "image/ui/lbl_dqls";
             break;
+            case ResType.diamond:
+            url = "image/ui/lbl_dqzs";
+            break;
         }
         return url;
     }

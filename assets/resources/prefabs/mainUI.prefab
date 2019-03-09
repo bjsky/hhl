@@ -3101,7 +3101,7 @@
     },
     "_children": [],
     "_tag": -1,
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 99
@@ -5974,6 +5974,9 @@
     },
     "btnAddStone": {
       "__id__": 82
+    },
+    "btnAddDiamond": {
+      "__id__": 100
     },
     "btnDiamondStore": {
       "__id__": 100

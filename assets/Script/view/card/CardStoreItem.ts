@@ -14,6 +14,7 @@ import { ResType } from "../../model/ResInfo";
 import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 import { CardBigShowType } from "./CardBig";
 import { Task, TaskType } from "../../module/TaskAssist";
+import ResPanel, { ResPanelType } from "../ResPanel";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -87,8 +88,8 @@ export default class CardStoreItem extends DListItem{
     }
 
     private onExchange(e){
-        if(COMMON.resInfo.diamond<this._cost){
-            UI.showTip("钻石不足！");
+        if(COMMON.resInfo.diamond <=this._cost){
+            ResPanel.show(ResPanelType.DiamondNotEnough);
             return;
         }
         UI.showAlert("花费"+this._cost+"钻石兑换？",()=>{

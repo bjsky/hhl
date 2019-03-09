@@ -108,6 +108,10 @@ export default class Constant{
     public getSeeVideoStone(){
         return Number(this._constantKeyValueMap["seeVideoAddStone"]);
     }
+    //看视频得钻石
+    public getSeeVideoDiamond(){
+        return Number(this._constantKeyValueMap["seeVideoAddDiamond"]);
+    }
     //////////////
     // 战场
     ////////////

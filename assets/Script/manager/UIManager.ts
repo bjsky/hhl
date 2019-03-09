@@ -289,7 +289,7 @@ export default class UIManager{
     /**
      * 显示网络提示框，不能点击遮罩关闭。登陆阶段loadingscene被ui层挡住，需要临时加到场景
     */
-    public showNetAlert(title:string,message:string,okCallback?:Function,cancelCallback?:Function,btnType?:number, act:boolean=false){
+    public showNetAlert(title:string,message:string,okCallback?:Function,cancelCallback?:Function,btnType:number = AlertBtnType.OKButton, act:boolean=false){
         var data = {content:message,okCb:okCallback,cancelCb:cancelCallback,btnType:btnType};
         this.createPopUp(ResConst.AlertPanel,data);
     }

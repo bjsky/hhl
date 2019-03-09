@@ -16,6 +16,7 @@ import { GUIDE } from "../../manager/GuideManager";
 import { AwardTypeEnum } from "../AwardPanel";
 import { ResType } from "../../model/ResInfo";
 import { Task, TaskType } from "../../module/TaskAssist";
+import { AlertBtnType } from "../AlertPanel";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

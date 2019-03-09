@@ -22,6 +22,9 @@ import { TaskViewSelect } from "../task/TaskPanel";
 import { Task } from "../../module/TaskAssist";
 import { GUIDE } from "../../manager/GuideManager";
 import { Activity } from "../../module/ActivityAssist";
+import { Battle } from "../../module/battle/BattleAssist";
+import { FightRecord } from "../../model/BattleInfo";
+import { BeFightPanelType } from "../castle/BeFightPanel";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -64,7 +67,7 @@ export default class MainUI extends UIBase {
     @property(cc.Button)
     btnAddStone: cc.Button = null;
     @property(cc.Button)
-    btnDiamondStore: cc.Button = null;
+    btnAddDiamond: cc.Button = null;
     @property(cc.ProgressBar)
     progressExp: cc.ProgressBar = null;
 
@@ -155,7 +158,7 @@ export default class MainUI extends UIBase {
         this.headIcon.load(COMMON.userInfo.icon);
         // this.lblExp.string = COMMON.userInfo.exp + " / "+COMMON.userInfo.totalExp;
         this.lblGold.string = StringUtil.formatReadableNumber(COMMON.resInfo.gold);
-        this.lblDiamond.string = StringUtil.formatReadableNumber(COMMON.resInfo.diamond);
+        this.lblDiamond.string = COMMON.resInfo.diamond.toString();
         this.lblLifeStone.string = StringUtil.formatReadableNumber(COMMON.resInfo.lifeStone);
         this.soundIcon.load(PathUtil.getSoundIcon(SOUND.getBgMusicSwitch()));
         // this.lblSoulStone.string = StringUtil.formatReadableNumber(COMMON.resInfo.soulStone);
@@ -236,10 +239,10 @@ export default class MainUI extends UIBase {
                     }
                 }break;
                 case ResType.diamond:{
-                    this.lblDiamond.string = StringUtil.formatReadableNumber(COMMON.resInfo.diamond);
+                    this.lblDiamond.string = COMMON.resInfo.diamond.toString();
                     absVal = Math.abs(obj.value);
                     if(absVal>0){
-                        UI.showTipCustom(ResConst.CostTipPanel,"-"+StringUtil.formatReadableNumber(absVal),this.lblDiamond.node.parent.convertToWorldSpaceAR(this.lblDiamond.node.position));
+                        UI.showTipCustom(ResConst.CostTipPanel,"-"+absVal,this.lblDiamond.node.parent.convertToWorldSpaceAR(this.lblDiamond.node.position));
                     }
                 }break;
             }
@@ -254,7 +257,7 @@ export default class MainUI extends UIBase {
                 this.lblGold.string = StringUtil.formatReadableNumber(COMMON.resInfo.gold);
                 this.goldEffect.play();
             }else if(obj.type == ResType.diamond){
-                this.lblDiamond.string = StringUtil.formatReadableNumber(COMMON.resInfo.diamond);
+                this.lblDiamond.string = COMMON.resInfo.diamond.toString();
                 this.diamondEffect.play();
             }else if(obj.type == ResType.lifeStone){
                 this.lblLifeStone.string = StringUtil.formatReadableNumber(COMMON.resInfo.lifeStone);
@@ -279,7 +282,7 @@ export default class MainUI extends UIBase {
         this.soundBtn.node.on(TouchHandler.TOUCH_CLICK,this.onSoundClick,this);
         this.btnAddGold.node.on(cc.Node.EventType.TOUCH_START,this.onAddGold,this);
         this.btnAddStone.node.on(cc.Node.EventType.TOUCH_START,this.onAddStone,this);
-        this.btnDiamondStore.node.on(cc.Node.EventType.TOUCH_START,this.onDiamondStore,this);
+        this.btnAddDiamond.node.on(cc.Node.EventType.TOUCH_START,this.onAddDiamond,this);
         this.headIcon.node.on(cc.Node.EventType.TOUCH_START,this.onHeadTouch,this);
         this.btnIntro.node.on(cc.Node.EventType.TOUCH_START,this.onIntroClick,this);
         this.btnSevenDay.node.on(cc.Node.EventType.TOUCH_START,this.onSevendayClick,this);
@@ -306,12 +309,34 @@ export default class MainUI extends UIBase {
     private initView(){
         this.initRedPoint();
         this.playGrowth();
-
-        if(!Activity.senvendayTodayReward.isReceived){
-            this.onSevendayClick(null);
-        }
+        
+        this.onEnterGame();
         // this.resetTaskGuide();
     }
+
+    private onEnterGame(){
+        if(!Activity.senvendayTodayReward.isReceived){
+            this.onSevendayClick(null);
+            this.scheduleOnce(this.checkRab,0.2);
+        }else{
+            this.checkRab();
+        }
+        
+    }
+    private checkRab(){
+        if(Battle.outlineRecords.length >0 && !GUIDE.isInGuide){
+            var beRab:boolean =false;
+            Battle.outlineRecords.forEach((rd:FightRecord)=>{
+                if(rd.befightUId == COMMON.accountId){
+                    beRab = beRab || rd.isRabCard;
+                }
+            })
+            if(beRab){  //被抢夺
+                UI.createPopUp(ResConst.BeFightPanel,{type:BeFightPanelType.Outline,records:Battle.outlineRecords});
+            }
+        }
+    }
+    
 
     onDisable(){
         this.lblExp.node.off(cc.Node.EventType.TOUCH_START,this.onLabelExpTouch,this);
@@ -322,7 +347,7 @@ export default class MainUI extends UIBase {
         this.soundBtn.node.off(TouchHandler.TOUCH_CLICK,this.onSoundClick,this);
         this.btnAddGold.node.off(cc.Node.EventType.TOUCH_START,this.onAddGold,this);
         this.btnAddStone.node.off(cc.Node.EventType.TOUCH_START,this.onAddStone,this);
-        this.btnDiamondStore.node.off(cc.Node.EventType.TOUCH_START,this.onDiamondStore,this);
+        this.btnAddDiamond.node.off(cc.Node.EventType.TOUCH_START,this.onAddDiamond,this);
         this.headIcon.node.off(cc.Node.EventType.TOUCH_START,this.onHeadTouch,this);
         this.btnIntro.node.off(cc.Node.EventType.TOUCH_START,this.onIntroClick,this);
         this.btnSevenDay.node.off(cc.Node.EventType.TOUCH_START,this.onSevendayClick,this);
@@ -431,8 +456,8 @@ export default class MainUI extends UIBase {
     private onAddStone(e){
         ResPanel.show(ResPanelType.StoneRes);
     }
-    private onDiamondStore(e){
-        UI.createPopUp(ResConst.StorePanel,{});
+    private onAddDiamond(e){
+        ResPanel.show(ResPanelType.DiamondRes);
     }
 
 

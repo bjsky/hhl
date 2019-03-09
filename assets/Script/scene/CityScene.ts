@@ -82,21 +82,7 @@ export default class CityScene extends SceneBase {
         if(GUIDE.isInGuide){
             GUIDE.startGuide();
         }
-        this.onEnterGame();
-    }
 
-    private onEnterGame(){
-        if(Battle.outlineRecords.length >0 && !GUIDE.isInGuide){
-            var beRab:boolean =false;
-            Battle.outlineRecords.forEach((rd:FightRecord)=>{
-                if(rd.befightUId == COMMON.accountId){
-                    beRab = beRab || rd.isRabCard;
-                }
-            })
-            if(beRab){  //被抢夺
-                UI.createPopUp(ResConst.BeFightPanel,{type:BeFightPanelType.Outline,records:Battle.outlineRecords});
-            }
-        }
         SOUND.playBgSound();
     }
 
