@@ -22,6 +22,7 @@ import StringUtil from "../../utils/StringUtil";
 import ResPanel, { ResPanelType } from "../ResPanel";
 import { Drag, CDragEvent } from "../../manager/DragManager";
 import CardComposeUI from "../card/CardComposeUI";
+import { WeiXin } from "../../wxInterface";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -108,6 +109,8 @@ export default class HeroPanel extends UIBase {
 
     @property(cc.Button)
     btnUpgrade:cc.Button = null;
+    @property(cc.Button)
+    btnUpgradeVideo:cc.Button = null;
 
     onLoad(){
         this.viewGroup.labelVisible = false;
@@ -116,6 +119,7 @@ export default class HeroPanel extends UIBase {
         this.viewGroup.node.on(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.viewGroupSelectChange,this)
         this.cardsList.node.on(DList.ITEM_CLICK,this.onCardClick,this);
         this.btnUpgrade.node.on(cc.Node.EventType.TOUCH_START,this.upgradeHero,this);
+        this.btnUpgradeVideo.node.on(cc.Node.EventType.TOUCH_START,this.upgradeHeroVideo,this);
 
         EVENT.on(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
         EVENT.on(GameEvent.Card_Drop_UpStar,this.onCardUpStar,this);
@@ -137,6 +141,7 @@ export default class HeroPanel extends UIBase {
         this.viewGroup.node.off(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.viewGroupSelectChange,this)
         this.cardsList.node.off(DList.ITEM_CLICK,this.onCardClick,this);
         this.btnUpgrade.node.off(cc.Node.EventType.TOUCH_START,this.upgradeHero,this);
+        this.btnUpgradeVideo.node.off(cc.Node.EventType.TOUCH_START,this.upgradeHeroVideo,this);
 
         EVENT.off(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
         EVENT.off(GameEvent.Card_Drop_UpStar,this.onCardUpStar,this);
@@ -197,7 +202,13 @@ export default class HeroPanel extends UIBase {
             UI.showTip("不能超过角色等级");
             return;
         }
-        Card.upCardLv(this._currentCard.uuid,this._upLvCost);
+        Card.upCardLv(this._currentCard.uuid,this._upLvCost,false);
+    }
+
+    public upgradeHeroVideo(e){
+        WeiXin.showVideoAd(()=>{
+            Card.upCardLv(this._currentCard.uuid,this._upLvCost,true);
+        },0)
     }
 
     private onCardUpdate(e){

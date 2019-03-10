@@ -13,6 +13,7 @@ import { Fight } from "../../module/fight/FightAssist";
 import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
 import { GUIDE } from "../../manager/GuideManager";
+import { WeiXin } from "../../wxInterface";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -48,6 +49,10 @@ export default class FightDeailPanel extends PopUpBase {
     // LIFE-CYCLE CALLBACKS:
     @property(cc.RichText)
     textRecords: cc.RichText = null;
+    @property(cc.Button)
+    btnAttackIme: cc.Button = null;
+    @property(cc.Button)
+    btnRevengeIme: cc.Button = null;
 
     // onLoad () {}
     private _type:EnemyTypeEnum = 0;
@@ -64,6 +69,8 @@ export default class FightDeailPanel extends PopUpBase {
         super.onEnable();
         this.btnAttack.node.on(cc.Node.EventType.TOUCH_START,this.onFightEnemy,this);
         this.btnRevenge.node.on(cc.Node.EventType.TOUCH_START,this.onRevenge,this);
+        this.btnAttackIme.node.on(cc.Node.EventType.TOUCH_START,this.onFightEnemyIme,this);
+        this.btnRevengeIme.node.on(cc.Node.EventType.TOUCH_START,this.onRevengeIme,this);
         this.lineUpMine.initLineup(this._enemyInfo.enemyLineupMap);
 
         EVENT.on(GameEvent.Guide_Weak_Touch_Complete,this.onGuideWeakTouch,this);
@@ -74,6 +81,8 @@ export default class FightDeailPanel extends PopUpBase {
         super.onDisable();
         this.btnAttack.node.off(cc.Node.EventType.TOUCH_START,this.onFightEnemy,this);
         this.btnRevenge.node.off(cc.Node.EventType.TOUCH_START,this.onRevenge,this);
+        this.btnAttackIme.node.off(cc.Node.EventType.TOUCH_START,this.onFightEnemyIme,this);
+        this.btnRevengeIme.node.off(cc.Node.EventType.TOUCH_START,this.onRevengeIme,this);
 
 
         EVENT.off(GameEvent.Guide_Weak_Touch_Complete,this.onGuideWeakTouch,this);
@@ -88,11 +97,13 @@ export default class FightDeailPanel extends PopUpBase {
         this.sprHead.load(this._enemyInfo.enemyIcon);
         this.initRecordStr();
         if(this._type == EnemyTypeEnum.Enemy|| this._type == EnemyTypeEnum.Robit){
-            this.btnRevenge.node.active =false;
+            this.btnRevenge.node.active =this.btnRevengeIme.node.active = false;
             this.btnAttack.node.active = !this._enemyInfo.isAttacked;
+            this.btnAttackIme.node.active = this._enemyInfo.isAttacked;
         }else if(this._type == EnemyTypeEnum.PersonlEnemy){
-            this.btnAttack.node.active  = false;
+            this.btnAttack.node.active = this.btnAttackIme.node.active = false;
             this.btnRevenge.node.active = (Battle.battleInfo.revengeTime<=0);
+            this.btnRevengeIme.node.active = (Battle.battleInfo.revengeTime>0);
         }
     }
 
@@ -124,7 +135,7 @@ export default class FightDeailPanel extends PopUpBase {
         var foEnemey:FightInfo = this._enemyInfo.getFightInfo();
 
         this.onClose(e);
-        Fight.showFight(foMine,foEnemey,this._enemyInfo);
+        Fight.showFight(foMine,foEnemey,false,this._enemyInfo);
     }
     private onRevenge(e){
         var foMine:FightInfo = Lineup.getOwnerFightInfo();
@@ -135,9 +146,31 @@ export default class FightDeailPanel extends PopUpBase {
         var foEnemey:FightInfo = this._enemyInfo.getFightInfo();
 
         this.onClose(e);
-        Fight.showFight(foMine,foEnemey,this._enemyInfo);
+        Fight.showFight(foMine,foEnemey,false,this._enemyInfo);
     }
 
+    private onFightEnemyIme(e){
+        var foMine:FightInfo = Lineup.getOwnerFightInfo();
+        if(foMine.totalPower == 0){
+            UI.showAlert("请先上阵英雄");
+            return;
+        }
+        WeiXin.showVideoAd(()=>{
+            var foEnemey:FightInfo = this._enemyInfo.getFightInfo();
+            Fight.showFight(foMine,foEnemey,true,this._enemyInfo);
+        },0)
+    }
+    private onRevengeIme(e){
+        var foMine:FightInfo = Lineup.getOwnerFightInfo();
+        if(foMine.totalPower == 0){
+            UI.showAlert("请先上阵英雄");
+            return;
+        }
+        WeiXin.showVideoAd(()=>{
+            var foEnemey:FightInfo = this._enemyInfo.getFightInfo();
+            Fight.showFight(foMine,foEnemey,true,this._enemyInfo);
+        },0)
+    }
     ///////////guide//////////////////
     public getGuideNode(name:string):cc.Node{
         if(name == "popup_revenge" && (Battle.battleInfo.revengeTime<=0)){

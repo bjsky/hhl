@@ -103,6 +103,7 @@ export default class SevenDayPanel extends PopUpBase {
         }else{
             Activity.receiveSevenday(Activity.senvendayIndex,false);
         }
+        this.onClose(null);
     }
 
     private onReceived(e){

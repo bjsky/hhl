@@ -9,20 +9,17 @@ import StringUtil from "../../utils/StringUtil";
 import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
 import CardEffect from "../../component/CardEffect";
-import { NET } from "../../net/core/NetController";
 import MsgCardSummon, { CardSummonType } from "../../net/msg/MsgCardSummon";
 import { Card, CardRaceType } from "../../module/card/CardAssist";
 import { BuildType } from "../BuildPanel";
 import ButtonGroup from "../../component/ButtonGroup";
-import { CFG } from "../../manager/ConfigManager";
-import { ConfigConst } from "../../module/loading/steps/LoadingStepConfig";
 import DList, { DListDirection } from "../../component/DList";
 import { CardSimpleShowType } from "../card/CardSmall";
 import { GUIDE } from "../../manager/GuideManager";
 import { CardBigShowType } from "../card/CardBig";
 import ResPanel, { ResPanelType } from "../ResPanel";
-import MainUI from "../main/MainUI";
-import { GAME } from "../../GameController";
+import { WeiXin } from "../../wxInterface";
+import { GetRewardType } from "../../net/msg/MsgGetReward";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -41,8 +38,8 @@ export default class TemplePanel extends UIBase {
 
     @property(cc.Button)
     lifeStoneBtn: cc.Button = null;
-    // @property(cc.Button)
-    // videoBtn: cc.Button = null;
+    @property(cc.Button)
+    videoBtn: cc.Button = null;
     // @property(cc.Button)
     // helpBtn: cc.Button = null;
     @property(cc.Button)
@@ -72,7 +69,7 @@ export default class TemplePanel extends UIBase {
     // LIFE-CYCLE CALLBACKS:
     onEnable(){
         this.lifeStoneBtn.node.on(cc.Node.EventType.TOUCH_START,this.onLifeStoneClick,this);
-        // this.videoBtn.node.on(cc.Node.EventType.TOUCH_START,this.onVideoClick,this);
+        this.videoBtn.node.on(cc.Node.EventType.TOUCH_START,this.onVideoClick,this);
         // this.helpBtn.node.on(cc.Node.EventType.TOUCH_START,this.onHelpClick,this);
         this.buildHeroBtn.node.on(cc.Node.EventType.TOUCH_START,this.onGotoHeroFast,this);
         this.btnGroup.node.on(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.groupSelectChange,this);
@@ -87,7 +84,7 @@ export default class TemplePanel extends UIBase {
 
     onDisable(){
         this.lifeStoneBtn.node.off(cc.Node.EventType.TOUCH_START,this.onLifeStoneClick,this);
-        // this.videoBtn.node.off(cc.Node.EventType.TOUCH_START,this.onVideoClick,this);
+        this.videoBtn.node.off(cc.Node.EventType.TOUCH_START,this.onVideoClick,this);
         // this.helpBtn.node.off(cc.Node.EventType.TOUCH_START,this.onHelpClick,this);
         this.buildHeroBtn.node.off(cc.Node.EventType.TOUCH_START,this.onGotoHeroFast,this);
         this.btnGroup.node.off(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.groupSelectChange,this);
@@ -125,13 +122,15 @@ export default class TemplePanel extends UIBase {
     
 
     private onVideoClick(e){
-        if(COMMON.videoSummonNum>=CONSTANT.getVideoFreeSummonNum()){
-            UI.showTip("超过每日视频抽卡上限!")
-            return;
-        }
-        this.playStoneSummonEffect(()=>{
-            Card.summonCard(CardSummonType.Viedo);
-        });
+        // if(COMMON.videoSummonNum>=CONSTANT.getVideoFreeSummonNum()){
+        //     UI.showTip("超过每日视频抽卡上限!")
+        //     return;
+        // }
+        WeiXin.showVideoAd(()=>{
+            this.playStoneSummonEffect(()=>{
+                Card.summonCard(CardSummonType.Viedo);
+            });
+        },0)
     }
     onLoad () {
         this.initView();

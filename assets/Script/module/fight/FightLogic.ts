@@ -19,6 +19,8 @@ export class FightResult{
     //战斗
     public fights:Array<FightOnce> = [];
 
+    public immediately:boolean =false;
+
     public getHtmlDesc():string{
         var desc:string = "";
         this.myReadyBuffs.forEach((buff: BuffAction)=> {

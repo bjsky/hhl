@@ -48,11 +48,13 @@ export default class FightAssist{
 
     private _param:any = null;
 
-    public showFight(infoMine:FightInfo,infoEnemy:FightInfo,param?:any){
+    private _immediately:boolean =false;
+    public showFight(infoMine:FightInfo,infoEnemy:FightInfo,immediately:boolean =false,param?:any){
         if(this._isFighting)
             return;
         var gInfoMine:FightInfo = infoMine;
         var gInfoEnemy:FightInfo = infoEnemy;
+        this._immediately = immediately;
         if(GUIDE.isInGuide){
             if(infoEnemy.playerType == FightPlayerType.Boss){  //bos引导
                 gInfoMine.lineup = this.getGuideLineup("9;1;3;8;5",5,1,infoMine.lineup[0]);
@@ -103,6 +105,7 @@ export default class FightAssist{
 
     private endFunc(result:FightResult){
         this._result = result;
+        this._result.immediately = this._immediately;
         if(this._fightPanel){
             this._fightPanel.initResult(result,this.resultEnd.bind(this));
         }

@@ -333,8 +333,8 @@ export default class CardAssist{
     }
     
     //升级卡牌
-    public upCardLv(uuid,cost){
-        NET.send(MsgCardUpLv.create(uuid,cost),(msg:MsgCardUpLv)=>{
+    public upCardLv(uuid,cost,seeVideo:boolean){
+        NET.send(MsgCardUpLv.create(uuid,cost,seeVideo),(msg:MsgCardUpLv)=>{
             if(msg && msg.resp){
                 this.updateCardInfo(msg.resp.cardInfo);
                 var cost:SResInfo = COMMON.updateResInfo(msg.resp.resInfo);

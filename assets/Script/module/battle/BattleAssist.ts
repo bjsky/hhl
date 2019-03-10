@@ -220,8 +220,12 @@ export default class BattleAssist{
         },this)
         
     }
+
     //挑战敌人成功
-    public fightEnemeySuccess(enemyInfo:EnemyInfo,victory:boolean,evaluate:number,isGuide:boolean,isDouble:boolean,cb:Function){
+    public fightEnemeySuccess(enemyInfo:EnemyInfo,victory:boolean,evaluate:number,isGuide:boolean,isDouble:boolean,isImmediately:boolean,cb:Function){
+        
+        var costActionPoint:number = isImmediately?0:1;
+        console.log("fightEnemy immediately:",isImmediately);
         if(victory){
             //挑战配置
             var fightScoreCfg :any= this.getFightScoreCfg(enemyInfo.enemyScore)
@@ -233,7 +237,6 @@ export default class BattleAssist{
                 addDiamond *=2;
                 addScore *=2;
             }
-            var costActionPoint = 1;
             var isRevenge = (enemyInfo.enemyType == EnemyTypeEnum.PersonlEnemy);
             var getCardRate = Number(fightScoreCfg.getCardRate);
             if(isRevenge){  //复仇双倍
@@ -249,7 +252,6 @@ export default class BattleAssist{
             addExp = 0;
             addDiamond =0;
             addScore = 0;
-            costActionPoint =1;
             isRevenge = (enemyInfo.enemyType == EnemyTypeEnum.PersonlEnemy);
             if(isRevenge){
                 costActionPoint = 0;

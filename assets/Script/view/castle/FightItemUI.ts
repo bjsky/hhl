@@ -12,6 +12,7 @@ import { FightRecord } from "../../model/BattleInfo";
 import { Lineup } from "../../module/battle/LineupAssist";
 import FightInfo from "../../model/FightInfo";
 import { Fight } from "../../module/fight/FightAssist";
+import { WeiXin } from "../../wxInterface";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -41,10 +42,13 @@ export default class FightItemUI extends DListItem{
     lblRabDesc: cc.Label = null;
     @property(LoadSprite)
     sprSex: LoadSprite = null;
+
+    @property(cc.Button)
+    btnDetail: cc.Button = null;
     @property(cc.Button)
     btnAttack: cc.Button = null;
-    @property(cc.Label)
-    lblAttacked: cc.Label = null;
+    @property(cc.Sprite)
+    sprAttacked: cc.Sprite = null;
 
     private _enemyInfo:EnemyInfo = null;
     // LIFE-CYCLE CALLBACKS:
@@ -55,12 +59,12 @@ export default class FightItemUI extends DListItem{
 
     // onLoad () {}
     onEnable(){
-        this.sprHead.node.on(TouchHandler.TOUCH_CLICK,this.onHeadTouch,this);
+        this.btnDetail.node.on(TouchHandler.TOUCH_CLICK,this.onHeadTouch,this);
         this.btnAttack.node.on(TouchHandler.TOUCH_CLICK,this.onAttackTouch,this);
         this.initView();
     }
     onDisable(){
-        this.sprHead.node.off(TouchHandler.TOUCH_CLICK,this.onHeadTouch,this);
+        this.btnDetail.node.off(TouchHandler.TOUCH_CLICK,this.onHeadTouch,this);
         this.btnAttack.node.off(TouchHandler.TOUCH_CLICK,this.onAttackTouch,this);
     }
 
@@ -74,23 +78,26 @@ export default class FightItemUI extends DListItem{
     }
     private onAttackTouch(e){
         // Battle.testPushRabCard();
-        if(Battle.battleInfo.actionPoint<=0){
-            UI.showTip("行动力力不足，请过会再来");
-            return;
-        }
         var foMine:FightInfo = Lineup.getOwnerFightInfo();
         if(foMine.totalPower == 0){
             UI.showAlert("请先上阵英雄");
             return;
         }
         var foEnemey:FightInfo = this._enemyInfo.getFightInfo();
-        Fight.showFight(foMine,foEnemey,this._enemyInfo);
+        if(Battle.battleInfo.actionPoint<=0){
+            WeiXin.showVideoAd(()=>{
+                Fight.showFight(foMine,foEnemey,true,this._enemyInfo);
+            },0)
+        }else{
+            Fight.showFight(foMine,foEnemey,false,this._enemyInfo);
+        }
+        
     }
 
     public onAttackGuide(){
         var foMine:FightInfo = Lineup.getOwnerFightInfo();
         var foEnemey:FightInfo = this._enemyInfo.getFightInfo();
-        Fight.showFight(foMine,foEnemey,this._enemyInfo);
+        Fight.showFight(foMine,foEnemey,false,this._enemyInfo);
     }
     public onAttack(){
         this.onAttackTouch(null);
@@ -107,7 +114,7 @@ export default class FightItemUI extends DListItem{
         this.sprHead.load(this._enemyInfo.enemyIcon);
         this.sprSex.load(PathUtil.getSexIconUrl(this._enemyInfo.enemySex));
         this.btnAttack.node.active = !this._enemyInfo.isAttacked;
-        this.lblAttacked.node.active = this._enemyInfo.isAttacked;
+        this.sprAttacked.node.active = this._enemyInfo.isAttacked;
 
         this._fightScoreCfg= Battle.getFightScoreCfg(this._enemyInfo.enemyScore);
         this.lblRabDesc.string = this._fightScoreCfg.getCardDesc;

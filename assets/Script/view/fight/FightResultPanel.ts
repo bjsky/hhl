@@ -153,7 +153,7 @@ export default class FightResultPanel extends PopUpBase {
             },isDouble);
         }else if(this._fightEnemy.playerType == FightPlayerType.Enemy){ 
             var isguide:boolean = (this._enemy.enemyType == EnemyTypeEnum.Guide);
-            Battle.fightEnemeySuccess(this._enemy,this._result.victory,this._result.evaluate,isguide,isDouble,
+            Battle.fightEnemeySuccess(this._enemy,this._result.victory,this._result.evaluate,isguide,isDouble,this._result.immediately,
                 (addExp:number,addDiamond:number,addScore:number,cardInfo:CardInfo)=>{
                     if(cardInfo!=null){
                         EVENT.on(GameEvent.Card_RabGet_Close,this.onCardRabGetClose,this)
@@ -174,7 +174,7 @@ export default class FightResultPanel extends PopUpBase {
     }
     private onCloseClick(e){
         if(this._fightEnemy.playerType == FightPlayerType.Enemy){ 
-            Battle.fightEnemeySuccess(this._enemy,this._result.victory,this._result.evaluate,false,false,
+            Battle.fightEnemeySuccess(this._enemy,this._result.victory,this._result.evaluate,false,false,this._result.immediately,
                 (addExp:number,addDiamond:number,addScore:number,cardInfo:CardInfo)=>{
                     this.onClose(e);
                 });

@@ -103,7 +103,7 @@ window.showVideoAd = function (cb, VideoAd_type) {
       window.rewardedVideoAd = wx.createRewardedVideoAd({
         adUnitId: 'adunit-5dffa8a2d343c81c'
       })
-    } else if (VideoAd_type == 3){
+    } else {
       // 看视频送灵石
       window.rewardedVideoAd = wx.createRewardedVideoAd({
         adUnitId: 'adunit-c610ec0fe1e6b502'
