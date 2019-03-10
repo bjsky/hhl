@@ -5,12 +5,6 @@ import { COMMON } from "../../CommonData";
 import { Share } from "../../module/share/ShareAssist";
 import { ResType } from "../../model/ResInfo";
 
-export enum GetRewardType{
-    ShareGetDiamond = 1,                  //分享得钻石
-    SeeVideoGetGold ,                     //看视频得金币
-    SeeVideoGetStone,                     //看视频得灵石
-    SeeVideoGetDiamond                    //看视频得钻石
-}
 //获得奖励参数
 export class CSGetReward{
     //奖励的类型
@@ -44,24 +38,12 @@ export default class MsgGetReward extends MessageBase{
         // this.isLocal = true;
     }
 
-    public static create(type:GetRewardType,rewardNum:number){
+    public static create(type:ResType,rewardNum:number,isShare:boolean){
         var msg = new MsgGetReward();
         msg.param = new CSGetReward();
-        var resType:ResType =0;
-        var share = false;
-        if(type == GetRewardType.SeeVideoGetGold){
-            resType = ResType.gold;
-        }else if(type == GetRewardType.SeeVideoGetStone){
-            resType = ResType.lifeStone;
-        }else if(type == GetRewardType.ShareGetDiamond){
-            resType = ResType.diamond;
-            share = true;
-        }else if(type == GetRewardType.SeeVideoGetDiamond){
-            resType = ResType.diamond;
-        }
-        msg.param.type = resType;
+        msg.param.type = type;
         msg.param.rewardNum = rewardNum;
-        msg.param.share = share;
+        msg.param.share = isShare;
         return msg;
     }
 

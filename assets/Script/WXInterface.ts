@@ -1,10 +1,10 @@
 import { GLOBAL, ServerType } from "./GlobalData";
-import { GetRewardType } from "./net/msg/MsgGetReward";
 import { EVENT } from "./message/EventCenter";
 import GameEvent from "./message/GameEvent";
 import { Share } from "./module/share/ShareAssist";
 import { SeeVideoResult } from "./view/ResPanel";
 import { UI } from "./manager/UIManager";
+import { ResType } from "./model/ResInfo";
 
 export class WXInterface{
     public static _inst:WXInterface;
@@ -73,18 +73,22 @@ export class WXInterface{
         func(title,imgUrl,query);
     }
 
-    public showVideoAd(cb:Function,type:GetRewardType){
+    public showVideoAd(cb:Function,type:ResType){
         console.log("观看视频开始："+type);
-        var func = window["showVideoAd"];
-        func((result:SeeVideoResult)=>{
-            if(result == SeeVideoResult.Complete){
-                cb && cb();
-            }else if(result == SeeVideoResult.LoadError){
-                UI.showAlert("加载失败！请稍候再来");
-            }else if(result == SeeVideoResult.NotComplete){
-                UI.showAlert("观看未完成，领取奖励失败！");
-            }
-        },type);
+        if(GLOBAL.serverType == ServerType.Publish){
+            var func = window["showVideoAd"];
+            func((result:SeeVideoResult)=>{
+                if(result == SeeVideoResult.Complete){
+                    cb && cb();
+                }else if(result == SeeVideoResult.LoadError){
+                    UI.showAlert("加载失败！请稍候再来");
+                }else if(result == SeeVideoResult.NotComplete){
+                    UI.showAlert("观看未完成，领取奖励失败！");
+                }
+            },type);
+        }else{
+            cb && cb();
+        }
     }
 }
 

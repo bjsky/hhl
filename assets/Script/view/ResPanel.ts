@@ -7,14 +7,11 @@ import { UI } from "../manager/UIManager";
 import { ResConst } from "../module/loading/steps/LoadingStepRes";
 import { GLOBAL } from "../GlobalData";
 import PathUtil from "../utils/PathUtil";
-import Constant, { CONSTANT } from "../Constant";
+import { CONSTANT } from "../Constant";
 import { WeiXin } from "../wxInterface";
-import { AlertBtnType } from "./AlertPanel";
-import { Share } from "../module/share/ShareAssist";
-import MsgGetReward, { GetRewardType } from "../net/msg/MsgGetReward";
+import MsgGetReward from "../net/msg/MsgGetReward";
 import { NET } from "../net/core/NetController";
 import { EVENT } from "../message/EventCenter";
-import { SOUND } from "../manager/SoundManager";
 import { Task, TaskType } from "../module/TaskAssist";
 import GameEvent from "../message/GameEvent";
 import { GUIDE } from "../manager/GuideManager";
@@ -70,21 +67,17 @@ export default class ResPanel extends PopUpBase {
     private _awardType:ResPanelType = 0;
     private _resType:ResType = 0;
     private _awardNum:number = 0;
-    private _rewardType:GetRewardType = 0;
     public setData(data:any){
         super.setData(data);
         this._awardType = data.type;
         if(this._awardType == ResPanelType.GoldRes || this._awardType == ResPanelType.GoldNotEnough){
             this._resType = ResType.gold;
-            this._rewardType = GetRewardType.SeeVideoGetGold;
             this._awardNum = CONSTANT.getSeeVideoGold();
         }else if(this._awardType == ResPanelType.StoneRes || this._awardType == ResPanelType.StoneNotEnough){
             this._resType = ResType.lifeStone;
-            this._rewardType = GetRewardType.SeeVideoGetStone;
             this._awardNum = CONSTANT.getSeeVideoStone();
         }else if(this._awardType == ResPanelType.DiamondRes || this._awardType == ResPanelType.DiamondNotEnough){
             this._resType = ResType.diamond;
-            this._rewardType = GetRewardType.SeeVideoGetDiamond;
             this._awardNum = CONSTANT.getSeeVideoDiamond();
         }
     }
@@ -158,23 +151,23 @@ export default class ResPanel extends PopUpBase {
         // SOUND.pauseMusic();
         this.onClose(null);
         WeiXin.showVideoAd(()=>{
-            this.getVideoReward(this._rewardType,this._awardNum);
+            this.getVideoReward(this._resType,this._awardNum,false);
             // SOUND.resumeMusic();
         },0)
     }
 
     //看视频得奖励
-    public getVideoReward(type:GetRewardType,num:number){
-        NET.send(MsgGetReward.create(type,num),(msg:MsgGetReward)=>{
+    public getVideoReward(type:ResType,num:number,isShare:boolean){
+        NET.send(MsgGetReward.create(type,num,isShare),(msg:MsgGetReward)=>{
             if(msg && msg.resp){
                 COMMON.updateResInfo(msg.resp.resInfo);
                 UI.createPopUp(ResConst.singleAwardPanel,
-                    {type:type,num:num})
+                    {type:this._resType,num:num})
                 
-                if(type == GetRewardType.SeeVideoGetGold){
+                if(type == ResType.gold){
                     //完成任务 
                     Task.finishTask(TaskType.SeeVideoGetGold);
-                }else if(type == GetRewardType.SeeVideoGetStone){
+                }else if(type == ResType.lifeStone){
                     //完成任务 
                     Task.finishTask(TaskType.SeeVideoGetStone);
                 }

@@ -9,7 +9,7 @@ import StringUtil from "../../utils/StringUtil";
 import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
 import CardEffect from "../../component/CardEffect";
-import MsgCardSummon, { CardSummonType } from "../../net/msg/MsgCardSummon";
+import { CardSummonType } from "../../net/msg/MsgCardSummon";
 import { Card, CardRaceType } from "../../module/card/CardAssist";
 import { BuildType } from "../BuildPanel";
 import ButtonGroup from "../../component/ButtonGroup";
@@ -19,7 +19,6 @@ import { GUIDE } from "../../manager/GuideManager";
 import { CardBigShowType } from "../card/CardBig";
 import ResPanel, { ResPanelType } from "../ResPanel";
 import { WeiXin } from "../../wxInterface";
-import { GetRewardType } from "../../net/msg/MsgGetReward";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

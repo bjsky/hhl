@@ -12,8 +12,6 @@ import { UI } from "../manager/UIManager";
 import { ResConst } from "./loading/steps/LoadingStepRes";
 import { CardBigShowType } from "../view/card/CardBig";
 import { COMMON } from "../CommonData";
-import { GetRewardType } from "../net/msg/MsgGetReward";
-import { ResType } from "../model/ResInfo";
 
 export default class ActivityAssist{
     private static _instance: ActivityAssist = null;
@@ -78,7 +76,7 @@ export default class ActivityAssist{
                 }else{  //资源
                     COMMON.updateResInfo(msg.resp.resInfo);
                     UI.createPopUp(ResConst.singleAwardPanel,
-                        {resType:Number(rewardCfg.resType),num:Number(rewardCfg.resNum)})
+                        {type:Number(rewardCfg.resType),num:(isDouble?Number(rewardCfg.resNum)*2:Number(rewardCfg.resNum))})
                 }
 
                 this.updateSevenday(msg.resp.senvenDayInfo);

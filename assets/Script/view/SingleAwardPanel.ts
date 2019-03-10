@@ -1,10 +1,8 @@
-import UIBase from "../component/UIBase";
 import PopUpBase from "../component/PopUpBase";
 import LoadSprite from "../component/LoadSprite";
 import { ResType } from "../model/ResInfo";
 import { EVENT } from "../message/EventCenter";
 import GameEvent from "../message/GameEvent";
-import { GetRewardType } from "../net/msg/MsgGetReward";
 import PathUtil from "../utils/PathUtil";
 import StringUtil from "../utils/StringUtil";
 
@@ -32,30 +30,12 @@ export default class SingleAwardPanel extends PopUpBase {
 
 
     // LIFE-CYCLE CALLBACKS:
-    private _type:GetRewardType = 0;
     private _resType:ResType =0;
     private _num:number = 0;
 
     public setData(data:any){
         super.setData(data);
-        this._type = data.type;
-        switch(this._type){
-            case GetRewardType.ShareGetDiamond:
-            this._resType = ResType.diamond;
-            break;
-            case GetRewardType.SeeVideoGetGold:
-            this._resType = ResType.gold;
-            break;
-            case GetRewardType.SeeVideoGetStone:
-            this._resType = ResType.lifeStone;
-            break;
-            default:
-            this._resType = ResType.gold;
-            break;
-        }
-        if(data.resType!=undefined){
-            this._resType = data.resType;
-        }
+        this._resType = data.type;
         this._num = data.num;
     }
 

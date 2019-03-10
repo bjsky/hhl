@@ -98,8 +98,12 @@ export default class FightDeailPanel extends PopUpBase {
         this.initRecordStr();
         if(this._type == EnemyTypeEnum.Enemy|| this._type == EnemyTypeEnum.Robit){
             this.btnRevenge.node.active =this.btnRevengeIme.node.active = false;
-            this.btnAttack.node.active = !this._enemyInfo.isAttacked;
-            this.btnAttackIme.node.active = this._enemyInfo.isAttacked;
+            if(!this._enemyInfo.isAttacked){
+                this.btnAttack.node.active =  Battle.battleInfo.actionPoint>0;
+                this.btnAttackIme.node.active = Battle.battleInfo.actionPoint<=0;
+            }else{
+                this.btnAttack.node.active = this.btnAttackIme.node.active = false;
+            }
         }else if(this._type == EnemyTypeEnum.PersonlEnemy){
             this.btnAttack.node.active = this.btnAttackIme.node.active = false;
             this.btnRevenge.node.active = (Battle.battleInfo.revengeTime<=0);
@@ -155,6 +159,7 @@ export default class FightDeailPanel extends PopUpBase {
             UI.showAlert("请先上阵英雄");
             return;
         }
+        this.onClose(e);
         WeiXin.showVideoAd(()=>{
             var foEnemey:FightInfo = this._enemyInfo.getFightInfo();
             Fight.showFight(foMine,foEnemey,true,this._enemyInfo);
@@ -166,6 +171,7 @@ export default class FightDeailPanel extends PopUpBase {
             UI.showAlert("请先上阵英雄");
             return;
         }
+        this.onClose(e);
         WeiXin.showVideoAd(()=>{
             var foEnemey:FightInfo = this._enemyInfo.getFightInfo();
             Fight.showFight(foMine,foEnemey,true,this._enemyInfo);

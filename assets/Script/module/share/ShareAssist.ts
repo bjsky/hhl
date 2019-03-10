@@ -2,7 +2,7 @@ import { CONSTANT } from "../../Constant";
 import { WeiXin } from "../../wxInterface";
 import { GLOBAL, ServerType } from "../../GlobalData";
 import { NET } from "../../net/core/NetController";
-import MsgGetReward, { GetRewardType } from "../../net/msg/MsgGetReward";
+import MsgGetReward from "../../net/msg/MsgGetReward";
 import { COMMON } from "../../CommonData";
 import { UI } from "../../manager/UIManager";
 import { ResConst } from "../loading/steps/LoadingStepRes";
@@ -10,6 +10,7 @@ import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
 import { GUIDE } from "../../manager/GuideManager";
 import { Task, TaskType } from "../TaskAssist";
+import { ResType } from "../../model/ResInfo";
 
 export default class ShareAssist{
     private static _instance: ShareAssist = null;
@@ -51,19 +52,23 @@ export default class ShareAssist{
     }
     //分享链接
     public shareAppMessage(success:Function,fail:Function = null){
+        this._shareSuccessCB = success;
+        this._shareFailCb =fail;
         if(GLOBAL.serverType == ServerType.Publish){
             var title:string ="快来玩大家都在玩的洪荒故事小游戏！";
             var imgUrl:string ="https://www.xh52.top/resShare/share_1.jpg";
             var query:string ="";
-
             
-            this._shareSuccessCB = success;
-            this._shareFailCb =fail;
             this._shareOnHideTime = COMMON.getServerTime();
             console.log("share on hide:",this._shareOnHideTime);
             WeiXin.shareAppMessage(title,imgUrl,query);
             //完成任务 
             Task.finishTask(TaskType.ShareFriend);
+        }else if(GLOBAL.serverType == ServerType.Debug){
+            this._shareSuccessCB();
+
+            this._shareSuccessCB = null;
+            this._shareFailCb = null;
         }
     }
 
@@ -83,7 +88,7 @@ export default class ShareAssist{
     }
     //分享获得奖励
     public getShareReward(){
-        NET.send(MsgGetReward.create(GetRewardType.ShareGetDiamond,this.shareGetDiamond),(msg:MsgGetReward)=>{
+        NET.send(MsgGetReward.create(ResType.diamond,this.shareGetDiamond,true),(msg:MsgGetReward)=>{
             if(msg && msg.resp){
                 COMMON.updateResInfo(msg.resp.resInfo);
                 this.todayShareCount = msg.resp.todayShareCount;
@@ -91,7 +96,7 @@ export default class ShareAssist{
                 //分享获得钻石成功，刷新节目
                 EVENT.emit(GameEvent.ShareGetReward_Complete);
                 UI.createPopUp(ResConst.singleAwardPanel,
-                    {type:GetRewardType.ShareGetDiamond,num:this.shareGetDiamond})
+                    {type:ResType.diamond,num:this.shareGetDiamond})
             }
         },this)
     }

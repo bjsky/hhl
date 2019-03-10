@@ -100,7 +100,7 @@ export default class TaskAssist{
             if(msg && msg.resp){
                 COMMON.updateResInfo(msg.resp.resInfo);
                 UI.createPopUp(ResConst.singleAwardPanel,
-                    {resType:Number(reward.rewardResType),num:Number(reward.rewardResNum)})
+                    {type:Number(reward.rewardResType),num:Number(reward.rewardResNum)})
                 this.updateTaskInfo(msg.resp.taskInfo);
                 EVENT.emit(GameEvent.TaskActiveReceived,{id:reward.rewardId});
             }
@@ -112,7 +112,7 @@ export default class TaskAssist{
             if(msg && msg.resp){
                 COMMON.updateResInfo(msg.resp.resInfo);
                 UI.createPopUp(ResConst.singleAwardPanel,
-                    {resType:Number(reward.rewardResType),num:Number(reward.rewardResNum)})
+                    {type:Number(reward.rewardResType),num:Number(reward.rewardResNum)})
                 this.updateTaskInfo(msg.resp.taskInfo);
                 EVENT.emit(GameEvent.TaskGrowthReceived,{id:reward.rewardId});
             }
