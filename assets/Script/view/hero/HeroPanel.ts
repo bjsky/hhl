@@ -19,7 +19,7 @@ import { UI } from "../../manager/UIManager";
 import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 import { AlertBtnType } from "../AlertPanel";
 import StringUtil from "../../utils/StringUtil";
-import ResPanel, { ResPanelType } from "../ResPanel";
+import ResPanel, { ResPanelType, SeeVideoResult } from "../ResPanel";
 import { Drag, CDragEvent } from "../../manager/DragManager";
 import CardComposeUI from "../card/CardComposeUI";
 import { WeiXin } from "../../wxInterface";
@@ -206,8 +206,16 @@ export default class HeroPanel extends UIBase {
     }
 
     public upgradeHeroVideo(e){
-        WeiXin.showVideoAd(()=>{
-            Card.upCardLv(this._currentCard.uuid,this._upLvCost,true);
+        WeiXin.showVideoAd((result:SeeVideoResult)=>{
+            if(result == SeeVideoResult.Complete){
+                UI.showTip("卡牌升级成功！");
+                Card.upCardLv(this._currentCard.uuid,this._upLvCost,true);
+            }else if(result == SeeVideoResult.LoadError){
+                UI.showTip("视频加载失败！请稍候再来");
+            }else if(result == SeeVideoResult.NotComplete){
+                UI.showTip("视频观看未完成");
+            }
+            
         },0)
     }
 

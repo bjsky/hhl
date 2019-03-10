@@ -18,7 +18,7 @@ export default class GlobalData{
     }
 
 
-    public serverType:number = ServerType.Debug;
+    public serverType:number = ServerType.Publish;
     public version:string = "1.0.28";
 
     public serverUrl:string = "wss://www.xh52.top:8580/websocket";

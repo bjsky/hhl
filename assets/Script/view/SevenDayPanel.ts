@@ -96,8 +96,10 @@ export default class SevenDayPanel extends PopUpBase {
     private onTouchStart(e){
         if(this._doubleSelect){
             Share.shareAppMessage(()=>{
+                UI.showTip("分享成功，奖励翻倍！");
                 Activity.receiveSevenday(Activity.senvendayIndex,true);
             },()=>{
+                UI.showTip("分享失败，正常领取");
                 Activity.receiveSevenday(Activity.senvendayIndex,false);
             });
         }else{

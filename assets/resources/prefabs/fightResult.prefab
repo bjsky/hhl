@@ -2512,7 +2512,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "63182521-5c76-4c26-a73b-91e1e630edaa"
+      "__uuid__": "7b48b51a-9775-4bb0-95c7-89f6aa09d938"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -2527,7 +2527,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "e561bd28-a3df-47f0-ae00-36087b90b7b1"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2603,7 +2605,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "3ef88a0f-76d5-470c-a2b8-a3de7c7c30ad"
+      "__uuid__": "13cb4acd-99b0-4a28-be5c-87d6dfdeb9b5"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -2618,7 +2620,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "e561bd28-a3df-47f0-ae00-36087b90b7b1"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2694,7 +2698,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "606d295d-8091-4b23-9798-75b3bd26c10d"
+      "__uuid__": "f40f23ca-3c27-4998-869e-2b084cbb45f9"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -2709,7 +2713,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "e561bd28-a3df-47f0-ae00-36087b90b7b1"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -3010,7 +3016,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 50,
-      "height": 27
+      "height": 29
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -3240,7 +3246,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "1fe27cb7-69b9-4f83-a91c-5f3bef4dd601"
+      "__uuid__": "69be4dbd-6f9c-4dcc-acf0-ef50d6e25056"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -3255,7 +3261,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "e561bd28-a3df-47f0-ae00-36087b90b7b1"
+    },
     "url": "",
     "resType": "png",
     "defaultSpr": null

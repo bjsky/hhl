@@ -123,8 +123,10 @@ export default class AwardPanel extends PopUpBase {
         }else if(this._type == AwardTypeEnum.PassageCollect){
             if(this._doubleSelect && !GUIDE.isInGuide){
                 Share.shareAppMessage(()=>{
+                    UI.showTip("分享成功，奖励翻倍！");
                     this.onReceivedDouble(true);
                 },()=>{
+                    UI.showTip("分享失败，正常领取");
                     this.onReceivedDouble(false);
                 });
             }else{

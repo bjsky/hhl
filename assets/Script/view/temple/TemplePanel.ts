@@ -17,7 +17,7 @@ import DList, { DListDirection } from "../../component/DList";
 import { CardSimpleShowType } from "../card/CardSmall";
 import { GUIDE } from "../../manager/GuideManager";
 import { CardBigShowType } from "../card/CardBig";
-import ResPanel, { ResPanelType } from "../ResPanel";
+import ResPanel, { ResPanelType, SeeVideoResult } from "../ResPanel";
 import { WeiXin } from "../../wxInterface";
 
 // Learn TypeScript:
@@ -125,10 +125,18 @@ export default class TemplePanel extends UIBase {
         //     UI.showTip("超过每日视频抽卡上限!")
         //     return;
         // }
-        WeiXin.showVideoAd(()=>{
-            this.playStoneSummonEffect(()=>{
-                Card.summonCard(CardSummonType.Viedo);
-            });
+        WeiXin.showVideoAd((result:SeeVideoResult)=>{
+            if(result == SeeVideoResult.Complete){
+                UI.showTip("开启五倍概率抽卡！");
+                this.playStoneSummonEffect(()=>{
+                    Card.summonCard(CardSummonType.Viedo);
+                });
+            }else if(result == SeeVideoResult.LoadError){
+                UI.showTip("视频加载失败！请稍候再来");
+            }else if(result == SeeVideoResult.NotComplete){
+                UI.showTip("视频观看未完成");
+            }
+            
         },0)
     }
     onLoad () {

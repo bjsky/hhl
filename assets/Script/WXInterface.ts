@@ -77,15 +77,7 @@ export class WXInterface{
         console.log("观看视频开始："+type);
         if(GLOBAL.serverType == ServerType.Publish){
             var func = window["showVideoAd"];
-            func((result:SeeVideoResult)=>{
-                if(result == SeeVideoResult.Complete){
-                    cb && cb();
-                }else if(result == SeeVideoResult.LoadError){
-                    UI.showAlert("加载失败！请稍候再来");
-                }else if(result == SeeVideoResult.NotComplete){
-                    UI.showAlert("观看未完成，领取奖励失败！");
-                }
-            },type);
+            func(cb,type);
         }else{
             cb && cb();
         }

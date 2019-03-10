@@ -14,6 +14,7 @@ import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
 import { GUIDE } from "../../manager/GuideManager";
 import { WeiXin } from "../../wxInterface";
+import { SeeVideoResult } from "../ResPanel";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -160,9 +161,15 @@ export default class FightDeailPanel extends PopUpBase {
             return;
         }
         this.onClose(e);
-        WeiXin.showVideoAd(()=>{
-            var foEnemey:FightInfo = this._enemyInfo.getFightInfo();
-            Fight.showFight(foMine,foEnemey,true,this._enemyInfo);
+        WeiXin.showVideoAd((result:SeeVideoResult)=>{
+            if(result == SeeVideoResult.Complete){
+                var foEnemey:FightInfo = this._enemyInfo.getFightInfo();
+                Fight.showFight(foMine,foEnemey,true,this._enemyInfo);
+            }else if(result == SeeVideoResult.LoadError){
+                UI.showTip("视频加载失败！请稍候再来");
+            }else if(result == SeeVideoResult.NotComplete){
+                UI.showTip("视频观看未完成");
+            }
         },0)
     }
     private onRevengeIme(e){
@@ -172,9 +179,16 @@ export default class FightDeailPanel extends PopUpBase {
             return;
         }
         this.onClose(e);
-        WeiXin.showVideoAd(()=>{
-            var foEnemey:FightInfo = this._enemyInfo.getFightInfo();
-            Fight.showFight(foMine,foEnemey,true,this._enemyInfo);
+        WeiXin.showVideoAd((result:SeeVideoResult)=>{
+            if(result == SeeVideoResult.Complete){
+                var foEnemey:FightInfo = this._enemyInfo.getFightInfo();
+                Fight.showFight(foMine,foEnemey,true,this._enemyInfo);
+            }else if(result == SeeVideoResult.LoadError){
+                UI.showTip("视频加载失败！请稍候再来");
+            }else if(result == SeeVideoResult.NotComplete){
+                UI.showTip("视频观看未完成");
+            }
+            
         },0)
     }
     ///////////guide//////////////////

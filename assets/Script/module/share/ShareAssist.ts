@@ -51,7 +51,7 @@ export default class ShareAssist{
         return this._shareOnHideTime>0;
     }
     //分享链接
-    public shareAppMessage(success:Function,fail:Function = null){
+    public shareAppMessage(success:Function,fail:Function){
         this._shareSuccessCB = success;
         this._shareFailCb =fail;
         if(GLOBAL.serverType == ServerType.Publish){
@@ -79,7 +79,6 @@ export default class ShareAssist{
             this._shareOnHideTime = 0;
             this._shareSuccessCB();
         }else{
-            UI.showTip("分享失败");
             this._shareFailCb && this._shareFailCb();
         }
 

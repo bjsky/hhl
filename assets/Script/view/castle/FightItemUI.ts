@@ -13,6 +13,7 @@ import { Lineup } from "../../module/battle/LineupAssist";
 import FightInfo from "../../model/FightInfo";
 import { Fight } from "../../module/fight/FightAssist";
 import { WeiXin } from "../../wxInterface";
+import { SeeVideoResult } from "../ResPanel";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -85,8 +86,14 @@ export default class FightItemUI extends DListItem{
         }
         var foEnemey:FightInfo = this._enemyInfo.getFightInfo();
         if(Battle.battleInfo.actionPoint<=0){
-            WeiXin.showVideoAd(()=>{
-                Fight.showFight(foMine,foEnemey,true,this._enemyInfo);
+            WeiXin.showVideoAd((result:SeeVideoResult)=>{
+                if(result == SeeVideoResult.Complete){
+                    Fight.showFight(foMine,foEnemey,true,this._enemyInfo);
+                }else if(result == SeeVideoResult.LoadError){
+                    UI.showTip("视频加载失败！请稍候再来");
+                }else if(result == SeeVideoResult.NotComplete){
+                    UI.showTip("视频观看未完成");
+                }
             },0)
         }else{
             Fight.showFight(foMine,foEnemey,false,this._enemyInfo);

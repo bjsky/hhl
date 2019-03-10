@@ -57,6 +57,8 @@ export default class SharePanel extends PopUpBase{
             if(Share.shareGetReward){
                 Share.getShareReward()
             }
+        },()=>{
+            UI.showTip("分享失败！");
         });
     }
 

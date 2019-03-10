@@ -150,9 +150,14 @@ export default class ResPanel extends PopUpBase {
     private onVideoSee(){
         // SOUND.pauseMusic();
         this.onClose(null);
-        WeiXin.showVideoAd(()=>{
-            this.getVideoReward(this._resType,this._awardNum,false);
-            // SOUND.resumeMusic();
+        WeiXin.showVideoAd((result:SeeVideoResult)=>{
+            if(result == SeeVideoResult.Complete){
+                this.getVideoReward(this._resType,this._awardNum,false);
+            }else if(result == SeeVideoResult.LoadError){
+                UI.showTip("视频加载失败！请稍候再来");
+            }else if(result == SeeVideoResult.NotComplete){
+                UI.showTip("视频观看未完成");
+            }
         },0)
     }
 

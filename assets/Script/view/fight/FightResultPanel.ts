@@ -137,8 +137,10 @@ export default class FightResultPanel extends PopUpBase {
     private onReceiveClick(e){
         if(this._doubleSelect && !GUIDE.isInGuide){
             Share.shareAppMessage(()=>{
+                UI.showTip("分享成功，奖励翻倍！");
                 this.onReceivedDouble(true);
             },()=>{
+                UI.showTip("分享失败，正常领取");
                 this.onReceivedDouble(false);
             });
         }else{
