@@ -9,9 +9,9 @@ require('libs/wx-downloader.js');
 //正式服务器地址
 window.login_server_url = "wss://wz.1233k.com:8580/websocket";//服务器域名地址
 
-// wxDownloader.REMOTE_SERVER_ROOT = "https://s.1233k.com/"; //远程cdn资源地址
+wxDownloader.REMOTE_SERVER_ROOT = "https://s.1233k.com/"; //远程cdn资源地址
 //测试资源地址
-wxDownloader.REMOTE_SERVER_ROOT = "https://s.1233k.com/test/"; //远程cdn资源地址
+// wxDownloader.REMOTE_SERVER_ROOT = "https://s.1233k.com/test/"; //远程cdn资源地址
 wxDownloader.SUBCONTEXT_ROOT = "";
 
 
