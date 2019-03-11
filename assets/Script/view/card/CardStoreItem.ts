@@ -88,7 +88,7 @@ export default class CardStoreItem extends DListItem{
     }
 
     private onExchange(e){
-        if(COMMON.resInfo.diamond <=this._cost){
+        if(COMMON.resInfo.diamond <this._cost){
             ResPanel.show(ResPanelType.DiamondNotEnough);
             return;
         }

@@ -31,7 +31,7 @@
     {"id":"32","nextId":"33","name":"guide_32","type":"3","npc":"","npcIcon":"","npcDir":"0","content":"","arrowDir":"1","delay":"0","checkTime":"5","node_name":"building_castle","param":""},
     {"id":"33","nextId":"34","name":"guide_33","type":"2","npc":"贴身侍女","npcIcon":"shinv.png","npcDir":"2","content":"主人，征服周围的势力需要消耗行动力，行动力会自动恢复，胜利越多积分就越高，就能获得更多的经验和钻石，点击挑战。","arrowDir":"0","delay":"1","checkTime":"5","node_name":"","param":""},
     {"id":"34","nextId":"35","name":"guide_34","type":"3","npc":"","npcIcon":"","npcDir":"0","content":"","arrowDir":"1","delay":"0","checkTime":"5","node_name":"buildPanel_fightEnemy","param":""},
-    {"id":"35","nextId":"36","name":"guide_35","type":"5","npc":"贴身侍女","npcIcon":"shinv.png","npcDir":"2","content":"恭喜主人获得战役胜利，敌人势力的英雄听说了你的威名，愿意跟随您，接纳他们吧。","arrowDir":"0","delay":"0","checkTime":"60","node_name":"popup_result","param":""},
+    {"id":"35","nextId":"36","name":"guide_35","type":"5","npc":"贴身侍女","npcIcon":"shinv.png","npcDir":"2","content":"恭喜主人获得战役胜利，并且俘虏了对方的英雄，点击领取卡牌。","arrowDir":"0","delay":"0","checkTime":"60","node_name":"popup_result","param":""},
     {"id":"36","nextId":"37","name":"guide_36","type":"3","npc":"","npcIcon":"","npcDir":"0","content":"","arrowDir":"1","delay":"0","checkTime":"5","node_name":"popup_resultGetreward","param":""},
     {"id":"37","nextId":"38","name":"guide_37","type":"3","npc":"","npcIcon":"","npcDir":"0","content":"","arrowDir":"0","delay":"0","checkTime":"5","node_name":"popup_cardBig","param":""},
     {"id":"38","nextId":"39","name":"guide_38","type":"3","npc":"","npcIcon":"","npcDir":"0","content":"","arrowDir":"2","delay":"1","checkTime":"5","node_name":"buildPanel_close","param":""},
