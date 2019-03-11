@@ -1,23 +1,19 @@
-import LoadingStep from "../loadingStep";
-import { GLOBAL, ServerType } from "../../../GlobalData";
-import { LoadingStepEnum } from "../LoadingStepManager";
+
+import LoadStep from "../LoadStep";
+import { ServerType, GLOBAL } from "../../../GlobalData";
 import { WeiXin } from "../../../wxInterface";
 import { EVENT } from "../../../message/EventCenter";
 import GameEvent from "../../../message/GameEvent";
+import { GAME } from "../../../GameController";
 /**
  * 登录平台
  */
-export default class LoadingStepLogin extends LoadingStep{
-    
-    public doStep(){
-        super.doStep();
+export default class LoadingStepLogin extends LoadStep{
+    protected onStep(){
         if(GLOBAL.serverType == ServerType.Client){
-            //客户端直接返回测试数据
-            this.setNext(LoadingStepEnum.ServerData);
+            this.endStep();
         }else if(GLOBAL.serverType == ServerType.Debug){
-            //连服务器
-            this.setNext(LoadingStepEnum.ServerConnect);
-            // this.setNext(LoadingStepEnum.ServerData);
+            this.endStep();
         }else if(GLOBAL.serverType == ServerType.Publish){
             //微信登录
             WeiXin.wxLogin(this.loginCb.bind(this));
@@ -27,25 +23,21 @@ export default class LoadingStepLogin extends LoadingStep{
     public loginCb(res){
         console.log("LoadingStepLogin:wxLogin,",JSON.stringify(res));
         GLOBAL.code = res.code;
-
-        // this.setNext(LoadingStepEnum.ServerConnect);
-        WeiXin.getUserInfo((userInfo)=>{
-            if(userInfo==null){
-                if(!this.mgr.isRelogin){
-                    this._showUserInfoAuthButton = true;
-                    // EVENT.emit(GameEvent.Show_UserInfo_AuthButton);
+        if(GAME.isReLogin){
+            this.endStep();
+        }else{
+            WeiXin.getUserInfo((userInfo)=>{
+                if(userInfo==null){
+                        EVENT.emit(GameEvent.Show_UserInfo_AuthButton);
                 }else{
-                    console.log("relogin getUserInfo failed!");
+                    GLOBAL.initUserInfo(userInfo);
+                    this.endStep();
                 }
-            }else{
-                GLOBAL.initUserInfo(userInfo);
-                this.setNext(LoadingStepEnum.ServerConnect);
-            }
-        })
+            })
+        }
     }
 
-    private _showUserInfoAuthButton:boolean =false;
-    public get showUserInfoAuthButton(){
-        return this._showUserInfoAuthButton;
+    public resume(){
+        this.endStep();
     }
 }

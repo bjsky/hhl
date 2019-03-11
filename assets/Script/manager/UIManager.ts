@@ -8,6 +8,10 @@ import PathUtil from "../utils/PathUtil";
 import { GLOBAL } from "../GlobalData";
 import { GUIDE } from "./GuideManager";
 import MainUI from "../view/main/MainUI";
+import { SCENE } from "./SceneManager";
+import CityScene from "../scene/CityScene";
+import LoadingScene from "../scene/LoadingScene";
+import SceneBase from "../scene/SceneBase";
 
 /**
  * 管理各种界面单例,层级
@@ -291,7 +295,15 @@ export default class UIManager{
     */
     public showNetAlert(title:string,message:string,okCallback?:Function,cancelCallback?:Function,btnType:number = AlertBtnType.OKButton, act:boolean=false){
         var data = {content:message,okCb:okCallback,cancelCb:cancelCallback,btnType:btnType};
-        this.createPopUp(ResConst.AlertPanel,data);
+        var scene:SceneBase = SCENE.getCCScene();
+        console.log("getCCScene:",scene==null)
+        if(scene instanceof CityScene){
+            this.createPopUp(ResConst.AlertPanel,data);
+        }else if(scene instanceof LoadingScene){
+            var loadingScene:LoadingScene = scene as LoadingScene;
+            console.log("showNetAlert:",data)
+            loadingScene.showNetAlert(ResConst.AlertPanel,data);
+        }
     }
 
     /**

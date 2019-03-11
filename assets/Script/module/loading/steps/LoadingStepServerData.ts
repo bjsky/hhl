@@ -1,17 +1,15 @@
-import LoadingStep from "../loadingStep";
+
+import LoadStep from "../LoadStep";
+import { ServerType, GLOBAL } from "../../../GlobalData";
+import { CONSTANT } from "../../../Constant";
 import { NET } from "../../../net/core/NetController";
 import MsgLogin from "../../../net/msg/MsgLogin";
 import { COMMON } from "../../../CommonData";
-import { CONSTANT } from "../../../Constant";
-import { GLOBAL, ServerType } from "../../../GlobalData";
-import { LoadingStepEnum } from "../LoadingStepManager";
 /**
  * 加载配置
  */
-export default class LoadingStepServerData extends LoadingStep{
-
-    public doStep(){
-        super.doStep();
+export default class LoadingStepServerData extends LoadStep{
+    protected onStep(){
         CONSTANT.initConstant();
         if(GLOBAL.serverType == ServerType.Client){
             NET.send(MsgLogin.create("",""),(msg:MsgLogin)=>{

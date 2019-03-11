@@ -1,6 +1,8 @@
 import SceneBase from "./SceneBase";
 import { GAME } from "../GameController";
 import { UI } from "../manager/UIManager";
+import AlertPanel from "../view/AlertPanel";
+import UIBase from "../component/UIBase";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -20,15 +22,38 @@ export default class LoadingScene extends SceneBase {
     // LIFE-CYCLE CALLBACKS:
 
     @property(cc.Node) uicanvas: cc.Node = null;
+    @property(cc.Node) netLayer: cc.Node = null;
     onLoad () {
         //常驻ui
         UI.registerLayer(this.uicanvas);
+    }
+
+    private _netAlert:AlertPanel = null;
+    private _netAlertLoading:boolean =false;
+    public showNetAlert(res:string,data:any){
+        if(this._netAlertLoading){
+            return;
+        }
+        if(this._netAlert!=null){
+            this._netAlert.onClose(null);
+        }
+        this._netAlertLoading = true;
+        UI.loadUI(res,data,this.netLayer,(ui:UIBase)=>{
+            this._netAlertLoading = false;
+            this._netAlert = ui as AlertPanel;
+        });
     }
 
     start () {
 
         GAME.start();
         
+    }
+
+    onDisable(){
+        if(this._netAlert!=null){
+            this._netAlert.onClose(null);
+        }   
     }
 
 

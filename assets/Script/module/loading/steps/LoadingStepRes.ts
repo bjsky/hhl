@@ -1,5 +1,6 @@
-import LoadingStep from "../loadingStep";
-import { LoadingStepEnum } from "../LoadingStepManager";
+
+import LoadStep from "../LoadStep";
+import { GAME } from "../../../GameController";
 
 export const ResConst = {
     MainUI:"prefabs/mainUI",
@@ -49,13 +50,11 @@ export const ResConst = {
 /**
  * 加载配置
  */
-export default class LoadingStepRes extends LoadingStep{
-    
+export default class LoadingStepRes extends LoadStep{
     private _resArr:string[];
     private _loadedCount:number = 0;
     private _totalCount:number = 0;
-    public doStep(){
-        super.doStep();
+    protected onStep(){
         this._resArr = [];
         for(var key in ResConst){
             this._resArr.push(ResConst[key]);
@@ -71,6 +70,8 @@ export default class LoadingStepRes extends LoadingStep{
                 if (err) {
                     cc.error(err.message || err);
                     console.log("res load failed!",err.message);
+
+                    GAME.reLoading();
                     return;
                 }
 
@@ -81,7 +82,7 @@ export default class LoadingStepRes extends LoadingStep{
                 this.loadNext();
             })
         }else{
-            this.setNext(LoadingStepEnum.Scene);
+            this.endStep();
         }
     }
 }

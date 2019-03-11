@@ -93,22 +93,22 @@ export default class LoadingView extends cc.Component {
         let width = frameSize.width;
         let height = frameSize.height;
         WeiXin.createUserInfoButton(left,top,width,height,(userInfo)=>{
-            this.unschedule(this.getUserInfoTimeout);
+            // this.unschedule(this.getUserInfoTimeout);
             GLOBAL.initUserInfo(userInfo);
             GAME.resumeLogin();
         });
         this.nodeLoading.active = false;
-        this.scheduleOnce(this.getUserInfoTimeout,10);
+        // this.scheduleOnce(this.getUserInfoTimeout,10);
     }
     start () {
 
     }
 
-    //拉去超时
-    private getUserInfoTimeout(){
-        this.unschedule(this.getUserInfoTimeout);
-        GAME.resumeLogin();
-    }
+    // //拉去超时
+    // private getUserInfoTimeout(){
+    //     this.unschedule(this.getUserInfoTimeout);
+    //     GAME.resumeLogin();
+    // }
 
     private infoButtonTap(useInfo){
 

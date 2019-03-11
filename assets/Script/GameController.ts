@@ -1,12 +1,16 @@
-import LoadingStepManager, { LoadingStepEnum } from "./module/loading/LoadingStepManager";
 import { GLOBAL } from "./GlobalData";
 import LoadingStepLogin from "./module/loading/steps/LoadingStepLogin";
 import { EVENT } from "./message/EventCenter";
 import GameEvent from "./message/GameEvent";
 import { GUIDE } from "./manager/GuideManager";
 import { UI } from "./manager/UIManager";
-import { ResConst } from "./module/loading/steps/LoadingStepRes";
-import LoadSprite from "./component/LoadSprite";
+import LoadingStepRes, { ResConst } from "./module/loading/steps/LoadingStepRes";
+import LoadStepMgr from "./module/loading/LoadStepMgr";
+import LoadStep, { LoadStepEnum } from "./module/loading/LoadStep";
+import LoadingStepConfig from "./module/loading/steps/LoadingStepConfig";
+import LoadingStepScene from "./module/loading/steps/LoadingStepScene";
+import LoadingStepServerConn from "./module/loading/steps/LoadingStepServerConn";
+import LoadingStepServerData from "./module/loading/steps/LoadingStepServerData";
 
 /**
  *  游戏逻辑控制器
@@ -21,9 +25,6 @@ export default class GameController{
         }
         return GameController._instance;
     }
-
-    //游戏加载管理器
-    private loadingStepMgr:LoadingStepManager;
 
     constructor(){
         this.addGameListener();
@@ -54,24 +55,62 @@ export default class GameController{
         GLOBAL.initSystemInfo();
         //初始化
         GLOBAL.initGameConfig();
-        //加载
-        this.loadingStepMgr = new LoadingStepManager();
-        this.loadingStepMgr.startLoading();
+        // //加载
+        // this.loadingStepMgr = new LoadingStepManager();
+        // this.loadingStepMgr.startLoading();
+        this.startLoading();
     }
 
-    private _resumeed:boolean = false;
+    public reLoading(){
+        this.startLoading();
+    }
+
+    private _loadingStepMgr:LoadStepMgr;
+    private startLoading(){
+        this._loadingStepMgr = new LoadStepMgr([
+            new LoadingStepConfig(LoadStepEnum.Config,10),
+            new LoadingStepRes(LoadStepEnum.Res,80),
+            new LoadingStepScene(LoadStepEnum.Scene,10),
+            new LoadingStepLogin(LoadStepEnum.Login,0),
+            new LoadingStepServerConn(LoadStepEnum.ServerConnect,0),
+            new LoadingStepServerData(LoadStepEnum.ServerData,0),
+        ])
+        this._loadingStepMgr.start(this.loadingComplete.bind(this),this.loadingProgress.bind(this));
+    }
+    private loadingComplete(){
+        this._loadingStepMgr = null;
+        EVENT.emit(GameEvent.LOADING_COMPLETE);
+    }
+    private loadingProgress(total:number){
+        EVENT.emit(GameEvent.LOADING_PROGRESS,total);
+    }
+
+
     public resumeLogin(){
-        if(this._resumeed)
-        return;
-        var loginStep:LoadingStepLogin = this.loadingStepMgr.getStep(LoadingStepEnum.Login)
-        if(loginStep){
-            this._resumeed = true;
-            loginStep.setNext(LoadingStepEnum.ServerConnect);
+        if(this._loadingStepMgr){
+            this._loadingStepMgr.resume();
         }
+    }
+
+    private _isReLogin:boolean =false;
+    public get isReLogin(){
+        return this._isReLogin;
     }
     //断线重来
     public reLogin(){
-        this.loadingStepMgr.startReLogin();
+        this._isReLogin = true;
+        var reLoginStepMgr:LoadStepMgr = new LoadStepMgr([
+            new LoadingStepLogin(LoadStepEnum.Login,0),
+            new LoadingStepServerConn(LoadStepEnum.ServerConnect,0),
+            new LoadingStepServerData(LoadStepEnum.ServerData,0),
+        ])
+        reLoginStepMgr.start(this.reLoginComplete.bind(this));
+    }
+    private reLoginComplete(){
+        this._isReLogin = false;
+        if(this._loadingStepMgr!=null){
+            this.loadingComplete();
+        }
     }
 
     //后台加载资源

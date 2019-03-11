@@ -37,9 +37,14 @@ export default class TaskAssist{
         return TaskAssist._instance;
     }
 
-    public taskInfo:TaskInfo = new TaskInfo();
+    private _taskInfo:TaskInfo;
+    public get taskInfo():TaskInfo{
+        if(this._taskInfo==undefined){
+            this._taskInfo = new TaskInfo();
+        }
+        return this._taskInfo;
+    }
     public initTask(sTask:STaskInfo):void{
-
         this.taskInfo.initFormServer(sTask);
     }
 

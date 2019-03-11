@@ -1,7 +1,7 @@
-import LoadingStep from "../loadingStep";
+import LoadStep from "../LoadStep";
 import { RES } from "../../../manager/ResourceManager";
 import { CFG } from "../../../manager/ConfigManager";
-import { LoadingStepEnum } from "../LoadingStepManager";
+import { GAME } from "../../../GameController";
 
 export const ConfigConst = {
     Constant:"config/constant",
@@ -21,10 +21,9 @@ export const ConfigConst = {
 /**
  * 加载配置
  */
-export default class LoadingStepConfig extends LoadingStep{
+export default class LoadingStepConfig extends LoadStep{
     private _cfgArr:string[];
-    public doStep(){
-        super.doStep();
+    protected onStep(){
         this._cfgArr = [];
         for(var key in ConfigConst){
             this._cfgArr.push(ConfigConst[key]);
@@ -38,16 +37,14 @@ export default class LoadingStepConfig extends LoadingStep{
             CFG.parseCfg(res,RES.get(res));
         });
         console.log("Config loaded!");
-        var configStep:LoadingStep = this.getStep(LoadingStepEnum.Login);
-        if(configStep){
-            configStep.startStep();
-        }
-        this.setNext(LoadingStepEnum.Res);
+        
+        this.endStep();
     }
     private loadConfigProgress(pro:number){
         this.updateProgress(pro);
     }
     private loadConfigFailed(msg:string){
         console.log("config load failed!",msg);
+        GAME.reLoading();
     }
 }

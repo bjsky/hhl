@@ -12,6 +12,7 @@ import { EVENT } from "./message/EventCenter";
 import GameEvent from "./message/GameEvent";
 import { Task } from "./module/TaskAssist";
 import { Activity } from "./module/ActivityAssist";
+import TaskInfo from "./model/TaskInfo";
 
 export enum DirectionEnum{
     Left = 0,       //左
@@ -72,6 +73,7 @@ export default class CommonData{
     private _loginTime:number = 0;
     //服务器数据初始化
     public initFromServer(data:SCLoginData){
+
         this._loginTime = new Date().getTime();
 
         this.accountId = data.accountId;

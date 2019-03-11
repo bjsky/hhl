@@ -30,6 +30,16 @@ export default class SceneManager{
         return this._curSceneName;
     }
 
+    public getCCScene():SceneBase{
+        var sceneCvs:cc.Node = cc.director.getScene().getChildByName("Canvas");
+        if(sceneCvs ){
+            var scene:SceneBase = sceneCvs.getComponent(SceneBase);
+            return scene;
+        }else{
+            return null;
+        }
+    }
+
     //切换场景
     public changeScene(name:string,complete?:Function){
         console.log("切换场景："+name);
