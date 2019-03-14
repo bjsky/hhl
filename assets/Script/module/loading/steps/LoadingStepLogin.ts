@@ -28,10 +28,11 @@ export default class LoadingStepLogin extends LoadStep{
         }else{
             WeiXin.getUserInfo((userInfo)=>{
                 if(userInfo==null){
-                        EVENT.emit(GameEvent.Show_UserInfo_AuthButton);
+                    GAME.setLoginEnd(true);
                 }else{
                     GLOBAL.initUserInfo(userInfo);
-                    this.endStep();
+                    // this.endStep();
+                    GAME.setLoginEnd(false);
                 }
             })
         }

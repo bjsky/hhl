@@ -66,29 +66,60 @@ export default class GameController{
     }
 
     private _loadingStepMgr:LoadStepMgr;
+    private _loginStepMgr:LoadStepMgr;
     private startLoading(){
+        this._resLoaded = false;
+        this._loginEnd = false;
+        this._showUserAuthButton = false;
         this._loadingStepMgr = new LoadStepMgr([
             new LoadingStepConfig(LoadStepEnum.Config,10),
             new LoadingStepRes(LoadStepEnum.Res,80),
             new LoadingStepScene(LoadStepEnum.Scene,10),
-            new LoadingStepLogin(LoadStepEnum.Login,0),
-            new LoadingStepServerConn(LoadStepEnum.ServerConnect,0),
-            new LoadingStepServerData(LoadStepEnum.ServerData,0),
         ])
         this._loadingStepMgr.start(this.loadingComplete.bind(this),this.loadingProgress.bind(this));
+        this._loginStepMgr = new LoadStepMgr([
+            new LoadingStepLogin(LoadStepEnum.Login,0),
+            new LoadingStepServerConn(LoadStepEnum.ServerConnect,0),
+            new LoadingStepServerData(LoadStepEnum.ServerData,0),]);
+        this._loginStepMgr.start(this.loginComplete.bind(this));
     }
+    private _resLoaded:boolean =false;
+    private _loginEnd:boolean =false;
+    private _showUserAuthButton:boolean = false;
     private loadingComplete(){
         this._loadingStepMgr = null;
-        EVENT.emit(GameEvent.LOADING_COMPLETE);
+        this._resLoaded = true;
+        this.checkConnect();
     }
     private loadingProgress(total:number){
         EVENT.emit(GameEvent.LOADING_PROGRESS,total);
     }
 
+    public setLoginEnd(showUserAuthButton:boolean){
+        this._loginEnd = true;
+        this._showUserAuthButton = showUserAuthButton;
+        this.checkConnect();
+    }
+
+    private checkConnect(){
+        if(this._loginEnd && this._resLoaded){
+            if(this._showUserAuthButton){   //显示授权
+                this._showUserAuthButton = false;
+                EVENT.emit(GameEvent.Show_UserInfo_AuthButton);
+            }else{
+                this.resumeLogin(); //直接登录
+            }
+        }
+    }
+
+    private loginComplete(){
+        this._loginStepMgr = null;
+        EVENT.emit(GameEvent.LOADING_COMPLETE);
+    }
 
     public resumeLogin(){
-        if(this._loadingStepMgr){
-            this._loadingStepMgr.resume();
+        if(this._loginStepMgr){
+            this._loginStepMgr.resume();
         }
     }
 
@@ -108,8 +139,8 @@ export default class GameController{
     }
     private reLoginComplete(){
         this._isReLogin = false;
-        if(this._loadingStepMgr!=null){
-            this.loadingComplete();
+        if(this._loginStepMgr!=null){
+            this.loginComplete();
         }
     }
 

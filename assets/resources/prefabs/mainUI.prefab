@@ -553,7 +553,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "16add6d5-493c-4623-846f-bafa56d3e2e4"
+      "__uuid__": "3d7c81f4-b35e-4fdd-8674-11cef6a6610f"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -568,7 +568,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "e561bd28-a3df-47f0-ae00-36087b90b7b1"
+    },
     "url": "",
     "resType": "png",
     "defaultSpr": null
@@ -1645,7 +1647,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "e1df33ab-4ae0-4e1b-bc6e-6ec7b15d0079"
+      "__uuid__": "e6f53cfc-4793-4e45-b679-f7f8a2418d5b"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -1660,7 +1662,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "e561bd28-a3df-47f0-ae00-36087b90b7b1"
+    },
     "url": "",
     "resType": "png",
     "defaultSpr": null
@@ -1849,8 +1853,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 123,
-      "height": 28
+      "width": 125,
+      "height": 30
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -2211,7 +2215,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 39,
-      "height": 39
+      "height": 41
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -2238,7 +2242,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "60cdd516-c9d4-4c15-991f-97481e7eee25"
+      "__uuid__": "c623868b-e348-4c55-95f4-a7dc95f39807"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -2253,7 +2257,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "e561bd28-a3df-47f0-ae00-36087b90b7b1"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2388,8 +2394,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 123,
-      "height": 28
+      "width": 125,
+      "height": 30
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -2777,7 +2783,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "e1cd4813-8059-42c5-b86e-468f90c2a85e"
+      "__uuid__": "f3fd21e7-daf3-45b7-8fac-84c111531e58"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -2792,7 +2798,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "e561bd28-a3df-47f0-ae00-36087b90b7b1"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2927,8 +2935,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 123,
-      "height": 28
+      "width": 125,
+      "height": 30
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -3316,7 +3324,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "a820a7b1-c4c7-49e4-a612-683d0a066ca7"
+      "__uuid__": "75a85505-0f80-41d2-ab37-a6a670106ba7"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -3331,7 +3339,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "e561bd28-a3df-47f0-ae00-36087b90b7b1"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -3846,7 +3856,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "cd778b1a-b2da-4acd-a23a-f1d9acf3b33c"
+      "__uuid__": "d99a63d0-64f6-46cb-8f08-03cf033b0aa4"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -3861,7 +3871,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "12b6535c-904f-4e5c-bd34-b1ca7ee96e1e"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -4224,7 +4236,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 126,
-      "height": 115
+      "height": 117
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -5976,9 +5988,6 @@
       "__id__": 82
     },
     "btnAddDiamond": {
-      "__id__": 100
-    },
-    "btnDiamondStore": {
       "__id__": 100
     },
     "progressExp": {

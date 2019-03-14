@@ -965,7 +965,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "affd4d21-6693-431b-856a-9657e5852cfa"
+      "__uuid__": "c80bc9e6-00aa-4b95-bbb5-c992467c9c8a"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -981,7 +981,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_atlas": {
-      "__uuid__": "e561bd28-a3df-47f0-ae00-36087b90b7b1"
+      "__uuid__": "5e2609ad-e4ad-4d77-a035-2e114556589f"
     }
   },
   {
@@ -1230,7 +1230,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "c3d73603-d376-4d57-90bc-5eee4a633051"
+      "__uuid__": "e9cb9509-7407-4e95-904e-49c5f62c5014"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -1246,7 +1246,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_atlas": {
-      "__uuid__": "e561bd28-a3df-47f0-ae00-36087b90b7b1"
+      "__uuid__": "5e2609ad-e4ad-4d77-a035-2e114556589f"
     }
   },
   {
@@ -1292,13 +1292,13 @@
       "a": 255
     },
     "_N$normalSprite": {
-      "__uuid__": "c3d73603-d376-4d57-90bc-5eee4a633051"
+      "__uuid__": "e9cb9509-7407-4e95-904e-49c5f62c5014"
     },
     "_N$pressedSprite": {
-      "__uuid__": "d645f3a4-7921-4d72-b28d-8d61ba25a3e5"
+      "__uuid__": "b9383b27-ff7f-4f46-985d-826f3c2c40c8"
     },
     "pressedSprite": {
-      "__uuid__": "d645f3a4-7921-4d72-b28d-8d61ba25a3e5"
+      "__uuid__": "b9383b27-ff7f-4f46-985d-826f3c2c40c8"
     },
     "_N$hoverSprite": null,
     "hoverSprite": null,
@@ -1579,7 +1579,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "42220455-a732-434b-831d-2d8fd987d5d0"
+      "__uuid__": "e29b94d6-d09c-43ab-8aac-0af476f7226d"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -1595,7 +1595,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_atlas": {
-      "__uuid__": "e561bd28-a3df-47f0-ae00-36087b90b7b1"
+      "__uuid__": "5e2609ad-e4ad-4d77-a035-2e114556589f"
     }
   },
   {
@@ -1623,7 +1623,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "daa4230b-9243-4f45-9e73-df6d572e3783"
+      "__uuid__": "3788fc42-1c3e-4af3-98e7-04495b46db6b"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -1639,7 +1639,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_atlas": {
-      "__uuid__": "e561bd28-a3df-47f0-ae00-36087b90b7b1"
+      "__uuid__": "5e2609ad-e4ad-4d77-a035-2e114556589f"
     }
   },
   {

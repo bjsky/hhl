@@ -811,9 +811,7 @@
       "__id__": 23
     },
     "_enabled": true,
-    "_spriteFrame": {
-      "__uuid__": "f1c21f9c-85ec-4cd2-a28f-badf92de713c"
-    },
+    "_spriteFrame": null,
     "_type": 0,
     "_sizeMode": 1,
     "_fillType": 0,

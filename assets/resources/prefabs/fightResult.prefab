@@ -516,8 +516,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 140,
-      "height": 37
+      "width": 240,
+      "height": 40
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -544,7 +544,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "3b629057-659b-4790-9c29-c32a0b2fd1f4"
+      "__uuid__": "f3723aab-0eec-4b06-b49b-a2dbe67b229a"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -559,7 +559,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "e561bd28-a3df-47f0-ae00-36087b90b7b1"
+    },
     "url": "",
     "resType": "png",
     "defaultSpr": null
@@ -1920,7 +1922,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "433eaf1f-5063-4442-89da-2d8ca4f84e7d"
+      "__uuid__": "12cbb5ee-9f53-43f2-85de-f1f887653867"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -1935,7 +1937,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "12b6535c-904f-4e5c-bd34-b1ca7ee96e1e"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2188,7 +2192,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "90b984d0-729f-436a-9328-2f30093c5aa7"
+      "__uuid__": "990d5403-e29f-4433-a0df-ad828dae971c"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -2203,7 +2207,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "12b6535c-904f-4e5c-bd34-b1ca7ee96e1e"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2885,7 +2891,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "433eaf1f-5063-4442-89da-2d8ca4f84e7d"
+      "__uuid__": "12cbb5ee-9f53-43f2-85de-f1f887653867"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -2900,7 +2906,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "12b6535c-904f-4e5c-bd34-b1ca7ee96e1e"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
