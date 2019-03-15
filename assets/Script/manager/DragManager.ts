@@ -55,7 +55,7 @@ export default class DragManager {
             //if (cc.rectContainsPoint(rect, targetPoint)) {
             //Creator2.0使用rect的成员contains方法
             if (rect.contains(point)) {
-                drop.emit(CDragEvent.DRAG_DROP);
+                drop.dispatchEvent(new cc.Event(CDragEvent.DRAG_DROP,true));
             }
         })
     }

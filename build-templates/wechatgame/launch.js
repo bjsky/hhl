@@ -161,18 +161,18 @@ let shareCallbackFunc = function(){
     query:"",
   }
 }
-let onHideFunc = function(res){
-  console.log("OnHide Info:" + JSON.stringify(res));
+// let onHideFunc = function(res){
+//   console.log("OnHide Info:" + JSON.stringify(res));
   
-  window["wxOnHide"](res);
-}
+//   window["wxOnHide"](res);
+// }
 
 
-let onshowFunc = function(res){
-  console.log("OnShow Info:" + JSON.stringify(res));
+// let onshowFunc = function(res){
+//   console.log("OnShow Info:" + JSON.stringify(res));
   
-  window["wxOnShow"](res);
-}
+//   window["wxOnShow"](res);
+// }
 
 let checkUpdate = function() {
   console.log("[log] will check udpate ")
@@ -205,7 +205,7 @@ let checkUpdate = function() {
   
 }
 
-wx.onLaunch()
+let appOnLaunch = function()
 {
   var opt = wx.getLaunchOptionsSync();
   
@@ -217,8 +217,10 @@ wx.onLaunch()
   // 注册用户点击右上角转发侦听
   wx.onShareAppMessage(shareCallbackFunc)
   //显示饮茶
-  wx.onHide(onHideFunc);
-  wx.onShow(onshowFunc)
+  // wx.onHide(onHideFunc);
+  // wx.onShow(onshowFunc)
 
   checkUpdate();
 }
+
+appOnLaunch();

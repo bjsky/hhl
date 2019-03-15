@@ -109,7 +109,7 @@ export default class SevenDayPanel extends PopUpBase {
     }
 
     private onReceived(e){
-        var index:number = e.detail.index;
+        var index:number = e.index;
         this._items[index].recevied();
         this.btnShow();
     }

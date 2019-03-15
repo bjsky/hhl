@@ -1,9 +1,10 @@
 {
-  "ver": "2.0.0",
+  "ver": "2.2.0",
   "uuid": "2b8fd5bd-d5cc-419a-b289-b2cb85ce8958",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
+  "premultiplyAlpha": false,
   "subMetas": {
     "card_yangjian_s": {
       "ver": "1.0.3",

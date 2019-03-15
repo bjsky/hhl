@@ -48,7 +48,7 @@ export default class RankPanel extends PopUpBase{
         this.rankList.setListData([]);
     }
     private groupSelectChange(e){
-        var idx = e.detail.index;
+        var idx = e.index;
         this.initRankList();
     }
 

@@ -220,7 +220,7 @@ export default class MainUI extends UIBase {
     // }
 
     private resUpdateCost(e){
-        var types:any[] = e.detail.types;
+        var types:any[] = e.types;
         var absVal:number = 0;
         types.forEach((obj)=>{
             switch(obj.type){
@@ -251,7 +251,7 @@ export default class MainUI extends UIBase {
     }
 
     private showResAddAni(e) {
-        var types:any[] = e.detail.types;
+        var types:any[] = e.types;
         types.forEach(obj => {
             if(obj.type == ResType.gold){
                 this.lblGold.string = StringUtil.formatReadableNumber(COMMON.resInfo.gold);
@@ -268,8 +268,7 @@ export default class MainUI extends UIBase {
         });
     }
 
-    private showAwardPop(e){
-        var data = e.detail;
+    private showAwardPop(data){
         UI.createPopUp(ResConst.AwardPanel,data);
     }
 
@@ -479,8 +478,8 @@ export default class MainUI extends UIBase {
     }
 
     public onWeakGuideTouch(e){
-        var guideId = e.detail.id;
-        var nodeName = e.detail.name;
+        var guideId = e.id;
+        var nodeName = e.name;
         if(nodeName == "ui_share"){
             this.onShare(null);
             GUIDE.nextWeakGuide(guideId);

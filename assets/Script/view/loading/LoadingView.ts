@@ -57,8 +57,8 @@ export default class LoadingView extends cc.Component {
         this.btnEnterGame.node.active = false;
     }
 
-    public onLoadingProgress(e:any){
-        this.setPro(e.detail);
+    public onLoadingProgress(pro:any){
+        this.setPro(pro);
     }
 
     public onLoadingComplete(e:GameEvent){

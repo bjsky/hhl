@@ -179,7 +179,7 @@ export default class TemplePanel extends UIBase {
     }
 
     private groupSelectChange(e){
-        var idx = e.detail.index;
+        var idx = e.index;
         this.initListWithType(idx);
     }
 
@@ -199,7 +199,7 @@ export default class TemplePanel extends UIBase {
     }
 
     private onCardClick(e){
-        var data = e.detail.data;
+        var data = e.data;
         UI.createPopUp(ResConst.cardDescrip,{cardId:data.cfg.id});
     }
     private onBuildUpdate(e){
@@ -209,7 +209,7 @@ export default class TemplePanel extends UIBase {
 
     private onCardSummoned(e){
         this.initView();
-        this.showCardGetEffect(e.detail.uuid);
+        this.showCardGetEffect(e.uuid);
     }
 
 
@@ -302,8 +302,8 @@ export default class TemplePanel extends UIBase {
     }
 
     private onGuideTouch(e){
-        var guideId = e.detail.id;
-        var nodeName = e.detail.name;
+        var guideId = e.id;
+        var nodeName = e.name;
         if(nodeName == "buildPanel_getCard"){
             this.onLifeStoneClick(null);
             GUIDE.nextGuide(guideId);
@@ -313,8 +313,8 @@ export default class TemplePanel extends UIBase {
 
     private onGuideWeakTouch(e){
 
-        var guideId = e.detail.id;
-        var nodeName = e.detail.name;
+        var guideId = e.id;
+        var nodeName = e.name;
         if(nodeName == "buildPanel_getCard"){
             this.onLifeStoneClick(null);
             GUIDE.nextWeakGuide(guideId);

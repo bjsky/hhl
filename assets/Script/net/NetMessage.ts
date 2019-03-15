@@ -22,7 +22,7 @@ export default class NetMessage extends cc.Component{
     }
     private onNetMessage(e:any)
     {
-        let msgid = e.detail.id+"";
+        let msgid = e.id+"";
         
         switch(msgid)
         {
@@ -37,9 +37,9 @@ export default class NetMessage extends cc.Component{
             }                
             break;
             case NetConst.ExceptionCmd:{
-                let msg = e.detail.data.errorCode+","+e.detail.data.errorMsg;
+                let msg = e.data.errorCode+","+e.data.errorMsg;
                 if(CC_DEBUG) {
-                    msg = JSON.stringify(e.detail.data);
+                    msg = JSON.stringify(e.data);
                 }
                 // altp = AlertPanel.showAlert("",msg);
             }break;
@@ -56,7 +56,7 @@ export default class NetMessage extends cc.Component{
             }                
             break;
             default:{
-                this.MsgPushParser(Number(msgid),e.detail.data);
+                this.MsgPushParser(Number(msgid),e.data);
             }
             break;
         }

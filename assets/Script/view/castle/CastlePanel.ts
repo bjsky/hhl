@@ -153,7 +153,7 @@ export default class CastlePanel extends UIBase {
         this.initBattleData();
     }
     private onFightEnemySuccess(e){
-        var enemyInfo:EnemyInfo = e.detail.info as EnemyInfo;
+        var enemyInfo:EnemyInfo = e.info as EnemyInfo;
 
     }
     private onBuildUpdate(e){
@@ -271,8 +271,8 @@ export default class CastlePanel extends UIBase {
     }
 
     private onGuideTouch(e){
-        var guideId = e.detail.id;
-        var nodeName = e.detail.name;
+        var guideId = e.id;
+        var nodeName = e.name;
         if(nodeName == "buildPanel_fightEnemy"){
             if(this._guideItem){
                 this._guideItem.onAttackGuide();
@@ -282,8 +282,8 @@ export default class CastlePanel extends UIBase {
     }
 
     private onGuideWeakTouch(e){
-        var guideId = e.detail.id;
-        var nodeName = e.detail.name;
+        var guideId = e.id;
+        var nodeName = e.name;
         if(nodeName == "buildPanel_fightEnemy"){
             if(this._guideItem){
                 this._guideItem.onAttack();

@@ -94,7 +94,7 @@ export default class GrowthBoxUI extends UIBase {
     }
 
     private onReceived(e){
-        var id :number = e.detail.id;
+        var id :number = e.id;
         if(this._reward.reward && id == this._reward.reward.rewardId){
             this._reward = Task.taskInfo.getGrowthRewardWithType(this._type);
             this.initView();

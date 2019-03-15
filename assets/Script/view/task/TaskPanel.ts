@@ -137,7 +137,7 @@ export default class TaskPanel extends PopUpBase{
     }
     private _closeCompleStartGuideId:number = 0;
     private onStartWeakGuide(e){
-        this._closeCompleStartGuideId = e.detail.guideId;
+        this._closeCompleStartGuideId = e.guideId;
         this.onClose(e);
     }
     protected onCloseComplete(){

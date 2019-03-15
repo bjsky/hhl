@@ -82,13 +82,8 @@ export default class LineUpPopup extends PopUpBase {
 
     }
 
-    // private groupSelectChange(e){
-    //     var idx = e.detail.index;
-    //     this.listGroupSelected();
-    // }
-
     private onCardClick(e){
-        var index = e.detail.index;
+        var index = e.index;
         this.cardsList.selectIndex = index;
         var cardUUid = this.cardsList.selectData.uuid;
         var cardInfo = Card.getCardByUUid(cardUUid);
@@ -104,7 +99,7 @@ export default class LineUpPopup extends PopUpBase {
     }
 
     private onRemoveLineupCard(e){
-        var pos:number = e.detail.pos;
+        var pos:number = e.pos;
         if(Lineup.ownerLineupMap[pos]){
             Lineup.changeLineUp(pos,"");
             console.log("remove card")
@@ -201,8 +196,8 @@ export default class LineUpPopup extends PopUpBase {
     }
 
     private onGuideTouch(e){
-        var guideId = e.detail.id;
-        var nodeName = e.detail.name;
+        var guideId = e.id;
+        var nodeName = e.name;
         if(nodeName == "popup_lineupItem0"){
             this.onCardClick({detail:{index:0}})
             GUIDE.nextGuide(guideId);

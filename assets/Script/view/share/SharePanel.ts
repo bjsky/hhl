@@ -96,8 +96,8 @@ export default class SharePanel extends PopUpBase{
     }
 
     public onGuideWeakTouch(e){
-        var guideId = e.detail.id;
-        var nodeName = e.detail.name;
+        var guideId = e.id;
+        var nodeName = e.name;
         if(nodeName == "popup_shareBtn"){
             this.onShare();
             GUIDE.nextWeakGuide(guideId);

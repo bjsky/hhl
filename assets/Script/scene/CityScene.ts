@@ -144,7 +144,7 @@ export default class CityScene extends SceneBase {
     }
 
     private onGotoPanelFast(e){
-        var buildType = e.detail.type;
+        var buildType = e.type;
         if(this._activeBuild){
             this._activeBuild.closeUI(()=>{
                 this.openBuildUI(buildType);
@@ -218,6 +218,7 @@ export default class CityScene extends SceneBase {
     private _toZoom:number = 1;
     private _updateZoom:boolean = false;
     public moveCamToPos(fPos:cc.Vec2,tPos:cc.Vec2,during:number,toZoom:number= 1,cb?:Function){
+        cb();
         this._zoomDuring = during;
         var camPos:cc.Vec2 ;//= this.cam.getTargets()[0].convertToNodeSpaceAR(pos);
         camPos = fPos.sub(tPos);
@@ -235,6 +236,7 @@ export default class CityScene extends SceneBase {
     }
 
     public moveCamBack(cb?:Function){
+        cb();
         var move;
         if(cb!=undefined){
             move = cc.sequence(cc.moveTo(0.3,COMMON.ZERO),cc.callFunc(cb));
@@ -322,8 +324,8 @@ export default class CityScene extends SceneBase {
         return build;
     }
     private onGuideTouch(e){
-        var guideId = e.detail.id;
-        var nodeName = e.detail.name;
+        var guideId = e.id;
+        var nodeName = e.name;
         if(nodeName == "building_temple"){
             this.openBuildUI(BuildType.Temple);
             GUIDE.nextGuide(guideId);
@@ -339,8 +341,8 @@ export default class CityScene extends SceneBase {
         }
     }
     private onGuideWeakTouch(e){
-        var guideId = e.detail.id;
-        var nodeName = e.detail.name;
+        var guideId = e.id;
+        var nodeName = e.name;
         if(nodeName == "building_temple"){
             this.openBuildUI(BuildType.Temple);
             GUIDE.nextWeakGuide(guideId);

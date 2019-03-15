@@ -1,11 +1,4 @@
 {
-  "cocos-analytics": {
-    "appID": "13798",
-    "appSecret": "959b3ac0037d0f3c2fdce94f8421a9b2",
-    "channel": "",
-    "enable": false,
-    "version": ""
-  },
   "collision-matrix": [
     [
       true
@@ -25,17 +18,28 @@
     "DragonBones",
     "Physics"
   ],
+  "facebook": {
+    "appID": "",
+    "audience": {
+      "enable": false
+    },
+    "enable": false,
+    "live": {
+      "enable": false
+    }
+  },
   "fit-height": false,
   "fit-width": true,
   "group-list": [
     "default"
   ],
+  "last-module-event-record-time": 1552664708975,
   "simulator-orientation": false,
   "simulator-resolution": {
     "height": 640,
     "width": 960
   },
   "start-scene": "d0a99948-3739-4f49-9ddb-6aaa4a29849b",
-  "use-customize-simulator": false,
+  "use-customize-simulator": true,
   "use-project-simulator-setting": false
 }

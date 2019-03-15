@@ -13,26 +13,30 @@ export class WXInterface{
         return this._inst||(this._inst = new WXInterface())
     }
     constructor(){
-        window["wxOnShow"] = function(res)
-        {
-            EVENT.emit(GameEvent.Weixin_onShow);
-            try {
-                if(Share.isShareOnHide){    //分享中
-                    Share.shareOnShow();
+        if(CC_WECHATGAME){
+            wx.onShow(function(res)
+            {
+                EVENT.emit(GameEvent.Weixin_onShow);
+                try {
+                    if(Share.isShareOnHide){    //分享中
+                        Share.shareOnShow();
+                    }
+                }catch (error) {
+                    console.log(error)
                 }
-            }catch (error) {
-                console.log(error)
-            }
+            })
+            wx.onHide(function(res)
+            {
+                try {
+                    EVENT.emit(GameEvent.Weixin_onHide);
+                    console.log("wxOnHide emit");
+                } catch (error) {
+                    console.log(error)
+                }
+            })
         }
-        window["wxOnHide"] = function(res)
-        {
-            try {
-                EVENT.emit(GameEvent.Weixin_onHide);
-                console.log("wxOnHide emit");
-            } catch (error) {
-                console.log(error)
-            }
-        }
+        // window["wxOnShow"] = 
+        // window["wxOnHide"] = 
     }
     //获取配置信息
     public getGameConfigData():any{

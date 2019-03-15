@@ -180,8 +180,8 @@ export default class AwardPanel extends PopUpBase {
     }
 
     private onGuideTouch(e){
-        var guideId = e.detail.id;
-        var nodeName = e.detail.name;
+        var guideId = e.id;
+        var nodeName = e.name;
         if(nodeName == "popup_rewardReceive"){
             var city = (SCENE.CurScene as CityScene);
             if(city){

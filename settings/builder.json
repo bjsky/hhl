@@ -1,17 +1,12 @@
 {
-  "appKey": "",
-  "appSecret": "",
   "encryptJs": true,
   "excludeScenes": [],
   "fb-instant-games": {},
-  "includeAnySDK": false,
   "includeSDKBox": false,
   "inlineSpriteFrames": true,
   "inlineSpriteFrames_native": true,
-  "jailbreakPlatform": false,
   "md5Cache": true,
   "mergeStartScene": false,
-  "oauthLoginServer": "",
   "optimizeHotUpdate": false,
   "orientation": {
     "landscapeLeft": true,
@@ -20,12 +15,10 @@
     "upsideDown": false
   },
   "packageName": "org.cocos2d.helloworld",
-  "privateKey": "",
   "qqplay": {
     "REMOTE_SERVER_ROOT": "",
     "orientation": "portrait"
   },
-  "renderMode": "0",
   "startScene": "d0a99948-3739-4f49-9ddb-6aaa4a29849b",
   "title": "hhlgame",
   "webOrientation": "auto",
@@ -37,5 +30,13 @@
     "subContext": ""
   },
   "xxteaKey": "e6540b18-ed69-43",
-  "zipCompressJs": true
+  "zipCompressJs": true,
+  "android-instant": {
+    "REMOTE_SERVER_ROOT": "",
+    "pathPattern": "",
+    "scheme": "https",
+    "host": "",
+    "skipRecord": false,
+    "recordPath": ""
+  }
 }

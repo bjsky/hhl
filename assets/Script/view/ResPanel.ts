@@ -195,8 +195,8 @@ export default class ResPanel extends PopUpBase {
     }
 
     public onWeakGuideTouch(e){
-        var guideId = e.detail.id;
-        var nodeName = e.detail.name;
+        var guideId = e.id;
+        var nodeName = e.name;
         if(nodeName == "popup_getBtn"){
             this.onVideoSee();
             GUIDE.nextWeakGuide(guideId);

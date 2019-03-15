@@ -255,8 +255,8 @@ export default class BuildPanel extends UIBase{
         this._enableGetGuideNode = val;
     }
     private onGuideTouch(e){
-        var guideId = e.detail.id;
-        var nodeName = e.detail.name;
+        var guideId = e.id;
+        var nodeName = e.name;
         if(nodeName == "buildPanel_close"){
             this.onClose();
             GUIDE.nextGuide(guideId);

@@ -65,7 +65,7 @@ export default class BoxRewardUI extends UIBase {
 
 
     private onTaskActiveReceived(e){
-        var rewardId = e.detail.id;
+        var rewardId = e.id;
         if(rewardId == this.reward.rewardId){
             this.received(rewardId);
         }

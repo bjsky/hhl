@@ -27,7 +27,7 @@ export default class LineupAssist{
     }
 
     private onCardRemoved(e){
-        var removeUUid = e.detail.uuid;
+        var removeUUid = e.uuid;
         for(var key in this.ownerLineupMap){
             var lineup:LineupInfo = this.ownerLineupMap[key];
             if(lineup.uuid == removeUUid){
@@ -36,7 +36,7 @@ export default class LineupAssist{
         }
     }
     private onCardUpdate(e){
-        var upUuid = e.detail.uuid;
+        var upUuid = e.uuid;
         for(var key in this.ownerLineupMap){
             var lineup:LineupInfo = this.ownerLineupMap[key];
             if(lineup.uuid == upUuid){

@@ -148,19 +148,19 @@ export default class GuideManager{
         let blockLayer = new cc.Node();
         blockLayer.setAnchorPoint(0.5, 0.5);
         blockLayer.addComponent(cc.BlockInputEvents);
-        blockLayer.setContentSize(cc.director.getWinSizeInPixels().width, cc.director.getWinSizeInPixels().height);
+        blockLayer.setContentSize(cc.winSize.width, cc.winSize.height);
         blockLayer.parent = UI.PlotLayer;
         blockLayer.active = false;
         this._guideBlockLayer = blockLayer;
 
         this._guideMaskLayer = new cc.Node();
-        this._guideMaskLayer.setAnchorPoint(cc.p(0.5,0.5));
+        this._guideMaskLayer.setAnchorPoint(cc.v2(0.5,0.5));
         this._guideMaskLayer.setContentSize(cc.size(0,0));
+        this._guideMaskLayer.parent = UI.PlotLayer;
         let mask = this._guideMaskLayer.addComponent(cc.Mask);
         mask.inverted = true;
         mask.type = 0;
-        this._guideMaskLayer.parent = UI.PlotLayer;
-
+        
         let colorLayer = new cc.Node();
         colorLayer.setAnchorPoint(0.5, 0.5);
         // colorLayer.addComponent(cc.BlockInputEvents);
@@ -172,7 +172,7 @@ export default class GuideManager{
         colorLayer.opacity = 0;
         colorLayer.color = cc.color(0, 0, 0);
         colorLayer.zIndex = 0;
-        colorLayer.setContentSize(cc.director.getWinSizeInPixels().width * 3, cc.director.getWinSizeInPixels().height* 3);
+        colorLayer.setContentSize(cc.winSize.width * 3, cc.winSize.height* 3);
         colorLayer.parent = this._guideMaskLayer;
         this._guideColorLayer = colorLayer;
 

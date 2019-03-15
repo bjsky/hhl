@@ -202,8 +202,8 @@ export default class FightDeailPanel extends PopUpBase {
     }
 
     private onGuideWeakTouch(e){
-        var guideId = e.detail.id;
-        var nodeName = e.detail.name;
+        var guideId = e.id;
+        var nodeName = e.name;
         if(nodeName == "popup_revenge"){
             this.onRevenge(null);
             GUIDE.nextWeakGuide(guideId);

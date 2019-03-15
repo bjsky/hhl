@@ -274,8 +274,8 @@ export default class BattlePanel extends UIBase {
     }
 
     private onGuideTouch(e){
-        var guideId = e.detail.id;
-        var nodeName = e.detail.name;
+        var guideId = e.id;
+        var nodeName = e.name;
         if(nodeName == "buildPanel_lineup"){
             this.showLineup(null);
             GUIDE.nextGuide(guideId);
@@ -290,8 +290,8 @@ export default class BattlePanel extends UIBase {
     }
 
     private onGuideWeakTouch(e){
-        var guideId = e.detail.id;
-        var nodeName = e.detail.name;
+        var guideId = e.id;
+        var nodeName = e.name;
         if(nodeName == "buildPanel_lineup"){
             this.showLineup(null);
             GUIDE.nextWeakGuide(guideId);

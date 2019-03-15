@@ -101,6 +101,7 @@ export default class CardBig extends PopUpBase{
 
     onDisable(){
         EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
+        this._enableGetGuideNode = false;
     }
 
 
@@ -190,8 +191,8 @@ export default class CardBig extends PopUpBase{
     }
 
     private onGuideTouch(e){
-        var guideId = e.detail.id;
-        var nodeName = e.detail.name;
+        var guideId = e.id;
+        var nodeName = e.name;
         if(nodeName == "popup_cardBig"){
             this.onNodeTouch(null);
             GUIDE.nextGuide(guideId);

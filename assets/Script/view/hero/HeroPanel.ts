@@ -181,7 +181,7 @@ export default class HeroPanel extends UIBase {
 
 
     private onCardClick(e){
-        var index = e.detail.index;
+        var index = e.index;
         this.cardsList.selectIndex = index;
         this._currentCard = Card.getCardByUUid(this.cardsList.selectData.uuid);
         if(this._selectViewIndex == HeroViewSelect.Uplevel){
@@ -220,8 +220,8 @@ export default class HeroPanel extends UIBase {
     }
 
     private onCardUpdate(e){
-        var uuid = e.detail.uuid;
-        var type = e.detail.type;
+        var uuid = e.uuid;
+        var type = e.type;
 
         if(type == CardUpType.UpLevel){
             this.initCard();
@@ -237,8 +237,8 @@ export default class HeroPanel extends UIBase {
     }
 
     private onCardRemoved(e){
-        var uuid = e.detail.uuid;
-        var type = e.detail.type;
+        var uuid = e.uuid;
+        var type = e.type;
         
         this.removeCardCompose(uuid);
         if(type == CardRemoveType.destroyRemove){  //回收移除
@@ -430,8 +430,8 @@ export default class HeroPanel extends UIBase {
     }
 
     private onCardUpStar(e){
-        var from:CardInfo = e.detail.from;
-        var to:CardInfo = e.detail.to;
+        var from:CardInfo = e.from;
+        var to:CardInfo = e.to;
         if(from.isMaxGrade){
             UI.showTip("已经是最高星级");
             return;
@@ -510,8 +510,8 @@ export default class HeroPanel extends UIBase {
     }
 
     private onGuideTouch(e){
-        var guideId = e.detail.id;
-        var nodeName = e.detail.name;
+        var guideId = e.id;
+        var nodeName = e.name;
         if(nodeName == "buildPanel_upgradeCard"){
             this.upgradeHero(null);
             GUIDE.nextGuide(guideId);
@@ -523,8 +523,8 @@ export default class HeroPanel extends UIBase {
     }
 
     private onWeakGuideTouch(e){
-        var guideId = e.detail.id;
-        var nodeName = e.detail.name;
+        var guideId = e.id;
+        var nodeName = e.name;
         if(nodeName == "buildPanel_upgradeCard"){
             this.upgradeHero(null);
             GUIDE.nextWeakGuide(guideId);

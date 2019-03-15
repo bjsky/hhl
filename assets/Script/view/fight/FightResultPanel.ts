@@ -281,8 +281,8 @@ export default class FightResultPanel extends PopUpBase {
     }
 
     private onGuideTouch(e){
-        var guideId = e.detail.id;
-        var nodeName = e.detail.name;
+        var guideId = e.id;
+        var nodeName = e.name;
         if(nodeName == "popup_resultGetreward"){
             if(this._result.victory){
                 this.onReceiveClick(null);

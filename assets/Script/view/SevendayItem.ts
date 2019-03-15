@@ -62,13 +62,13 @@ export default class SevendayItem extends UIBase {
             this.icon.load(PathUtil.getCardHeadUrl(cardCfg.head))
             this.grade.load(PathUtil.getCardHeadGradeImgPath(this._reward.rewardCardGrade));
             this.labelNum.string = cardCfg.name;
-            this.labelNum.node.color = cc.hexToColor("#c636ea");
+            this.labelNum.node.color = new cc.Color().fromHEX("#c636ea");
             this.nodeKuang.active = true;
         }else{
             this.icon.load(PathUtil.getResMutiIconUrl(this._reward.rewardResType));
             this.grade.node.active = false;
             this.labelNum.string = StringUtil.formatReadableNumber(this._reward.rewardResNum) ;
-            this.labelNum.node.color = cc.hexToColor("#ffffff");
+            this.labelNum.node.color = new cc.Color().fromHEX("#ffffff");
             this.nodeKuang.active = false;
         }
         this.btnShow();
