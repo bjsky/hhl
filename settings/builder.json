@@ -38,5 +38,11 @@
     "host": "",
     "skipRecord": false,
     "recordPath": ""
-  }
+  },
+  "includeAnySDK": false,
+  "oauthLoginServer": "",
+  "appKey": "",
+  "appSecret": "",
+  "privateKey": "",
+  "jailbreakPlatform": false
 }

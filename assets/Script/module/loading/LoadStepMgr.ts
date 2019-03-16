@@ -12,14 +12,14 @@ export default class LoadStepMgr{
         this._completeCb = complete;
         this._updateCb = updateFunc;
         this._totalProgress = 0;
-        this._progress = 0;
         this.doNext();
     }
 
     private _curStep:LoadStep = null;
     public doNext(){
         if(this._curStep!=null){
-            this._progress+=this._curStep.progress*100;
+            this._totalProgress+=this._curStep.progress;
+            this._updateCb && this._updateCb(this._totalProgress);
         }
         if(this._steps.length>0){
             this._curStep = this._steps.shift();
@@ -39,17 +39,14 @@ export default class LoadStepMgr{
         this.doNext();
     }
     private stepUpdate(curProgress){
-        this._totalProgress = this._progress +curProgress;
-        this._updateCb && this._updateCb(this._totalProgress);
+        var progress = this._totalProgress +curProgress;
+        this._updateCb && this._updateCb(progress);
     }
 
     private _totalProgress:number = 0;
-    private _progress:number = 0;
 
 
     private endStep(){
-        this._totalProgress = 100;
-        this._updateCb && this._updateCb(this._totalProgress);
         this._completeCb();
     }
 }

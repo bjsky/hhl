@@ -216,9 +216,6 @@ let appOnLaunch = function()
   wx.showShareMenu();
   // 注册用户点击右上角转发侦听
   wx.onShareAppMessage(shareCallbackFunc)
-  //显示饮茶
-  // wx.onHide(onHideFunc);
-  // wx.onShow(onshowFunc)
 
   checkUpdate();
 }

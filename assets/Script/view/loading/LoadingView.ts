@@ -58,6 +58,7 @@ export default class LoadingView extends cc.Component {
     }
 
     public onLoadingProgress(pro:any){
+        console.log("loading progress:",pro);
         this.setPro(pro);
     }
 

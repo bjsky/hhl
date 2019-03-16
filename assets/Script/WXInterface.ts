@@ -12,6 +12,7 @@ export class WXInterface{
     {
         return this._inst||(this._inst = new WXInterface())
     }
+
     constructor(){
         if(CC_WECHATGAME){
             wx.onShow(function(res)
@@ -35,9 +36,8 @@ export class WXInterface{
                 }
             })
         }
-        // window["wxOnShow"] = 
-        // window["wxOnHide"] = 
     }
+    
     //获取配置信息
     public getGameConfigData():any{
         var config = {

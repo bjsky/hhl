@@ -11,9 +11,17 @@ import { GAME } from "../../../GameController";
 export default class LoadingStepLogin extends LoadStep{
     protected onStep(){
         if(GLOBAL.serverType == ServerType.Client){
-            this.endStep();
+            if(GAME.isReLogin){
+                this.endStep();
+            }else{
+                GAME.setLoginEnd(false);
+            }
         }else if(GLOBAL.serverType == ServerType.Debug){
-            this.endStep();
+            if(GAME.isReLogin){
+                this.endStep();
+            }else{
+                GAME.setLoginEnd(false);
+            }
         }else if(GLOBAL.serverType == ServerType.Publish){
             //微信登录
             WeiXin.wxLogin(this.loginCb.bind(this));
@@ -31,7 +39,6 @@ export default class LoadingStepLogin extends LoadStep{
                     GAME.setLoginEnd(true);
                 }else{
                     GLOBAL.initUserInfo(userInfo);
-                    // this.endStep();
                     GAME.setLoginEnd(false);
                 }
             })

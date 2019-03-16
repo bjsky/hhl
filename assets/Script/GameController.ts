@@ -65,24 +65,54 @@ export default class GameController{
         this.startLoading();
     }
 
+    private _cfgStepMgr:LoadStepMgr;
+    private _cfgStepProgress:number = 0;
     private _loadingStepMgr:LoadStepMgr;
+    private _loadingStepProgress:number = 0;
     private _loginStepMgr:LoadStepMgr;
+    private _loginStepProgress:number =0;
     private startLoading(){
         this._resLoaded = false;
         this._loginEnd = false;
         this._showUserAuthButton = false;
-        this._loadingStepMgr = new LoadStepMgr([
-            new LoadingStepConfig(LoadStepEnum.Config,10),
-            new LoadingStepRes(LoadStepEnum.Res,80),
-            new LoadingStepScene(LoadStepEnum.Scene,10),
-        ])
-        this._loadingStepMgr.start(this.loadingComplete.bind(this),this.loadingProgress.bind(this));
-        this._loginStepMgr = new LoadStepMgr([
-            new LoadingStepLogin(LoadStepEnum.Login,0),
-            new LoadingStepServerConn(LoadStepEnum.ServerConnect,0),
-            new LoadingStepServerData(LoadStepEnum.ServerData,0),]);
-        this._loginStepMgr.start(this.loginComplete.bind(this));
+        this._cfgStepProgress = this._loadingStepProgress =this._loginStepProgress = 0;
+
+        this._cfgStepMgr = new LoadStepMgr(
+            [new LoadingStepConfig(LoadStepEnum.Config,10)]
+        )
+        this._cfgStepMgr.start(this.configComplete.bind(this),this.onCfgProgress.bind(this));
     }
+    private configComplete(){
+        this._cfgStepMgr = null;
+        this._loadingStepMgr = new LoadStepMgr([
+            new LoadingStepRes(LoadStepEnum.Res,60),
+            new LoadingStepScene(LoadStepEnum.Scene,10)
+        ])
+        this._loadingStepMgr.start(this.loadingComplete.bind(this),this.onLoadingProgress.bind(this));
+        this._loginStepMgr = new LoadStepMgr([
+            new LoadingStepLogin(LoadStepEnum.Login,10),
+            new LoadingStepServerConn(LoadStepEnum.ServerConnect,5),
+            new LoadingStepServerData(LoadStepEnum.ServerData,5),]);
+        this._loginStepMgr.start(this.loginComplete.bind(this),this.onLoginProgress.bind(this));
+    }
+
+    private onCfgProgress(total:number){
+        this._cfgStepProgress = total;
+        this.showProgress();
+    }
+    private onLoadingProgress(total:number){
+        this._loadingStepProgress = total;
+        this.showProgress();
+    }
+    private onLoginProgress(total:number){
+        this._loginStepProgress = total;
+        this.showProgress();
+    }
+    private showProgress(){
+        var total = this._cfgStepProgress + this._loadingStepProgress + this._loginStepProgress;
+        EVENT.emit(GameEvent.LOADING_PROGRESS,total);
+    }
+
     private _resLoaded:boolean =false;
     private _loginEnd:boolean =false;
     private _showUserAuthButton:boolean = false;
@@ -90,9 +120,6 @@ export default class GameController{
         this._loadingStepMgr = null;
         this._resLoaded = true;
         this.checkConnect();
-    }
-    private loadingProgress(total:number){
-        EVENT.emit(GameEvent.LOADING_PROGRESS,total);
     }
 
     public setLoginEnd(showUserAuthButton:boolean){
@@ -112,15 +139,15 @@ export default class GameController{
         }
     }
 
-    private loginComplete(){
-        this._loginStepMgr = null;
-        EVENT.emit(GameEvent.LOADING_COMPLETE);
-    }
-
     public resumeLogin(){
         if(this._loginStepMgr){
             this._loginStepMgr.resume();
         }
+    }
+
+    private loginComplete(){
+        this._loginStepMgr = null;
+        EVENT.emit(GameEvent.LOADING_COMPLETE);
     }
 
     private _isReLogin:boolean =false;

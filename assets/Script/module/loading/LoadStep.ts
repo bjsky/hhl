@@ -11,7 +11,7 @@ export enum LoadStepEnum  {
 export default class LoadStep{
     constructor(type:LoadStepEnum,pro:number){
         this.type = type;
-        this.progress = pro/100;
+        this.progress = pro;
     }
     public type:LoadStepEnum =0;
     public progress:number = 0;
@@ -22,7 +22,7 @@ export default class LoadStep{
     }
 
     public updateProgress(pro){
-        this._curProgress = pro * this.progress;
+        this._curProgress = pro/100 * this.progress;
         this._updateFunc && this._updateFunc(this._curProgress);
     }
 
