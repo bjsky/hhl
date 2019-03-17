@@ -39,10 +39,11 @@
     "skipRecord": false,
     "recordPath": ""
   },
-  "includeAnySDK": false,
-  "oauthLoginServer": "",
-  "appKey": "",
-  "appSecret": "",
-  "privateKey": "",
-  "jailbreakPlatform": false
+  "baidugame": {
+    "appid": "testappid",
+    "orientation": "portrait",
+    "REMOTE_SERVER_ROOT": "",
+    "subContext": ""
+  },
+  "appBundle": false
 }
