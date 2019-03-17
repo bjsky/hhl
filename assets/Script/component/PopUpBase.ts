@@ -32,13 +32,19 @@ export default class PopUpBase extends UIBase {
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
+    private _nodeOpactiy:number = 0;
+    protected showImmediately:boolean = true;
     onEnable(){
         if(this.closeBtn!=null){
             this.closeBtn.node.on(ButtonEffect.CLICK_END,this.onClose,this);
         }
-        this.onShow();
         if(this.enableMaskTouchClose){
             EVENT.on(GameEvent.Mask_touch,this.onMaskTouch,this);
+        }
+        this._nodeOpactiy = this.node.opacity;
+        this.node.opacity = 0;
+        if(this.showImmediately){
+            this.onShow();
         }
     }
 
@@ -49,14 +55,17 @@ export default class PopUpBase extends UIBase {
         if(this.enableMaskTouchClose){
             EVENT.off(GameEvent.Mask_touch,this.onMaskTouch,this);
         }
+        this.node.opacity = this._nodeOpactiy;
     }
     start () {
 
     }
+
     protected onMaskTouch(e){
         this.onClose(e);
     }
     public onShow(){
+        this.node.opacity = this._nodeOpactiy;
         this.node.scale = 0.8;
         var seq = cc.sequence(
             cc.spawn(

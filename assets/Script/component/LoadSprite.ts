@@ -73,7 +73,7 @@ export default class LoadSprite extends cc.Sprite{
                     console.log("LoadSprite.load failed: "+ err.message,"url:"+path);
                     this.spriteFrame = this.defaultSpr;
                 }else{
-                    this.spriteFrame = new cc.SpriteFrame(tex, new cc.Rect(0, 0, tex.pixelWidth, tex.pixelHeight))
+                    this.spriteFrame = new cc.SpriteFrame(tex)
                     this._callback && this._callback();
                 }
              });

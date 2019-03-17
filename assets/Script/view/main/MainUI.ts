@@ -25,6 +25,7 @@ import { Activity } from "../../module/ActivityAssist";
 import { Battle } from "../../module/battle/BattleAssist";
 import { FightRecord } from "../../model/BattleInfo";
 import { BeFightPanelType } from "../castle/BeFightPanel";
+import { GAME } from "../../GameController";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -136,16 +137,8 @@ export default class MainUI extends UIBase {
     }
 
     start () {
-        if(this._showAction){
-            this.topNode.setPosition(cc.v2(0,250));
-            this.topNode.runAction(cc.moveTo(0.15,this._topPos));
-            this.bottomNode.setPosition(cc.v2(0,-200));
-            this.bottomNode.runAction(cc.moveTo(0.15,COMMON.ZERO));
-            this.sideNode.setPosition(cc.v2(-500,0));
-            this.sideNode.runAction(cc.moveTo(0.15,COMMON.ZERO));
-            this.sideRNode.setPosition(cc.v2(200,0));
-            this.sideRNode.runAction(cc.moveTo(0.15,COMMON.ZERO));
-        }
+        this.resetPostion();
+        this.scheduleOnce(this.onShow.bind(this),0.1)
     }
 
     private _showAction:boolean = false;
@@ -307,10 +300,32 @@ export default class MainUI extends UIBase {
     }
     private initView(){
         this.initRedPoint();
-        this.playGrowth();
         
         this.onEnterGame();
+        this.scheduleOnce(this.preloadDir.bind(this),1)
         // this.resetTaskGuide();
+    }
+    private preloadDir(){
+        //开始后台加载;
+        GAME.preloadResDir();
+    }
+
+    public onShow(){
+        this.playGrowth();
+        if(this._showAction){
+            this.topNode.runAction(cc.moveTo(0.15,this._topPos));
+            this.bottomNode.runAction(cc.moveTo(0.15,COMMON.ZERO));
+            this.sideNode.runAction(cc.moveTo(0.15,COMMON.ZERO));
+            this.sideRNode.runAction(cc.moveTo(0.15,COMMON.ZERO));
+        }
+    }
+
+    public resetPostion(){
+        this.topNode.setPosition(cc.v2(0,250));
+        this.bottomNode.setPosition(cc.v2(0,-200));
+        this.sideNode.setPosition(cc.v2(-500,0));
+        this.sideRNode.setPosition(cc.v2(200,0));
+                
     }
 
     private onEnterGame(){

@@ -213,43 +213,6 @@ export default class CityScene extends SceneBase {
         }
     }
 
-    private _zoomDuring:number =0.3;
-    private _curZoom:number = 1;
-    private _toZoom:number = 1;
-    private _updateZoom:boolean = false;
-    public moveCamToPos(fPos:cc.Vec2,tPos:cc.Vec2,during:number,toZoom:number= 1,cb?:Function){
-        cb();
-        this._zoomDuring = during;
-        var camPos:cc.Vec2 ;//= this.cam.getTargets()[0].convertToNodeSpaceAR(pos);
-        camPos = fPos.sub(tPos);
-        var move;
-        if(cb!=undefined){
-            move = cc.sequence(cc.moveTo(0.3,camPos),cc.callFunc(cb));
-        }else{
-            move = cc.moveTo(0.3,camPos);
-        }
-        this.cam.node.runAction(move);
-        if(toZoom!= this._curZoom){
-            this._updateZoom = true;
-            this._toZoom = toZoom;
-        }
-    }
-
-    public moveCamBack(cb?:Function){
-        cb();
-        var move;
-        if(cb!=undefined){
-            move = cc.sequence(cc.moveTo(0.3,COMMON.ZERO),cc.callFunc(cb));
-        }else{
-            move = cc.moveTo(0.3,COMMON.ZERO);
-        }
-        this.cam.node.runAction(move);
-        if(this._curZoom!=1){
-            this._updateZoom = true;
-            this._toZoom = 1;
-        }
-    }
-
     public moveSceneToPos(toPos:cc.Vec2,cb?:Function){
         var local:cc.Vec2 = this.content.parent.convertToNodeSpaceAR(toPos);
         var move;
@@ -277,30 +240,15 @@ export default class CityScene extends SceneBase {
         }
         this.content.runAction(move);
     }
-
-    update(dt){
-        if(this._updateZoom){
-            var add:number = (this._toZoom - this._curZoom) * dt/this._zoomDuring;
-            var toZoom:number = this.cam.zoomRatio + add;
-            if(add>0){
-                if(toZoom> this._toZoom){
-                    this._curZoom = this.cam.zoomRatio = this._toZoom;
-                    this._updateZoom = false;
-                }else{
-                    this.cam.zoomRatio = toZoom;
-                }
-            }else{
-                if(toZoom < this._toZoom){
-                    this._curZoom = this.cam.zoomRatio = this._toZoom;
-                    this._updateZoom = false;
-                }else{
-                    this.cam.zoomRatio = toZoom;
-                }
-            }
-            console.log(this.cam.zoomRatio);
+    public moveSceneByPos(pos:cc.Vec2,cb?:Function){
+        var move;
+        if(cb!=undefined){
+            move = cc.sequence(cc.moveBy(0.3,pos),cc.callFunc(cb));
+        }else{
+            move = cc.moveBy(0.3,pos);
         }
+        this.content.runAction(move);
     }
-
     start () {
 
     }

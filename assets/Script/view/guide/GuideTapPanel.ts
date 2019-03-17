@@ -179,7 +179,6 @@ export default class GuideTapPanel extends UIBase {
 
     private setDialogShow(){
         this.dialogNode.active = true;
-        this.dialogNode.opacity = 0;
         this.setClickArea(this.dialogBg);
         GUIDE.updateGuideMaskPosAndSize(cc.v2(0,0),cc.size(0,0),cc.v2(0.5,0.5),0,false);
         this.showDialog();
@@ -189,9 +188,10 @@ export default class GuideTapPanel extends UIBase {
         this.title.string = this._guideInfo.npc;
         this.npc.active = (this._guideInfo.npcDic == GuideNpcDir.NpcDirLeft)?true:false;
         this.npc2.active = (this._guideInfo.npcDic == GuideNpcDir.NpcDirRight)?true:false;
+        // this.dialogNode.runAction(cc.sequence(cc.fadeIn(0.3),cc.callFunc(this.dialogComplete.bind(this))));
         var content:string = this._guideInfo.content.replace("#","<color=#33FF00>" + COMMON.userInfo.name +"</color> ");
         this.content.string = content;
-        this.dialogNode.runAction(cc.sequence(cc.fadeIn(0.3),cc.callFunc(this.dialogComplete.bind(this))));
+        this.dialogComplete();
     }
     private showComplete(){
         // this.dialogTextAni.addTypewriterAni(this._guideInfo.content,this.dialogComplete.bind(this),"#FFFFFF");
@@ -207,9 +207,10 @@ export default class GuideTapPanel extends UIBase {
 
     private onDialogClick(e) {
         this.clickNode.off(cc.Node.EventType.TOUCH_START,this.onDialogClick,this);
-        this.hideDialog(()=>{
+        this.content.string = "";
+        // this.hideDialog(()=>{
             GUIDE.nextGuide(this._guideId);
-        });
+        // });
     }
 
 

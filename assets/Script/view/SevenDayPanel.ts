@@ -44,7 +44,6 @@ export default class SevenDayPanel extends PopUpBase {
 
     private _items:SevendayItem[] = [];
     onLoad () {
-        
     }
 
     onEnable(){

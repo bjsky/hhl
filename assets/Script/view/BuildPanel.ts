@@ -197,9 +197,15 @@ export default class BuildPanel extends UIBase{
     private doHide(cb?:Function){
         this.topNode.runAction(cc.moveTo(0.3,cc.v2(750,0)).easing(cc.easeIn(2)));
         this.panelNode.runAction(cc.moveTo(0.3,cc.v2(0,-1100)).easing(cc.easeIn(2)))
+                    
         var scene:CityScene = SCENE.CurScene as CityScene;
         if(scene){
-            scene.moveCamBack(cb);
+            if(this._subPos){
+                scene.moveSceneByPos(cc.v2(-this._subPos.x,-this._subPos.y),cb);
+                this._subPos = null;
+            }else{
+                cb && cb();
+            }
         }
     }
 
@@ -264,6 +270,7 @@ export default class BuildPanel extends UIBase{
 
     }
 
+    private _subPos:cc.Vec2 = null;
     update (dt) {
         //真你妈蛋疼，为了跟系统的winget不冲突
         if(this._moveNextFrame){
@@ -278,9 +285,8 @@ export default class BuildPanel extends UIBase{
                     var builidng:cc.Node = scene.getBuilding(this._buildType);
                     var fPos:cc.Vec2 = builidng.parent.convertToWorldSpaceAR(builidng.position);
                     var tPos:cc.Vec2 = this.buildIcon.parent.convertToWorldSpaceAR(this.buildIcon.position);
-                    console.log("panelmovetoPos:",tPos);
-                    scene.moveCamToPos(fPos,tPos,0.3,1,()=>{
-                        // this.buildName.node.runAction(cc.fadeIn(0.1));
+                    this._subPos = tPos.sub(fPos);
+                    scene.moveSceneByPos(this._subPos,()=>{
                         scene.activeBuild = this;
                     });
                 }

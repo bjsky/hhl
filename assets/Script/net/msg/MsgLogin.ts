@@ -472,7 +472,7 @@ export default class MsgLogin
             },
             senvenDayInfo:{
                 dayIndex:0,
-                todayReward:0
+                todayReward:1
             }
         };
         return this.parse(json);
