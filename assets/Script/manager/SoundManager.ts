@@ -7,6 +7,8 @@ export default class SoundManager{
     // private _musicSwitch:boolean = true;
     private _bgMusicSwitch:boolean = true;
 
+    private _clipMaps:any ={};
+
     private static _instance: SoundManager = null;
     public static getInstance(): SoundManager {
         if (SoundManager._instance == null) {
@@ -40,31 +42,47 @@ export default class SoundManager{
     // }
 
     private _currentOnceId:number = NaN;
+    private _loadingEffect:boolean = false;
     private playEffectSound(path:string){
-        if (this._bgMusicSwitch == false){
+        if (this._bgMusicSwitch == false ||this._loadingEffect){
             return;
         }
-        cc.loader.loadRes(path, cc.AudioClip, (err, clip)=>{
-            if(!isNaN(this._currentOnceId)){
-                cc.audioEngine.stop(this._currentOnceId);
-            }
-            this._currentOnceId = cc.audioEngine.play(clip,false,this._volume);
-            cc.log("sound start:",this._currentOnceId);
-        });
+        if(!isNaN(this._currentOnceId)){
+            cc.audioEngine.stop(this._currentOnceId);
+        }
+        if(this._clipMaps[path]){
+            this._currentOnceId = cc.audioEngine.play(this._clipMaps[path],false,this._volume);
+        }else{
+            this._loadingEffect = true;
+            cc.loader.loadRes(path, cc.AudioClip, (err, clip)=>{
+                this._currentOnceId = cc.audioEngine.play(clip,false,this._volume);
+                this._clipMaps[path] = clip;
+                this._loadingEffect = false;
+                console.log("sound start:",this._currentOnceId,path);
+            });
+        }
     }
 
     private _currentBgId:number = NaN;
+    private _loadingMusic:boolean = false;
     private playMusicSound(path:string){
-        if (this._bgMusicSwitch == false){
+        if (this._bgMusicSwitch == false ||this._loadingMusic){
             return;
         }
-        cc.loader.loadRes(path, cc.AudioClip, (err, clip)=>{
-            if(!isNaN(this._currentBgId)){
-                cc.audioEngine.stop(this._currentBgId);
-            }
-            this._currentBgId = cc.audioEngine.play(clip,true,this._bgVolume);
-            cc.log("music start:",this._currentBgId);
-        });
+        if(!isNaN(this._currentBgId)){
+            cc.audioEngine.stop(this._currentBgId);
+        }
+        if(this._clipMaps[path]){
+            this._currentBgId = cc.audioEngine.play(this._clipMaps[path],true,this._bgVolume);
+        }else{
+            this._loadingMusic = true;
+            cc.loader.loadRes(path, cc.AudioClip, (err, clip)=>{
+                this._currentBgId = cc.audioEngine.play(clip,true,this._bgVolume);
+                this._clipMaps[path] = clip;
+                this._loadingMusic = false;
+                console.log("music start:",this._currentBgId,path);
+            });
+        }
     }
 
     public resumeMusic(){
@@ -72,14 +90,14 @@ export default class SoundManager{
             this.playMusicSound(SoundConst.Bg_sound);
         }else{
             cc.audioEngine.resume(this._currentBgId);
-            cc.log("music resume:",this._currentBgId);
+            console.log("music resume:",this._currentBgId);
         }
     }
 
     public pauseMusic(){
         if(!isNaN(this._currentBgId)){
             cc.audioEngine.pause(this._currentBgId);
-            cc.log("music pause:",this._currentBgId);
+            console.log("music pause:",this._currentBgId);
         }
     }
     /**

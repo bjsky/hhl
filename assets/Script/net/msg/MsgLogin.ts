@@ -416,7 +416,7 @@ export default class MsgLogin
         // }
         var json:any = {firstLogin:true,
             accountId:StringUtil.getUUidClient(),
-            newUser:0,
+            newUser:1,
             serverTime:new Date().getTime(),
             userInfo:{name:"上古战神",icon:"",gender:1,exp:0,level:1},
             resInfo:{gold:300000,diamond:0,lifeStone:300000,soulStone:0},

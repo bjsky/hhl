@@ -34,5 +34,4 @@ else {
 window.login_server_url = "wss://wz.1233k.com:8580/websocket";//服务器域名地址
 
 require("./launch");
-
 window.boot();

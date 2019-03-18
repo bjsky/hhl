@@ -1,5 +1,4 @@
 {
-  "assets-sort-type": "name",
   "collision-matrix": [
     [
       true
@@ -42,5 +41,6 @@
   },
   "start-scene": "d0a99948-3739-4f49-9ddb-6aaa4a29849b",
   "use-customize-simulator": true,
-  "use-project-simulator-setting": false
+  "use-project-simulator-setting": false,
+  "assets-sort-type": "name"
 }
