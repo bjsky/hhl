@@ -190,8 +190,6 @@ export default class GuideTapPanel extends UIBase {
         this.npc.active = (this._guideInfo.npcDic == GuideNpcDir.NpcDirLeft)?true:false;
         this.npc2.active = (this._guideInfo.npcDic == GuideNpcDir.NpcDirRight)?true:false;
         this.dialogNode.runAction(cc.sequence(cc.fadeIn(0.3),cc.callFunc(this.dialogComplete.bind(this))));
-        var content:string = this._guideInfo.content.replace("#","<color=#33FF00>" + COMMON.userInfo.name +"</color> ");
-        this.content.string = content;
     }
     private showComplete(){
         // this.dialogTextAni.addTypewriterAni(this._guideInfo.content,this.dialogComplete.bind(this),"#FFFFFF");
@@ -202,6 +200,8 @@ export default class GuideTapPanel extends UIBase {
     }
 
     private dialogComplete(){
+        var content:string = this._guideInfo.content.replace("#","<color=#33FF00>" + COMMON.userInfo.name +"</color> ");
+        this.content.string = content;
         this.clickNode.on(cc.Node.EventType.TOUCH_START,this.onDialogClick,this);
     }
 
@@ -259,7 +259,7 @@ export default class GuideTapPanel extends UIBase {
             {
                 this.showArrow(node);
             }else if(this._guideInfo.type == GuideTypeEnum.GuideDrag){
-                this.showDrag(node,node.children[0],node.children[1]);
+                this.showDrag(node,node.children[1],node.children[0]);
             }else if(this._guideInfo.type == GuideTypeEnum.GuideNodeTalk){
                 this.setDialogShow();
             }

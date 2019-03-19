@@ -36,8 +36,6 @@ export default class EnmeyItemUI extends DListItem{
     sprSex: LoadSprite = null;
     @property(cc.Label)
     lblTime: cc.Label = null;
-    @property(cc.Button)
-    btnDetail: cc.Button = null;
 
     private _enemyInfo:EnemyInfo = null;
     // LIFE-CYCLE CALLBACKS:
@@ -48,11 +46,11 @@ export default class EnmeyItemUI extends DListItem{
 
     // onLoad () {}
     onEnable(){
-        this.btnDetail.node.on(TouchHandler.TOUCH_CLICK,this.onHeadTouch,this);
+        this.sprHead.node.on(TouchHandler.TOUCH_CLICK,this.onHeadTouch,this);
         this.initView();
     }
     onDisable(){
-        this.btnDetail.node.off(TouchHandler.TOUCH_CLICK,this.onHeadTouch,this);
+        this.sprHead.node.off(TouchHandler.TOUCH_CLICK,this.onHeadTouch,this);
     }
 
     private onHeadTouch(e){

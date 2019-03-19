@@ -151,7 +151,7 @@ export default class MainUI extends UIBase {
         this.headIcon.load(COMMON.userInfo.icon);
         // this.lblExp.string = COMMON.userInfo.exp + " / "+COMMON.userInfo.totalExp;
         this.lblGold.string = StringUtil.formatReadableNumber(COMMON.resInfo.gold);
-        this.lblDiamond.string = COMMON.resInfo.diamond.toString();
+        this.lblDiamond.string = COMMON.resInfo.diamond.toFixed(0);
         this.lblLifeStone.string = StringUtil.formatReadableNumber(COMMON.resInfo.lifeStone);
         this.soundIcon.load(PathUtil.getSoundIcon(SOUND.getBgMusicSwitch()));
         // this.lblSoulStone.string = StringUtil.formatReadableNumber(COMMON.resInfo.soulStone);
@@ -232,7 +232,7 @@ export default class MainUI extends UIBase {
                     }
                 }break;
                 case ResType.diamond:{
-                    this.lblDiamond.string = COMMON.resInfo.diamond.toString();
+                    this.lblDiamond.string = COMMON.resInfo.diamond.toFixed(0);
                     absVal = Math.abs(obj.value);
                     if(absVal>0){
                         UI.showTipCustom(ResConst.CostTipPanel,"-"+absVal,this.lblDiamond.node.parent.convertToWorldSpaceAR(this.lblDiamond.node.position));
@@ -250,7 +250,7 @@ export default class MainUI extends UIBase {
                 this.lblGold.string = StringUtil.formatReadableNumber(COMMON.resInfo.gold);
                 this.goldEffect.play();
             }else if(obj.type == ResType.diamond){
-                this.lblDiamond.string = COMMON.resInfo.diamond.toString();
+                this.lblDiamond.string = COMMON.resInfo.diamond.toFixed(0);
                 this.diamondEffect.play();
             }else if(obj.type == ResType.lifeStone){
                 this.lblLifeStone.string = StringUtil.formatReadableNumber(COMMON.resInfo.lifeStone);
@@ -300,7 +300,7 @@ export default class MainUI extends UIBase {
     }
     private initView(){
         this.initRedPoint();
-        
+        this.playGrowth();
         this.onEnterGame();
         this.scheduleOnce(this.preloadDir.bind(this),1)
         // this.resetTaskGuide();
@@ -311,7 +311,6 @@ export default class MainUI extends UIBase {
     }
 
     public onShow(){
-        this.playGrowth();
         if(this._showAction){
             this.topNode.runAction(cc.moveTo(0.15,this._topPos));
             this.bottomNode.runAction(cc.moveTo(0.15,COMMON.ZERO));

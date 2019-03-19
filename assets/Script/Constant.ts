@@ -3,6 +3,8 @@ import { CFG } from "./manager/ConfigManager";
 import { ConfigConst } from "./module/loading/steps/LoadingStepConfig";
 import { COMMON } from "./CommonData";
 import { GrowRewardType } from "./model/TaskInfo";
+import { EVENT } from "./message/EventCenter";
+import GameEvent from "./message/GameEvent";
 
 export default class Constant{
     public static _inst:Constant;
@@ -18,7 +20,7 @@ export default class Constant{
             var obj = group[key];
             this._constantKeyValueMap[obj["key"]] = obj["param1"];
         }
-
+        EVENT.emit(GameEvent.CONSTANT_INIT);
     }
     //引导开始id
     public getFirstGuideId():number{
@@ -180,6 +182,10 @@ export default class Constant{
             ids = this._constantKeyValueMap["scoreGrowthRewards"].split("|");
         }
         return ids;
+    }
+    //成长奖励id 
+    public getLoadingTips():string[]{
+        return this._constantKeyValueMap["loadingTips"].split(";");
     }
 }
 

@@ -34,8 +34,6 @@ export default class FightItemUI extends DListItem{
     sprHead: LoadSprite = null;
 
     @property(cc.Label)
-    lblScore: cc.Label = null;
-    @property(cc.Label)
     lblName: cc.Label = null;
     @property(cc.Label)
     lblPower: cc.Label = null;
@@ -44,8 +42,6 @@ export default class FightItemUI extends DListItem{
     @property(LoadSprite)
     sprSex: LoadSprite = null;
 
-    @property(cc.Button)
-    btnDetail: cc.Button = null;
     @property(cc.Button)
     btnAttack: cc.Button = null;
     @property(cc.Sprite)
@@ -60,12 +56,12 @@ export default class FightItemUI extends DListItem{
 
     // onLoad () {}
     onEnable(){
-        this.btnDetail.node.on(TouchHandler.TOUCH_CLICK,this.onHeadTouch,this);
+        this.sprHead.node.on(TouchHandler.TOUCH_CLICK,this.onHeadTouch,this);
         this.btnAttack.node.on(TouchHandler.TOUCH_CLICK,this.onAttackTouch,this);
         this.initView();
     }
     onDisable(){
-        this.btnDetail.node.off(TouchHandler.TOUCH_CLICK,this.onHeadTouch,this);
+        this.sprHead.node.off(TouchHandler.TOUCH_CLICK,this.onHeadTouch,this);
         this.btnAttack.node.off(TouchHandler.TOUCH_CLICK,this.onAttackTouch,this);
     }
 
@@ -86,15 +82,8 @@ export default class FightItemUI extends DListItem{
         }
         var foEnemey:FightInfo = this._enemyInfo.getFightInfo();
         if(Battle.battleInfo.actionPoint<=0){
-            WeiXin.showVideoAd((result:SeeVideoResult)=>{
-                if(result == SeeVideoResult.Complete){
-                    Fight.showFight(foMine,foEnemey,true,this._enemyInfo);
-                }else if(result == SeeVideoResult.LoadError){
-                    UI.showTip("视频加载失败！请稍候再来");
-                }else if(result == SeeVideoResult.NotComplete){
-                    UI.showTip("视频观看未完成");
-                }
-            },0)
+            this.onHeadTouch(null);
+            return;
         }else{
             Fight.showFight(foMine,foEnemey,false,this._enemyInfo);
         }
@@ -115,7 +104,6 @@ export default class FightItemUI extends DListItem{
 
     private _fightScoreCfg:any = null;
     private initView(){
-        this.lblScore.string = this._enemyInfo.enemyScore.toString();
         this.lblName.string = this._enemyInfo.enemyName;
         this.lblPower.string = this._enemyInfo.enemyTotalPower.toString();
         this.sprHead.load(this._enemyInfo.enemyIcon);

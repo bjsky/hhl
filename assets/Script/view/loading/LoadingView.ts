@@ -5,6 +5,7 @@ import { WeiXin } from "../../wxInterface";
 import { GLOBAL, ServerType } from "../../GlobalData";
 import { GAME } from "../../GameController";
 import { COMMON } from "../../CommonData";
+import { CONSTANT } from "../../Constant";
 
 
 // Learn TypeScript:
@@ -34,13 +35,15 @@ export default class LoadingView extends cc.Component {
     btnEnterGame: cc.Button = null;
     @property(cc.Node)
     nodeLoading: cc.Node = null;
-
+    @property(cc.Label)
+    loadingTips: cc.Label = null;
 
 
     onEnable(){
         EVENT.on(GameEvent.LOADING_PROGRESS,this.onLoadingProgress,this);
         EVENT.on(GameEvent.LOADING_COMPLETE,this.onLoadingComplete,this);
         EVENT.on(GameEvent.Show_UserInfo_AuthButton,this.showUserInfoButton,this);
+        EVENT.on(GameEvent.CONSTANT_INIT,this.configload,this);
         this.initView();
     }
 
@@ -48,6 +51,9 @@ export default class LoadingView extends cc.Component {
         EVENT.off(GameEvent.LOADING_PROGRESS,this.onLoadingProgress,this);
         EVENT.off(GameEvent.LOADING_COMPLETE,this.onLoadingComplete,this);
         EVENT.off(GameEvent.Show_UserInfo_AuthButton,this.showUserInfoButton,this);
+        EVENT.off(GameEvent.CONSTANT_INIT,this.configload,this);
+
+        this.loadingTips.node.stopAllActions();
     }
 
     // LIFE-CYCLE CALLBACKS:
@@ -61,7 +67,16 @@ export default class LoadingView extends cc.Component {
         console.log("loading progress:",pro);
         this.setPro(pro);
     }
-
+    private _loadingTips:string [] = [];
+    private configload(){
+        this._loadingTips = CONSTANT.getLoadingTips();
+        var act = cc.sequence(cc.callFunc(()=>{
+            var index:number = Math.floor(Math.random()* this._loadingTips.length);
+            this.loadingTips.string = this._loadingTips[index];
+        }),cc.delayTime(5)).repeatForever();
+        this.loadingTips.node.runAction(act);
+        
+    }
     public onLoadingComplete(e:GameEvent){
         this.setProgressValue(100);
         this.scheduleOnce(()=>{

@@ -10,7 +10,6 @@ import { COMMON } from "../../../CommonData";
  */
 export default class LoadingStepServerData extends LoadStep{
     protected onStep(){
-        CONSTANT.initConstant();
         if(GLOBAL.serverType == ServerType.Client){
             NET.send(MsgLogin.create("",""),(msg:MsgLogin)=>{
                 if(msg && msg.resp){

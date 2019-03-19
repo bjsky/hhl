@@ -35,10 +35,6 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class CastlePanel extends UIBase {
-    @property(LineUpUI)
-    lineUpMine:LineUpUI = null;
-    @property(cc.Button)
-    changeLineUp:cc.Button = null;
 
     @property(cc.Label)
     lblScore:cc.Label =null;
@@ -73,6 +69,9 @@ export default class CastlePanel extends UIBase {
     personalEnemyList: DList= null;
     // LIFE-CYCLE CALLBACKS:
 
+    @property(cc.Button)
+    btnChangeLineup:cc.Button = null;
+
     private _enemyListData:Array<any> = [];
     private _personalEnemyListData:Array<any> = [];
     
@@ -82,12 +81,11 @@ export default class CastlePanel extends UIBase {
     }
 
     onEnable(){
-        this.changeLineUp.node.on(TouchHandler.TOUCH_CLICK,this.showLineup,this);
         this.helpButton.node.on(cc.Node.EventType.TOUCH_START,this.onHelpClick,this);
         this.btnRefresh.node.on(TouchHandler.TOUCH_CLICK,this.onRefreshClick,this);
         this.btnRecords.node.on(cc.Node.EventType.TOUCH_START,this.onRecordsClick,this);
+        this.btnChangeLineup.node.on(cc.Node.EventType.TOUCH_START,this.changeLineup,this);
 
-        EVENT.on(GameEvent.Lineup_Changed,this.onLineupChange,this);
         EVENT.on(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
         EVENT.on(GameEvent.Battle_scout_Complete,this.battleScoutComplete,this);
         EVENT.on(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
@@ -101,12 +99,11 @@ export default class CastlePanel extends UIBase {
     }
 
     onDisable(){
-        this.changeLineUp.node.off(TouchHandler.TOUCH_CLICK,this.showLineup,this);
         this.helpButton.node.off(cc.Node.EventType.TOUCH_START,this.onHelpClick,this);
         this.btnRefresh.node.off(TouchHandler.TOUCH_CLICK,this.onRefreshClick,this);
         this.btnRecords.node.off(cc.Node.EventType.TOUCH_START,this.onRecordsClick,this);
+        this.btnChangeLineup.node.off(cc.Node.EventType.TOUCH_START,this.changeLineup,this);
 
-        EVENT.off(GameEvent.Lineup_Changed,this.onLineupChange,this);
         EVENT.off(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
         EVENT.off(GameEvent.Battle_scout_Complete,this.battleScoutComplete,this);
         EVENT.off(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
@@ -120,6 +117,9 @@ export default class CastlePanel extends UIBase {
             this.enemyList.setListData([]);
             this.personalEnemyList.setListData([]);
         }
+    }
+    private changeLineup(){
+        UI.createPopUp(ResConst.LineUpPopup,{});
     }
 
     private onRefreshPersonalEnemey(e){
@@ -141,9 +141,6 @@ export default class CastlePanel extends UIBase {
     private onPanelShowComplete(e){
         this.initEnemyList();
         this.initPersonalEnemyList();
-    }
-    private onLineupChange(e){
-        this.initLineupMine();
     }
 
     private battleScoutComplete(e){
@@ -172,11 +169,7 @@ export default class CastlePanel extends UIBase {
         UI.createPopUp(ResConst.LineUpPopup,{});
     }
 
-    private initLineupMine(){
-        this.lineUpMine.initLineup(Lineup.ownerLineupMap);
-    }
     private initView(){
-        this.initLineupMine();
         this.initBattleData();
         this._scoutCost = CONSTANT.getScoutCost();
         this.lblRefreshCost.string = StringUtil.formatReadableNumber(this._scoutCost);

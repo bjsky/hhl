@@ -63,11 +63,7 @@ export default class BattlePanel extends UIBase {
 
 
     @property(LineUpUI)
-    lineUpMine:LineUpUI = null;
-    @property(LineUpUI)
     lineUpBoss:LineUpUI = null;
-    @property(cc.Button)
-    changeLineUp:cc.Button = null;
     @property(cc.Button)
     btnFight:cc.Button = null;
     @property(cc.Label)
@@ -81,6 +77,10 @@ export default class BattlePanel extends UIBase {
     bossFinished:cc.Label = null;
     @property(cc.Node)
     bossNode:cc.Node = null;
+
+    @property(cc.Button)
+    btnChangeLineup:cc.Button = null;
+    
     
     // onLoad () {}
 
@@ -91,13 +91,12 @@ export default class BattlePanel extends UIBase {
     onEnable(){
         this.initView();
         this.btnCollect.node.on(TouchHandler.TOUCH_CLICK,this.collectRes,this);
-        this.changeLineUp.node.on(TouchHandler.TOUCH_CLICK,this.showLineup,this);
         this.btnFight.node.on(TouchHandler.TOUCH_CLICK,this.onFightBoss,this);
+        this.btnChangeLineup.node.on(cc.Node.EventType.TOUCH_START,this.showLineup,this);
 
         EVENT.on(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
         EVENT.on(GameEvent.Passage_Collected,this.onPassageCollectd,this);
         EVENT.on(GameEvent.Passage_FightBossEnd,this.onPassageFightBossEnd,this);
-        EVENT.on(GameEvent.Lineup_Changed,this.onLineupChange,this);
         EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
 
         EVENT.on(GameEvent.Guide_Weak_Touch_Complete,this.onGuideWeakTouch,this);
@@ -105,13 +104,12 @@ export default class BattlePanel extends UIBase {
 
     onDisable(){
         this.btnCollect.node.off(TouchHandler.TOUCH_CLICK,this.collectRes,this);
-        this.changeLineUp.node.off(TouchHandler.TOUCH_CLICK,this.showLineup,this);
         this.btnFight.node.off(TouchHandler.TOUCH_CLICK,this.onFightBoss,this);
-
+        this.btnChangeLineup.node.off(cc.Node.EventType.TOUCH_START,this.showLineup,this);
+        
         EVENT.off(GameEvent.Build_Update_Complete,this.onBuildUpdate,this);
         EVENT.off(GameEvent.Passage_Collected,this.onPassageCollectd,this);
         EVENT.off(GameEvent.Passage_FightBossEnd,this.onPassageFightBossEnd,this);
-        EVENT.off(GameEvent.Lineup_Changed,this.onLineupChange,this);
         EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
 
         EVENT.off(GameEvent.Guide_Weak_Touch_Complete,this.onGuideWeakTouch,this);
@@ -121,7 +119,6 @@ export default class BattlePanel extends UIBase {
         this.expFly.reset();
         this.stoneFly.reset();
     }
-
     private onBuildUpdate(e){
         this.initPassageleftView();
     }
@@ -132,10 +129,6 @@ export default class BattlePanel extends UIBase {
     private onPassageFightBossEnd(e){
         this.initPassageleftView();
         this.initLineupBoss();
-    }
-
-    private onLineupChange(e){
-        this.initLineupMine();
     }
 
     private showLineup(e){
@@ -175,7 +168,6 @@ export default class BattlePanel extends UIBase {
     private initView(){
         this.initPassageleftView();
         this.initPassageTopView();
-        this.initLineupMine();
         this.initLineupBoss();
     }
 
@@ -196,9 +188,9 @@ export default class BattlePanel extends UIBase {
             this._passExpPS =(this._passExpPM * this._interval)/60;
             this._passStonePS =(this._passStonePM * this._interval)/60;
 
-            this.lblPassageExp.string = StringUtil.formatReadableNumber(this._passExpPM)+"/分";
-            this.lblPassageGold.string = StringUtil.formatReadableNumber(this._passGoldPM)+"/分";
-            this.lblPassageStone.string = StringUtil.formatReadableNumber(this._passStonePM)+"/分";
+            this.lblPassageExp.string = StringUtil.formatReadableNumber(this._passExpPM);
+            this.lblPassageGold.string = StringUtil.formatReadableNumber(this._passGoldPM);
+            this.lblPassageStone.string = StringUtil.formatReadableNumber(this._passStonePM);
 
             this.lblPassName.string = Passage.passageInfo.passageCfg.areaName;
         }
@@ -236,10 +228,6 @@ export default class BattlePanel extends UIBase {
         
     }
 
-    private initLineupMine(){
-        this.lineUpMine.initLineup(Lineup.ownerLineupMap);
-    }
-
     private _bossFightInfo:FightInfo = null;;
     private initLineupBoss(){
         if(Passage.passageInfo.isMaxPassage){
@@ -262,7 +250,7 @@ export default class BattlePanel extends UIBase {
 
     public getGuideNode(name:string):cc.Node{
         if(name == "buildPanel_lineup"){
-            return this.changeLineUp.node;
+            return this.btnChangeLineup.node;
         }else if(name == "buildPanel_fight"){
             return this.btnFight.node;
         }else if(name == "buildPanel_getRes"){

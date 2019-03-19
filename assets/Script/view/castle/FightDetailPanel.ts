@@ -46,14 +46,10 @@ export default class FightDeailPanel extends PopUpBase {
     @property(cc.Button)
     btnAttack: cc.Button = null;
     @property(cc.Button)
-    btnRevenge: cc.Button = null;
+    btnRabAttack: cc.Button = null;
     // LIFE-CYCLE CALLBACKS:
     @property(cc.RichText)
     textRecords: cc.RichText = null;
-    @property(cc.Button)
-    btnAttackIme: cc.Button = null;
-    @property(cc.Button)
-    btnRevengeIme: cc.Button = null;
 
     // onLoad () {}
     private _type:EnemyTypeEnum = 0;
@@ -69,9 +65,7 @@ export default class FightDeailPanel extends PopUpBase {
     onEnable(){
         super.onEnable();
         this.btnAttack.node.on(cc.Node.EventType.TOUCH_START,this.onFightEnemy,this);
-        this.btnRevenge.node.on(cc.Node.EventType.TOUCH_START,this.onRevenge,this);
-        this.btnAttackIme.node.on(cc.Node.EventType.TOUCH_START,this.onFightEnemyIme,this);
-        this.btnRevengeIme.node.on(cc.Node.EventType.TOUCH_START,this.onRevengeIme,this);
+        this.btnRabAttack.node.on(cc.Node.EventType.TOUCH_START,this.onFightEnemyIme,this);
         this.lineUpMine.initLineup(this._enemyInfo.enemyLineupMap);
 
         EVENT.on(GameEvent.Guide_Weak_Touch_Complete,this.onGuideWeakTouch,this);
@@ -81,9 +75,7 @@ export default class FightDeailPanel extends PopUpBase {
     onDisable(){
         super.onDisable();
         this.btnAttack.node.off(cc.Node.EventType.TOUCH_START,this.onFightEnemy,this);
-        this.btnRevenge.node.off(cc.Node.EventType.TOUCH_START,this.onRevenge,this);
-        this.btnAttackIme.node.off(cc.Node.EventType.TOUCH_START,this.onFightEnemyIme,this);
-        this.btnRevengeIme.node.off(cc.Node.EventType.TOUCH_START,this.onRevengeIme,this);
+        this.btnRabAttack.node.off(cc.Node.EventType.TOUCH_START,this.onFightEnemyIme,this);
 
 
         EVENT.off(GameEvent.Guide_Weak_Touch_Complete,this.onGuideWeakTouch,this);
@@ -97,18 +89,11 @@ export default class FightDeailPanel extends PopUpBase {
         this.sprSex.load(PathUtil.getSexIconUrl(this._enemyInfo.enemySex));
         this.sprHead.load(this._enemyInfo.enemyIcon);
         this.initRecordStr();
+        this.btnAttack.node.active = this.btnRabAttack.node.active = true;
         if(this._type == EnemyTypeEnum.Enemy|| this._type == EnemyTypeEnum.Robit){
-            this.btnRevenge.node.active =this.btnRevengeIme.node.active = false;
-            if(!this._enemyInfo.isAttacked){
-                this.btnAttack.node.active =  Battle.battleInfo.actionPoint>0;
-                this.btnAttackIme.node.active = Battle.battleInfo.actionPoint<=0;
-            }else{
-                this.btnAttack.node.active = this.btnAttackIme.node.active = false;
+            if(this._enemyInfo.isAttacked){
+                this.btnAttack.node.active = this.btnRabAttack.node.active = false;
             }
-        }else if(this._type == EnemyTypeEnum.PersonlEnemy){
-            this.btnAttack.node.active = this.btnAttackIme.node.active = false;
-            this.btnRevenge.node.active = (Battle.battleInfo.revengeTime<=0);
-            this.btnRevengeIme.node.active = (Battle.battleInfo.revengeTime>0);
         }
     }
 
@@ -142,17 +127,17 @@ export default class FightDeailPanel extends PopUpBase {
         this.onClose(e);
         Fight.showFight(foMine,foEnemey,false,this._enemyInfo);
     }
-    private onRevenge(e){
-        var foMine:FightInfo = Lineup.getOwnerFightInfo();
-        if(foMine.totalPower == 0){
-            UI.showAlert("请先上阵英雄");
-            return;
-        }
-        var foEnemey:FightInfo = this._enemyInfo.getFightInfo();
+    // private onRevenge(e){
+    //     var foMine:FightInfo = Lineup.getOwnerFightInfo();
+    //     if(foMine.totalPower == 0){
+    //         UI.showAlert("请先上阵英雄");
+    //         return;
+    //     }
+    //     var foEnemey:FightInfo = this._enemyInfo.getFightInfo();
 
-        this.onClose(e);
-        Fight.showFight(foMine,foEnemey,false,this._enemyInfo);
-    }
+    //     this.onClose(e);
+    //     Fight.showFight(foMine,foEnemey,false,this._enemyInfo);
+    // }
 
     private onFightEnemyIme(e){
         var foMine:FightInfo = Lineup.getOwnerFightInfo();
@@ -172,29 +157,29 @@ export default class FightDeailPanel extends PopUpBase {
             }
         },0)
     }
-    private onRevengeIme(e){
-        var foMine:FightInfo = Lineup.getOwnerFightInfo();
-        if(foMine.totalPower == 0){
-            UI.showAlert("请先上阵英雄");
-            return;
-        }
-        this.onClose(e);
-        WeiXin.showVideoAd((result:SeeVideoResult)=>{
-            if(result == SeeVideoResult.Complete){
-                var foEnemey:FightInfo = this._enemyInfo.getFightInfo();
-                Fight.showFight(foMine,foEnemey,true,this._enemyInfo);
-            }else if(result == SeeVideoResult.LoadError){
-                UI.showTip("视频加载失败！请稍候再来");
-            }else if(result == SeeVideoResult.NotComplete){
-                UI.showTip("视频观看未完成");
-            }
+    // private onRevengeIme(e){
+    //     var foMine:FightInfo = Lineup.getOwnerFightInfo();
+    //     if(foMine.totalPower == 0){
+    //         UI.showAlert("请先上阵英雄");
+    //         return;
+    //     }
+    //     this.onClose(e);
+    //     WeiXin.showVideoAd((result:SeeVideoResult)=>{
+    //         if(result == SeeVideoResult.Complete){
+    //             var foEnemey:FightInfo = this._enemyInfo.getFightInfo();
+    //             Fight.showFight(foMine,foEnemey,true,this._enemyInfo);
+    //         }else if(result == SeeVideoResult.LoadError){
+    //             UI.showTip("视频加载失败！请稍候再来");
+    //         }else if(result == SeeVideoResult.NotComplete){
+    //             UI.showTip("视频观看未完成");
+    //         }
             
-        },0)
-    }
+    //     },0)
+    // }
     ///////////guide//////////////////
     public getGuideNode(name:string):cc.Node{
         if(name == "popup_revenge" && (Battle.battleInfo.revengeTime<=0)){
-            return this.btnRevenge.node;
+            return this.btnAttack.node;
         }
         else{
             return null;
@@ -205,7 +190,7 @@ export default class FightDeailPanel extends PopUpBase {
         var guideId = e.id;
         var nodeName = e.name;
         if(nodeName == "popup_revenge"){
-            this.onRevenge(null);
+            this.onFightEnemy(null);
             GUIDE.nextWeakGuide(guideId);
         }
     }

@@ -39,8 +39,10 @@ export default class LineupAssist{
         var upUuid = e.uuid;
         for(var key in this.ownerLineupMap){
             var lineup:LineupInfo = this.ownerLineupMap[key];
+            var lineupPower:number = lineup.power;
             if(lineup.uuid == upUuid){
                 lineup.updateOwner();
+                this.ownerLineupPower += (lineup.power-lineupPower);
             }
         }
     }

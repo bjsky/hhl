@@ -4,6 +4,7 @@ window.DOMParser = Parser.DOMParser;
 require('libs/wx-downloader.js');
 require('src/settings');
 var settings = window._CCSettings;
+var SubPackPipe = require('./libs/subpackage-pipe');
 require('main');
 require(settings.debug ? 'cocos2d-js.js' : 'cocos2d-js-min.js');
 require('./libs/engine/index.js');
@@ -13,15 +14,15 @@ cc.view._maxPixelRatio = 3;
 
 wxDownloader.REMOTE_SERVER_ROOT = "https://s.1233k.com";
 wxDownloader.SUBCONTEXT_ROOT = "";
-var pipeBeforeDownloader = cc.loader.subPackPipe || cc.loader.md5Pipe || cc.loader.assetLoader;
+var pipeBeforeDownloader = cc.loader.md5Pipe || cc.loader.assetLoader;
 cc.loader.insertPipeAfter(pipeBeforeDownloader, wxDownloader);
 
-if (cc.sys.browserType === cc.sys.BROWSER_TYPE_WECHAT_GAME_SUB) {
-    var _WECHAT_SUBDOMAIN_DATA = require('src/subdomain.json.js');
-    cc.game.once(cc.game.EVENT_ENGINE_INITED, function () {
-        cc.Pipeline.Downloader.PackDownloader._doPreload("WECHAT_SUBDOMAIN", _WECHAT_SUBDOMAIN_DATA);
-    });
+if (settings.subpackages) {
+    var subPackPipe = new SubPackPipe(settings.subpackages);
+    cc.loader.insertPipeAfter(pipeBeforeDownloader, subPackPipe);
+}
 
+if (cc.sys.browserType === cc.sys.BROWSER_TYPE_WECHAT_GAME_SUB) {
     require('./libs/sub-context-adapter');
 }
 else {

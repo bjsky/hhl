@@ -49,6 +49,10 @@ export default class FightAssist{
     private _param:any = null;
 
     private _immediately:boolean =false;
+
+    public showFightBefore(infoEnemy:FightInfo,immediately:boolean =false,param?:any){
+        UI.createPopUp(ResConst.LineUpPopup,{info:infoEnemy,imme:immediately,param:param})
+    }
     public showFight(infoMine:FightInfo,infoEnemy:FightInfo,immediately:boolean =false,param?:any){
         if(this._isFighting)
             return;

@@ -2,6 +2,7 @@ import LoadStep from "../LoadStep";
 import { RES } from "../../../manager/ResourceManager";
 import { CFG } from "../../../manager/ConfigManager";
 import { GAME } from "../../../GameController";
+import { CONSTANT } from "../../../Constant";
 
 export const ConfigConst = {
     Constant:"config/constant",
@@ -36,6 +37,8 @@ export default class LoadingStepConfig extends LoadStep{
         resArr.forEach(res => {
             CFG.parseCfg(res,RES.get(res));
         });
+
+        CONSTANT.initConstant();
         console.log("Config loaded!");
         
         this.endStep();

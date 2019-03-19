@@ -24,8 +24,6 @@ export default class CardComposeUI extends UIBase {
     cardSrc: LoadSprite = null;
     @property(LoadSprite)
     cardStar: LoadSprite = null;
-    @property(LoadSprite)
-    cardFront: LoadSprite = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -57,9 +55,8 @@ export default class CardComposeUI extends UIBase {
     }
 
     private initView(){
-        this.cardSrc.load(PathUtil.getCardSamllImgPath(this._info.cardInfoCfg.simgPath));
-        this.cardStar.load(PathUtil.getCardGradeImgPath(this._info.grade));
-        this.cardFront.load(PathUtil.getCardFrontImgPath(this._info.grade));
+        this.cardSrc.load(PathUtil.getCardHeadUrl(this._info.cardInfoCfg.head));
+        this.cardStar.load(PathUtil.getCardHeadGradeImgPath(this._info.grade));
     }
 
     public updateData(data:CardInfo){

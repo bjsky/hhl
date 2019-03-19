@@ -19,9 +19,9 @@
     {"id":"18","key":"shareGetDiamond","name":"每次分享获得钻石","param1":"100"},
     {"id":"19","key":"seeVideoAddGold","name":"看视频得金币","param1":"200000"},
     {"id":"20","key":"seeVideoAddStone","name":"看视频得灵石","param1":"200000"},
-    {"id":"21","key":"actionPoint_init","name":"行动力初始值","param1":"10"},
-    {"id":"22","key":"actionPoint_max","name":"行动力最大值","param1":"10"},
-    {"id":"23","key":"actionPoint_perTime","name":"行动力每点恢复时间","param1":"1800"},
+    {"id":"21","key":"actionPoint_init","name":"行动力初始值","param1":"20"},
+    {"id":"22","key":"actionPoint_max","name":"行动力最大值","param1":"20"},
+    {"id":"23","key":"actionPoint_perTime","name":"行动力每点恢复时间","param1":"600"},
     {"id":"24","key":"revenge_time","name":"复仇恢复时间","param1":"3600"},
     {"id":"25","key":"scout_cost","name":"侦查消耗金币","param1":"30000"},
     {"id":"26","key":"rank_list_count","name":"排行榜显示个数","param1":"30"},
@@ -36,5 +36,6 @@
     {"id":"35","key":"cardGrowthRewards","name":"卡牌成长奖励","param1":"1;27|5;28|10;29"},
     {"id":"36","key":"scoreGrowthRewards","name":"积分成长奖励","param1":"50;30|150;31|300;32|500;33"},
     {"id":"37","key":"seeVideoUpLv","name":"看视频升级数","param1":"10"},
-    {"id":"38","key":"seeVideoAddDiamond","name":"看视频得钻石","param1":"200"}
+    {"id":"38","key":"seeVideoAddDiamond","name":"看视频得钻石","param1":"200"},
+    {"id":"39","key":"loadingTips","name":"加载小技巧","param1":"每天双倍领取登录奖励能快速获得大量资源;每天分享几次战胜奖励双倍领取更快升级;看视频攻击能100%抢夺对方卡牌;看视频抽卡得到高级卡牌的几率比普通抽卡大很多;卡牌中相同星级的可以合成升星;卡牌的星级越高，技能的效果越强;适当的升级建筑可以获得节省更多的资源;卡牌的技能有相互克制的特点，合理搭配阵容胜率更高;攻击玩家需要消耗行动力;完成每日任务可以领取大量奖励;钻石兑换卡牌可以快速合成高级卡牌;角色升级能提高卡牌等级上限;合成、被抢夺之后阵容发生改变需要手动修改阵容;战场积分越高，抢夺对方高级卡牌的概率越高;战胜积分较高的玩家抢夺卡牌的概率越高;挂机关卡等级决定关卡收益大小;挂机收益有最大积累时间，记得及时领取;"}
     ]

@@ -223,7 +223,11 @@ export default class CardAssist{
             cardList.push(cardArr[0]);
         }
         cardList.sort((a:CardInfo,b:CardInfo)=>{
-            return  b.grade - a.grade;
+            if(b.grade == a.grade){
+                return b.level - a.level;
+            }else{
+                return  b.grade - a.grade;
+            }
         })
         return cardList;
     }

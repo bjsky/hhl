@@ -12,6 +12,9 @@ import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
 import { GUIDE } from "../../manager/GuideManager";
 import DListItem from "../../component/DListItem";
+import FightInfo from "../../model/FightInfo";
+import { Fight } from "../../module/fight/FightAssist";
+import { CardMiniType } from "../card/CardMini";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -30,7 +33,6 @@ export default class LineUpPopup extends PopUpBase {
 
     @property(LineUpUI)
     lineup: LineUpUI = null;
-
     // @property(ButtonGroup)
     // btnGroup:ButtonGroup = null;
     @property(DList)
@@ -161,7 +163,7 @@ export default class LineUpPopup extends PopUpBase {
     private initCardList(){
         this._cardListData = [];
         this._currentCardList.forEach((item:CardInfo) =>{
-            this._cardListData.push({type:CardSimpleShowType.Owner,uuid:item.uuid});
+            this._cardListData.push({type:CardMiniType.Lineup,uuid:item.uuid});
         })
         // this.cardsList.setDragEnable(true,DListDirection.Vertical);
         this.cardsList.direction = DListDirection.Vertical;

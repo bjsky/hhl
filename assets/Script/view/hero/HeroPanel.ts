@@ -23,6 +23,7 @@ import ResPanel, { ResPanelType, SeeVideoResult } from "../ResPanel";
 import { Drag, CDragEvent } from "../../manager/DragManager";
 import CardComposeUI from "../card/CardComposeUI";
 import { WeiXin } from "../../wxInterface";
+import { CardMiniType } from "../card/CardMini";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -38,16 +39,7 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class HeroPanel extends UIBase {
-    @property(cc.Button)
-    btnComposeView:cc.Button = null;
     
-    @property(ButtonGroup)
-    viewGroup:ButtonGroup = null;
-    @property(cc.Node)
-    upLvViewNode:cc.Node = null;
-    @property(cc.Node)
-    composeViewNode:cc.Node = null;
-
     @property(cc.Label)
     labelName:cc.Label = null;
     @property(LoadSprite)
@@ -70,14 +62,12 @@ export default class HeroPanel extends UIBase {
     // labelPtPower:cc.Label = null;
     @property(cc.RichText)
     labelUpLvPowerAdd:cc.RichText = null;
-    @property(cc.RichText)
-    labelUpLvLifeAdd:cc.RichText = null;
+    @property(cc.Label)
+    labelUpLvName:cc.Label = null;
     @property(cc.Label)
     labelUpLvCost:cc.Label = null;
     @property(cc.Label)
     labelTotalPower:cc.Label = null;
-    @property(cc.Label)
-    labelTotalLife:cc.Label = null;
 
     @property(cc.Label)
     labelSkillName:cc.Label = null;
@@ -86,14 +76,12 @@ export default class HeroPanel extends UIBase {
     //升星组件
     @property(cc.Node)
     nodeUpStar:cc.Node = null;
-    @property(LoadSprite)
-    sprNextCardGrade:LoadSprite = null;
     @property(cc.RichText)
     labelUpstarSkillAdd:cc.RichText = null;
     @property(cc.RichText)
     labelUpstarPowerAdd:cc.RichText = null;
-    @property(cc.RichText)
-    labelUpstarLifeAdd:cc.RichText = null;
+    @property(cc.Label)
+    labelUpstarName:cc.Label = null;
     @property(DList)
     cardsList:DList = null;
 
@@ -101,8 +89,6 @@ export default class HeroPanel extends UIBase {
     composeGuideNode:cc.Node = null;
     @property([cc.Node])
     composeCards:Array<cc.Node> = [];
-    @property([cc.Label])
-    destoryGradeLabel:Array<cc.Label> = [];
     @property(cc.Sprite)
     sprDestory:cc.Sprite = null;
     //升级
@@ -113,10 +99,8 @@ export default class HeroPanel extends UIBase {
     btnUpgradeVideo:cc.Button = null;
 
     onLoad(){
-        this.viewGroup.labelVisible = false;
     }
     onEnable(){
-        this.viewGroup.node.on(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.viewGroupSelectChange,this)
         this.cardsList.node.on(DList.ITEM_CLICK,this.onCardClick,this);
         this.btnUpgrade.node.on(cc.Node.EventType.TOUCH_START,this.upgradeHero,this);
         this.btnUpgradeVideo.node.on(cc.Node.EventType.TOUCH_START,this.upgradeHeroVideo,this);
@@ -138,7 +122,6 @@ export default class HeroPanel extends UIBase {
     }
 
     onDisable(){
-        this.viewGroup.node.off(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.viewGroupSelectChange,this)
         this.cardsList.node.off(DList.ITEM_CLICK,this.onCardClick,this);
         this.btnUpgrade.node.off(cc.Node.EventType.TOUCH_START,this.upgradeHero,this);
         this.btnUpgradeVideo.node.off(cc.Node.EventType.TOUCH_START,this.upgradeHeroVideo,this);
@@ -163,32 +146,29 @@ export default class HeroPanel extends UIBase {
         this.initCardList();
     }
 
-    private _selectViewIndex:HeroViewSelect = 0;
-    private viewGroupSelectChange(){
-        if(GUIDE.isInGuide && GUIDE.guideInfo.type == GuideTypeEnum.GuideDrag){
-            return;
-        }
-        this._selectViewIndex = this.viewGroup.selectIndex;
-        this.upLvViewNode.active =(this._selectViewIndex == HeroViewSelect.Uplevel);
-        this.composeViewNode.active =(this._selectViewIndex == HeroViewSelect.Compose);
+    // private _selectViewIndex:HeroViewSelect = 0;
+    // private viewGroupSelectChange(){
+    //     if(GUIDE.isInGuide && GUIDE.guideInfo.type == GuideTypeEnum.GuideDrag){
+    //         return;
+    //     }
+    //     this._selectViewIndex = this.viewGroup.selectIndex;
+    //     this.upLvViewNode.active =(this._selectViewIndex == HeroViewSelect.Uplevel);
+    //     this.composeViewNode.active =(this._selectViewIndex == HeroViewSelect.Compose);
 
-        if(this._selectViewIndex == HeroViewSelect.Uplevel){
-            this.initCard();
-        }else if(this._selectViewIndex == HeroViewSelect.Compose){
-            this.initCardCompose();
-        }
-    }
+    //     if(this._selectViewIndex == HeroViewSelect.Uplevel){
+    //         this.initCard();
+    //     }else if(this._selectViewIndex == HeroViewSelect.Compose){
+    //         this.initCardCompose();
+    //     }
+    // }
 
 
     private onCardClick(e){
         var index = e.index;
         this.cardsList.selectIndex = index;
         this._currentCard = Card.getCardByUUid(this.cardsList.selectData.uuid);
-        if(this._selectViewIndex == HeroViewSelect.Uplevel){
-            this.initCard();
-        }else if(this._selectViewIndex == HeroViewSelect.Compose){
-            this.initCardCompose();
-        }
+        this.initCard();
+        this.initCardCompose();
     }
 
     public upgradeHero(e){
@@ -254,11 +234,10 @@ export default class HeroPanel extends UIBase {
 
 
     private initView(){
-        this.viewGroup.selectIndex = HeroViewSelect.Uplevel;
         this._currentCardList = Card.getOwnerMaxlvCardList();
         this._currentCard = this._currentCardList.length>0?this._currentCardList[0]:null;
-
-        this.viewGroupSelectChange();
+        this.initCard();
+        this.initCardCompose();
     }
 
     // LIFE-CYCLE CALLBACKS:
@@ -270,7 +249,7 @@ export default class HeroPanel extends UIBase {
     private initCardList(){
         this._cardListData = [];
         this._currentCardList.forEach((item:CardInfo) =>{
-            this._cardListData.push({type:CardSimpleShowType.Owner,uuid:item.uuid,cardId:item.cardId});
+            this._cardListData.push({type:CardMiniType.Owner,uuid:item.uuid,cardId:item.cardId});
         })
         this.cardsList.direction = DListDirection.Vertical;
         this.cardsList.setListData(this._cardListData);
@@ -307,27 +286,26 @@ export default class HeroPanel extends UIBase {
     private _upLvNeedLv:number = 0;
     private initLevel(){
 
-        this.labelLv.string = "Lv."+this._currentCard.level;
+        this.labelLv.string = this._currentCard.level+"级";
         this.labelTotalPower.string = this._currentCard.carUpCfg.power;
-        this.labelTotalLife.string = this._currentCard.carUpCfg.body;
         var cfgs:any = CFG.getCfgByKey(ConfigConst.CardUp,"grade",this._currentCard.grade,"level",this._currentCard.level+1);
         if(cfgs.length>0){
             this._nextLvCardCfg = cfgs[0];
             var addPower:number =(this._nextLvCardCfg.power - this._currentCard.carUpCfg.power);
             var addLife:number = (this._nextLvCardCfg.body -this._currentCard.carUpCfg.body);
-            this.labelUpLvPowerAdd.string = "<color=#D42834>+"+addPower+"</color>";
-            this.labelUpLvLifeAdd.string = "<color=#D42834>+"+addLife+"</color>";
+            this.labelUpLvPowerAdd.node.active = true;
+            this.labelUpLvPowerAdd.string = "<color=#D42834>战斗力+"+addPower+"</color>";
+            this.labelUpLvName.string = this._nextLvCardCfg.level+"级：";
         }else{
             this._nextLvCardCfg = null;
-            this.labelUpLvPowerAdd.string = "<color=#D42834>已满级</color>";
-            this.labelUpLvLifeAdd.string = "<color=##D42834>已满级</color>"; //D43F97
+            this.labelUpLvName.string = "已满级";
+            this.labelUpLvPowerAdd.node.active = false;
         }
         
          if(this._nextLvCardCfg){
             this.upLvNode.active = true;
             this._upLvCost =  Card.getUpLvCostBuffed(this._currentCard.carUpCfg.needStore);
             this._upLvNeedLv = this._currentCard.carUpCfg.playerLevel;
-            this.sprNextCardGrade.load(PathUtil.getCardnextGradeCard(this._currentCard.grade+1))
             this.labelUpLvCost.string = StringUtil.formatReadableNumber(this._upLvCost);
         }else{
             this.upLvNode.active = false;
@@ -345,8 +323,8 @@ export default class HeroPanel extends UIBase {
             var addPower:number =(cfgs.power - this._currentCard.carUpCfg.power);
             var addLife:number = (cfgs.body - this._currentCard.carUpCfg.body);
             this.labelUpstarSkillAdd.string = Skill.getCardSkillAddDescHtml(this._currentCard);
-            this.labelUpstarPowerAdd.string = "<color=#D42834>+"+addPower+"</color>";
-            this.labelUpstarLifeAdd.string = "<color=#D42834>+"+addLife+"</color>";
+            this.labelUpstarName.string = (this._currentCard.grade+1)+"星：";
+            this.labelUpstarPowerAdd.string = "<color=#D42834>战斗力+"+addPower+"</color>";
         }
     }
 
@@ -383,10 +361,6 @@ export default class HeroPanel extends UIBase {
     private _composeCardInfos:Array<CardInfo> = [];
     private initCardCompose(){
         var cfg:any;
-        for(var i:number = 0;i<CardInfo.MaxGrade;i++){
-            var cfgs:any = CFG.getCfgByKey(ConfigConst.CardUp,"grade",i+1,"level",1)[0];
-            this.destoryGradeLabel[i].string = StringUtil.formatReadableNumber(cfgs.destoryGetStore);
-        }
         if(this._currentCard){
             this._composeCardInfos = Card.getComposeCardInfos(this._currentCard.cardId);
             this.composeCards.forEach((node:cc.Node) => {
@@ -395,7 +369,7 @@ export default class HeroPanel extends UIBase {
                 }
             });
             var info:CardInfo;
-            for( i = 0;i<this.composeCards.length;i++){
+            for(var i:number = 0;i<this.composeCards.length;i++){
                 if(this._composeCardInfos.length>i){
                     info = this._composeCardInfos[i];
                     UI.loadUI(ResConst.CardComposeUI,info,this.composeCards[i]);
@@ -479,7 +453,7 @@ export default class HeroPanel extends UIBase {
         var cardArr:Array<CardInfo> = Card.getComposeCardInfos(cardId);
         if(cardArr.length>0){
             var card:CardInfo = cardArr[0];
-            var newData = {type:CardSimpleShowType.Owner,uuid:card.uuid,cardId:card.cardId};
+            var newData = {type:CardMiniType.Owner,uuid:card.uuid,cardId:card.cardId};
             this.cardsList.updateIndex(index,newData);
             this._currentCard = card;
         }else{
@@ -491,16 +465,15 @@ export default class HeroPanel extends UIBase {
             }else{
                 this._currentCard = null;
             }
-            this.initCardCompose();
         }
+        this.initCard();
+        this.initCardCompose();
     }
 
 
     public getGuideNode(name:string):cc.Node{
         if(name == "buildPanel_upgradeCard"){
             return this.btnUpgrade.node;
-        }else if(name == "buildPanel_upStar"){
-            return this.btnComposeView.node;
         }else if(name == "buildPanel_compose"){
             return this.composeGuideNode;
         }
@@ -515,10 +488,6 @@ export default class HeroPanel extends UIBase {
         if(nodeName == "buildPanel_upgradeCard"){
             this.upgradeHero(null);
             GUIDE.nextGuide(guideId);
-        }else if(nodeName == "buildPanel_upStar"){
-            this.viewGroup.selectIndex = HeroViewSelect.Compose;
-            this.viewGroupSelectChange();
-            GUIDE.nextGuide(guideId);
         }
     }
 
@@ -527,10 +496,6 @@ export default class HeroPanel extends UIBase {
         var nodeName = e.name;
         if(nodeName == "buildPanel_upgradeCard"){
             this.upgradeHero(null);
-            GUIDE.nextWeakGuide(guideId);
-        }else if(nodeName == "buildPanel_upStar"){
-            this.viewGroup.selectIndex = HeroViewSelect.Compose;
-            this.viewGroupSelectChange();
             GUIDE.nextWeakGuide(guideId);
         }
     }

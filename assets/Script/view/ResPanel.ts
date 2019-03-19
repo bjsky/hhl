@@ -122,7 +122,7 @@ export default class ResPanel extends PopUpBase {
             this.resNode.active = true;
             this.msg.node.active = false;
             this.resTip.load(PathUtil.getResTipNameUrl(this._resType));
-            this.resNum.string = COMMON.resInfo.diamond.toString();
+            this.resNum.string = COMMON.resInfo.diamond.toFixed(0);
         }else if(this._awardType == ResPanelType.GoldNotEnough){
             this.resNode.active = false;
             this.msg.node.active = true;

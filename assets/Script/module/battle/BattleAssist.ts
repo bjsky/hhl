@@ -237,11 +237,14 @@ export default class BattleAssist{
                 addDiamond *=2;
                 addScore *=2;
             }
-            var isRevenge = (enemyInfo.enemyType == EnemyTypeEnum.PersonlEnemy);
+            // var isRevenge = (enemyInfo.enemyType == EnemyTypeEnum.PersonlEnemy);
             var getCardRate = Number(fightScoreCfg.getCardRate);
-            if(isRevenge){  //复仇双倍
-                getCardRate *=2;
-                costActionPoint = 0;
+            // if(isRevenge){  //复仇双倍
+            //     getCardRate *=2;
+            //     costActionPoint = 0;
+            // }
+            if(isImmediately){
+                getCardRate = 1;
             }
             var isRabCard:boolean = (Math.random()<getCardRate); 
             var rate ="";
@@ -252,14 +255,15 @@ export default class BattleAssist{
             addExp = 0;
             addDiamond =0;
             addScore = 0;
-            isRevenge = (enemyInfo.enemyType == EnemyTypeEnum.PersonlEnemy);
-            if(isRevenge){
-                costActionPoint = 0;
-            }
+            // isRevenge = (enemyInfo.enemyType == EnemyTypeEnum.PersonlEnemy);
+            // if(isRevenge){
+            //     costActionPoint = 0;
+            // }
             isRabCard = false;
             rate ="";
         }
 
+        var isRevenge = false;
         NET.send(MsgFightEnemy.create(enemyInfo.enemyUid,enemyInfo.enemyName,
             addExp,addDiamond,addScore,costActionPoint,isRevenge,isRabCard,rate,isGuide),(msg:MsgFightEnemy)=>{
             if(msg && msg.resp){

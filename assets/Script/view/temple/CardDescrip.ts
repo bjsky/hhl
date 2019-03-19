@@ -59,7 +59,7 @@ export default class CardDescrip extends PopUpBase {
 
     onEnable(){
         super.onEnable();
-        this.cardImg.node.on(cc.Node.EventType.TOUCH_START,this.showCardBig,this)
+        // this.cardImg.node.on(cc.Node.EventType.TOUCH_START,this.showCardBig,this)
 
         this.initView();
     }
@@ -67,7 +67,7 @@ export default class CardDescrip extends PopUpBase {
     onDisable(){
         super.onDisable();
 
-        this.cardImg.node.off(cc.Node.EventType.TOUCH_START,this.showCardBig,this)
+        // this.cardImg.node.off(cc.Node.EventType.TOUCH_START,this.showCardBig,this)
     }
 
     private initView(){
