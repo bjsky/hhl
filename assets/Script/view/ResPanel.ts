@@ -8,7 +8,7 @@ import { ResConst } from "../module/loading/steps/LoadingStepRes";
 import { GLOBAL } from "../GlobalData";
 import PathUtil from "../utils/PathUtil";
 import { CONSTANT } from "../Constant";
-import { WeiXin } from "../wxInterface";
+import { WeiXin, SeeVideoType } from "../wxInterface";
 import MsgGetReward from "../net/msg/MsgGetReward";
 import { NET } from "../net/core/NetController";
 import { EVENT } from "../message/EventCenter";
@@ -66,18 +66,22 @@ export default class ResPanel extends PopUpBase {
     // onLoad () {}
     private _awardType:ResPanelType = 0;
     private _resType:ResType = 0;
+    private _videoType:SeeVideoType = 0;
     private _awardNum:number = 0;
     public setData(data:any){
         super.setData(data);
         this._awardType = data.type;
         if(this._awardType == ResPanelType.GoldRes || this._awardType == ResPanelType.GoldNotEnough){
             this._resType = ResType.gold;
+            this._videoType = SeeVideoType.SeeVideoGetGold;
             this._awardNum = CONSTANT.getSeeVideoGold();
         }else if(this._awardType == ResPanelType.StoneRes || this._awardType == ResPanelType.StoneNotEnough){
             this._resType = ResType.lifeStone;
+            this._videoType = SeeVideoType.SeeVideoGetStone;
             this._awardNum = CONSTANT.getSeeVideoStone();
         }else if(this._awardType == ResPanelType.DiamondRes || this._awardType == ResPanelType.DiamondNotEnough){
             this._resType = ResType.diamond;
+            this._videoType = SeeVideoType.SeeVideoGetDiamond;
             this._awardNum = CONSTANT.getSeeVideoDiamond();
         }
     }
@@ -158,7 +162,7 @@ export default class ResPanel extends PopUpBase {
             }else if(result == SeeVideoResult.NotComplete){
                 UI.showTip("视频观看未完成");
             }
-        },0)
+        },this._videoType)
     }
 
     //看视频得奖励

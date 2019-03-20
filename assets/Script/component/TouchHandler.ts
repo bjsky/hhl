@@ -120,7 +120,7 @@ export default class TouchHandler extends cc.Component {
     public dragStartAngle:number = 0;
     protected onDragStart(offx,offy){
         this.dragStartAngle = this.getAngle(offx,offy);
-        this.node.emit(TouchHandler.DRAG_START,this);
+        this.node.dispatchEvent(new cc.Event(TouchHandler.DRAG_START,true));
     }
 
     private getAngle(x, y) {
@@ -136,11 +136,11 @@ export default class TouchHandler extends cc.Component {
     }
     
     protected onDragMove(){
-        this.node.emit(TouchHandler.DRAG_MOVE,this);
+        this.node.dispatchEvent(new cc.Event(TouchHandler.DRAG_MOVE,true));
     }
 
     protected onDragEnd(){
-        this.node.emit(TouchHandler.DRAG_END,this);
+        this.node.dispatchEvent(new cc.Event(TouchHandler.DRAG_END,true));
     }
     
     /**
@@ -150,10 +150,10 @@ export default class TouchHandler extends cc.Component {
     protected onTouchClick(){
         if(this._clickNum >= 2){
             this.stopDoubleTouchSchedule();
-            this.node.emit(TouchHandler.DOUBLE_CLICK,this);
+            this.node.dispatchEvent(new cc.Event(TouchHandler.DOUBLE_CLICK,true));
             // console.log("double click___");
         }else{
-            this.node.emit(TouchHandler.TOUCH_CLICK,this);
+            this.node.dispatchEvent(new cc.Event(TouchHandler.TOUCH_CLICK,true));
         }
     }
 

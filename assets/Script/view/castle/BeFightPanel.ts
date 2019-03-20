@@ -98,8 +98,9 @@ export default class BeFightPanel extends PopUpBase {
             var fightName:string = record.fightName;
             var score:string = record.score.toString();
             var cardCfg = CFG.getCfgDataById(ConfigConst.CardInfo,record.rabCardId);
+            var cardName:string = cardCfg?cardCfg.name:"";
             var cardStr = record.rabCardGrade+"星<color="+ColorUtil.getGradeColorHex(record.rabCardGrade)+
-                ">"+cardCfg.name+"</c>";
+                ">"+cardName+"</c>";
             // str ="<color=#7D3F3F>主人，刚刚玩家 <color=#1A60DD>"+fightName+"</c> 攻击了您，"+
             // "您的积分<color=#D50336>－"+score+"</c><br />敌人抢走了你的卡牌："+cardStr+"<br />"+
             // "复仇抢夺双倍概率，不是不报，时候未到！</color>";

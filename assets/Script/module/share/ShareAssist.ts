@@ -1,5 +1,5 @@
 import { CONSTANT } from "../../Constant";
-import { WeiXin } from "../../wxInterface";
+import { WeiXin, ShareType } from "../../wxInterface";
 import { GLOBAL, ServerType } from "../../GlobalData";
 import { NET } from "../../net/core/NetController";
 import MsgGetReward from "../../net/msg/MsgGetReward";
@@ -51,7 +51,7 @@ export default class ShareAssist{
         return this._shareOnHideTime>0;
     }
     //分享链接
-    public shareAppMessage(success:Function,fail:Function){
+    public shareAppMessage(success:Function,fail:Function,type:ShareType){
         this._shareSuccessCB = success;
         this._shareFailCb =fail;
         if(GLOBAL.serverType == ServerType.Publish){
@@ -64,26 +64,32 @@ export default class ShareAssist{
             WeiXin.shareAppMessage(title,imgUrl,query);
             //完成任务 
             Task.finishTask(TaskType.ShareFriend);
-        }else if(GLOBAL.serverType == ServerType.Debug){
-            this._shareSuccessCB();
-
-            this._shareSuccessCB = null;
-            this._shareFailCb = null;
+        }else if(GLOBAL.serverType == ServerType.Debug||
+            GLOBAL.serverType == ServerType.Client){
+            this.onShareFinish(true);
         }
+    }
+
+    private onShareFinish(success:boolean ){
+        if(success){
+            this._shareSuccessCB && this._shareSuccessCB();
+        }else{
+            this._shareFailCb && this._shareFailCb();
+        }
+        
+        this._shareSuccessCB = null;
+        this._shareFailCb = null;
+        this._shareOnHideTime =0;
     }
 
     public shareOnShow(){
         var time :number = COMMON.getServerTime();
         console.log("share on show:",time);
         if(time - this._shareOnHideTime>3000){
-            this._shareOnHideTime = 0;
-            this._shareSuccessCB();
+            this.onShareFinish(true);
         }else{
-            this._shareFailCb && this._shareFailCb();
+            this.onShareFinish(false);
         }
-
-        this._shareSuccessCB = null;
-        this._shareFailCb = null;
     }
     //分享获得奖励
     public getShareReward(){

@@ -13,7 +13,7 @@ import { Fight } from "../../module/fight/FightAssist";
 import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
 import { GUIDE } from "../../manager/GuideManager";
-import { WeiXin } from "../../wxInterface";
+import { WeiXin, SeeVideoType } from "../../wxInterface";
 import { SeeVideoResult } from "../ResPanel";
 
 // Learn TypeScript:
@@ -155,7 +155,7 @@ export default class FightDeailPanel extends PopUpBase {
             }else if(result == SeeVideoResult.NotComplete){
                 UI.showTip("视频观看未完成");
             }
-        },0)
+        },SeeVideoType.SeeVideoRabAttack)
     }
     // private onRevengeIme(e){
     //     var foMine:FightInfo = Lineup.getOwnerFightInfo();

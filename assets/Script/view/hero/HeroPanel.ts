@@ -95,15 +95,12 @@ export default class HeroPanel extends UIBase {
 
     @property(cc.Button)
     btnUpgrade:cc.Button = null;
-    @property(cc.Button)
-    btnUpgradeVideo:cc.Button = null;
 
     onLoad(){
     }
     onEnable(){
         this.cardsList.node.on(DList.ITEM_CLICK,this.onCardClick,this);
         this.btnUpgrade.node.on(cc.Node.EventType.TOUCH_START,this.upgradeHero,this);
-        this.btnUpgradeVideo.node.on(cc.Node.EventType.TOUCH_START,this.upgradeHeroVideo,this);
 
         EVENT.on(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
         EVENT.on(GameEvent.Card_Drop_UpStar,this.onCardUpStar,this);
@@ -124,7 +121,6 @@ export default class HeroPanel extends UIBase {
     onDisable(){
         this.cardsList.node.off(DList.ITEM_CLICK,this.onCardClick,this);
         this.btnUpgrade.node.off(cc.Node.EventType.TOUCH_START,this.upgradeHero,this);
-        this.btnUpgradeVideo.node.off(cc.Node.EventType.TOUCH_START,this.upgradeHeroVideo,this);
 
         EVENT.off(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
         EVENT.off(GameEvent.Card_Drop_UpStar,this.onCardUpStar,this);
@@ -183,20 +179,6 @@ export default class HeroPanel extends UIBase {
             return;
         }
         Card.upCardLv(this._currentCard.uuid,this._upLvCost,false);
-    }
-
-    public upgradeHeroVideo(e){
-        WeiXin.showVideoAd((result:SeeVideoResult)=>{
-            if(result == SeeVideoResult.Complete){
-                UI.showTip("卡牌升级成功！");
-                Card.upCardLv(this._currentCard.uuid,this._upLvCost,true);
-            }else if(result == SeeVideoResult.LoadError){
-                UI.showTip("视频加载失败！请稍候再来");
-            }else if(result == SeeVideoResult.NotComplete){
-                UI.showTip("视频观看未完成");
-            }
-            
-        },0)
     }
 
     private onCardUpdate(e){

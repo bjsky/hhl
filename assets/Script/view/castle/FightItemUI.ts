@@ -12,7 +12,7 @@ import { FightRecord } from "../../model/BattleInfo";
 import { Lineup } from "../../module/battle/LineupAssist";
 import FightInfo from "../../model/FightInfo";
 import { Fight } from "../../module/fight/FightAssist";
-import { WeiXin } from "../../wxInterface";
+import { WeiXin, SeeVideoType } from "../../wxInterface";
 import { SeeVideoResult } from "../ResPanel";
 
 // Learn TypeScript:
@@ -44,8 +44,12 @@ export default class FightItemUI extends DListItem{
 
     @property(cc.Button)
     btnAttack: cc.Button = null;
+    @property(cc.Button)
+    btnRabAttack: cc.Button = null;
     @property(cc.Sprite)
     sprAttacked: cc.Sprite = null;
+    @property(cc.Node)
+    btnNode: cc.Node = null;
 
     private _enemyInfo:EnemyInfo = null;
     // LIFE-CYCLE CALLBACKS:
@@ -58,11 +62,13 @@ export default class FightItemUI extends DListItem{
     onEnable(){
         this.sprHead.node.on(TouchHandler.TOUCH_CLICK,this.onHeadTouch,this);
         this.btnAttack.node.on(TouchHandler.TOUCH_CLICK,this.onAttackTouch,this);
+        this.btnRabAttack.node.on(TouchHandler.TOUCH_CLICK,this.onrabAttackTouch,this);
         this.initView();
     }
     onDisable(){
         this.sprHead.node.off(TouchHandler.TOUCH_CLICK,this.onHeadTouch,this);
         this.btnAttack.node.off(TouchHandler.TOUCH_CLICK,this.onAttackTouch,this);
+        this.btnRabAttack.node.on(TouchHandler.TOUCH_CLICK,this.onrabAttackTouch,this);
     }
 
     private onHeadTouch(e){
@@ -75,19 +81,35 @@ export default class FightItemUI extends DListItem{
     }
     private onAttackTouch(e){
         // Battle.testPushRabCard();
+        if(Battle.battleInfo.actionPoint<=0){
+            UI.showTip("行动力力不足，请过会再来");
+            return;
+        }
         var foMine:FightInfo = Lineup.getOwnerFightInfo();
         if(foMine.totalPower == 0){
             UI.showAlert("请先上阵英雄");
             return;
         }
         var foEnemey:FightInfo = this._enemyInfo.getFightInfo();
-        if(Battle.battleInfo.actionPoint<=0){
-            this.onHeadTouch(null);
+        Fight.showFight(foMine,foEnemey,false,this._enemyInfo);
+    }
+
+    private onrabAttackTouch(e){
+        var foMine:FightInfo = Lineup.getOwnerFightInfo();
+        if(foMine.totalPower == 0){
+            UI.showAlert("请先上阵英雄");
             return;
-        }else{
-            Fight.showFight(foMine,foEnemey,false,this._enemyInfo);
         }
-        
+        WeiXin.showVideoAd((result:SeeVideoResult)=>{
+            if(result == SeeVideoResult.Complete){
+                var foEnemey:FightInfo = this._enemyInfo.getFightInfo();
+                Fight.showFight(foMine,foEnemey,true,this._enemyInfo);
+            }else if(result == SeeVideoResult.LoadError){
+                UI.showTip("视频加载失败！请稍候再来");
+            }else if(result == SeeVideoResult.NotComplete){
+                UI.showTip("视频观看未完成");
+            }
+        },SeeVideoType.SeeVideoRabAttack)
     }
 
     public onAttackGuide(){
@@ -108,7 +130,7 @@ export default class FightItemUI extends DListItem{
         this.lblPower.string = this._enemyInfo.enemyTotalPower.toString();
         this.sprHead.load(this._enemyInfo.enemyIcon);
         this.sprSex.load(PathUtil.getSexIconUrl(this._enemyInfo.enemySex));
-        this.btnAttack.node.active = !this._enemyInfo.isAttacked;
+        this.btnNode.active = !this._enemyInfo.isAttacked;
         this.sprAttacked.node.active = this._enemyInfo.isAttacked;
 
         this._fightScoreCfg= Battle.getFightScoreCfg(this._enemyInfo.enemyScore);

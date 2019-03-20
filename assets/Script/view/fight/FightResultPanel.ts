@@ -9,7 +9,7 @@ import FightInfo, { FightPlayerType } from "../../model/FightInfo";
 import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
 import { GUIDE } from "../../manager/GuideManager";
-import { WeiXin } from "../../wxInterface";
+import { WeiXin, ShareType } from "../../wxInterface";
 import { Share } from "../../module/share/ShareAssist";
 import { SOUND, SoundConst } from "../../manager/SoundManager";
 import CardInfo from "../../model/CardInfo";
@@ -142,7 +142,7 @@ export default class FightResultPanel extends PopUpBase {
             },()=>{
                 UI.showTip("分享失败，正常领取");
                 this.onReceivedDouble(false);
-            });
+            },ShareType.ShareFightResultDouble);
         }else{
             this.onReceivedDouble(false);
         }

@@ -18,7 +18,7 @@ import { CardSimpleShowType } from "../card/CardSmall";
 import { GUIDE } from "../../manager/GuideManager";
 import { CardBigShowType } from "../card/CardBig";
 import ResPanel, { ResPanelType, SeeVideoResult } from "../ResPanel";
-import { WeiXin } from "../../wxInterface";
+import { WeiXin, SeeVideoType } from "../../wxInterface";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -137,7 +137,7 @@ export default class TemplePanel extends UIBase {
                 UI.showTip("视频观看未完成");
             }
             
-        },0)
+        },SeeVideoType.SeeVideoGetCard)
     }
     onLoad () {
         this.initView();

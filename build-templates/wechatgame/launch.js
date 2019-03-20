@@ -98,15 +98,35 @@ window.showVideoAd = function (cb, VideoAd_type) {
 
   if (window.isPlayVideoAd == false) {
     window.isPlayVideoAd = true;
-    if (VideoAd_type == 2) {
+    if (VideoAd_type == 1) {
+      // 看视频送灵石
+      window.rewardedVideoAd = wx.createRewardedVideoAd({
+        adUnitId: 'adunit-c610ec0fe1e6b502'
+      })
+    } else if (VideoAd_type == 2) {
       // 看视频送金币
       window.rewardedVideoAd = wx.createRewardedVideoAd({
         adUnitId: 'adunit-5dffa8a2d343c81c'
       })
-    } else {
-      // 看视频送灵石
+    } else if (VideoAd_type == 3) {
+      // 看视频送钻石
       window.rewardedVideoAd = wx.createRewardedVideoAd({
-        adUnitId: 'adunit-c610ec0fe1e6b502'
+        adUnitId: 'adunit-a4b8dfcfc4ef0ef0'
+      })
+    } else if (VideoAd_type == 4) {
+      // 看视频五倍抽卡
+      window.rewardedVideoAd = wx.createRewardedVideoAd({
+        adUnitId: 'adunit-0a78494478555691'
+      })
+    } else if (VideoAd_type == 5) {
+      // 看视频双倍奖励
+      window.rewardedVideoAd = wx.createRewardedVideoAd({
+        adUnitId: 'adunit-b6f99731cc16aa0c'
+      })
+    }else {
+      // 其它
+      window.rewardedVideoAd = wx.createRewardedVideoAd({
+        adUnitId: 'adunit-cafc53b75c6149c0'
       })
     }
 

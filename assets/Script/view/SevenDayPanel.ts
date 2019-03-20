@@ -12,6 +12,7 @@ import { Share } from "../module/share/ShareAssist";
 import { ResType } from "../model/ResInfo";
 import { CFG } from "../manager/ConfigManager";
 import { ConfigConst } from "../module/loading/steps/LoadingStepConfig";
+import { ShareType } from "../wxInterface";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -100,7 +101,7 @@ export default class SevenDayPanel extends PopUpBase {
             },()=>{
                 UI.showTip("分享失败，正常领取");
                 Activity.receiveSevenday(Activity.senvendayIndex,false);
-            });
+            },ShareType.ShareSevendayDouble);
         }else{
             Activity.receiveSevenday(Activity.senvendayIndex,false);
         }

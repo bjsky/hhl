@@ -77,7 +77,7 @@ export class WXInterface{
         func(title,imgUrl,query);
     }
 
-    public showVideoAd(cb:Function,type:ResType){
+    public showVideoAd(cb:Function,type:SeeVideoType){
         console.log("观看视频开始："+type);
         if(GLOBAL.serverType == ServerType.Publish){
             var func = window["showVideoAd"];
@@ -86,6 +86,21 @@ export class WXInterface{
             cb && cb();
         }
     }
+}
+
+export enum SeeVideoType{
+    SeeVideoGetStone = 1,       //看视频得灵石
+    SeeVideoGetGold,            //看视频得金币
+    SeeVideoGetDiamond,         //看视频得钻石
+    SeeVideoGetCard,            //看视频五倍抽卡
+    SeeVideoRabAttack           //看视频抢夺攻击
+}
+
+export enum ShareType{
+    ShareGetDiamond =1,         //分享得钻石
+    ShareSevendayDouble,        //分享七日双倍
+    ShareFightResultDouble,     //分享双倍领奖
+
 }
 
 export var WeiXin = WXInterface.getInstance();

@@ -62,10 +62,10 @@ export default class FightAssist{
         if(GUIDE.isInGuide){
             if(infoEnemy.playerType == FightPlayerType.Boss){  //bos引导
                 gInfoMine.lineup = this.getGuideLineup("9;1;3;8;5",5,1,infoMine.lineup[0]);
-                gInfoEnemy.lineup = this.getGuideLineup("10;12;13;16;17",5,1)
+                gInfoEnemy.lineup = this.getGuideLineup("10;12;13;16;17",4,1)
             }else{  //征战引导
                 gInfoMine.lineup = this.getGuideLineup("13;16;17;18;15",5,1,infoMine.lineup[0]);
-                gInfoEnemy.lineup = this.getGuideLineup("1;3;9;10;16",5,1)
+                gInfoEnemy.lineup = this.getGuideLineup("1;3;9;10;16",4,1)
             }
         }
 

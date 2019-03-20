@@ -42,10 +42,6 @@ export default class AwardPanel extends PopUpBase {
     @property(FlowGroup)
     awardGroup:FlowGroup = null;
 
-    @property(cc.Sprite)
-    doubleIcon:cc.Sprite= null;
-    @property(cc.Node)
-    doubleNode:cc.Node= null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -71,7 +67,6 @@ export default class AwardPanel extends PopUpBase {
     onEnable(){
         super.onEnable();
         this.btnShouqu.on(TouchHandler.TOUCH_CLICK,this.onShouquTouch,this);
-        this.doubleNode.on(cc.Node.EventType.TOUCH_START,this.onDoubleTouch,this);
 
         EVENT.on(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
         this.showAward();
@@ -80,7 +75,6 @@ export default class AwardPanel extends PopUpBase {
     onDisable(){
         super.onDisable();
         this.btnShouqu.off(TouchHandler.TOUCH_CLICK,this.onShouquTouch,this);
-        this.doubleNode.off(cc.Node.EventType.TOUCH_START,this.onDoubleTouch,this);
 
         EVENT.off(GameEvent.Guide_Touch_Complete,this.onGuideTouch,this);
         this.removeAward();
@@ -100,15 +94,8 @@ export default class AwardPanel extends PopUpBase {
     private showAward(){
         if(this._type == AwardTypeEnum.CardDestroyAward){
             this.lblDesc.string ="回收获得："
-            this.doubleNode.active = false;
         }else if(this._type == AwardTypeEnum.PassageCollect){
             this.lblDesc.string = "挂机获得：";
-            if(GUIDE.isInGuide){
-                this.doubleNode.active = false;
-            }else{
-                this.doubleNode.active = true;
-                this.setDoubleSelect(this._doubleSelect);
-            }
         }
         this.awardGroup.setGroupData(this._resArr);
     }
@@ -121,24 +108,10 @@ export default class AwardPanel extends PopUpBase {
         if(this._type == AwardTypeEnum.CardDestroyAward){
             this.showResClose();
         }else if(this._type == AwardTypeEnum.PassageCollect){
-            if(this._doubleSelect && !GUIDE.isInGuide){
-                Share.shareAppMessage(()=>{
-                    UI.showTip("分享成功，奖励翻倍！");
-                    this.onReceivedDouble(true);
-                },()=>{
-                    UI.showTip("分享失败，正常领取");
-                    this.onReceivedDouble(false);
-                });
-            }else{
-                this.onReceivedDouble(false);
-            }
+            Passage.collectRes(GUIDE.isInGuide,()=>{
+                this.showResClose();
+            });
         }
-    }
-
-    private onReceivedDouble(isDouble:boolean){
-        Passage.collectRes(GUIDE.isInGuide,()=>{
-            this.showResClose();
-        });
     }
     private showResClose(){
         EVENT.emit(GameEvent.Show_Res_Add,{types:this._resArr});
@@ -157,16 +130,6 @@ export default class AwardPanel extends PopUpBase {
 
     private _enableGetGuideNode:boolean =false;
 
-
-    private _doubleSelect:boolean =true;
-    private setDoubleSelect(select:boolean){
-        this._doubleSelect = select;
-        this.doubleIcon.node.active = select;
-    }
-
-    private onDoubleTouch(e){
-        this.setDoubleSelect(!this._doubleSelect);
-    }
     /////////////////
     //  guide
     //////////////////

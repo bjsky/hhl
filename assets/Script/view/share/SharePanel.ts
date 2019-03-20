@@ -7,6 +7,7 @@ import { ResType } from "../../model/ResInfo";
 import { UI } from "../../manager/UIManager";
 import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 import { GUIDE } from "../../manager/GuideManager";
+import { ShareType } from "../../wxInterface";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -59,7 +60,7 @@ export default class SharePanel extends PopUpBase{
             }
         },()=>{
             UI.showTip("分享失败！");
-        });
+        },ShareType.ShareGetDiamond);
     }
 
     private initView(){

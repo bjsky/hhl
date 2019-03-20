@@ -26,7 +26,7 @@ export default class DemoFightRecord{
         record.befightName = beName;
         record.score = score;
         record.isRabCard = isRabCard;
-        record.rabCardUuid = uuid;
+        record.uuid = uuid;
         record.rabCardId = cardId;
         record.rabCardGrade = grade;
         return record;
