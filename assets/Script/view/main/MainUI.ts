@@ -26,6 +26,7 @@ import { Battle } from "../../module/battle/BattleAssist";
 import { FightRecord } from "../../model/BattleInfo";
 import { BeFightPanelType } from "../castle/BeFightPanel";
 import { GAME } from "../../GameController";
+import { Lineup } from "../../module/battle/LineupAssist";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -117,6 +118,8 @@ export default class MainUI extends UIBase {
     nodeGrowth:cc.Node = null;
     @property(cc.RichText)
     labelGrowth:cc.RichText = null;
+    @property(cc.Label)
+    labelPower:cc.Label = null;
 
     private _topPos:cc.Vec2 =cc.v2(0,0);
     onLoad () {
@@ -292,6 +295,8 @@ export default class MainUI extends UIBase {
         EVENT.on(GameEvent.TaskActiveReceived,this.onTaskReceived,this);
         EVENT.on(GameEvent.TaskGrowthReceived,this.onTaskReceived,this);
         EVENT.on(GameEvent.TaskGrowthUpdate,this.onTaskUpdate,this);
+        EVENT.on(GameEvent.LineupPower_Changed,this.onLineupPowerChange,this);
+
 
 
         if(!GUIDE.isInGuide){
@@ -299,6 +304,7 @@ export default class MainUI extends UIBase {
         }
     }
     private initView(){
+        this.onLineupPowerChange(null)
         this.initRedPoint();
         this.playGrowth();
         this.onEnterGame();
@@ -378,6 +384,7 @@ export default class MainUI extends UIBase {
         EVENT.off(GameEvent.TaskActiveReceived,this.onTaskReceived,this);
         EVENT.off(GameEvent.TaskGrowthReceived,this.onTaskReceived,this);
         EVENT.off(GameEvent.TaskGrowthUpdate,this.onTaskUpdate,this);
+        EVENT.off(GameEvent.LineupPower_Changed,this.onLineupPowerChange,this);
     }
 
     private initRedPoint(){
@@ -471,6 +478,10 @@ export default class MainUI extends UIBase {
     }
     private onAddDiamond(e){
         ResPanel.show(ResPanelType.DiamondRes);
+    }
+    private onLineupPowerChange(e){
+        var power:number = Lineup.ownerLineupPower;
+        this.labelPower.string = power.toFixed(0);
     }
 
 

@@ -274,6 +274,10 @@ export default class CardAssist{
     //     }
     //     return null;
     // }
+
+    public getUpstarNeddLv(grade:number){
+        return (grade-1)*10;
+    }
     //该卡牌是否可以合成
     public getCardCanCompose(cardId:number){
         var map:any = {};

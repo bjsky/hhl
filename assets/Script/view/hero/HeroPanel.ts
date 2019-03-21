@@ -80,6 +80,9 @@ export default class HeroPanel extends UIBase {
     labelUpstarSkillAdd:cc.RichText = null;
     @property(cc.RichText)
     labelUpstarPowerAdd:cc.RichText = null;
+
+    @property(cc.Label)
+    labelUpstarNeedLv:cc.Label = null;
     @property(cc.Label)
     labelUpstarName:cc.Label = null;
     @property(DList)
@@ -266,6 +269,7 @@ export default class HeroPanel extends UIBase {
     private _nextLvCardCfg:any = null;
     private _upLvCost:number = 0;
     private _upLvNeedLv:number = 0;
+    private _upstarNeedLv:number = 0;
     private initLevel(){
 
         this.labelLv.string = this._currentCard.level+"级";
@@ -305,7 +309,14 @@ export default class HeroPanel extends UIBase {
             var addPower:number =(cfgs.power - this._currentCard.carUpCfg.power);
             var addLife:number = (cfgs.body - this._currentCard.carUpCfg.body);
             this.labelUpstarSkillAdd.string = Skill.getCardSkillAddDescHtml(this._currentCard);
-            this.labelUpstarName.string = (this._currentCard.grade+1)+"星：";
+            this._upstarNeedLv = Card.getUpstarNeddLv(this._currentCard.grade);
+            this.labelUpstarNeedLv.string = "需要卡牌等级"+this._upstarNeedLv;
+            if(this._currentCard.level>= this._upstarNeedLv){
+                this.labelUpstarNeedLv.node.color = new cc.Color().fromHEX("#29b92f");
+            }else{
+                this.labelUpstarNeedLv.node.color = new cc.Color().fromHEX("#F10000");
+            }
+            this.labelUpstarName.string = "合成"+(this._currentCard.grade+1)+"星：";
             this.labelUpstarPowerAdd.string = "<color=#D42834>战斗力+"+addPower+"</color>";
         }
     }
@@ -390,6 +401,11 @@ export default class HeroPanel extends UIBase {
         var to:CardInfo = e.to;
         if(from.isMaxGrade){
             UI.showTip("已经是最高星级");
+            return;
+        }
+        var needLv =Card.getUpstarNeddLv(to.grade);
+        if(!GUIDE.isInGuide && to.level<needLv){
+            UI.showTip("需要卡牌大于"+needLv+"级");
             return;
         }
         var gold:number = COMMON.resInfo.gold;

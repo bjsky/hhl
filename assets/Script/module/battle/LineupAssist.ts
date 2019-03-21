@@ -43,6 +43,7 @@ export default class LineupAssist{
             if(lineup.uuid == upUuid){
                 lineup.updateOwner();
                 this.ownerLineupPower += (lineup.power-lineupPower);
+                EVENT.emit(GameEvent.LineupPower_Changed);
             }
         }
     }
@@ -106,6 +107,7 @@ export default class LineupAssist{
             if(msg && msg.resp){
                 Lineup.initOwnerLineup(msg.resp.lineUpOwner);
                 EVENT.emit(GameEvent.Lineup_Changed);
+                EVENT.emit(GameEvent.LineupPower_Changed);
 
                 //完成任务 
                 Task.finishTask(TaskType.ChangeLineup);
@@ -119,6 +121,7 @@ export default class LineupAssist{
             if(msg && msg.resp){
                 Lineup.initOwnerLineup(msg.resp.lineUpOwner);
                 EVENT.emit(GameEvent.Lineup_Changed);
+                EVENT.emit(GameEvent.LineupPower_Changed);
                 //完成任务 
                 Task.finishTask(TaskType.ChangeLineup);
             }

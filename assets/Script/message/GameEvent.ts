@@ -57,6 +57,8 @@ export default class GameEvent{
     public static Passage_FightBossEnd:string ="Passage_FightBossEnd";
     //阵容修改
     public static Lineup_Changed:string ="Lineup_Changed";
+    //战力改变
+    public static LineupPower_Changed:string ="LineupPower_Changed";
 
     public static ShareGetReward_Complete:string ="ShareGetReward_Complete";
     //合成升星

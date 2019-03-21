@@ -112,7 +112,7 @@ export default class MsgCardSummon extends MessageBase {
         var cardId = Card.getSummonCardId();
         var cardInfo = {
             uuid:cardUUid,
-            level:1,
+            level:60,
             cardId:cardId,
             grade:(type == CardSummonType.LifeStone)?Card.getStoneSummonGuide():Card.getVideoSummonGuide(),
             skillLevel:1

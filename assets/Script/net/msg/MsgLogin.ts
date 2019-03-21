@@ -407,9 +407,9 @@ export default class MsgLogin
         // [
         //     this.getSkillCard(18),this.getSkillCard(15),this.getSkillCard(13),this.getSkillCard(16),this.getSkillCard(17)
         // ];
-        // for(var i:number = 0;i<5;i++){
-        //     ownerCards.push(MsgCardSummon.randomCardInfo(CardSummonType.LifeStone));
-        // }
+        for(var i:number = 0;i<15;i++){
+            ownerCards.push(MsgCardSummon.randomCardInfo(CardSummonType.LifeStone));
+        }
         // for(i= 0;i<1;i++){
         //     var copy = this.copyCard(ownerCards[0]);
         //     ownerCards.push(copy);
