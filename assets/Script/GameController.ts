@@ -52,6 +52,8 @@ export default class GameController{
      */
     public start(){
         // LoadSprite.addSpriteAtlas("image/ui/","image/ui/image_ui");
+        //修改下载并发
+        cc.macro.DOWNLOAD_MAX_CONCURRENT = 8;
         GLOBAL.initSystemInfo();
         //初始化
         GLOBAL.initGameConfig();

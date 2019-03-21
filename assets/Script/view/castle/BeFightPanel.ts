@@ -88,7 +88,7 @@ export default class BeFightPanel extends PopUpBase {
         // var str:string ="<color=#7D3F3F>主人，您不在线期间，有 <color=#29b92f>"+fightCount+"</c> 位玩家攻击了您，"+
         // "您的积分<color=#D50336>－"+scoreTotal+"</c><br />"+ rabStr +"君子报仇，十年不晚，快去提升自己的实力吧！</color>";
         var rabStr = "玩家<color=#1A60DD>"+nameArrStr+"</c>"+rabOnlyStr+"抢夺了你的卡牌："+cardArrStr;
-        var str = "<color=#7D3F3F>主人，您不在线期间，"+ rabStr +"<br />君子报仇，十年不晚，快去提升自己的实力吧！</color>"
+        var str = "<color=#7D3F3F>主人，您不在线期间，"+ rabStr +"<br />君子报仇，十年不晚！</color>"
         return str;
     }
     private getBefightText():string{
@@ -106,7 +106,7 @@ export default class BeFightPanel extends PopUpBase {
             // "复仇抢夺双倍概率，不是不报，时候未到！</color>";
 
             str = "<color=#7D3F3F>主人，刚刚玩家 <color=#1A60DD>"+fightName+"</c> 抢走了你的卡牌："+cardStr+"<br />"+
-            "复仇抢夺双倍概率，不是不报，时候未到！</color>";
+            "实在是欺人太甚！</color>";
         }
         return str;
     }

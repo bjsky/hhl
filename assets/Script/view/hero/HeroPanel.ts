@@ -404,7 +404,7 @@ export default class HeroPanel extends UIBase {
             return;
         }
         var needLv =Card.getUpstarNeddLv(to.grade);
-        if(!GUIDE.isInGuide && to.level<needLv){
+        if(!GUIDE.isInGuide && this._currentCard.level<needLv){
             UI.showTip("需要卡牌大于"+needLv+"级");
             return;
         }

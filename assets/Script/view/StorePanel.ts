@@ -4,6 +4,8 @@ import DList, { DListDirection } from "../component/DList";
 import { CFG } from "../manager/ConfigManager";
 import { ConfigConst } from "../module/loading/steps/LoadingStepConfig";
 import { Card } from "../module/card/CardAssist";
+import { EVENT } from "../message/EventCenter";
+import GameEvent from "../message/GameEvent";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -41,11 +43,14 @@ export default class StorePanel extends PopUpBase {
         this.initView();
     }
 
+    protected onShowComplete(){
+        this.groupSelectChange(null);
+    }
+
     onDisable(){
         super.onDisable();
         this.btnGroup.node.on(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.groupSelectChange,this);
-        
-        super.onDisable();
+        this.cardsList.setListData([]);
     }
     private groupSelectChange(e){
         this._currentGrade = this._groupListData[this.btnGroup.selectIndex];
@@ -69,7 +74,6 @@ export default class StorePanel extends PopUpBase {
         this.btnGroup.labels = labels;
         this.btnGroup.selectIndex = 0;
 
-        this.groupSelectChange(null);
     }
 
     private initCardList(){

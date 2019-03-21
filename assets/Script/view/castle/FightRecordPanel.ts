@@ -40,11 +40,13 @@ export default class FightRecordPanel extends PopUpBase {
 
     private initRecordStr(){
         var str:string ="";
+        var i:number = 0;
         this._records.forEach((record:FightRecord)=>{
             var htmlStr = record.getDescHtml(COMMON.accountId);
-            if(htmlStr!=""){
+            if(htmlStr!="" && i<5){
                 str +=(htmlStr+"<br />");
             }
+            i++;
         })
         // str = "<color=#7D3F3F>"+str+"</color>"
         this.textRecords.string = str;
