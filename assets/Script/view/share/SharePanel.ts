@@ -8,6 +8,7 @@ import { UI } from "../../manager/UIManager";
 import { ResConst } from "../../module/loading/steps/LoadingStepRes";
 import { GUIDE } from "../../manager/GuideManager";
 import { ShareType } from "../../wxInterface";
+import ButtonEffect from "../../component/ButtonEffect";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -38,7 +39,7 @@ export default class SharePanel extends PopUpBase{
 
     onEnable(){
         super.onEnable();
-        this.btnShare.node.on(cc.Node.EventType.TOUCH_START,this.onShare,this);
+        this.btnShare.node.on(ButtonEffect.CLICK_END,this.onShare,this);
         // this.btnStore.node.on(cc.Node.EventType.TOUCH_START,this.onStoreClick,this);
         EVENT.on(GameEvent.ShareGetReward_Complete,this.shareComplete,this);
         EVENT.on(GameEvent.Guide_Weak_Touch_Complete,this.onGuideWeakTouch,this);
@@ -47,7 +48,7 @@ export default class SharePanel extends PopUpBase{
 
     onDisable(){
         super.onDisable();
-        this.btnShare.node.off(cc.Node.EventType.TOUCH_START,this.onShare,this);
+        this.btnShare.node.off(ButtonEffect.CLICK_END,this.onShare,this);
         // this.btnStore.node.off(cc.Node.EventType.TOUCH_START,this.onStoreClick,this);
         EVENT.off(GameEvent.ShareGetReward_Complete,this.shareComplete,this);
         EVENT.off(GameEvent.Guide_Weak_Touch_Complete,this.onGuideWeakTouch,this);

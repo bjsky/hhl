@@ -13,6 +13,7 @@ import FightOnce from "../../module/fight/FightOnce";
 import { SOUND, SoundConst } from "../../manager/SoundManager";
 import { GUIDE } from "../../manager/GuideManager";
 import { SkillProperty } from "../../module/fight/SkillLogic";
+import ButtonEffect from "../../component/ButtonEffect";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -205,7 +206,7 @@ export default class FightPanel extends UIBase {
             this.lblEnd.node.active = false;
             this.sprEnd2.node.active = true;
             this.sprEnd.node.active = false;
-            this.btnEnd.node.on(cc.Node.EventType.TOUCH_START,this.onEndTouch,this);
+            this.btnEnd.node.on(ButtonEffect.CLICK_END,this.onEndTouch,this);
         }else{
             this.lblEnd.string = Math.round(this._endEnableDelay - this._curTime).toString();
         }
@@ -221,7 +222,7 @@ export default class FightPanel extends UIBase {
     }
 
     onDisable(){
-        this.btnEnd.node.off(cc.Node.EventType.TOUCH_START,this.onEndTouch,this);
+        this.btnEnd.node.off(ButtonEffect.CLICK_END,this.onEndTouch,this);
         this.clear();
     }
     

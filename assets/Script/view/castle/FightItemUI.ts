@@ -14,6 +14,7 @@ import FightInfo from "../../model/FightInfo";
 import { Fight } from "../../module/fight/FightAssist";
 import { WeiXin, SeeVideoType } from "../../wxInterface";
 import { SeeVideoResult } from "../ResPanel";
+import ButtonEffect from "../../component/ButtonEffect";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -60,15 +61,15 @@ export default class FightItemUI extends DListItem{
 
     // onLoad () {}
     onEnable(){
-        this.sprHead.node.on(TouchHandler.TOUCH_CLICK,this.onHeadTouch,this);
-        this.btnAttack.node.on(TouchHandler.TOUCH_CLICK,this.onAttackTouch,this);
-        this.btnRabAttack.node.on(TouchHandler.TOUCH_CLICK,this.onrabAttackTouch,this);
+        this.sprHead.node.on(ButtonEffect.CLICK_END,this.onHeadTouch,this);
+        this.btnAttack.node.on(ButtonEffect.CLICK_END,this.onAttackTouch,this);
+        this.btnRabAttack.node.on(ButtonEffect.CLICK_END,this.onrabAttackTouch,this);
         this.initView();
     }
     onDisable(){
-        this.sprHead.node.off(TouchHandler.TOUCH_CLICK,this.onHeadTouch,this);
-        this.btnAttack.node.off(TouchHandler.TOUCH_CLICK,this.onAttackTouch,this);
-        this.btnRabAttack.node.on(TouchHandler.TOUCH_CLICK,this.onrabAttackTouch,this);
+        this.sprHead.node.off(ButtonEffect.CLICK_END,this.onHeadTouch,this);
+        this.btnAttack.node.off(ButtonEffect.CLICK_END,this.onAttackTouch,this);
+        this.btnRabAttack.node.on(ButtonEffect.CLICK_END,this.onrabAttackTouch,this);
     }
 
     private onHeadTouch(e){

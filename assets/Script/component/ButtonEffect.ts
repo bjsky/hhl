@@ -16,7 +16,18 @@ const {ccclass, property} = cc._decorator;
 export default class ButtonEffect extends cc.Component {
 
     @property originalScale:number = 1;
+
+    
+    private _startlocked:boolean = false;
+    private _endlocked:boolean = false;
     private onNodeTouchStart(evt) {
+        if(this._startlocked){
+            return;
+        }
+        this._startlocked = true;
+        this._endlocked = false;
+        this.unscheduleAllCallbacks();
+        // console.log("set startlocked");
         this.node.stopAllActions();
         var seq = cc.sequence(
             cc.scaleTo(0.08, 1.3 * this.originalScale),
@@ -27,12 +38,21 @@ export default class ButtonEffect extends cc.Component {
     }
 
     private onNodeTouchEnd(evt) {
+        if(this._endlocked){
+            return;
+        }
+        this._endlocked = true;
+        // console.log("set endlocked");
         this.node.stopAllActions();
         var seq = cc.sequence(
             cc.scaleTo(0.04, 1.2 * this.originalScale),
             cc.scaleTo(0.07, 1 * this.originalScale),
             cc.callFunc(()=>{
                 this.node.emit(ButtonEffect.CLICK_END);
+                this.scheduleOnce(()=>{
+                    // console.log("set startendunlock");
+                    this._startlocked = this._endlocked = false;
+                },0.5);
             },this)
         );
         this.node.runAction(seq);
@@ -50,6 +70,7 @@ export default class ButtonEffect extends cc.Component {
     }
 
     onEnable() {
+        this._startlocked = this._endlocked = false;
         this.node.on(cc.Node.EventType.TOUCH_START, this.onNodeTouchStart, this);
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, this.onNodeTouchEnd, this);
         this.node.on(cc.Node.EventType.TOUCH_END, this.onNodeTouchEnd, this);
@@ -59,6 +80,7 @@ export default class ButtonEffect extends cc.Component {
         this.node.off(cc.Node.EventType.TOUCH_START, this.onNodeTouchStart, this);
         this.node.off(cc.Node.EventType.TOUCH_CANCEL, this.onNodeTouchEnd, this);
         this.node.off(cc.Node.EventType.TOUCH_END, this.onNodeTouchEnd, this);
+        this.unscheduleAllCallbacks();
     }
 
     // update (dt) {}

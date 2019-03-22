@@ -43,7 +43,7 @@ export default class FightRecordPanel extends PopUpBase {
         var i:number = 0;
         this._records.forEach((record:FightRecord)=>{
             var htmlStr = record.getDescHtml(COMMON.accountId);
-            if(htmlStr!="" && i<5){
+            if(htmlStr!="" && i<10){
                 str +=(htmlStr+"<br />");
             }
             i++;

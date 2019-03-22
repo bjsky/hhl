@@ -15,6 +15,7 @@ import { EVENT } from "../message/EventCenter";
 import { Task, TaskType } from "../module/TaskAssist";
 import GameEvent from "../message/GameEvent";
 import { GUIDE } from "../manager/GuideManager";
+import ButtonEffect from "../component/ButtonEffect";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -89,13 +90,13 @@ export default class ResPanel extends PopUpBase {
     onEnable(){
         super.onEnable();
         this.initView();
-        this.videoBtn.node.on(cc.Node.EventType.TOUCH_START,this.onVideoSee,this);
+        this.videoBtn.node.on(ButtonEffect.CLICK_END,this.onVideoSee,this);
         EVENT.on(GameEvent.Guide_Weak_Touch_Complete,this.onWeakGuideTouch,this);
     }
 
     onDisable(){
         super.onDisable();
-        this.videoBtn.node.off(cc.Node.EventType.TOUCH_START,this.onVideoSee,this);
+        this.videoBtn.node.off(ButtonEffect.CLICK_END,this.onVideoSee,this);
         EVENT.off(GameEvent.Guide_Weak_Touch_Complete,this.onWeakGuideTouch,this);
     }
 

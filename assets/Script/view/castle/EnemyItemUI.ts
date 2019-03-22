@@ -12,6 +12,7 @@ import { FightRecord } from "../../model/BattleInfo";
 import { Battle } from "../../module/battle/BattleAssist";
 import { COMMON } from "../../CommonData";
 import StringUtil from "../../utils/StringUtil";
+import ButtonEffect from "../../component/ButtonEffect";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -46,11 +47,11 @@ export default class EnmeyItemUI extends DListItem{
 
     // onLoad () {}
     onEnable(){
-        this.sprHead.node.on(TouchHandler.TOUCH_CLICK,this.onHeadTouch,this);
+        this.sprHead.node.on(ButtonEffect.CLICK_END,this.onHeadTouch,this);
         this.initView();
     }
     onDisable(){
-        this.sprHead.node.off(TouchHandler.TOUCH_CLICK,this.onHeadTouch,this);
+        this.sprHead.node.off(ButtonEffect.CLICK_END,this.onHeadTouch,this);
     }
 
     private onHeadTouch(e){

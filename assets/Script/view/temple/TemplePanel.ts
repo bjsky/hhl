@@ -19,6 +19,7 @@ import { GUIDE } from "../../manager/GuideManager";
 import { CardBigShowType } from "../card/CardBig";
 import ResPanel, { ResPanelType, SeeVideoResult } from "../ResPanel";
 import { WeiXin, SeeVideoType } from "../../wxInterface";
+import ButtonEffect from "../../component/ButtonEffect";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -67,8 +68,8 @@ export default class TemplePanel extends UIBase {
     private _stoneSummonCost:number = 0;
     // LIFE-CYCLE CALLBACKS:
     onEnable(){
-        this.lifeStoneBtn.node.on(cc.Node.EventType.TOUCH_START,this.onLifeStoneClick,this);
-        this.videoBtn.node.on(cc.Node.EventType.TOUCH_START,this.onVideoClick,this);
+        this.lifeStoneBtn.node.on(ButtonEffect.CLICK_END,this.onLifeStoneClick,this);
+        this.videoBtn.node.on(ButtonEffect.CLICK_END,this.onVideoClick,this);
         // this.helpBtn.node.on(cc.Node.EventType.TOUCH_START,this.onHelpClick,this);
         this.buildHeroBtn.node.on(cc.Node.EventType.TOUCH_START,this.onGotoHeroFast,this);
         this.btnGroup.node.on(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.groupSelectChange,this);
@@ -82,8 +83,8 @@ export default class TemplePanel extends UIBase {
     }
 
     onDisable(){
-        this.lifeStoneBtn.node.off(cc.Node.EventType.TOUCH_START,this.onLifeStoneClick,this);
-        this.videoBtn.node.off(cc.Node.EventType.TOUCH_START,this.onVideoClick,this);
+        this.lifeStoneBtn.node.off(ButtonEffect.CLICK_END,this.onLifeStoneClick,this);
+        this.videoBtn.node.off(ButtonEffect.CLICK_END,this.onVideoClick,this);
         // this.helpBtn.node.off(cc.Node.EventType.TOUCH_START,this.onHelpClick,this);
         this.buildHeroBtn.node.off(cc.Node.EventType.TOUCH_START,this.onGotoHeroFast,this);
         this.btnGroup.node.off(ButtonGroup.BUTTONGROUP_SELECT_CHANGE,this.groupSelectChange,this);

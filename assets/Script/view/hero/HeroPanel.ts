@@ -24,6 +24,7 @@ import { Drag, CDragEvent } from "../../manager/DragManager";
 import CardComposeUI from "../card/CardComposeUI";
 import { WeiXin } from "../../wxInterface";
 import { CardMiniType } from "../card/CardMini";
+import ButtonEffect from "../../component/ButtonEffect";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -103,7 +104,7 @@ export default class HeroPanel extends UIBase {
     }
     onEnable(){
         this.cardsList.node.on(DList.ITEM_CLICK,this.onCardClick,this);
-        this.btnUpgrade.node.on(cc.Node.EventType.TOUCH_START,this.upgradeHero,this);
+        this.btnUpgrade.node.on(ButtonEffect.CLICK_END,this.upgradeHero,this);
 
         EVENT.on(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
         EVENT.on(GameEvent.Card_Drop_UpStar,this.onCardUpStar,this);
@@ -123,7 +124,7 @@ export default class HeroPanel extends UIBase {
 
     onDisable(){
         this.cardsList.node.off(DList.ITEM_CLICK,this.onCardClick,this);
-        this.btnUpgrade.node.off(cc.Node.EventType.TOUCH_START,this.upgradeHero,this);
+        this.btnUpgrade.node.off(ButtonEffect.CLICK_END,this.upgradeHero,this);
 
         EVENT.off(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
         EVENT.off(GameEvent.Card_Drop_UpStar,this.onCardUpStar,this);
@@ -281,7 +282,7 @@ export default class HeroPanel extends UIBase {
             var addLife:number = (this._nextLvCardCfg.body -this._currentCard.carUpCfg.body);
             this.labelUpLvPowerAdd.node.active = true;
             this.labelUpLvPowerAdd.string = "<color=#D42834>战斗力+"+addPower+"</color>";
-            this.labelUpLvName.string = this._nextLvCardCfg.level+"级：";
+            this.labelUpLvName.string = "下一级：";//this._nextLvCardCfg.level+"级：";
         }else{
             this._nextLvCardCfg = null;
             this.labelUpLvName.string = "已满级";

@@ -17,6 +17,7 @@ import { AwardTypeEnum } from "../AwardPanel";
 import { ResType } from "../../model/ResInfo";
 import { Task, TaskType } from "../../module/TaskAssist";
 import { AlertBtnType } from "../AlertPanel";
+import ButtonEffect from "../../component/ButtonEffect";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -90,7 +91,7 @@ export default class BattlePanel extends UIBase {
 
     onEnable(){
         this.initView();
-        this.btnCollect.node.on(TouchHandler.TOUCH_CLICK,this.collectRes,this);
+        this.btnCollect.node.on(ButtonEffect.CLICK_END,this.collectRes,this);
         this.btnFight.node.on(TouchHandler.TOUCH_CLICK,this.onFightBoss,this);
         this.btnChangeLineup.node.on(cc.Node.EventType.TOUCH_START,this.showLineup,this);
 
@@ -103,7 +104,7 @@ export default class BattlePanel extends UIBase {
     }
 
     onDisable(){
-        this.btnCollect.node.off(TouchHandler.TOUCH_CLICK,this.collectRes,this);
+        this.btnCollect.node.off(ButtonEffect.CLICK_END,this.collectRes,this);
         this.btnFight.node.off(TouchHandler.TOUCH_CLICK,this.onFightBoss,this);
         this.btnChangeLineup.node.off(cc.Node.EventType.TOUCH_START,this.showLineup,this);
         

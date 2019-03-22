@@ -6,6 +6,7 @@ import { EVENT } from "../../message/EventCenter";
 import GameEvent from "../../message/GameEvent";
 import LoadSprite from "../../component/LoadSprite";
 import PathUtil from "../../utils/PathUtil";
+import ButtonEffect from "../../component/ButtonEffect";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -54,13 +55,13 @@ export default class GrowthBoxUI extends UIBase {
     }
 
     onEnable(){
-        this.btnLingqu.node.on(cc.Node.EventType.TOUCH_START,this.onTouchStart,this);
+        this.btnLingqu.node.on(ButtonEffect.CLICK_END,this.onTouchStart,this);
         EVENT.on(GameEvent.TaskGrowthReceived,this.onReceived,this);
 
         this.initView();
     }
     onDisable(){
-        this.btnLingqu.node.off(cc.Node.EventType.TOUCH_START,this.onTouchStart,this);
+        this.btnLingqu.node.off(ButtonEffect.CLICK_END,this.onTouchStart,this);
         EVENT.off(GameEvent.TaskGrowthReceived,this.onReceived,this);
     }
 

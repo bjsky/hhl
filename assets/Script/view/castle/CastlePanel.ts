@@ -20,6 +20,7 @@ import { GUIDE } from "../../manager/GuideManager";
 import DListItem from "../../component/DListItem";
 import FightItemUI from "./FightItemUI";
 import EnmeyItemUI from "./EnemyItemUI";
+import ButtonEffect from "../../component/ButtonEffect";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -81,9 +82,9 @@ export default class CastlePanel extends UIBase {
     }
 
     onEnable(){
-        this.helpButton.node.on(cc.Node.EventType.TOUCH_START,this.onHelpClick,this);
-        this.btnRefresh.node.on(TouchHandler.TOUCH_CLICK,this.onRefreshClick,this);
-        this.btnRecords.node.on(cc.Node.EventType.TOUCH_START,this.onRecordsClick,this);
+        this.helpButton.node.on(ButtonEffect.CLICK_END,this.onHelpClick,this);
+        this.btnRefresh.node.on(ButtonEffect.CLICK_END,this.onRefreshClick,this);
+        this.btnRecords.node.on(ButtonEffect.CLICK_END,this.onRecordsClick,this);
         this.btnChangeLineup.node.on(cc.Node.EventType.TOUCH_START,this.changeLineup,this);
 
         EVENT.on(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
@@ -99,9 +100,9 @@ export default class CastlePanel extends UIBase {
     }
 
     onDisable(){
-        this.helpButton.node.off(cc.Node.EventType.TOUCH_START,this.onHelpClick,this);
-        this.btnRefresh.node.off(TouchHandler.TOUCH_CLICK,this.onRefreshClick,this);
-        this.btnRecords.node.off(cc.Node.EventType.TOUCH_START,this.onRecordsClick,this);
+        this.helpButton.node.off(ButtonEffect.CLICK_END,this.onHelpClick,this);
+        this.btnRefresh.node.off(ButtonEffect.CLICK_END,this.onRefreshClick,this);
+        this.btnRecords.node.off(ButtonEffect.CLICK_END,this.onRecordsClick,this);
         this.btnChangeLineup.node.off(cc.Node.EventType.TOUCH_START,this.changeLineup,this);
 
         EVENT.off(GameEvent.Panel_Show_Effect_Complete,this.onPanelShowComplete,this);
