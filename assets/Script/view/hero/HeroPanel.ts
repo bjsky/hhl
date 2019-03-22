@@ -69,6 +69,8 @@ export default class HeroPanel extends UIBase {
     labelUpLvCost:cc.Label = null;
     @property(cc.Label)
     labelTotalPower:cc.Label = null;
+    @property(cc.Label)
+    labelUpPowerAni:cc.Label = null;
 
     @property(cc.Label)
     labelSkillName:cc.Label = null;
@@ -185,14 +187,34 @@ export default class HeroPanel extends UIBase {
         Card.upCardLv(this._currentCard.uuid,this._upLvCost,false);
     }
 
+    private showPowerAddani(num:number){
+        this.labelUpPowerAni.node.active = true;
+        var moveBy:cc.Vec2 = cc.v2(0,20);
+        this.labelUpPowerAni.string = "+"+num;
+        this.labelUpPowerAni.node.stopAllActions();
+        this.labelUpPowerAni.node.setPosition(cc.v2(0,205));
+        this.labelUpPowerAni.node.runAction(
+            cc.sequence(
+                    cc.moveBy(0.6,moveBy).easing(cc.easeOut(1.5)),
+                cc.callFunc(
+                    ()=>{
+                        this.labelUpPowerAni.node.active = false;
+                    }
+                )
+            )
+        )
+    }
     private onCardUpdate(e){
         var uuid = e.uuid;
         var type = e.type;
-
         if(type == CardUpType.UpLevel){
+            this.showPowerAddani(this._uplvAddPower);
             this.initCard();
             this.cardsList.updateIndex(this.cardsList.selectIndex,this.cardsList.selectData);
         }else if(type == CardUpType.UpGrade){
+            if(uuid == this._currentCard.uuid){
+                this.showPowerAddani(this._upGradeAddPower);
+            }
             this.updateCardCompose(uuid);
             this.updateCurrentCard(Number(this._currentCard.cardId));
         }
@@ -220,6 +242,7 @@ export default class HeroPanel extends UIBase {
 
 
     private initView(){
+        this.labelUpPowerAni.node.active = false;
         this._currentCardList = Card.getOwnerMaxlvCardList();
         this._currentCard = this._currentCardList.length>0?this._currentCardList[0]:null;
         this.initCard();
@@ -271,6 +294,7 @@ export default class HeroPanel extends UIBase {
     private _upLvCost:number = 0;
     private _upLvNeedLv:number = 0;
     private _upstarNeedLv:number = 0;
+    private _uplvAddPower:number = 0;
     private initLevel(){
 
         this.labelLv.string = this._currentCard.level+"级";
@@ -278,10 +302,10 @@ export default class HeroPanel extends UIBase {
         var cfgs:any = CFG.getCfgByKey(ConfigConst.CardUp,"grade",this._currentCard.grade,"level",this._currentCard.level+1);
         if(cfgs.length>0){
             this._nextLvCardCfg = cfgs[0];
-            var addPower:number =(this._nextLvCardCfg.power - this._currentCard.carUpCfg.power);
+            this._uplvAddPower =(this._nextLvCardCfg.power - this._currentCard.carUpCfg.power);
             var addLife:number = (this._nextLvCardCfg.body -this._currentCard.carUpCfg.body);
             this.labelUpLvPowerAdd.node.active = true;
-            this.labelUpLvPowerAdd.string = "<color=#D42834>战斗力+"+addPower+"</color>";
+            this.labelUpLvPowerAdd.string = "<color=#D42834>战斗力+"+this._uplvAddPower+"</color>";
             this.labelUpLvName.string = "下一级：";//this._nextLvCardCfg.level+"级：";
         }else{
             this._nextLvCardCfg = null;
@@ -299,6 +323,7 @@ export default class HeroPanel extends UIBase {
         }
     }
 
+    private _upGradeAddPower:number = 0;
     private initGrade(){
         this.labelSkillName.string = this._currentCard.cardSkillCfg[0].name;
         this.labelSkillDesc.string = Skill.getCardSkillDescHtml(this._currentCard,0);
@@ -307,7 +332,7 @@ export default class HeroPanel extends UIBase {
         }else{
             this.nodeUpStar.active = true;
             var cfgs:any = CFG.getCfgByKey(ConfigConst.CardUp,"grade",this._currentCard.grade+1,"level",this._currentCard.level)[0];
-            var addPower:number =(cfgs.power - this._currentCard.carUpCfg.power);
+            this._upGradeAddPower =(cfgs.power - this._currentCard.carUpCfg.power);
             var addLife:number = (cfgs.body - this._currentCard.carUpCfg.body);
             this.labelUpstarSkillAdd.string = Skill.getCardSkillAddDescHtml(this._currentCard);
             this._upstarNeedLv = Card.getUpstarNeddLv(this._currentCard.grade);
@@ -318,7 +343,7 @@ export default class HeroPanel extends UIBase {
                 this.labelUpstarNeedLv.node.color = new cc.Color().fromHEX("#F10000");
             }
             this.labelUpstarName.string = "合成"+(this._currentCard.grade+1)+"星：";
-            this.labelUpstarPowerAdd.string = "<color=#D42834>战斗力+"+addPower+"</color>";
+            this.labelUpstarPowerAdd.string = "<color=#D42834>战斗力+"+this._upGradeAddPower+"</color>";
         }
     }
 

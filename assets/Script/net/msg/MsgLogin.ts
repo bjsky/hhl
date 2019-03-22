@@ -418,7 +418,7 @@ export default class MsgLogin
             accountId:StringUtil.getUUidClient(),
             newUser:0,
             serverTime:new Date().getTime(),
-            userInfo:{name:"上古战神",icon:"",gender:1,exp:0,level:1},
+            userInfo:{name:"上古战神",icon:"",gender:1,exp:0,level:10},
             resInfo:{gold:300000,diamond:0,lifeStone:300000,soulStone:0},
             guideInfo:{guideId:2},
             buildInfos:[{type:0,level:1,locked:true},
